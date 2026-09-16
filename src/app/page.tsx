@@ -64,26 +64,28 @@ export default function Home() {
       <section id="themes" aria-labelledby="themes-title" className="scroll-mt-20 py-16 sm:py-24">
         <div className={container}>
           <SectionHead num="01" kicker="Thèmes" id="themes-title" title={<>Par où <span className="font-serif font-normal italic">commencer</span> ?</>} />
-          <div className="mt-12 grid gap-5 md:grid-cols-2">
-            {THEMES.map((t) => (
-              <Link
-                key={t.slug}
-                href={`/${t.slug}`}
-                className={`${block(t.slug)} group flex min-h-72 flex-col justify-between rounded-2xl border-2 border-ink p-6 transition hover:-translate-x-1 hover:-translate-y-1 hover:shadow-hard-ink-lg motion-reduce:hover:translate-0 sm:p-8 dark:border-paper dark:hover:shadow-[7px_7px_0_0_#f4f0e8]`}
-              >
-                <span className="flex items-start justify-between">
-                  <ThemeIcon slug={t.slug} className="size-9 sm:size-11" />
-                  <span className="grid size-12 place-items-center rounded-full border-2 border-ink transition group-hover:bg-ink group-hover:text-paper">
-                    <ArrowRight aria-hidden strokeWidth={1.75} className="size-5 transition group-hover:-rotate-45 motion-reduce:group-hover:rotate-0" />
+          <ul className="mt-12 border-t-2 border-fg">
+            {THEMES.map((t, i) => (
+              <li key={t.slug} className="border-b-2 border-fg">
+                <Link
+                  href={`/${t.slug}`}
+                  className="group relative isolate grid grid-cols-[auto_1fr_auto] items-center gap-4 overflow-hidden py-6 sm:grid-cols-[4rem_auto_1fr_auto] sm:gap-8 sm:py-8"
+                >
+                  {/* theme color wipes in from the left on hover */}
+                  <span aria-hidden className={`${block(t.slug)} absolute inset-0 -z-10 origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100 motion-reduce:transition-none`} />
+                  <span className="hidden font-mono text-sm font-bold text-fg-2 group-hover:text-ink sm:block sm:pl-3">0{i + 1}</span>
+                  <span className={`${block(t.slug)} grid size-12 place-items-center border-2 border-fg text-ink sm:size-14`}>
+                    <ThemeIcon slug={t.slug} className="size-6 sm:size-7" />
                   </span>
-                </span>
-                <span className="mt-10 block">
-                  <span className={`${display} block text-4xl leading-[0.95] text-balance sm:text-5xl`}>{t.title}</span>
-                  <span className="mt-3 block max-w-md text-[1.0625rem] text-ink/80">{t.tagline}</span>
-                </span>
-              </Link>
+                  <span className="min-w-0 group-hover:text-ink">
+                    <span className={`${display} block text-3xl leading-none sm:text-5xl`}>{t.title}</span>
+                    <span className="mt-2 block text-[0.9375rem] text-fg-2 group-hover:text-ink/80 sm:text-base">{t.tagline}</span>
+                  </span>
+                  <ArrowRight aria-hidden strokeWidth={1.75} className="size-7 transition group-hover:translate-x-1 group-hover:text-ink sm:mr-3 sm:size-9 motion-reduce:transition-none" />
+                </Link>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 

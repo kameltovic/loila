@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowRight, Menu, X } from "lucide-react";
 import ThemeIcon from "@/components/ThemeIcon";
+import { btnPrimary } from "@/components/ui";
 
 const NAV = [
   { slug: "travail", label: "Travail" },
@@ -62,14 +63,14 @@ export default function Header() {
         <div className="flex items-center gap-2">
           <Link
             href="/#question"
-            className="hidden items-center gap-2 rounded-full bg-fg px-4 py-2.5 text-sm font-semibold text-bg transition hover:bg-signal hover:text-ink sm:inline-flex"
+            className={`${btnPrimary} hidden! sm:inline-flex!`}
           >
             Poser une question
             <ArrowRight aria-hidden size={16} strokeWidth={1.75} />
           </Link>
           <button
             type="button"
-            className="inline-flex size-10 items-center justify-center rounded-full border-2 border-fg md:hidden"
+            className="inline-flex size-10 items-center justify-center border-2 border-fg md:hidden"
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
@@ -100,7 +101,7 @@ export default function Header() {
               <Link
                 href="/#question"
                 onClick={close}
-                className="flex items-center justify-center gap-2 rounded-full bg-fg px-4 py-3.5 font-semibold text-bg"
+                className={`${btnPrimary} w-full py-3.5`}
               >
                 Poser une question
                 <ArrowRight aria-hidden size={18} strokeWidth={1.75} />

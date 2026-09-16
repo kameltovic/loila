@@ -20,7 +20,7 @@ export const label = "text-xs font-semibold uppercase tracking-[0.16em]";
 export const display = "font-display font-extrabold tracking-[-0.04em]";
 
 export const btnPrimary =
-  "inline-flex items-center justify-center gap-2 rounded-full border-2 border-fg bg-fg px-5 py-2.5 font-semibold text-bg transition hover:-translate-y-0.5 hover:shadow-[3px_3px_0_0_var(--signal)] motion-reduce:hover:translate-y-0";
+  "inline-flex items-center justify-center gap-2 border-2 border-fg bg-signal px-5 py-2.5 font-mono text-sm font-bold uppercase tracking-wide text-ink shadow-[4px_4px_0_0_var(--fg)] transition-[transform,box-shadow] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_var(--fg)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none motion-reduce:transition-none";
 export const btnSecondary =
   "inline-flex items-center justify-center gap-2 rounded-full border-2 border-fg px-5 py-2.5 font-semibold transition hover:bg-fg hover:text-bg";
 
