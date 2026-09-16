@@ -1,5 +1,6 @@
 // Pre-generates FAQ answers for seed/questions.json.
 // npx tsx scripts/batch-faq.ts [--theme travail] [--limit N] [--force] [--dry-run]
+// Topic questions (seed/topics.json -> faq rows with topic): npx tsx scripts/batch-faq.ts --topics [--topic <slug>] [--limit N] [--force] [--dry-run]
 import fs from "node:fs";
 import path from "node:path";
 
@@ -14,12 +15,17 @@ async function main() {
   const { searchArticles, getArticleByNum } = await import("../src/lib/search");
   const { chat } = await import("../src/lib/openrouter");
 
-  type Seed = { theme: string; slug: string; emoji: string; question: string; hints: string[] };
+  const { getTopics } = await import("../src/lib/topics");
+
+  // codes: explicit retrieval scope (topics); hints may be "code-slug:num" for an exact article.
+  type Seed = { theme: string; slug: string; emoji: string | null; question: string; hints: string[]; topic?: string; codes?: string[] };
 
   const argv = process.argv.slice(2);
   const flag = (name: string) => argv.includes(`--${name}`);
   const opt = (name: string) => { const i = argv.indexOf(`--${name}`); return i >= 0 ? argv[i + 1] : undefined; };
   const themeFilter = opt("theme");
+  const topicsMode = flag("topics") || !!opt("topic");
+  const topicFilter = opt("topic");
   const limit = opt("limit") ? Number(opt("limit")) : Infinity;
   const force = flag("force");
   const dryRun = flag("dry-run");
@@ -36,12 +42,13 @@ async function main() {
   Réponds en JSON strict : {"short": "1 à 2 phrases, la réponse en bref", "answer_md": "réponse complète en markdown (titres ###, listes)", "cited_nums": ["numéros des articles effectivement cités"]}`;
 
   async function retrieve(s: Seed): Promise<Article[]> {
-    const codes = [...(THEMES.find((t) => t.slug === s.theme)?.codes ?? [])];
+    const codes = s.codes ?? [...(THEMES.find((t) => t.slug === s.theme)?.codes ?? [])];
+    const qualified = (h: string) => /^[a-z0-9-]+:/.test(h) && ARTICLE_NUM.test(h.split(":")[1]);
     const exact = s.hints
-      .filter((h) => ARTICLE_NUM.test(h))
-      .flatMap((num) => codes.map((code) => getArticleByNum(code, num)))
+      .flatMap((h) => qualified(h) ? [getArticleByNum(h.split(":")[0], h.split(":")[1])]
+        : ARTICLE_NUM.test(h) ? codes.map((code) => getArticleByNum(code, h)) : [])
       .filter((a): a is Article => !!a);
-    const words = s.hints.filter((h) => !ARTICLE_NUM.test(h)).join(" ");
+    const words = s.hints.filter((h) => !ARTICLE_NUM.test(h) && !qualified(h)).join(" ");
     const found = await searchArticles(`${s.question} ${words}`, { codes, limit: 8 });
     const byId = new Map<string, Article>();
     for (const a of [...exact, ...found]) byId.set(a.id, a);
@@ -63,7 +70,7 @@ async function main() {
   async function processOne(s: Seed) {
     const articles = await retrieve(s);
     if (dryRun) {
-      console.log(`\n# [${s.theme}] ${s.slug} — ${articles.length} article(s)`);
+      console.log(`\n# [${s.topic ?? s.theme}] ${s.slug} — ${articles.length} article(s)\n  Q: ${s.question}`);
       for (const a of articles) console.log(`  ${a.code} ${a.num}  ${a.texte.slice(0, 90).replace(/\s+/g, " ")}…`);
       return;
     }
@@ -85,14 +92,21 @@ async function main() {
     const ids = [...new Set(ans.cited_nums.map((n) => byNum.get(norm(String(n)))).filter((id): id is string => !!id))];
 
     getDb().prepare(`
-      INSERT INTO faq (theme, slug, emoji, question, short, answer_md, article_ids)
-      VALUES (@theme, @slug, @emoji, @question, @short, @answer_md, @article_ids)
-      ON CONFLICT(slug) DO UPDATE SET theme=excluded.theme, emoji=excluded.emoji, question=excluded.question,
+      INSERT INTO faq (theme, topic, slug, emoji, question, short, answer_md, article_ids)
+      VALUES (@theme, @topic, @slug, @emoji, @question, @short, @answer_md, @article_ids)
+      ON CONFLICT(slug) DO UPDATE SET theme=excluded.theme, topic=excluded.topic, emoji=excluded.emoji, question=excluded.question,
         short=excluded.short, answer_md=excluded.answer_md, article_ids=excluded.article_ids
-    `).run({ theme: s.theme, slug: s.slug, emoji: s.emoji, question: s.question, short: ans.short, answer_md: ans.answer_md, article_ids: JSON.stringify(ids) });
+    `).run({ theme: s.theme, topic: s.topic ?? null, slug: s.slug, emoji: s.emoji, question: s.question, short: ans.short, answer_md: ans.answer_md, article_ids: JSON.stringify(ids) });
   }
 
-  const seeds: Seed[] = JSON.parse(fs.readFileSync(path.join(process.cwd(), "seed", "questions.json"), "utf8"));
+  // Topic question theme: the first non-convention theme owning one of its codes, else "sujets".
+  const themeFor = (codes: string[]) =>
+    codes.map((c) => THEMES.find((t) => t.slug !== "conventions" && (t.codes as readonly string[]).includes(c))?.slug).find(Boolean) ?? "sujets";
+  const seeds: Seed[] = topicsMode
+    ? getTopics()
+        .filter((t) => !topicFilter || t.slug === topicFilter)
+        .flatMap((t) => t.questions.map((q) => ({ ...q, theme: themeFor(t.codes), emoji: null, topic: t.slug, codes: t.codes })))
+    : JSON.parse(fs.readFileSync(path.join(process.cwd(), "seed", "questions.json"), "utf8"));
   const existing = new Set((getDb().prepare("SELECT slug FROM faq").all() as { slug: string }[]).map((r) => r.slug));
   const articleCount = (getDb().prepare("SELECT COUNT(*) AS n FROM articles").get() as { n: number }).n;
   if (!articleCount) console.warn("⚠️  articles table is empty — run `npm run ingest` first.");

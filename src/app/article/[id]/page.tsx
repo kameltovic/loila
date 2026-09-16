@@ -5,29 +5,63 @@ import { ArrowUpRight } from "lucide-react";
 import { getDb, type Article, type Faq } from "@/lib/db";
 import { CODES } from "@/lib/themes";
 import { Empty, FaqIndex, btnPrimary, container, display, label } from "@/components/ui";
+import { JsonLd, abs, breadcrumbJsonLd, clip, pageMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
 const load = (id: string) => getDb().prepare("SELECT * FROM articles WHERE id = ?").get(id) as Article | undefined;
+/** "Article L1237-19", or the section title for convention articles without a number. */
+const artLabel = (a: Article) => (a.num ? `Article ${a.num}` : (a.section?.split(" > ").pop() ?? "Article"));
 const codeName = (a: Article) => CODES[a.code as keyof typeof CODES]?.name ?? a.code;
+
+/** "du Code du travail" / "de la convention collective Syntec (IDCC 1486)" for titles. */
+function ofCode(a: Article) {
+  const name = codeName(a);
+  if (name.startsWith("Code")) return `du ${name}`;
+  if (a.code === "loi-89-462") return "de la loi du 6 juillet 1989";
+  return `de la ${name.replace(/^Convention collective /, "CCN ").replace(/,.*?(\(IDCC)/, " $1")}`;
+}
+const citedBy = (id: string) =>
+  getDb().prepare("SELECT theme, topic, slug, emoji, question, short FROM faq WHERE EXISTS (SELECT 1 FROM json_each(faq.article_ids) WHERE value = ?)").all(id) as Faq[];
 
 export async function generateMetadata({ params }: PageProps<"/article/[id]">): Promise<Metadata> {
   const a = load((await params).id);
-  return a ? { title: `Article ${a.num} — ${codeName(a)}`, description: a.texte.slice(0, 160) } : {};
+  if (!a) return {};
+  const title = `${artLabel(a)} ${ofCode(a)} expliqué`;
+  const first = a.texte.split(/(?<=[.;:])\s|\n/)[0] ?? a.texte;
+  const meta = pageMetadata({ title, description: clip(`${first} Texte officiel en vigueur et explications simples.`), path: `/article/${a.id}`, type: "article" });
+  // Only articles cited by an answer are worth indexing; the other ~35k are raw legal text (thin pages).
+  return { ...meta, title: title.length > 52 ? { absolute: title } : title, ...(citedBy(a.id).length ? {} : { robots: { index: false, follow: true } }) };
 }
 
 export default async function ArticlePage({ params }: PageProps<"/article/[id]">) {
   const a = load((await params).id);
   if (!a) notFound();
 
-  const related = getDb()
-    .prepare(
-      "SELECT theme, slug, emoji, question, short FROM faq WHERE EXISTS (SELECT 1 FROM json_each(faq.article_ids) WHERE value = ?)",
-    )
-    .all(a.id) as Faq[];
+  const related = citedBy(a.id);
+  const code = CODES[a.code as keyof typeof CODES];
+  const jsonLd = [
+    breadcrumbJsonLd([{ name: "Accueil", path: "/" }, { name: codeName(a), path: `/article/${a.id}` }, { name: artLabel(a), path: `/article/${a.id}` }]),
+    {
+      "@context": "https://schema.org",
+      "@type": "Legislation",
+      name: `${artLabel(a)} ${ofCode(a)}`,
+      legislationIdentifier: a.id,
+      legislationJurisdiction: "FR",
+      legislationLegalForce: "InForce",
+      inLanguage: "fr-FR",
+      ...(a.date_debut && { legislationDate: a.date_debut.slice(0, 10) }),
+      url: abs(`/article/${a.id}`),
+      isBasedOn: a.url,
+      sameAs: a.url,
+      text: a.texte,
+      ...(code && { isPartOf: { "@type": "Legislation", name: code.name, legislationIdentifier: code.legitext, legislationJurisdiction: "FR" } }),
+    },
+  ];
 
   return (
     <>
+      <JsonLd data={jsonLd} />
       <section className="border-b-2 border-fg">
         <div className={`${container} pt-8 pb-12 sm:pt-10 sm:pb-16`}>
           <nav aria-label="Fil d’Ariane" className={`${label} flex flex-wrap items-center gap-2 text-fg-2`}>

@@ -4,9 +4,48 @@ import Chat from "@/components/Chat";
 import ThemeIcon from "@/components/ThemeIcon";
 import { getDb, type Faq } from "@/lib/db";
 import { THEMES } from "@/lib/themes";
+import { getTopic, getTopics } from "@/lib/topics";
 import { Empty, FaqIndex, SectionHead, block, container, display, label } from "@/components/ui";
+import { JsonLd, SITE_NAME, SITE_URL, pageMetadata } from "@/lib/seo";
+
+export const metadata = {
+  ...pageMetadata({
+    title: "Droit du travail, logement, urbanisme expliqués simplement",
+    description:
+      "Congés, licenciement, bail, permis de construire : des réponses claires et gratuites en 2026, chaque règle sourcée par l’article de loi officiel.",
+    path: "/",
+  }),
+  title: { absolute: "Loilà · Droit du travail, logement, urbanisme expliqués" },
+};
+
+const homeJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${SITE_URL}/#organization`,
+    name: SITE_NAME,
+    url: SITE_URL,
+    logo: `${SITE_URL}/icon`,
+    description: "Le droit français expliqué simplement, chaque réponse sourcée par les articles officiels publiés sur Légifrance.",
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${SITE_URL}/#website`,
+    name: SITE_NAME,
+    alternateName: "Loila",
+    url: SITE_URL,
+    inLanguage: "fr-FR",
+    publisher: { "@id": `${SITE_URL}/#organization` },
+  },
+];
 
 export const dynamic = "force-dynamic";
+
+const POPULAR_TOPICS = [
+  "conge-de-naissance-paternite", "poser-ses-conges-payes", "arbres-du-voisin", "avoir-une-piscine", "quitter-son-logement", "bruit-des-voisins",
+  "couper-du-bois-en-foret", "divorcer", "stage-etudiant", "heritage-succession", "retourner-un-achat-internet", "partir-a-la-retraite",
+];
 
 const STEPS = [
   { title: "Textes officiels", text: "Nous partons des articles en vigueur publiés sur Légifrance, mis à jour chaque jour." },
@@ -17,11 +56,14 @@ const STEPS = [
 export default function Home() {
   const db = getDb();
   // ponytail: first 6 by id, add a popularity column when there is traffic data
-  const faqs = db.prepare("SELECT theme, slug, emoji, question, short FROM faq ORDER BY id LIMIT 6").all() as Faq[];
+  const faqs = db.prepare("SELECT theme, topic, slug, emoji, question, short FROM faq ORDER BY id LIMIT 6").all() as Faq[];
   const { n } = db.prepare("SELECT COUNT(*) AS n FROM articles").get() as { n: number };
   // Round down to a friendly figure: 35 812 -> "35 000+".
   const articles = n >= 1000 ? `${(Math.floor(n / 1000) * 1000).toLocaleString("fr-FR")}+` : n.toLocaleString("fr-FR");
 
+  // ponytail: hand-picked, swap for traffic-based ranking later
+  const popularTopics = POPULAR_TOPICS.map((slug) => getTopic(slug)).filter((t) => !!t);
+  const topicCount = getTopics().length;
   const conventions = THEMES.find((t) => t.slug === "conventions")?.codes.length ?? 0;
   const trust = [
     { value: articles, label: "articles de loi officiels" },
@@ -31,6 +73,7 @@ export default function Home() {
 
   return (
     <>
+      <JsonLd data={homeJsonLd} />
       {/* Hero */}
       <section>
         <div className={`${container} pt-12 pb-16 sm:pt-20 sm:pb-24`}>
@@ -82,6 +125,30 @@ export default function Home() {
                     <span className="mt-2 block text-[0.9375rem] text-fg-2 group-hover:text-ink/80 sm:text-base">{t.tagline}</span>
                   </span>
                   <ArrowRight aria-hidden strokeWidth={1.75} className="size-7 transition group-hover:translate-x-1 group-hover:text-ink sm:mr-3 sm:size-9 motion-reduce:transition-none" />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* Topics teaser */}
+      <section aria-labelledby="topics-teaser-title" className="pb-16 sm:pb-24">
+        <div className={container}>
+          <div className="flex flex-wrap items-baseline justify-between gap-4 border-t border-fg pt-5">
+            <h2 id="topics-teaser-title" className={`${label} flex items-center gap-3`}>
+              <span aria-hidden className="h-0.5 w-8 bg-signal" />
+              Tous les sujets
+            </h2>
+            <Link href="/sujets" className="inline-flex items-center gap-1.5 font-semibold underline decoration-signal decoration-2 underline-offset-4">
+              Voir les {topicCount} sujets <ArrowRight aria-hidden strokeWidth={1.75} className="size-4" />
+            </Link>
+          </div>
+          <ul className="mt-6 flex flex-wrap gap-2">
+            {popularTopics.map((t) => (
+              <li key={t.slug}>
+                <Link href={`/sujets/${t.slug}`} className="inline-flex rounded-full border-2 border-fg px-4 py-2 font-semibold transition hover:bg-fg hover:text-bg">
+                  {t.title}
                 </Link>
               </li>
             ))}

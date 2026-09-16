@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { container, display, label } from "@/components/ui";
 
-export const metadata: Metadata = { title: "Mentions légales" };
+export const metadata: Metadata = pageMetadata({
+  title: "Mentions légales",
+  description: "Mentions légales du site Loilà : éditeur, hébergement, données personnelles et limites de responsabilité.",
+  path: "/mentions-legales",
+});
 
 const TODO = () => (
   <mark className="rounded-full border-[1.5px] border-ink bg-travail px-2 py-0.5 text-sm font-semibold text-ink">à compléter</mark>

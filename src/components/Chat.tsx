@@ -4,6 +4,7 @@ import { useId, useRef, useState } from "react";
 import Link from "next/link";
 import { AlertTriangle, ArrowRight, ArrowUp, Bot, Loader2, Scale, Zap } from "lucide-react";
 import type { AskResult } from "@/lib/ask";
+import { faqUrl } from "@/lib/themes";
 import { ArticleDrawerProvider, ArticleLink, ArticleMarkdown } from "@/components/ArticleDrawer";
 
 const EXAMPLES: Record<string, string[]> = {
@@ -213,7 +214,7 @@ function Answer({ result }: { result: AskResult }) {
       </div>
       {result.faq && (
         <Link
-          href={`/${result.faq.theme}/${result.faq.slug}`}
+          href={faqUrl(result.faq)}
           className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold underline decoration-signal decoration-2 underline-offset-4 hover:bg-signal hover:text-ink"
         >
           Voir la fiche : {result.faq.question}

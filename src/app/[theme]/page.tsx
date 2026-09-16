@@ -4,16 +4,33 @@ import { notFound } from "next/navigation";
 import Chat from "@/components/Chat";
 import ThemeIcon from "@/components/ThemeIcon";
 import { getDb, type Faq } from "@/lib/db";
-import { CODES, THEMES } from "@/lib/themes";
+import { CODES, THEMES, faqUrl } from "@/lib/themes";
 import { Empty, FaqIndex, SectionHead, block, container, display, label } from "@/components/ui";
+import { JsonLd, breadcrumbJsonLd, clip, faqJsonLd, pageMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
 const findTheme = (slug: string) => THEMES.find((t) => t.slug === slug);
 
+// Search-intent copy per theme (title is absolute: ≤ 60 chars without the site suffix).
+const SEO: Record<string, { title: string; lead: string }> = {
+  travail: { title: "Droit du travail expliqué simplement : congés, licenciement", lead: "Congés payés, licenciement, rupture conventionnelle, heures sup :" },
+  urbanisme: { title: "Permis de construire ou déclaration préalable ? Guide 2026", lead: "Permis de construire, déclaration préalable, PLU, abri de jardin :" },
+  logement: { title: "Location : bail, dépôt de garantie, préavis expliqués (2026)", lead: "Bail, dépôt de garantie, préavis, hausse de loyer, état des lieux :" },
+  conventions: { title: "Conventions collectives 2026 : salaires, primes, préavis", lead: "Syntec, HCR, métallurgie, BTP, services à la personne :" },
+};
+
 export async function generateMetadata({ params }: PageProps<"/[theme]">): Promise<Metadata> {
   const theme = findTheme((await params).theme);
-  return theme ? { title: theme.title, description: theme.tagline } : {};
+  if (!theme) return {};
+  const { n } = getDb().prepare("SELECT COUNT(*) AS n FROM faq WHERE theme = ?").get(theme.slug) as { n: number };
+  const seo = SEO[theme.slug] ?? { title: theme.title, lead: theme.tagline };
+  const meta = pageMetadata({
+    title: seo.title,
+    description: clip(`${seo.lead} ${n} réponses claires, chaque règle sourcée par l’article de loi officiel. À jour ${new Date().getFullYear()}.`),
+    path: `/${theme.slug}`,
+  });
+  return { ...meta, title: { absolute: seo.title } };
 }
 
 export default async function ThemePage({ params }: PageProps<"/[theme]">) {
@@ -21,7 +38,7 @@ export default async function ThemePage({ params }: PageProps<"/[theme]">) {
   if (!theme) notFound();
 
   const faqs = getDb()
-    .prepare("SELECT theme, slug, emoji, question, short FROM faq WHERE theme = ? ORDER BY id")
+    .prepare("SELECT theme, topic, slug, emoji, question, short FROM faq WHERE theme = ? ORDER BY id")
     .all(theme.slug) as Faq[];
 
   const counts = new Map(
@@ -36,6 +53,12 @@ export default async function ThemePage({ params }: PageProps<"/[theme]">) {
 
   return (
     <>
+      <JsonLd
+        data={[
+          breadcrumbJsonLd([{ name: "Accueil", path: "/" }, { name: theme.title, path: `/${theme.slug}` }]),
+          ...(faqs.length ? [faqJsonLd(faqs.map((f) => ({ question: f.question, answer: f.short, path: faqUrl(f) })))] : []),
+        ]}
+      />
       <section className={`${block(theme.slug)} border-b-2 border-ink`}>
         <div className={`${container} pt-8 pb-12 sm:pt-10 sm:pb-16`}>
           <nav aria-label="Fil d’Ariane" className={`${label} flex items-center gap-2`}>

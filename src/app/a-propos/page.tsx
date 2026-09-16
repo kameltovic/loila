@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { btnPrimary, container, display, label } from "@/components/ui";
 
-export const metadata: Metadata = { title: "À propos", description: "Pourquoi Loilà existe et comment le site fonctionne." };
+export const metadata: Metadata = pageMetadata({
+  title: "À propos : le droit expliqué, sources officielles",
+  description: "Pourquoi Loilà existe, d’où viennent les réponses (articles officiels Légifrance, synchronisés chaque jour) et comment elles sont rédigées.",
+  path: "/a-propos",
+});
 
 export default function About() {
   return (

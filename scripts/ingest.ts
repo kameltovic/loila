@@ -157,7 +157,7 @@ async function ingestCode(slug: CodeSlug): Promise<Row[]> {
       date_debut: meta.DATE_DEBUT,
       url: kali
         ? `https://www.legifrance.gouv.fr/conv_coll/article/${link.id}`
-        : `https://www.legifrance.gouv.fr/${slug === "loi-89-462" ? "loda" : "codes"}/article_lc/${link.id}`,
+        : `https://www.legifrance.gouv.fr/${id.startsWith("JORFTEXT") ? "loda" : "codes"}/article_lc/${link.id}`,
       etat: String(meta.ETAT),
     };
   }));

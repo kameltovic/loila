@@ -34,7 +34,8 @@ END;
 
 CREATE TABLE IF NOT EXISTS faq (
   id          INTEGER PRIMARY KEY,
-  theme       TEXT NOT NULL,            -- THEMES[].slug
+  theme       TEXT NOT NULL,            -- THEMES[].slug, or 'sujets'
+  topic       TEXT,                     -- seed/topics.json slug, null for theme FAQs
   slug        TEXT NOT NULL UNIQUE,
   emoji       TEXT,
   question    TEXT NOT NULL,
@@ -76,6 +77,10 @@ export function getDb() {
     db = new Database(DB_PATH);
     db.pragma("journal_mode = WAL");
     db.exec(SCHEMA);
+    // Migration for DBs created before faq.topic existed.
+    const cols = db.prepare("PRAGMA table_info(faq)").all() as { name: string }[];
+    if (!cols.some((c) => c.name === "topic")) db.exec("ALTER TABLE faq ADD COLUMN topic TEXT");
+    db.exec("CREATE INDEX IF NOT EXISTS faq_topic ON faq(topic)");
   }
   return db;
 }
@@ -85,6 +90,6 @@ export type Article = {
   texte: string; date_debut: string | null; url: string;
 };
 export type Faq = {
-  id: number; theme: string; slug: string; emoji: string | null; question: string;
+  id: number; theme: string; topic: string | null; slug: string; emoji: string | null; question: string;
   short: string; answer_md: string; article_ids: string;
 };

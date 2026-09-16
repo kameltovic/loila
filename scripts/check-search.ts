@@ -18,6 +18,10 @@ const cases: [string, string, string, string[]?][] = [
   ["permis de construire extension 20 m2", "code-urbanisme", "R421-14"],
   ["Quel préavis de démission en Syntec ?", "ccn-1486", "4.2", ccn],
   ["période d'essai IDCC 1979", "ccn-1979", "13", ccn],
+  ["élagage arbres voisin distance plantation", "code-civil", "671"],
+  ["congé de naissance paternité jours", "code-du-travail", "L1225-35"],
+  ["obligation de débroussaillement autour des constructions", "code-forestier", "L134-6"],
+  ["droit de rétractation quatorze jours contrat à distance", "code-consommation", "L221-18"],
 ];
 let failed = 0;
 for (const [q, code, num, scope] of cases) {

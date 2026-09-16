@@ -4,6 +4,17 @@ export const CODES = {
   "code-urbanisme": { name: "Code de l'urbanisme", legitext: "LEGITEXT000006074075" },
   "code-construction-habitation": { name: "Code de la construction et de l'habitation", legitext: "LEGITEXT000006074096" },
   "loi-89-462": { name: "Loi n° 89-462 du 6 juillet 1989 (baux d'habitation)", legitext: "JORFTEXT000000509310" },
+  "loi-65-557": { name: "Loi n° 65-557 du 10 juillet 1965 (copropriété)", legitext: "JORFTEXT000000880200" },
+  "code-penal": { name: "Code pénal", legitext: "LEGITEXT000006070719" },
+  "code-civil": { name: "Code civil", legitext: "LEGITEXT000006070721" },
+  "code-securite-sociale": { name: "Code de la sécurité sociale", legitext: "LEGITEXT000006073189" },
+  "code-forestier": { name: "Code forestier", legitext: "LEGITEXT000025244092" },
+  "code-environnement": { name: "Code de l'environnement", legitext: "LEGITEXT000006074220" },
+  // Mirror files it under its pre-2010 title "Code rural (nouveau)"; LEGITEXT000022197698 does not exist there.
+  "code-rural": { name: "Code rural et de la pêche maritime", legitext: "LEGITEXT000006071367" },
+  "code-education": { name: "Code de l'éducation", legitext: "LEGITEXT000006071191" },
+  "code-consommation": { name: "Code de la consommation", legitext: "LEGITEXT000006069565" },
+  "code-action-sociale": { name: "Code de l'action sociale et des familles", legitext: "LEGITEXT000006074069" },
   // Conventions collectives (KALI): legitext holds the KALICONT (IDCC container) id.
   "ccn-1486": { name: "Convention collective Syntec, bureaux d'études techniques (IDCC 1486)", legitext: "KALICONT000005635173", idcc: "1486" },
   "ccn-1979": { name: "Convention collective HCR, hôtels cafés restaurants (IDCC 1979)", legitext: "KALICONT000005635534", idcc: "1979" },
@@ -30,3 +41,8 @@ export const THEMES = [
   { slug: "conventions", emoji: "📑", title: "Conventions collectives", tagline: "Salaires minimums, primes, préavis, congés propres à votre branche.", codes: ["ccn-1486", "ccn-1979", "ccn-2216", "ccn-3248", "ccn-1597", "ccn-1596", "ccn-3127", "ccn-3239", "ccn-3043", "ccn-1090", "ccn-2120", "ccn-1527", "ccn-2596", "ccn-0016", "ccn-1996"] },
 ] as const;
 export type ThemeSlug = (typeof THEMES)[number]["slug"];
+
+/** Public URL of a FAQ: topic questions live under /sujets. Kept here (no DB import) so client components can use it. */
+export function faqUrl(faq: { theme: string; slug: string; topic?: string | null }): string {
+  return faq.topic ? `/sujets/${faq.topic}/${faq.slug}` : `/${faq.theme}/${faq.slug}`;
+}

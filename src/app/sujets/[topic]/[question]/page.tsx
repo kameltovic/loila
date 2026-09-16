@@ -1,42 +1,41 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getDb, type Faq } from "@/lib/db";
-import { CODES, THEMES } from "@/lib/themes";
 import Chat from "@/components/Chat";
-import ThemeIcon from "@/components/ThemeIcon";
 import { ArticleDrawerProvider } from "@/components/ArticleDrawer";
 import FaqAnswer, { faqArticles } from "@/components/FaqAnswer";
 import { display, label } from "@/components/ui";
+import { getDb, type Faq } from "@/lib/db";
+import { CODES } from "@/lib/themes";
 import { JsonLd, SITE_NAME, SITE_URL, abs, breadcrumbJsonLd, clip, contentUpdatedAt, faqJsonLd, pageMetadata, plain } from "@/lib/seo";
+import { getTopic } from "@/lib/topics";
 
 export const dynamic = "force-dynamic";
 
-function load(theme: string, slug: string) {
-  return getDb().prepare("SELECT * FROM faq WHERE theme = ? AND slug = ? AND topic IS NULL" /* topic questions live under /sujets */).get(theme, slug) as Faq | undefined;
+function load(topic: string, slug: string) {
+  return getDb().prepare("SELECT * FROM faq WHERE topic = ? AND slug = ?").get(topic, slug) as Faq | undefined;
 }
 
-export async function generateMetadata({ params }: PageProps<"/[theme]/[faq]">): Promise<Metadata> {
-  const { theme, faq: slug } = await params;
-  const faq = load(theme, slug);
+export async function generateMetadata({ params }: PageProps<"/sujets/[topic]/[question]">): Promise<Metadata> {
+  const { topic, question } = await params;
+  const faq = load(topic, question);
   if (!faq) return {};
-  const meta = pageMetadata({ title: faq.question, description: clip(faq.short), path: `/${faq.theme}/${faq.slug}`, type: "article" });
+  const meta = pageMetadata({ title: faq.question, description: clip(faq.short), path: `/sujets/${topic}/${faq.slug}`, type: "article" });
   // Long questions skip the " · Loilà" suffix so the question itself isn't truncated in results.
   return faq.question.length > 52 ? { ...meta, title: { absolute: faq.question } } : meta;
 }
 
-export default async function FaqPage({ params }: PageProps<"/[theme]/[faq]">) {
-  const { theme: themeSlug, faq: slug } = await params;
-  const theme = THEMES.find((t) => t.slug === themeSlug);
-  const faq = theme && load(theme.slug, slug);
-  if (!theme || !faq) notFound();
+export default async function TopicQuestionPage({ params }: PageProps<"/sujets/[topic]/[question]">) {
+  const { topic: topicSlug, question } = await params;
+  const topic = getTopic(topicSlug);
+  const faq = topic && load(topic.slug, question);
+  if (!topic || !faq) notFound();
 
   const articles = faqArticles(faq);
-
-  const path = `/${theme.slug}/${faq.slug}`;
+  const path = `/sujets/${topic.slug}/${faq.slug}`;
   const updated = contentUpdatedAt();
   const jsonLd = [
-    breadcrumbJsonLd([{ name: "Accueil", path: "/" }, { name: theme.title, path: `/${theme.slug}` }, { name: faq.question, path }]),
+    breadcrumbJsonLd([{ name: "Accueil", path: "/" }, { name: "Sujets", path: "/sujets" }, { name: topic.title, path: `/sujets/${topic.slug}` }, { name: faq.question, path }]),
     faqJsonLd([{ question: faq.question, answer: `${faq.short}\n\n${faq.answer_md}`, path }]),
     {
       "@context": "https://schema.org",
@@ -49,35 +48,29 @@ export default async function FaqPage({ params }: PageProps<"/[theme]/[faq]">) {
       dateModified: updated.toISOString(),
       author: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
       publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL, logo: { "@type": "ImageObject", url: abs("/icon") } },
-      about: theme.title,
+      about: topic.title,
       citation: articles.map((a) => ({ "@type": "Legislation", name: `Article ${a.num}, ${CODES[a.code as keyof typeof CODES]?.name ?? a.code}`, url: a.url })),
     },
   ];
+  const crumb = "hover:text-fg hover:underline hover:decoration-signal hover:decoration-2 hover:underline-offset-4";
 
   return (
     <article className="mx-auto max-w-4xl px-4 pt-8 pb-16 sm:px-6 sm:pt-10 sm:pb-24">
       <JsonLd data={jsonLd} />
       <ArticleDrawerProvider>
         <nav aria-label="Fil d’Ariane" className={`${label} flex flex-wrap items-center gap-2 text-fg-2`}>
-          <Link href="/" className="hover:text-fg hover:underline hover:decoration-signal hover:decoration-2 hover:underline-offset-4">
-            Accueil
-          </Link>
+          <Link href="/" className={crumb}>Accueil</Link>
           <span aria-hidden>/</span>
-          <Link
-            href={`/${theme.slug}`}
-            className="inline-flex items-center gap-1.5 hover:text-fg hover:underline hover:decoration-signal hover:decoration-2 hover:underline-offset-4"
-          >
-            <ThemeIcon slug={theme.slug} size={14} />
-            {theme.title}
-          </Link>
+          <Link href="/sujets" className={crumb}>Sujets</Link>
+          <span aria-hidden>/</span>
+          <Link href={`/sujets/${topic.slug}`} className={crumb}>{topic.title}</Link>
         </nav>
         <h1 className={`${display} mt-8 text-[clamp(2.5rem,7vw,5rem)] leading-[0.95] text-balance`}>{faq.question}</h1>
-
         <FaqAnswer faq={faq} articles={articles} updated={updated} />
       </ArticleDrawerProvider>
 
       <div className="mt-20">
-        <Chat theme={theme.slug} title="Poser une autre question" />
+        <Chat title="Poser une autre question" />
       </div>
     </article>
   );

@@ -43,3 +43,6 @@ next-env.d.ts
 # sqlite data
 /data/
 !.env.example
+
+# pre-rendered OG images (scripts/og-batch.ts)
+/public/og/

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { Faq } from "@/lib/db";
-import { THEMES } from "@/lib/themes";
+import { THEMES, faqUrl } from "@/lib/themes";
 
 // Flat color block per theme (text is always ink on these).
 const BLOCK: Record<string, string> = {
@@ -41,13 +41,13 @@ export function SectionHead({ num, kicker, title, id }: { num: string; kicker: s
 }
 
 /** Editorial index: numbered rows separated by hairlines. */
-export function FaqIndex({ faqs, showTheme = false }: { faqs: Pick<Faq, "theme" | "slug" | "question" | "short">[]; showTheme?: boolean }) {
+export function FaqIndex({ faqs, showTheme = false }: { faqs: (Pick<Faq, "theme" | "slug" | "question" | "short"> & { topic?: string | null })[]; showTheme?: boolean }) {
   return (
     <ol className="border-t border-fg">
       {faqs.map((f, i) => (
         <li key={`${f.theme}/${f.slug}`} className="border-b border-rule">
           <Link
-            href={`/${f.theme}/${f.slug}`}
+            href={faqUrl(f)}
             className="group grid grid-cols-[2rem_1fr_auto] items-start gap-3 py-6 transition-colors hover:bg-surface sm:grid-cols-[4rem_1fr_auto] sm:gap-6 sm:px-2 sm:py-8"
           >
             <span className="pt-1 font-display text-sm font-bold tabular-nums text-fg-2 sm:text-base">
@@ -72,6 +72,25 @@ export function FaqIndex({ faqs, showTheme = false }: { faqs: Pick<Faq, "theme" 
         </li>
       ))}
     </ol>
+  );
+}
+
+/** Dense two-column list of topics: title + h1 teaser + arrow. */
+export function TopicList({ topics }: { topics: { slug: string; title: string; h1: string }[] }) {
+  return (
+    <ul className="mt-8 grid border-t border-fg md:grid-cols-2 md:gap-x-10">
+      {topics.map((t) => (
+        <li key={t.slug} className="border-b border-rule">
+          <Link href={`/sujets/${t.slug}`} className="group grid grid-cols-[1fr_auto] items-center gap-4 py-4 transition-colors hover:bg-surface sm:px-2">
+            <span className="min-w-0">
+              <span className="block font-display text-xl leading-tight font-bold tracking-[-0.025em]">{t.title}</span>
+              <span className="mt-1 line-clamp-1 text-sm text-fg-2">{t.h1}</span>
+            </span>
+            <ArrowRight aria-hidden strokeWidth={1.75} className="size-5 transition group-hover:translate-x-1 motion-reduce:transition-none" />
+          </Link>
+        </li>
+      ))}
+    </ul>
   );
 }
 

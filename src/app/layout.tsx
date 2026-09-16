@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import { Bricolage_Grotesque, Inter, Instrument_Serif } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -9,9 +10,27 @@ const bricolage = Bricolage_Grotesque({ variable: "--font-bricolage", subsets: [
 const instrument = Instrument_Serif({ variable: "--font-instrument", subsets: ["latin"], weight: "400", style: ["normal", "italic"] });
 
 export const metadata: Metadata = {
-  title: { default: "Loilà — Le droit français, enfin lisible", template: "%s · Loilà" },
+  metadataBase: new URL(SITE_URL),
+  title: { default: "Loilà · Le droit français expliqué simplement", template: "%s · Loilà" },
   description:
-    "Travail, urbanisme, logement : le droit français expliqué simplement, avec les articles de loi officiels cités.",
+    "Congés, licenciement, bail, permis de construire : des réponses claires et gratuites en 2026, chaque règle sourcée par l’article de loi officiel.",
+  applicationName: SITE_NAME,
+  keywords: ["droit du travail", "droit français", "code du travail", "bail", "logement", "permis de construire", "urbanisme", "convention collective", "rupture conventionnelle", "Légifrance"],
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  category: "law",
+  formatDetection: { telephone: false, email: false, address: false },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } },
+  openGraph: { type: "website", locale: "fr_FR", siteName: SITE_NAME },
+  twitter: { card: "summary_large_image" },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#F4F0E8" },
+    { media: "(prefers-color-scheme: dark)", color: "#0E0E0E" },
+  ],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

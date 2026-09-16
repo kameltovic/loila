@@ -8,7 +8,7 @@ export type AskArticle = { id: string; num: string; code: string; url: string };
 export type AskResult = {
   source: "faq" | "cache" | "llm" | "none";
   answer_md: string;
-  faq?: { slug: string; theme: string; question: string };
+  faq?: { slug: string; theme: string; topic: string | null; question: string };
   articles: AskArticle[];
 };
 export type LlmCall = (messages: ChatMessage[]) => Promise<{ content: string; model: string }>;
@@ -147,7 +147,7 @@ export async function ask(question: string, theme?: string, llm: LlmCall = realL
     return {
       source: "faq",
       answer_md: faq.answer_md,
-      faq: { slug: faq.slug, theme: faq.theme, question: faq.question },
+      faq: { slug: faq.slug, theme: faq.theme, topic: faq.topic, question: faq.question },
       articles: articlesByIds(parseIds(faq.article_ids)),
     };
   }
