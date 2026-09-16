@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "ingest": "tsx scripts/ingest.ts",
+    "batch:faq": "tsx scripts/batch-faq.ts",
+    "check": "tsc --noEmit && tsx scripts/check-ask.ts"
   },
   "dependencies": {
     "better-sqlite3": "^13.0.3",

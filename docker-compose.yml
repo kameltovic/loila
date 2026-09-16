@@ -1,0 +1,23 @@
+services:
+  app:
+    build: .
+    env_file: .env
+    environment:
+      DATABASE_PATH: /data/loila.db
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
+
+  # One-off jobs: docker compose run --rm tools npm run ingest
+  tools:
+    build:
+      context: .
+      target: tools
+    env_file: .env
+    environment:
+      DATABASE_PATH: /data/loila.db
+    volumes:
+      - ./data:/data
+    profiles: ["tools"]
