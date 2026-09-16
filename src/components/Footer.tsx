@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { THEMES } from "@/lib/themes";
 import { Logo } from "@/components/Header";
+import { label } from "@/components/ui";
 
-const link = "text-slate-400 transition hover:text-white";
+const link = "text-paper/70 transition hover:text-paper hover:underline hover:decoration-signal hover:decoration-2 hover:underline-offset-4";
 
 export default function Footer() {
   const cols = [
@@ -26,37 +28,41 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-ink text-slate-300">
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-[1.4fr_repeat(3,1fr)]">
-        <div>
-          <Logo className="text-2xl text-white" />
-          <p className="mt-3 max-w-xs text-sm leading-relaxed text-slate-400">
-            Le droit français expliqué clairement, à partir des textes officiels.
-          </p>
-        </div>
-        {cols.map((c) => (
-          <div key={c.title}>
-            <h2 className="text-sm font-semibold text-white">{c.title}</h2>
-            <ul className="mt-4 space-y-2.5 text-sm">
-              {c.links.map((l) => (
-                <li key={l.href}>
-                  {l.href.startsWith("http") ? (
-                    <a href={l.href} target="_blank" rel="noopener noreferrer" className={link}>
-                      {l.label}
-                    </a>
-                  ) : (
-                    <Link href={l.href} className={link}>
-                      {l.label}
-                    </Link>
-                  )}
-                </li>
-              ))}
-            </ul>
+    <footer className="border-t border-paper/15 bg-ink text-paper">
+      <div className="mx-auto max-w-6xl px-4 pt-16 sm:px-6">
+        <div className="grid gap-12 md:grid-cols-[1.4fr_repeat(3,1fr)]">
+          <div>
+            <p className="max-w-xs font-serif text-2xl leading-snug italic text-paper/85">
+              Le droit français expliqué clairement, à partir des textes officiels.
+            </p>
           </div>
-        ))}
+          {cols.map((c) => (
+            <div key={c.title}>
+              <h2 className={`${label} text-paper/50`}>{c.title}</h2>
+              <ul className="mt-5 space-y-3 text-[0.9375rem]">
+                {c.links.map((l) => (
+                  <li key={l.href}>
+                    {l.href.startsWith("http") ? (
+                      <a href={l.href} target="_blank" rel="noopener noreferrer" className={link}>
+                        {l.label}
+                        <ArrowUpRight aria-hidden size={14} strokeWidth={1.75} className="ml-1 inline align-[-2px]" />
+                        <span className="sr-only">(nouvel onglet)</span>
+                      </a>
+                    ) : (
+                      <Link href={l.href} className={link}>
+                        {l.label}
+                      </Link>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <Logo className="mt-16 block text-[clamp(5rem,22vw,15rem)] leading-[0.8] select-none" />
       </div>
-      <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-6 text-xs text-slate-400 sm:px-6 md:flex-row md:justify-between">
+      <div className="mt-8 border-t border-paper/15">
+        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-6 text-xs text-paper/60 sm:px-6 md:flex-row md:justify-between">
           <p>© {new Date().getFullYear()} Loilà</p>
           <p className="md:text-right">
             Information juridique générale, pas un conseil juridique. Textes officiels issus de Légifrance (DILA), mis à

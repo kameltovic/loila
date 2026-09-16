@@ -1,22 +1,24 @@
 import type { Metadata } from "next";
+import { container, display, label } from "@/components/ui";
 
 export const metadata: Metadata = { title: "Mentions légales" };
 
 const TODO = () => (
-  <mark className="rounded bg-amber-100 px-1.5 py-0.5 font-semibold text-amber-900 dark:bg-amber-400/20 dark:text-amber-200">
-    à compléter
-  </mark>
+  <mark className="rounded-full border-[1.5px] border-ink bg-travail px-2 py-0.5 text-sm font-semibold text-ink">à compléter</mark>
 );
 
 export default function LegalNotice() {
   return (
     <>
-      <section className="border-b border-slate-200/70 bg-muted dark:border-white/10">
-        <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
-          <h1 className="text-4xl font-black tracking-tighter sm:text-5xl">Mentions légales</h1>
+      <section className="border-b-2 border-fg">
+        <div className={`${container} pt-12 pb-14 sm:pt-20 sm:pb-20`}>
+          <p className={`${label} flex items-center gap-3 text-fg-2`}>
+            <span aria-hidden className="size-2 rounded-full bg-signal" />Informations
+          </p>
+          <h1 className={`${display} mt-6 text-[clamp(3rem,9vw,6rem)] leading-[0.92]`}>Mentions légales</h1>
         </div>
       </section>
-      <div className="prose-loila mx-auto max-w-3xl px-4 py-12 sm:px-6">
+      <div className="prose-loila mx-auto px-4 py-14 sm:px-6 sm:py-20">
         <h2>Éditeur du site</h2>
         <p>Raison sociale, forme juridique, capital, adresse du siège, SIREN/RCS : <TODO /></p>
         <p>Directeur de la publication : <TODO /></p>

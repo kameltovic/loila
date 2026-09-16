@@ -1,21 +1,27 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { btnPrimary } from "@/components/ui";
+import { ArrowRight } from "lucide-react";
+import { btnPrimary, container, display, label } from "@/components/ui";
 
 export const metadata: Metadata = { title: "À propos", description: "Pourquoi Loilà existe et comment le site fonctionne." };
 
 export default function About() {
   return (
     <>
-      <section className="hero-mesh border-b border-slate-200/70 dark:border-white/10">
-        <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-20">
-          <h1 className="text-4xl font-black tracking-tighter sm:text-6xl">À propos de Loilà</h1>
-          <p className="mt-4 text-lg text-slate-600 sm:text-xl dark:text-slate-400">
-            Loi + voilà : rendre le droit du quotidien compréhensible par tous.
+      <section className="border-b-2 border-fg">
+        <div className={`${container} pt-12 pb-14 sm:pt-20 sm:pb-20`}>
+          <p className={`${label} flex items-center gap-3 text-fg-2`}>
+            <span aria-hidden className="size-2 rounded-full bg-signal" />À propos
+          </p>
+          <h1 className={`${display} mt-6 max-w-5xl text-[clamp(3.25rem,10vw,7rem)] leading-[0.92] text-balance`}>
+            Loi + voilà <span className="font-serif font-normal tracking-[-0.02em] italic">= Loilà.</span>
+          </h1>
+          <p className="mt-6 max-w-2xl text-lg text-fg-2 sm:text-xl">
+            Rendre le droit du quotidien compréhensible par tous.
           </p>
         </div>
       </section>
-      <div className="prose-loila mx-auto max-w-3xl px-4 py-12 sm:px-6">
+      <div className="prose-loila mx-auto px-4 py-14 sm:px-6 sm:py-20">
         <h2>Notre mission</h2>
         <p>
           Le droit français est public, mais rarement lisible. Loilà part des textes officiels (Code du travail, Code de
@@ -32,11 +38,11 @@ export default function About() {
           Loilà fournit une information juridique générale, pas un conseil juridique. Pour une situation particulière,
           rapprochez-vous d’un avocat, d’un notaire, d’une ADIL ou de l’inspection du travail.
         </p>
-        <p className="pt-4">
-          <Link href="/#question" className={btnPrimary} style={{ textDecoration: "none", color: "white" }}>
-            Poser une question
+        <div className="pt-6">
+          <Link href="/#question" className={btnPrimary}>
+            Poser une question <ArrowRight aria-hidden strokeWidth={1.75} size={18} />
           </Link>
-        </p>
+        </div>
       </div>
     </>
   );

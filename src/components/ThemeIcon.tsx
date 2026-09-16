@@ -4,5 +4,5 @@ const ICONS = { travail: Briefcase, urbanisme: Building2, logement: KeyRound, co
 
 export default function ThemeIcon({ slug, ...props }: { slug: string } & LucideProps) {
   const Icon = ICONS[slug as keyof typeof ICONS] ?? ScrollText;
-  return <Icon aria-hidden strokeWidth={2} {...props} />;
+  return <Icon aria-hidden strokeWidth={1.75} {...props} />;
 }

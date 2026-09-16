@@ -71,7 +71,7 @@ export function ArticleMarkdown({ md, articles }: { md: string; articles: { id: 
             return (
               <ArticleLink
                 id={href.slice(9)}
-                className="rounded-md bg-violet-100 px-1 font-semibold text-violet-800 no-underline hover:bg-violet-200 dark:bg-violet-400/15 dark:text-violet-200 dark:hover:bg-violet-400/25"
+                className="font-semibold underline decoration-signal decoration-2 underline-offset-4 hover:bg-signal hover:text-ink"
               >
                 {children}
               </ArticleLink>
@@ -145,26 +145,24 @@ function Drawer({ id, onClose }: { id: string; onClose: () => void }) {
       <div
         aria-hidden
         onClick={onClose}
-        className={`absolute inset-0 bg-slate-950/40 backdrop-blur-[2px] transition-opacity duration-300 motion-reduce:transition-none ${shown ? "opacity-100" : "opacity-0"}`}
+        className={`absolute inset-0 bg-ink/50 transition-opacity duration-300 motion-reduce:transition-none ${shown ? "opacity-100" : "opacity-0"}`}
       />
       <div
         ref={panelRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className={`absolute inset-x-0 bottom-0 flex max-h-[92dvh] flex-col rounded-t-3xl bg-white shadow-2xl transition-transform duration-300 ease-out motion-reduce:transition-none sm:inset-y-0 sm:left-auto sm:right-0 sm:max-h-none sm:w-[520px] sm:rounded-none sm:rounded-l-3xl dark:bg-slate-900 dark:ring-1 dark:ring-white/10 ${
+        className={`absolute inset-x-0 bottom-0 flex max-h-[92dvh] flex-col rounded-t-2xl border-t-2 border-fg bg-bg text-fg transition-transform duration-300 ease-out motion-reduce:transition-none sm:inset-y-0 sm:left-auto sm:right-0 sm:max-h-none sm:w-[560px] sm:rounded-none sm:border-t-0 sm:border-l-2 ${
           shown ? "translate-y-0 sm:translate-x-0" : "translate-y-full sm:translate-y-0 sm:translate-x-full"
         }`}
       >
-        <header className="flex items-start gap-3 border-b border-slate-200 px-5 py-4 sm:px-7 sm:py-5 dark:border-white/10">
-          <span className="mt-0.5 grid size-10 shrink-0 place-items-center rounded-xl bg-violet-100 text-violet-700 dark:bg-violet-400/15 dark:text-violet-300">
-            <BookOpen className="size-5" aria-hidden />
-          </span>
+        <header className="flex items-start gap-3 border-b-2 border-fg px-5 py-5 sm:px-8 sm:py-7">
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-semibold text-violet-700 dark:text-violet-300">
-              {data ? data.codeName : error ? "Erreur" : <span className="inline-block h-4 w-40 animate-pulse rounded bg-slate-200 align-middle dark:bg-white/10" />}
+            <p className="flex items-start gap-2 text-xs leading-snug font-semibold tracking-[0.16em] text-fg-2 uppercase">
+              <BookOpen className="mt-px size-3.5 shrink-0" strokeWidth={1.75} aria-hidden />
+              {data ? data.codeName : error ? "Erreur" : <span className="inline-block h-4 w-40 animate-pulse bg-rule align-middle" />}
             </p>
-            <h2 id={titleId} className="mt-0.5 text-2xl font-black tracking-tight text-slate-900 dark:text-white">
+            <h2 id={titleId} className="mt-2 font-display text-4xl leading-[0.95] font-extrabold tracking-[-0.04em] sm:text-5xl">
               {title}
             </h2>
           </div>
@@ -173,32 +171,32 @@ function Drawer({ id, onClose }: { id: string; onClose: () => void }) {
             type="button"
             onClick={onClose}
             aria-label="Fermer"
-            className="grid size-10 shrink-0 place-items-center rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-violet-500 dark:hover:bg-white/10 dark:hover:text-white"
+            className="grid size-11 shrink-0 place-items-center rounded-full border-2 border-fg transition hover:bg-fg hover:text-bg"
           >
-            <X className="size-5" aria-hidden />
+            <X className="size-5" strokeWidth={1.75} aria-hidden />
           </button>
         </header>
 
-        <div className="flex-1 overflow-y-auto overscroll-contain px-5 py-5 sm:px-7" aria-busy={!data && !error}>
+        <div className="flex-1 overflow-y-auto overscroll-contain px-5 py-6 sm:px-8" aria-busy={!data && !error}>
           {error ? (
-            <p role="alert" className="flex items-start gap-3 rounded-2xl bg-red-50 p-4 text-red-800 dark:bg-red-500/10 dark:text-red-300">
-              <AlertTriangle className="mt-0.5 size-5 shrink-0" aria-hidden />
+            <p role="alert" className="flex items-start gap-3 border-2 border-signal bg-danger-bg p-4">
+              <AlertTriangle className="mt-0.5 size-5 shrink-0" strokeWidth={1.75} aria-hidden />
               Impossible de charger cet article. Réessayez ou ouvrez-le sur Légifrance.
             </p>
           ) : !data ? (
             <div className="space-y-3" aria-label="Chargement">
               {[90, 100, 95, 70, 100, 85].map((w, i) => (
-                <div key={i} className="h-4 animate-pulse rounded bg-slate-200 dark:bg-white/10" style={{ width: `${w}%` }} />
+                <div key={i} className="h-4 animate-pulse bg-rule" style={{ width: `${w}%` }} />
               ))}
             </div>
           ) : (
             <>
               {data.section && (
-                <nav aria-label="Emplacement dans le texte" className="text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+                <nav aria-label="Emplacement dans le texte" className="border-l-2 border-signal pl-3 font-serif text-base leading-snug text-fg-2 italic">
                   {data.section.split(" > ").join(" › ")}
                 </nav>
               )}
-              <div className="mt-4 space-y-3 text-[1.0625rem] leading-relaxed text-slate-800 dark:text-slate-200">
+              <div className="mt-6 max-w-[62ch] space-y-4 text-[1.0625rem] leading-[1.75]">
                 {data.texte
                   .split(/\n+/)
                   .filter((p) => p.trim())
@@ -207,7 +205,7 @@ function Drawer({ id, onClose }: { id: string; onClose: () => void }) {
                   ))}
               </div>
               {data.date_debut && (
-                <p className="mt-6 text-sm text-slate-500 dark:text-slate-400">
+                <p className="mt-8 border-t border-rule pt-4 text-xs font-semibold tracking-[0.12em] text-fg-2 uppercase">
                   Version en vigueur depuis le {new Date(data.date_debut).toLocaleDateString("fr-FR")}
                 </p>
               )}
@@ -215,21 +213,21 @@ function Drawer({ id, onClose }: { id: string; onClose: () => void }) {
           )}
         </div>
 
-        <footer className="flex flex-wrap gap-3 border-t border-slate-200 px-5 py-4 sm:px-7 dark:border-white/10">
+        <footer className="flex flex-wrap gap-3 border-t-2 border-fg px-5 py-4 sm:px-8">
           {data && (
           <a
             href={data.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
+            className="inline-flex items-center gap-1.5 rounded-full border-2 border-fg bg-fg px-4 py-2 text-sm font-semibold text-bg transition hover:bg-signal hover:text-ink"
           >
-            Voir sur Légifrance <ArrowUpRight className="size-4" aria-hidden />
+            Voir sur Légifrance <ArrowUpRight className="size-4" strokeWidth={1.75} aria-hidden />
             <span className="sr-only">(nouvel onglet)</span>
           </a>
           )}
           <a
             href={`/article/${id}`}
-            className="inline-flex items-center rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500 dark:border-white/15 dark:text-slate-200 dark:hover:bg-white/5"
+            className="inline-flex items-center rounded-full border-2 border-fg px-4 py-2 text-sm font-semibold transition hover:bg-fg hover:text-bg"
           >
             Ouvrir la page
           </a>

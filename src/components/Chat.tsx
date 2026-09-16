@@ -2,7 +2,7 @@
 
 import { useId, useRef, useState } from "react";
 import Link from "next/link";
-import { AlertTriangle, ArrowRight, ArrowUp, Loader2, MessageCircleQuestion, Scale, Sparkles, Zap } from "lucide-react";
+import { AlertTriangle, ArrowRight, ArrowUp, Bot, Loader2, Scale, Zap } from "lucide-react";
 import type { AskResult } from "@/lib/ask";
 import { ArticleDrawerProvider, ArticleLink, ArticleMarkdown } from "@/components/ArticleDrawer";
 
@@ -80,16 +80,12 @@ export default function Chat({
         e.preventDefault();
         send(input);
       }}
-      className={`relative flex items-end gap-2 border bg-white transition focus-within:ring-4 dark:bg-slate-950 ${
+      className={`flex items-stretch gap-2 border-2 border-ink bg-white text-ink transition focus-within:outline-3 focus-within:outline-offset-4 focus-within:outline-focus dark:border-paper ${
         hero
-          ? "rounded-[1.75rem] border-white/60 p-2.5 pl-5 shadow-xl shadow-slate-900/10 focus-within:ring-violet-500/25 sm:p-3 sm:pl-6 dark:border-white/15"
-          : "rounded-2xl border-slate-300 p-2 pl-4 focus-within:border-violet-500 focus-within:ring-violet-500/20 dark:border-white/15"
+          ? "rounded-2xl p-2 pl-5 shadow-[6px_6px_0_0_#0e0e0e] sm:p-2.5 sm:pl-7 dark:shadow-[6px_6px_0_0_#ff4a1c]"
+          : "rounded-xl p-1.5 pl-4 shadow-hard-ink dark:shadow-[4px_4px_0_0_#ff4a1c]"
       }`}
     >
-      <MessageCircleQuestion
-        aria-hidden
-        className={`shrink-0 text-violet-600 dark:text-violet-400 ${hero ? "mb-3 size-6 sm:mb-3.5" : "mb-2.5 size-5"}`}
-      />
       <label htmlFor={inputId} className="sr-only">
         Votre question
       </label>
@@ -103,38 +99,38 @@ export default function Chat({
             send(input);
           }
         }}
-        rows={hero ? 2 : 1}
+        rows={1}
         maxLength={500}
         placeholder="Ex. : mon propriétaire garde ma caution, que faire ?"
-        className={`min-w-0 flex-1 resize-none bg-transparent text-slate-900 placeholder:text-slate-400 focus:outline-none dark:text-slate-100 dark:placeholder:text-slate-500 ${
-          hero ? "min-h-16 py-2.5 text-lg sm:text-xl" : "min-h-10 py-2"
+        className={`field-sizing-content max-h-48 min-w-0 flex-1 resize-none self-center bg-transparent text-ink placeholder:text-[#5a564e] focus:outline-none ${
+          hero ? "min-h-14 py-3.5 text-lg sm:min-h-[4.5rem] sm:py-5 sm:text-xl" : "min-h-12 py-3 text-base sm:text-lg"
         }`}
       />
       <button
         type="submit"
         disabled={!canSend}
         aria-label={loading ? "Envoi en cours" : "Envoyer la question"}
-        className={`grid shrink-0 place-items-center rounded-full bg-violet-600 text-white transition hover:bg-violet-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500 disabled:cursor-not-allowed disabled:bg-slate-300 dark:disabled:bg-white/15 ${
-          hero ? "size-12 sm:size-14" : "size-10"
+        className={`grid shrink-0 place-items-center self-end rounded-xl bg-ink text-paper transition hover:bg-signal hover:text-ink disabled:cursor-not-allowed disabled:bg-ink disabled:text-paper/40 ${
+          hero ? "size-14 sm:size-[4.5rem]" : "size-12"
         }`}
       >
-        {loading ? <Loader2 aria-hidden className="size-5 animate-spin" /> : <ArrowUp aria-hidden className={hero ? "size-6" : "size-5"} />}
+        {loading ? (
+          <Loader2 aria-hidden className="size-6 animate-spin" />
+        ) : (
+          <ArrowUp aria-hidden strokeWidth={2} className={hero ? "size-7" : "size-6"} />
+        )}
       </button>
     </form>
   );
 
   const chips = messages.length === 0 && (
-    <ul className={`mt-4 flex flex-wrap gap-2 ${hero ? "justify-center" : ""}`} aria-label="Exemples de questions">
+    <ul className="mt-5 flex flex-wrap gap-2" aria-label="Exemples de questions">
       {examples.map((q) => (
         <li key={q}>
           <button
             type="button"
             onClick={() => send(q)}
-            className={`rounded-full border px-3.5 py-1.5 text-left text-sm font-medium transition focus-visible:outline-2 focus-visible:outline-violet-500 ${
-              hero
-                ? "border-white/50 bg-white/70 text-slate-800 backdrop-blur hover:bg-white dark:border-white/10 dark:bg-white/10 dark:text-slate-100 dark:hover:bg-white/15"
-                : "border-slate-200 bg-slate-50 text-slate-700 hover:border-violet-300 hover:bg-violet-50 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10"
-            }`}
+            className="rounded-[1.25rem] border-[1.5px] border-fg px-3.5 py-1.5 text-left text-sm font-medium transition hover:bg-fg hover:text-bg"
           >
             {q}
           </button>
@@ -147,17 +143,19 @@ export default function Chat({
     <div aria-live="polite" className="space-y-6">
       {messages.map((m) => (
         <div key={m.id} className="space-y-3">
-          <p className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-md bg-violet-600 px-4 py-2.5 text-white">{m.question}</p>
+          <p className="ml-auto w-fit max-w-[85%] rounded-xl rounded-br-none bg-ink px-4 py-2.5 text-paper dark:bg-paper dark:text-ink">
+            {m.question}
+          </p>
           {m.error ? (
-            <p role="alert" className="flex items-start gap-2.5 rounded-2xl bg-red-50 px-4 py-3 text-red-800 dark:bg-red-500/10 dark:text-red-300">
-              <AlertTriangle aria-hidden className="mt-0.5 size-5 shrink-0" />
+            <p role="alert" className="flex items-start gap-2.5 border-2 border-signal bg-danger-bg px-4 py-3 text-fg">
+              <AlertTriangle aria-hidden strokeWidth={1.75} className="mt-0.5 size-5 shrink-0" />
               {m.error}
             </p>
           ) : m.result ? (
             <Answer result={m.result} />
           ) : (
-            <p className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
-              <Loader2 aria-hidden className="size-4 animate-spin text-violet-600 dark:text-violet-400" />
+            <p className="flex items-center gap-2 text-fg-2">
+              <Loader2 aria-hidden className="size-4 animate-spin" />
               Recherche dans les textes de loi…
             </p>
           )}
@@ -167,27 +165,17 @@ export default function Chat({
   );
 
   const disclaimer = (
-    <p className={`mt-3 text-xs ${hero ? "text-center text-slate-600 dark:text-slate-400" : "text-slate-500 dark:text-slate-400"}`}>
-      Information générale, pas un conseil juridique.
-    </p>
+    <p className="mt-4 text-xs text-fg-2">Information générale, pas un conseil juridique.</p>
   );
 
   if (hero) {
     return (
       <ArticleDrawerProvider>
-        <section aria-label="Poser une question" className="mx-auto w-full max-w-3xl">
+        <section aria-label="Poser une question" className="w-full">
           {form}
           {chips}
           {disclaimer}
-          <div
-            className={
-              messages.length
-                ? "mt-6 rounded-3xl border border-slate-200 bg-white p-5 text-left shadow-xl shadow-slate-900/5 sm:p-7 dark:border-white/10 dark:bg-slate-900"
-                : undefined
-            }
-          >
-            {thread}
-          </div>
+          {messages.length > 0 && <div className="mt-8">{thread}</div>}
         </section>
       </ArticleDrawerProvider>
     );
@@ -195,16 +183,11 @@ export default function Chat({
 
   return (
     <ArticleDrawerProvider>
-      <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8 dark:border-white/10 dark:bg-white/5">
-        <h2 className="flex items-center gap-2.5 text-2xl font-black tracking-tight text-slate-900 dark:text-white">
-          <span className="grid size-9 place-items-center rounded-xl bg-violet-100 text-violet-700 dark:bg-violet-400/15 dark:text-violet-300">
-            <MessageCircleQuestion aria-hidden className="size-5" />
-          </span>
-          {title}
-        </h2>
-        <div className={messages.length ? "mt-6" : undefined}>{thread}</div>
+      <section className="rounded-2xl border-2 border-fg bg-surface p-5 sm:p-8">
+        {title && <h2 className="mb-6 font-display text-3xl font-extrabold tracking-[-0.035em] sm:text-4xl">{title}</h2>}
+        {messages.length > 0 && <div className="mb-6">{thread}</div>}
+        {form}
         {chips}
-        <div className="mt-5">{form}</div>
         {disclaimer}
       </section>
     </ArticleDrawerProvider>
@@ -214,40 +197,38 @@ export default function Chat({
 function Answer({ result }: { result: AskResult }) {
   const instant = result.source === "faq" || result.source === "cache";
   return (
-    <div className="rounded-2xl rounded-bl-md border border-slate-200 bg-slate-50 px-4 py-4 sm:px-5 dark:border-white/10 dark:bg-white/5">
+    <div className="rounded-xl border-2 border-fg bg-bg px-5 py-5 sm:px-7 sm:py-6">
       {result.source !== "none" && (
         <span
-          className={`mb-3 inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold ${
-            instant
-              ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-400/15 dark:text-emerald-300"
-              : "bg-violet-100 text-violet-800 dark:bg-violet-400/15 dark:text-violet-300"
+          className={`mb-4 inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-ink px-2.5 py-0.5 text-[0.6875rem] font-semibold tracking-[0.12em] uppercase text-ink ${
+            instant ? "bg-travail" : "bg-logement"
           }`}
         >
-          {instant ? <Zap aria-hidden className="size-3.5" /> : <Sparkles aria-hidden className="size-3.5" />}
+          {instant ? <Zap aria-hidden strokeWidth={1.75} className="size-3.5" /> : <Bot aria-hidden strokeWidth={1.75} className="size-3.5" />}
           {instant ? "Réponse instantanée" : "Réponse générée par IA"}
         </span>
       )}
-      <div className="prose-loila text-slate-800 dark:text-slate-200">
+      <div className="prose-loila">
         <ArticleMarkdown md={result.answer_md} articles={result.articles} />
       </div>
       {result.faq && (
         <Link
           href={`/${result.faq.theme}/${result.faq.slug}`}
-          className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-violet-700 hover:underline dark:text-violet-300"
+          className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold underline decoration-signal decoration-2 underline-offset-4 hover:bg-signal hover:text-ink"
         >
           Voir la fiche : {result.faq.question}
-          <ArrowRight aria-hidden className="size-4" />
+          <ArrowRight aria-hidden strokeWidth={1.75} className="size-4" />
         </Link>
       )}
       {result.articles.length > 0 && (
-        <ul className="mt-4 flex flex-wrap gap-2" aria-label="Articles cités">
+        <ul className="mt-5 flex flex-wrap gap-2 border-t border-rule pt-4" aria-label="Articles cités">
           {result.articles.map((a) => (
             <li key={a.id}>
               <ArticleLink
                 id={a.id}
-                className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700 transition hover:border-violet-300 hover:text-violet-700 focus-visible:outline-2 focus-visible:outline-violet-500 dark:border-white/10 dark:bg-slate-900 dark:text-slate-300 dark:hover:text-violet-300"
+                className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-fg px-3 py-1 text-xs font-semibold transition hover:bg-fg hover:text-bg"
               >
-                <Scale aria-hidden className="size-3.5" />
+                <Scale aria-hidden strokeWidth={1.75} className="size-3.5" />
                 {a.num ? `art. ${a.num}` : "Article"}
               </ArticleLink>
             </li>

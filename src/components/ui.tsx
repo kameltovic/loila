@@ -1,79 +1,80 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { Faq } from "@/lib/db";
-import ThemeIcon from "@/components/ThemeIcon";
+import { THEMES } from "@/lib/themes";
 
-// Accent per theme slug. bg = icon tile / chip, soft = tinted band, ring = border, fg = icon/text color.
-export const ACCENT: Record<string, { bg: string; soft: string; ring: string; fg: string }> = {
-  travail: {
-    bg: "bg-blue-100 dark:bg-blue-400/15",
-    soft: "bg-blue-50 dark:bg-blue-400/[0.07]",
-    ring: "border-blue-200 dark:border-blue-400/25",
-    fg: "text-blue-700 dark:text-blue-300",
-  },
-  urbanisme: {
-    bg: "bg-emerald-100 dark:bg-emerald-400/15",
-    soft: "bg-emerald-50 dark:bg-emerald-400/[0.07]",
-    ring: "border-emerald-200 dark:border-emerald-400/25",
-    fg: "text-emerald-700 dark:text-emerald-300",
-  },
-  logement: {
-    bg: "bg-amber-100 dark:bg-amber-400/15",
-    soft: "bg-amber-50 dark:bg-amber-400/[0.07]",
-    ring: "border-amber-200 dark:border-amber-400/25",
-    fg: "text-amber-700 dark:text-amber-300",
-  },
-  conventions: {
-    bg: "bg-rose-100 dark:bg-rose-400/15",
-    soft: "bg-rose-50 dark:bg-rose-400/[0.07]",
-    ring: "border-rose-200 dark:border-rose-400/25",
-    fg: "text-rose-700 dark:text-rose-300",
-  },
+// Flat color block per theme (text is always ink on these).
+const BLOCK: Record<string, string> = {
+  travail: "bg-travail",
+  urbanisme: "bg-urbanisme",
+  logement: "bg-logement",
+  conventions: "bg-conventions",
 };
-export const accent = (slug: string) => ACCENT[slug] ?? ACCENT.travail;
-
-export const card =
-  "rounded-2xl border border-slate-200 bg-white shadow-sm shadow-slate-900/[0.03] transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md dark:border-white/10 dark:bg-white/[0.04] dark:hover:border-white/20";
+export const block = (slug: string) => `${BLOCK[slug] ?? BLOCK.travail} text-ink`;
 
 export const container = "mx-auto w-full max-w-6xl px-4 sm:px-6";
 
+/** Small uppercase label, magazine style. */
+export const label = "text-xs font-semibold uppercase tracking-[0.16em]";
+
+export const display = "font-display font-extrabold tracking-[-0.04em]";
+
 export const btnPrimary =
-  "inline-flex items-center justify-center gap-2 rounded-full bg-brand px-5 py-2.5 font-semibold text-white shadow-sm transition hover:bg-brand-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand";
+  "inline-flex items-center justify-center gap-2 rounded-full border-2 border-fg bg-fg px-5 py-2.5 font-semibold text-bg transition hover:-translate-y-0.5 hover:shadow-[3px_3px_0_0_var(--signal)] motion-reduce:hover:translate-y-0";
 export const btnSecondary =
-  "inline-flex items-center justify-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-2.5 font-semibold transition hover:bg-slate-50 dark:border-white/15 dark:bg-white/5 dark:hover:bg-white/10";
+  "inline-flex items-center justify-center gap-2 rounded-full border-2 border-fg px-5 py-2.5 font-semibold transition hover:bg-fg hover:text-bg";
 
-export const eyebrow = "text-sm font-semibold uppercase tracking-wider text-brand-fg";
-
-export function IconTile({ slug, size = "md" }: { slug: string; size?: "sm" | "md" | "lg" }) {
-  const box = { sm: "h-9 w-9 rounded-lg", md: "h-12 w-12 rounded-xl", lg: "h-16 w-16 rounded-2xl" }[size];
-  const icon = { sm: 18, md: 22, lg: 30 }[size];
-  const a = accent(slug);
+/** "01 — Thèmes" section heading with a top rule. */
+export function SectionHead({ num, kicker, title, id }: { num: string; kicker: string; title: React.ReactNode; id?: string }) {
   return (
-    <span className={`inline-flex shrink-0 items-center justify-center ${box} ${a.bg} ${a.fg}`}>
-      <ThemeIcon slug={slug} size={icon} />
-    </span>
+    <header className="border-t-2 border-fg pt-5">
+      <p className={`${label} flex items-center gap-3`}>
+        <span className="font-display text-sm font-bold">{num}</span>
+        <span aria-hidden className="h-0.5 w-8 bg-signal" />
+        {kicker}
+      </p>
+      <h2 id={id} className={`${display} mt-6 max-w-4xl text-4xl leading-[0.95] text-balance sm:text-6xl`}>
+        {title}
+      </h2>
+    </header>
   );
 }
 
-export function FaqCard({ faq }: { faq: Pick<Faq, "theme" | "slug" | "emoji" | "question" | "short"> }) {
+/** Editorial index: numbered rows separated by hairlines. */
+export function FaqIndex({ faqs, showTheme = false }: { faqs: Pick<Faq, "theme" | "slug" | "question" | "short">[]; showTheme?: boolean }) {
   return (
-    <Link href={`/${faq.theme}/${faq.slug}`} className={`${card} group flex gap-4 p-5 sm:p-6`}>
-      <IconTile slug={faq.theme} size="sm" />
-      <span className="min-w-0">
-        <span className="block text-lg font-bold leading-snug tracking-tight">{faq.question}</span>
-        <span className="mt-1.5 line-clamp-2 block text-slate-600 dark:text-slate-400">{faq.short}</span>
-        <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-brand-fg">
-          Lire la réponse <ArrowRight aria-hidden size={16} className="transition group-hover:translate-x-0.5" />
-        </span>
-      </span>
-    </Link>
+    <ol className="border-t border-fg">
+      {faqs.map((f, i) => (
+        <li key={`${f.theme}/${f.slug}`} className="border-b border-rule">
+          <Link
+            href={`/${f.theme}/${f.slug}`}
+            className="group grid grid-cols-[2rem_1fr_auto] items-start gap-3 py-6 transition-colors hover:bg-surface sm:grid-cols-[4rem_1fr_auto] sm:gap-6 sm:px-2 sm:py-8"
+          >
+            <span className="pt-1 font-display text-sm font-bold tabular-nums text-fg-2 sm:text-base">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <span className="min-w-0">
+              {showTheme && (
+                <span className={`${label} mb-2 flex items-center gap-2 text-fg-2`}>
+                  <span aria-hidden className={`size-2.5 border border-ink ${block(f.theme)}`} />
+                  {THEMES.find((t) => t.slug === f.theme)?.title ?? f.theme}
+                </span>
+              )}
+              <span className="block font-display text-xl leading-tight font-bold tracking-[-0.025em] sm:text-3xl sm:text-balance">
+                {f.question}
+              </span>
+              <span className="mt-2 line-clamp-2 max-w-[68ch] text-fg-2">{f.short}</span>
+            </span>
+            <span className="mt-1 grid size-10 place-items-center rounded-full border-2 border-fg transition group-hover:bg-fg group-hover:text-bg sm:size-12">
+              <ArrowRight aria-hidden strokeWidth={1.75} className="size-5 transition group-hover:-rotate-45 motion-reduce:group-hover:rotate-0" />
+            </span>
+          </Link>
+        </li>
+      ))}
+    </ol>
   );
 }
 
 export function Empty({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="rounded-2xl border border-dashed border-slate-300 p-8 text-center text-slate-600 dark:border-white/15 dark:text-slate-400">
-      {children}
-    </div>
-  );
+  return <div className="border-2 border-dashed border-fg/40 p-8 text-center text-fg-2">{children}</div>;
 }

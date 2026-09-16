@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight, Lightbulb, Scale } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { getDb, type Article, type Faq } from "@/lib/db";
 import { CODES, THEMES } from "@/lib/themes";
 import Chat from "@/components/Chat";
+import ThemeIcon from "@/components/ThemeIcon";
 import { ArticleDrawerProvider, ArticleLink, ArticleMarkdown } from "@/components/ArticleDrawer";
+import { block, display, label } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
 
@@ -36,60 +38,65 @@ export default async function FaqPage({ params }: PageProps<"/[theme]/[faq]">) {
     : [];
 
   return (
-    <article className="mx-auto max-w-3xl px-5 py-12 sm:py-16">
+    <article className="mx-auto max-w-4xl px-4 pt-8 pb-16 sm:px-6 sm:pt-10 sm:pb-24">
       <ArticleDrawerProvider>
-        <Link
-          href={`/${theme.slug}`}
-          className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-600 transition hover:bg-slate-200 hover:text-slate-900 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
-        >
-          <ArrowLeft aria-hidden className="size-4" />
-          {theme.title}
-        </Link>
-        <h1 className="mt-5 text-4xl font-black leading-[1.08] tracking-tighter text-balance sm:text-5xl">{faq.question}</h1>
+        <nav aria-label="Fil d’Ariane" className={`${label} flex flex-wrap items-center gap-2 text-fg-2`}>
+          <Link href="/" className="hover:text-fg hover:underline hover:decoration-signal hover:decoration-2 hover:underline-offset-4">
+            Accueil
+          </Link>
+          <span aria-hidden>/</span>
+          <Link
+            href={`/${theme.slug}`}
+            className="inline-flex items-center gap-1.5 hover:text-fg hover:underline hover:decoration-signal hover:decoration-2 hover:underline-offset-4"
+          >
+            <ThemeIcon slug={theme.slug} size={14} />
+            {theme.title}
+          </Link>
+        </nav>
+        <h1 className={`${display} mt-8 text-[clamp(2.5rem,7vw,5rem)] leading-[0.95] text-balance`}>{faq.question}</h1>
 
-        <div className="mt-8 flex gap-4 rounded-3xl border border-violet-200 bg-violet-50 p-5 sm:p-6 dark:border-violet-400/20 dark:bg-violet-400/10">
-          <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-violet-600 text-white">
-            <Lightbulb aria-hidden className="size-5" />
-          </span>
-          <div>
-            <p className="text-sm font-bold uppercase tracking-wider text-violet-700 dark:text-violet-300">En bref</p>
-            <p className="mt-1 text-lg font-medium leading-relaxed">{faq.short}</p>
-          </div>
+        <div className={`${block(theme.slug)} mt-10 rounded-2xl border-2 border-ink p-6 shadow-hard-ink sm:p-8 dark:border-paper dark:shadow-[4px_4px_0_0_#f4f0e8]`}>
+          <p className={label}>En bref</p>
+          <p className="mt-3 font-display text-xl leading-snug font-semibold tracking-[-0.015em] text-pretty sm:text-2xl">{faq.short}</p>
         </div>
 
-        <div className="prose-loila mt-10">
+        <div className="prose-loila mt-12">
           <ArticleMarkdown md={faq.answer_md} articles={articles.map(({ id, num }) => ({ id, num }))} />
         </div>
 
         {articles.length > 0 && (
-          <section className="mt-14">
-            <h2 className="flex items-center gap-2.5 text-2xl font-black tracking-tight">
-              <Scale aria-hidden className="size-6 text-violet-600 dark:text-violet-400" />
-              Articles de loi cités
+          <section aria-labelledby="sources-title" className="mt-16 border-t-2 border-fg pt-5">
+            <p className={`${label} text-fg-2`}>Sources</p>
+            <h2 id="sources-title" className={`${display} mt-4 text-3xl leading-none sm:text-5xl`}>
+              Articles de loi <span className="font-serif font-normal italic">cités</span>
             </h2>
-            <ul className="mt-6 grid gap-4">
+            <ul className="mt-8 border-t border-fg">
               {articles.map((a) => (
-                <li
-                  key={a.id}
-                  className="group relative rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-violet-300 hover:shadow-md motion-reduce:transition-none motion-reduce:hover:translate-y-0 dark:border-white/10 dark:bg-white/5 dark:hover:border-violet-400/40"
-                >
-                  <p className="text-sm text-slate-500 dark:text-slate-400">{CODES[a.code as keyof typeof CODES]?.name ?? a.code}</p>
-                  <h3 className="mt-1 text-lg font-extrabold tracking-tight">
-                    {/* Stretched link: whole card opens the drawer, still a real link for new-tab. */}
-                    <ArticleLink id={a.id} className="after:absolute after:inset-0 after:rounded-3xl focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-violet-500">
-                      {a.num ? `Article ${a.num}` : (a.section?.split(" > ").pop() ?? "Article")}
-                    </ArticleLink>
-                  </h3>
-                  <p className="mt-2 line-clamp-3 text-slate-600 dark:text-slate-400">{a.texte}</p>
-                  <div className="mt-4 flex flex-wrap items-center gap-4 text-sm font-semibold">
-                    <span className="text-violet-700 group-hover:underline dark:text-violet-300">Lire l’article</span>
+                <li key={a.id} className="group relative grid gap-4 border-b border-rule py-6 transition-colors hover:bg-surface sm:grid-cols-[1fr_auto] sm:px-2">
+                  <div className="min-w-0">
+                    <p className={`${label} text-fg-2`}>{CODES[a.code as keyof typeof CODES]?.name ?? a.code}</p>
+                    <h3 className="mt-2 font-display text-2xl font-bold tracking-[-0.03em]">
+                      {/* Stretched link: whole row opens the drawer, still a real link for new-tab. */}
+                      <ArticleLink id={a.id} className="after:absolute after:inset-0 focus-visible:outline-none focus-visible:after:outline-3 focus-visible:after:outline-focus">
+                        {a.num ? `Article ${a.num}` : (a.section?.split(" > ").pop() ?? "Article")}
+                      </ArticleLink>
+                    </h3>
+                    <p className="mt-2 line-clamp-2 max-w-[68ch] text-fg-2">{a.texte}</p>
+                  </div>
+                  <div className="flex items-center gap-4 text-sm font-semibold sm:flex-col sm:items-end sm:justify-between">
+                    <span className="inline-flex items-center gap-1.5">
+                      Lire
+                      <span className="grid size-10 place-items-center rounded-full border-2 border-fg transition group-hover:bg-fg group-hover:text-bg">
+                        <ArrowRight aria-hidden strokeWidth={1.75} className="size-4" />
+                      </span>
+                    </span>
                     <a
                       href={a.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="relative inline-flex items-center gap-1 text-slate-500 hover:text-slate-900 hover:underline dark:hover:text-white"
+                      className="relative inline-flex items-center gap-1 text-fg-2 hover:text-fg hover:underline hover:decoration-signal hover:decoration-2 hover:underline-offset-4"
                     >
-                      Légifrance <ArrowUpRight aria-hidden className="size-4" />
+                      Légifrance <ArrowUpRight aria-hidden strokeWidth={1.75} className="size-4" />
                       <span className="sr-only">(nouvel onglet)</span>
                     </a>
                   </div>
@@ -100,7 +107,7 @@ export default async function FaqPage({ params }: PageProps<"/[theme]/[faq]">) {
         )}
       </ArticleDrawerProvider>
 
-      <div className="mt-16">
+      <div className="mt-20">
         <Chat theme={theme.slug} title="Poser une autre question" />
       </div>
     </article>

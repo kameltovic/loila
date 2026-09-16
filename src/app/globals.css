@@ -1,94 +1,115 @@
 @import "tailwindcss";
 
+/* Editorial system: paper + ink, one vermilion signal, flat theme blocks. */
 :root {
-  --background: #ffffff;
-  --foreground: #0b1220;
-  --muted: #f5f6fa; /* neutral tinted band */
-  --brand: #5b3df5;
-  --brand-strong: #4527d6;
-  --brand-fg: #4a2fd8; /* brand text on light bg (AA) */
-  --brand-soft: #efecff;
-  --ink: #0e1325; /* dark band (footer, CTA) */
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-muted: var(--muted);
-  --color-brand: var(--brand);
-  --color-brand-strong: var(--brand-strong);
-  --color-brand-fg: var(--brand-fg);
-  --color-brand-soft: var(--brand-soft);
-  --color-ink: var(--ink);
-  --font-sans: var(--font-inter);
+  --bg: #f4f0e8; /* paper */
+  --fg: #0e0e0e; /* ink */
+  --fg-2: #5a564e; /* secondary ink */
+  --rule: rgba(14, 14, 14, 0.12);
+  --surface: #fffdf8; /* input / card fill */
+  --signal: #ff4a1c; /* decoration + large text only */
+  --focus: #d9370b; /* darker vermilion: 3:1+ on paper */
+  --danger-bg: #ffe1d6;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0c14;
-    --foreground: #e9ebf3;
-    --muted: #10131f;
-    --brand: #6d55ff;
-    --brand-strong: #5b3df5;
-    --brand-fg: #b3a6ff;
-    --brand-soft: rgba(109, 85, 255, 0.14);
-    --ink: #06070d;
+    --bg: #0e0e0e;
+    --fg: #f4f0e8;
+    --fg-2: #aaa398;
+    --rule: rgba(244, 240, 232, 0.14);
+    --surface: #181716;
+    --signal: #ff4a1c;
+    --focus: #ff4a1c;
+    --danger-bg: #3a160c;
   }
 }
 
+@theme inline {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-fg-2: var(--fg-2);
+  --color-rule: var(--rule);
+  --color-surface: var(--surface);
+  --color-signal: var(--signal);
+  --color-focus: var(--focus);
+  --color-danger-bg: var(--danger-bg);
+  /* Fixed colors: text on theme blocks is always ink. */
+  --color-ink: #0e0e0e;
+  --color-paper: #f4f0e8;
+  --color-travail: #ffd23f;
+  --color-urbanisme: #8fd3a8;
+  --color-logement: #9dc4ff;
+  --color-conventions: #ffb0c4;
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-bricolage);
+  --font-serif: var(--font-instrument);
+  --shadow-hard: 4px 4px 0 0 var(--fg);
+  --shadow-hard-sm: 3px 3px 0 0 var(--fg);
+  --shadow-hard-lg: 7px 7px 0 0 var(--fg);
+  --shadow-hard-ink: 4px 4px 0 0 #0e0e0e;
+  --shadow-hard-ink-lg: 7px 7px 0 0 #0e0e0e;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--bg);
+  color: var(--fg);
 }
 
-/* Hero accent: soft brand mesh + faint grid, faded out toward the bottom */
-.hero-mesh {
-  background:
-    radial-gradient(60% 60% at 15% 0%, rgba(91, 61, 245, 0.16), transparent 70%),
-    radial-gradient(45% 50% at 90% 10%, rgba(14, 165, 233, 0.12), transparent 70%),
-    var(--background);
-  position: relative;
-  isolation: isolate;
-}
-.hero-mesh::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background-image:
-    linear-gradient(to right, rgba(100, 116, 139, 0.1) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(100, 116, 139, 0.1) 1px, transparent 1px);
-  background-size: 44px 44px;
-  mask-image: radial-gradient(80% 70% at 50% 0%, #000 30%, transparent 75%);
+::selection {
+  background: var(--signal);
+  color: #0e0e0e;
 }
 
-/* Markdown answers */
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Markdown answers + long-form pages */
 .prose-loila {
   font-size: 1.0625rem;
   line-height: 1.75;
+  max-width: 68ch;
 }
 .prose-loila > * + * {
   margin-top: 1em;
 }
+.prose-loila > :first-child {
+  margin-top: 0;
+}
 .prose-loila h2 {
-  margin-top: 2em;
-  font-size: 1.5rem;
+  margin-top: 2.2em;
+  font-family: var(--font-bricolage);
+  font-size: 1.75rem;
   font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.25;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
 }
 .prose-loila h3 {
   margin-top: 1.6em;
-  font-size: 1.2rem;
+  font-family: var(--font-bricolage);
+  font-size: 1.375rem;
   font-weight: 700;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
 }
 .prose-loila ul,
 .prose-loila ol {
   padding-left: 1.4em;
 }
 .prose-loila ul {
-  list-style: disc;
+  list-style: square;
 }
 .prose-loila ol {
   list-style: decimal;
@@ -97,26 +118,35 @@ body {
   margin-top: 0.35em;
 }
 .prose-loila li::marker {
-  color: var(--brand);
+  color: var(--signal);
 }
 .prose-loila a {
-  color: var(--brand-fg);
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration-color: var(--signal);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  font-weight: 600;
+}
+.prose-loila a:hover {
+  background: var(--signal);
+  color: #0e0e0e;
 }
 .prose-loila strong {
   font-weight: 700;
 }
 .prose-loila blockquote {
-  border-left: 4px solid #c4b5fd;
+  border-left: 3px solid var(--signal);
   padding-left: 1em;
-  color: #475569;
+  color: var(--fg-2);
+  font-family: var(--font-instrument);
+  font-size: 1.25em;
+  font-style: italic;
+  line-height: 1.5;
 }
 .prose-loila code {
   font-size: 0.9em;
   padding: 0.1em 0.35em;
-  border-radius: 0.375rem;
-  background: rgba(100, 116, 139, 0.12);
+  border: 1px solid var(--rule);
 }
 .prose-loila table {
   width: 100%;
@@ -125,13 +155,10 @@ body {
 }
 .prose-loila th,
 .prose-loila td {
-  border-bottom: 1px solid rgba(100, 116, 139, 0.25);
+  border-bottom: 1px solid var(--rule);
   padding: 0.5em 0.6em;
   text-align: left;
 }
-@media (prefers-color-scheme: dark) {
-  .prose-loila blockquote {
-    color: #94a3b8;
-    border-color: #6d28d9;
-  }
+.prose-loila th {
+  border-bottom: 2px solid var(--fg);
 }

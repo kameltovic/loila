@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronRight, ExternalLink, ScrollText } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { getDb, type Article, type Faq } from "@/lib/db";
 import { CODES } from "@/lib/themes";
-import { Empty, FaqCard, btnPrimary, container } from "@/components/ui";
+import { Empty, FaqIndex, btnPrimary, container, display, label } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
 
@@ -28,59 +28,65 @@ export default async function ArticlePage({ params }: PageProps<"/article/[id]">
 
   return (
     <>
-      <section className="border-b border-slate-200/70 bg-muted dark:border-white/10">
-        <div className={`${container} py-12 sm:py-14`}>
-          <nav aria-label="Fil d’Ariane" className="flex items-center gap-1 text-sm text-slate-600 dark:text-slate-400">
-            <Link href="/" className="hover:text-foreground">Accueil</Link>
-            <ChevronRight aria-hidden size={14} />
+      <section className="border-b-2 border-fg">
+        <div className={`${container} pt-8 pb-12 sm:pt-10 sm:pb-16`}>
+          <nav aria-label="Fil d’Ariane" className={`${label} flex flex-wrap items-center gap-2 text-fg-2`}>
+            <Link href="/" className="hover:text-fg hover:underline hover:decoration-signal hover:decoration-2 hover:underline-offset-4">
+              Accueil
+            </Link>
+            <span aria-hidden>/</span>
             <span>{codeName(a)}</span>
           </nav>
-          <div className="mt-6 flex items-start gap-4">
-            <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-soft text-brand-fg">
-              <ScrollText aria-hidden size={22} />
-            </span>
-            <div>
-              <p className="text-sm font-semibold text-brand-fg">{codeName(a)}</p>
-              <h1 className="mt-1 text-4xl font-black tracking-tighter sm:text-5xl">Article {a.num}</h1>
-              {a.section && (
-                <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">{a.section.split(" > ").join(" › ")}</p>
-              )}
-            </div>
-          </div>
+          <p className={`${label} mt-12 flex items-center gap-3`}>
+            <span aria-hidden className="h-0.5 w-8 bg-signal" />
+            {codeName(a)}
+          </p>
+          <h1 className={`${display} mt-4 text-[clamp(3.25rem,10vw,7rem)] leading-[0.92]`}>Article {a.num}</h1>
+          {a.section && (
+            <p className="mt-5 max-w-3xl font-serif text-xl leading-snug text-fg-2 italic">{a.section.split(" > ").join(" › ")}</p>
+          )}
         </div>
       </section>
 
-      <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
-        <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 text-lg leading-relaxed shadow-sm sm:p-8 dark:border-white/10 dark:bg-white/[0.04]">
-          {a.texte
-            .split(/\n+/)
-            .filter((p) => p.trim())
-            .map((p, i) => (
-              <p key={i}>{p}</p>
-            ))}
-        </div>
-
-        <div className="mt-6 flex flex-wrap items-center gap-4 text-sm">
-          <a href={a.url} target="_blank" rel="noopener noreferrer" className={btnPrimary}>
-            Voir sur Légifrance <ExternalLink aria-hidden size={16} />
-          </a>
-          {a.date_debut && (
-            <span className="text-slate-600 dark:text-slate-400">
-              Version en vigueur depuis le {new Date(a.date_debut).toLocaleDateString("fr-FR")}
-            </span>
-          )}
-        </div>
-
-        <section className="mt-14">
-          <h2 className="text-2xl font-black tracking-tight">Questions liées</h2>
-          <div className="mt-6 grid gap-4">
-            {related.map((f) => (
-              <FaqCard key={f.slug} faq={f} />
-            ))}
+      <article className={`${container} grid gap-10 py-12 sm:py-16 lg:grid-cols-[1fr_16rem]`}>
+        <div className="rounded-2xl border-2 border-fg bg-surface p-6 sm:p-10">
+          <div className="max-w-[68ch] space-y-5 text-[1.0625rem] leading-[1.8] sm:text-lg">
+            {a.texte
+              .split(/\n+/)
+              .filter((p) => p.trim())
+              .map((p, i) => (
+                <p key={i}>{p}</p>
+              ))}
           </div>
-          {related.length === 0 && <Empty>Aucune question ne cite encore cet article.</Empty>}
-        </section>
+        </div>
+
+        <aside className="space-y-6 lg:pt-2">
+          {a.date_debut && (
+            <div className="border-t-2 border-fg pt-4">
+              <p className={`${label} text-fg-2`}>En vigueur depuis</p>
+              <p className="mt-1 font-display text-2xl font-bold tracking-[-0.03em]">
+                {new Date(a.date_debut).toLocaleDateString("fr-FR")}
+              </p>
+            </div>
+          )}
+          <a href={a.url} target="_blank" rel="noopener noreferrer" className={btnPrimary}>
+            Voir sur Légifrance <ArrowUpRight aria-hidden strokeWidth={1.75} size={16} />
+            <span className="sr-only">(nouvel onglet)</span>
+          </a>
+        </aside>
       </article>
+
+      <section aria-labelledby="related-title" className={`${container} pb-20 sm:pb-28`}>
+        <header className="border-t-2 border-fg pt-5">
+          <p className={`${label} text-fg-2`}>Pour aller plus loin</p>
+          <h2 id="related-title" className={`${display} mt-4 text-3xl leading-none sm:text-5xl`}>
+            Questions liées
+          </h2>
+        </header>
+        <div className="mt-10">
+          {related.length > 0 ? <FaqIndex faqs={related} showTheme /> : <Empty>Aucune question ne cite encore cet article.</Empty>}
+        </div>
+      </section>
     </>
   );
 }

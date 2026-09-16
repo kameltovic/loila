@@ -1,16 +1,17 @@
 import Link from "next/link";
-import { ArrowRight, BookOpenCheck, Link2, Landmark, MessageCircleQuestion, RefreshCw, ScrollText, ShieldCheck } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Chat from "@/components/Chat";
+import ThemeIcon from "@/components/ThemeIcon";
 import { getDb, type Faq } from "@/lib/db";
 import { THEMES } from "@/lib/themes";
-import { Empty, FaqCard, IconTile, card, container, eyebrow } from "@/components/ui";
+import { Empty, FaqIndex, SectionHead, block, container, display, label } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
 
 const STEPS = [
-  { icon: Landmark, title: "Textes officiels", text: "Nous partons des articles en vigueur publiés sur Légifrance." },
-  { icon: BookOpenCheck, title: "Expliqués simplement", text: "Chaque règle est reformulée en français clair, sans jargon." },
-  { icon: Link2, title: "Sources citées", text: "Chaque réponse renvoie aux articles de loi exacts, vérifiables." },
+  { title: "Textes officiels", text: "Nous partons des articles en vigueur publiés sur Légifrance, mis à jour chaque jour." },
+  { title: "Expliqués simplement", text: "Chaque règle est reformulée en français clair, sans jargon inutile." },
+  { title: "Sources citées", text: "Chaque réponse renvoie aux articles de loi exacts, vérifiables en un clic." },
 ];
 
 export default function Home() {
@@ -21,111 +22,114 @@ export default function Home() {
   // Round down to a friendly figure: 35 812 -> "35 000+".
   const articles = n >= 1000 ? `${(Math.floor(n / 1000) * 1000).toLocaleString("fr-FR")}+` : n.toLocaleString("fr-FR");
 
+  const conventions = THEMES.find((t) => t.slug === "conventions")?.codes.length ?? 0;
   const trust = [
-    { icon: ScrollText, label: `${articles} articles officiels` },
-    { icon: ShieldCheck, label: "Sources Légifrance citées" },
-    { icon: RefreshCw, label: "Mis à jour chaque jour" },
+    { value: articles, label: "articles de loi officiels" },
+    { value: String(conventions), label: "conventions collectives couvertes" },
+    { value: "Chaque jour", label: "synchronisé avec Légifrance" },
   ];
 
   return (
     <>
       {/* Hero */}
-      <section className="hero-mesh border-b border-slate-200/70 dark:border-white/10">
-        <div className={`${container} pt-14 pb-16 sm:pt-20 sm:pb-20`}>
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand-soft px-3 py-1 text-sm font-semibold text-brand-fg">
-              <Landmark aria-hidden size={14} /> Loi + voilà
-            </p>
-            <h1 className="mt-6 text-4xl font-black leading-[1.05] tracking-tighter text-balance sm:text-6xl lg:text-7xl">
-              Le droit français, enfin lisible.
-            </h1>
-            <p className="mx-auto mt-5 max-w-2xl text-lg text-pretty text-slate-600 sm:text-xl dark:text-slate-400">
-              Travail, construction, location : posez votre question, nous vous répondons simplement, articles de loi
-              à l’appui.
-            </p>
-          </div>
+      <section>
+        <div className={`${container} pt-12 pb-16 sm:pt-20 sm:pb-24`}>
+          <p className={`${label} flex items-center gap-3 text-fg-2`}>
+            <span aria-hidden className="size-2 rounded-full bg-signal" />
+            Loi + voilà · Droit français
+          </p>
+          <h1 className={`${display} mt-6 text-[clamp(3.5rem,11vw,7.5rem)] leading-[0.92] text-balance`}>
+            Le droit français, enfin <span className="font-serif font-normal tracking-[-0.02em] italic">lisible.</span>
+          </h1>
+          <p className="mt-6 max-w-2xl text-lg text-pretty text-fg-2 sm:text-xl">
+            Travail, construction, location : posez votre question, on vous répond simplement, articles de loi à l’appui.
+          </p>
 
-          <div id="question" className="mx-auto mt-10 max-w-3xl scroll-mt-24">
+          <div id="question" className="mt-10 max-w-4xl scroll-mt-28 sm:mt-12">
             <Chat variant="hero" />
           </div>
 
-          <ul className="mx-auto mt-10 flex max-w-3xl flex-wrap justify-center gap-x-8 gap-y-3 text-sm font-medium text-slate-700 dark:text-slate-300">
-            {trust.map(({ icon: Icon, label }) => (
-              <li key={label} className="inline-flex items-center gap-2">
-                <Icon aria-hidden size={18} className="text-brand-fg" />
-                {label}
+          <ul className="mt-14 grid border-y border-fg sm:grid-cols-3">
+            {trust.map((t, i) => (
+              <li key={t.label} className={`flex flex-wrap items-baseline gap-x-3 py-5 sm:block sm:px-6 sm:py-6 ${i ? "border-t border-rule sm:border-t-0 sm:border-l" : "sm:pl-0"}`}>
+                <span className="block font-display text-3xl font-extrabold tracking-[-0.04em] whitespace-nowrap sm:text-5xl">{t.value}</span>
+                <span className="block text-fg-2 sm:mt-1">{t.label}</span>
               </li>
             ))}
           </ul>
         </div>
       </section>
 
-      {/* Themes */}
-      <section id="themes" className="scroll-mt-20 py-16 sm:py-20">
+      {/* 01 Themes */}
+      <section id="themes" aria-labelledby="themes-title" className="scroll-mt-20 py-16 sm:py-24">
         <div className={container}>
-          <p className={eyebrow}>Thèmes</p>
-          <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Par où commencer ?</h2>
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <SectionHead num="01" kicker="Thèmes" id="themes-title" title={<>Par où <span className="font-serif font-normal italic">commencer</span> ?</>} />
+          <div className="mt-12 grid gap-5 md:grid-cols-2">
             {THEMES.map((t) => (
-              <Link key={t.slug} href={`/${t.slug}`} className={`${card} group flex flex-col p-6`}>
-                <IconTile slug={t.slug} />
-                <h3 className="mt-5 text-xl font-extrabold tracking-tight">{t.title}</h3>
-                <p className="mt-2 flex-1 text-slate-600 dark:text-slate-400">{t.tagline}</p>
-                <p className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-brand-fg">
-                  Voir les questions <ArrowRight aria-hidden size={16} className="transition group-hover:translate-x-0.5" />
-                </p>
+              <Link
+                key={t.slug}
+                href={`/${t.slug}`}
+                className={`${block(t.slug)} group flex min-h-72 flex-col justify-between rounded-2xl border-2 border-ink p-6 transition hover:-translate-x-1 hover:-translate-y-1 hover:shadow-hard-ink-lg motion-reduce:hover:translate-0 sm:p-8 dark:border-paper dark:hover:shadow-[7px_7px_0_0_#f4f0e8]`}
+              >
+                <span className="flex items-start justify-between">
+                  <ThemeIcon slug={t.slug} className="size-9 sm:size-11" />
+                  <span className="grid size-12 place-items-center rounded-full border-2 border-ink transition group-hover:bg-ink group-hover:text-paper">
+                    <ArrowRight aria-hidden strokeWidth={1.75} className="size-5 transition group-hover:-rotate-45 motion-reduce:group-hover:rotate-0" />
+                  </span>
+                </span>
+                <span className="mt-10 block">
+                  <span className={`${display} block text-4xl leading-[0.95] text-balance sm:text-5xl`}>{t.title}</span>
+                  <span className="mt-3 block max-w-md text-[1.0625rem] text-ink/80">{t.tagline}</span>
+                </span>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Popular questions */}
-      <section className="bg-muted py-16 sm:py-20">
+      {/* 02 Popular questions */}
+      <section aria-labelledby="faq-title" className="pb-16 sm:pb-24">
         <div className={container}>
-          <p className={eyebrow}>Questions fréquentes</p>
-          <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Les questions les plus posées</h2>
-          <div className="mt-10 grid gap-4 md:grid-cols-2">
-            {faqs.map((f) => (
-              <FaqCard key={f.slug} faq={f} />
-            ))}
+          <SectionHead num="02" kicker="Index" id="faq-title" title="Les questions les plus posées" />
+          <div className="mt-12">
+            {faqs.length > 0 ? <FaqIndex faqs={faqs} showTheme /> : <Empty>Les premières questions arrivent très bientôt.</Empty>}
           </div>
-          {faqs.length === 0 && <Empty>Les premières questions arrivent très bientôt.</Empty>}
         </div>
       </section>
 
-      {/* How it works */}
-      <section id="comment-ca-marche" className="scroll-mt-20 py-16 sm:py-20">
+      {/* 03 How it works */}
+      <section id="comment-ca-marche" aria-labelledby="how-title" className="scroll-mt-20 pb-20 sm:pb-28">
         <div className={container}>
-          <p className={eyebrow}>Méthode</p>
-          <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Comment ça marche</h2>
-          <ol className="mt-10 grid gap-6 md:grid-cols-3">
-            {STEPS.map(({ icon: Icon, title, text }, i) => (
-              <li key={title} className="rounded-2xl border border-slate-200 p-6 dark:border-white/10">
-                <div className="flex items-center justify-between">
-                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-brand-soft text-brand-fg">
-                    <Icon aria-hidden size={22} />
-                  </span>
-                  <span className="text-sm font-bold text-slate-400">0{i + 1}</span>
-                </div>
-                <h3 className="mt-5 text-xl font-extrabold tracking-tight">{title}</h3>
-                <p className="mt-2 text-slate-600 dark:text-slate-400">{text}</p>
+          <SectionHead num="03" kicker="Méthode" id="how-title" title="Comment ça marche" />
+          <ol className="mt-12 grid gap-10 md:grid-cols-3 md:gap-8">
+            {STEPS.map(({ title, text }, i) => (
+              <li key={title} className="border-t border-rule pt-6">
+                <span aria-hidden className="block font-display text-[5.5rem] leading-[0.8] font-extrabold tracking-[-0.06em] text-signal">
+                  {i + 1}
+                </span>
+                <h3 className="mt-6 font-display text-2xl font-bold tracking-[-0.03em]">{title}</h3>
+                <p className="mt-2 max-w-sm text-fg-2">{text}</p>
               </li>
             ))}
           </ol>
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="px-4 pb-20 sm:px-6">
-        <div className="mx-auto max-w-6xl overflow-hidden rounded-3xl bg-brand px-6 py-12 text-center text-white sm:px-12 sm:py-16">
-          <h2 className="text-3xl font-black tracking-tight text-balance sm:text-4xl">Une situation précise ? Demandez.</h2>
-          <p className="mx-auto mt-3 max-w-xl text-white/85">
-            Décrivez votre cas en quelques mots, la réponse cite les articles de loi utilisés.
-          </p>
-          <a href="#question" className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 font-semibold text-brand-strong shadow-sm transition hover:bg-white/90">
-            <MessageCircleQuestion aria-hidden size={18} /> Poser ma question
-          </a>
+      {/* Closing band */}
+      <section className="bg-ink text-paper dark:border-t dark:border-paper/15">
+        <div className={`${container} flex flex-col gap-8 py-16 sm:py-24 md:flex-row md:items-end md:justify-between`}>
+          <h2 className={`${display} max-w-3xl text-5xl leading-[0.95] text-balance sm:text-7xl`}>
+            Une situation précise ? <span className="font-serif font-normal tracking-[-0.02em] text-signal italic">Demandez.</span>
+          </h2>
+          <div className="max-w-sm">
+            <p className="text-paper/75">Décrivez votre cas en quelques mots, la réponse cite les articles de loi utilisés.</p>
+            <a
+              href="#question"
+              className="mt-6 inline-flex items-center gap-2 rounded-full border-2 border-paper bg-paper px-6 py-3.5 font-semibold text-ink shadow-[4px_4px_0_0_#ff4a1c] transition hover:-translate-y-0.5 hover:shadow-[6px_6px_0_0_#ff4a1c] motion-reduce:hover:translate-y-0"
+            >
+              Poser ma question <ArrowRight aria-hidden strokeWidth={1.75} size={18} />
+            </a>
+          </div>
         </div>
       </section>
     </>
