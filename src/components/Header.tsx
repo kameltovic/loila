@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowRight, Menu, X } from "lucide-react";
-import ThemeIcon from "@/components/ThemeIcon";
 import { btnPrimary } from "@/components/ui";
 
 const NAV = [
@@ -12,6 +11,7 @@ const NAV = [
   { slug: "urbanisme", label: "Urbanisme" },
   { slug: "logement", label: "Logement" },
   { slug: "conventions", label: "Conventions" },
+  { slug: "sujets", label: "Tous les sujets" },
 ];
 
 export function Logo({ className = "" }: { className?: string }) {
@@ -45,15 +45,14 @@ export default function Header() {
           <Logo />
         </Link>
 
-        <ul className="hidden items-center gap-6 text-[0.9375rem] font-medium md:flex">
+        <ul className="hidden items-center gap-1 font-mono text-[0.8125rem] font-bold tracking-wide uppercase md:flex">
           {NAV.map((n) => (
             <li key={n.slug}>
               <Link
                 href={`/${n.slug}`}
                 aria-current={active(n.slug) ? "page" : undefined}
-                className="inline-flex items-center gap-2 border-b-2 border-transparent py-1 text-fg-2 transition hover:text-fg aria-[current=page]:border-signal aria-[current=page]:text-fg"
+                className="relative block border-2 border-transparent px-3 py-1.5 transition-[transform,box-shadow,background-color] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:border-fg hover:bg-surface hover:shadow-[3px_3px_0_0_var(--fg)] aria-[current=page]:border-fg aria-[current=page]:bg-fg aria-[current=page]:text-bg motion-reduce:transition-none motion-reduce:hover:translate-0"
               >
-                <ThemeIcon slug={n.slug} size={16} />
                 {n.label}
               </Link>
             </li>
@@ -92,7 +91,6 @@ export default function Header() {
                   onClick={close}
                   className="flex items-center gap-3 py-4 font-display text-2xl font-bold tracking-tight decoration-signal decoration-[3px] underline-offset-[6px] aria-[current=page]:underline"
                 >
-                  <ThemeIcon slug={n.slug} size={22} />
                   {n.label}
                 </Link>
               </li>
