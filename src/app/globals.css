@@ -1,26 +1,65 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fcfcfd;
-  --foreground: #0f172a;
+  --background: #ffffff;
+  --foreground: #0b1220;
+  --muted: #f5f6fa; /* neutral tinted band */
+  --brand: #5b3df5;
+  --brand-strong: #4527d6;
+  --brand-fg: #4a2fd8; /* brand text on light bg (AA) */
+  --brand-soft: #efecff;
+  --ink: #0e1325; /* dark band (footer, CTA) */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-fg: var(--brand-fg);
+  --color-brand-soft: var(--brand-soft);
+  --color-ink: var(--ink);
   --font-sans: var(--font-inter);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0b0d12;
-    --foreground: #e8eaf0;
+    --background: #0a0c14;
+    --foreground: #e9ebf3;
+    --muted: #10131f;
+    --brand: #6d55ff;
+    --brand-strong: #5b3df5;
+    --brand-fg: #b3a6ff;
+    --brand-soft: rgba(109, 85, 255, 0.14);
+    --ink: #06070d;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+/* Hero accent: soft brand mesh + faint grid, faded out toward the bottom */
+.hero-mesh {
+  background:
+    radial-gradient(60% 60% at 15% 0%, rgba(91, 61, 245, 0.16), transparent 70%),
+    radial-gradient(45% 50% at 90% 10%, rgba(14, 165, 233, 0.12), transparent 70%),
+    var(--background);
+  position: relative;
+  isolation: isolate;
+}
+.hero-mesh::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(to right, rgba(100, 116, 139, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(100, 116, 139, 0.1) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(80% 70% at 50% 0%, #000 30%, transparent 75%);
 }
 
 /* Markdown answers */
@@ -58,10 +97,10 @@ body {
   margin-top: 0.35em;
 }
 .prose-loila li::marker {
-  color: #8b5cf6;
+  color: var(--brand);
 }
 .prose-loila a {
-  color: #6d28d9;
+  color: var(--brand-fg);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -91,9 +130,6 @@ body {
   text-align: left;
 }
 @media (prefers-color-scheme: dark) {
-  .prose-loila a {
-    color: #c4b5fd;
-  }
   .prose-loila blockquote {
     color: #94a3b8;
     border-color: #6d28d9;

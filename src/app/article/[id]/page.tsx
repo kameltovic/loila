@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ChevronRight, ExternalLink, ScrollText } from "lucide-react";
 import { getDb, type Article, type Faq } from "@/lib/db";
 import { CODES } from "@/lib/themes";
-import { Empty, FaqCard } from "@/components/ui";
+import { Empty, FaqCard, btnPrimary, container } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
 
@@ -25,45 +27,60 @@ export default async function ArticlePage({ params }: PageProps<"/article/[id]">
     .all(a.id) as Faq[];
 
   return (
-    <article className="mx-auto max-w-3xl px-5 py-12 sm:py-16">
-      <p className="text-sm font-semibold text-violet-700 dark:text-violet-300">{codeName(a)}</p>
-      <h1 className="mt-2 text-4xl font-black tracking-tighter sm:text-5xl">Article {a.num}</h1>
-      {a.section && (
-        <nav aria-label="Section" className="mt-4 text-sm text-slate-500">
-          {a.section.split(" > ").join(" › ")}
-        </nav>
-      )}
-
-      <div className="mt-8 space-y-4 rounded-3xl border border-slate-200 bg-white p-6 text-lg leading-relaxed sm:p-8 dark:border-white/10 dark:bg-white/5">
-        {a.texte
-          .split(/\n+/)
-          .filter((p) => p.trim())
-          .map((p, i) => (
-            <p key={i}>{p}</p>
-          ))}
-      </div>
-
-      <div className="mt-6 flex flex-wrap items-center gap-4 text-sm">
-        <a
-          href={a.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rounded-full bg-slate-900 px-5 py-2.5 font-semibold text-white hover:bg-slate-700 dark:bg-white dark:text-slate-900"
-        >
-          Voir sur Légifrance ↗
-        </a>
-        {a.date_debut && <span className="text-slate-500">Version en vigueur depuis le {new Date(a.date_debut).toLocaleDateString("fr-FR")}</span>}
-      </div>
-
-      <section className="mt-14">
-        <h2 className="text-2xl font-black tracking-tight">Questions liées</h2>
-        <div className="mt-6 grid gap-4">
-          {related.map((f) => (
-            <FaqCard key={f.slug} faq={f} />
-          ))}
+    <>
+      <section className="border-b border-slate-200/70 bg-muted dark:border-white/10">
+        <div className={`${container} py-12 sm:py-14`}>
+          <nav aria-label="Fil d’Ariane" className="flex items-center gap-1 text-sm text-slate-600 dark:text-slate-400">
+            <Link href="/" className="hover:text-foreground">Accueil</Link>
+            <ChevronRight aria-hidden size={14} />
+            <span>{codeName(a)}</span>
+          </nav>
+          <div className="mt-6 flex items-start gap-4">
+            <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-soft text-brand-fg">
+              <ScrollText aria-hidden size={22} />
+            </span>
+            <div>
+              <p className="text-sm font-semibold text-brand-fg">{codeName(a)}</p>
+              <h1 className="mt-1 text-4xl font-black tracking-tighter sm:text-5xl">Article {a.num}</h1>
+              {a.section && (
+                <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">{a.section.split(" > ").join(" › ")}</p>
+              )}
+            </div>
+          </div>
         </div>
-        {related.length === 0 && <Empty>Aucune question ne cite encore cet article.</Empty>}
       </section>
-    </article>
+
+      <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
+        <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 text-lg leading-relaxed shadow-sm sm:p-8 dark:border-white/10 dark:bg-white/[0.04]">
+          {a.texte
+            .split(/\n+/)
+            .filter((p) => p.trim())
+            .map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
+        </div>
+
+        <div className="mt-6 flex flex-wrap items-center gap-4 text-sm">
+          <a href={a.url} target="_blank" rel="noopener noreferrer" className={btnPrimary}>
+            Voir sur Légifrance <ExternalLink aria-hidden size={16} />
+          </a>
+          {a.date_debut && (
+            <span className="text-slate-600 dark:text-slate-400">
+              Version en vigueur depuis le {new Date(a.date_debut).toLocaleDateString("fr-FR")}
+            </span>
+          )}
+        </div>
+
+        <section className="mt-14">
+          <h2 className="text-2xl font-black tracking-tight">Questions liées</h2>
+          <div className="mt-6 grid gap-4">
+            {related.map((f) => (
+              <FaqCard key={f.slug} faq={f} />
+            ))}
+          </div>
+          {related.length === 0 && <Empty>Aucune question ne cite encore cet article.</Empty>}
+        </section>
+      </article>
+    </>
   );
 }

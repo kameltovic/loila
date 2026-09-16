@@ -164,9 +164,10 @@ export async function ask(question: string, theme?: string, llm: LlmCall = realL
   }
 
   // 3. LLM over retrieved articles
-  let codes: string[] = themeDef ? [...themeDef.codes] : Object.keys(CODES);
+  // Without a theme, conventions only join the scope when one is named: one random branch's "art. 4" misleads everyone else.
+  let codes: string[] = themeDef ? [...themeDef.codes] : Object.keys(CODES).filter((c) => !c.startsWith("ccn-"));
   // A named convention ("Syntec", "IDCC 1486") narrows the scope, even outside the conventions theme.
-  const named = mentionedConventions(q).filter((c) => codes.includes(c));
+  const named = mentionedConventions(q).filter((c) => !themeDef || codes.includes(c));
   if (named.length) codes = named;
   // Query expansion defaults on only with the real LLM, so tests with a fake stay offline.
   const { words, nums } = expand ? await expand(q, codes) : { words: "", nums: [] };
