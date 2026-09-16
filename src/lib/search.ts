@@ -6,7 +6,8 @@ const STOPWORDS = new Set(
   même mes moi mon ne nos notre nous on ou où par pas pour qu que qui sa se ses son sur ta te tes toi ton tu un une
   vos votre vous y d l j m n s t c est sont été être avoir ai as avez ont eu fait faire peut puis-je puis dois doit
   quand comment quel quelle quels quelles quoi si plus moins tout tous toute toutes très sans sous entre vers chez
-  alors donc car ni or aussi bien comme cela ça ceci celui celle ceux mon ma mes`.split(/\s+/),
+  alors donc car ni or aussi bien comme cela ça ceci celui celle ceux mon ma mes
+  modalités modalité règles règle convention conventions collective collectives droit droits`.split(/\s+/),
 );
 
 // Codes spell numbers and units in words ("vingt mètres carrés"); users type "20 m2".

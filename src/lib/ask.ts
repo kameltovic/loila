@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { getDb, type Article, type Faq } from "./db";
 import { CODES, THEMES } from "./themes";
 import { chat, type ChatMessage } from "./openrouter";
-import { getArticleByNum, searchArticles } from "./search";
+import { getArticleByNum, mentionedConventions, searchArticles } from "./search";
 
 export type AskArticle = { id: string; num: string; code: string; url: string };
 export type AskResult = {
@@ -79,7 +79,7 @@ const SYSTEM_PROMPT = `Tu es Loilà, un assistant qui explique le droit françai
 Règles :
 - Commence par une réponse directe en une phrase.
 - Puis explique simplement : phrases courtes, listes à puces, pas de jargon (ou explique-le).
-- Utilise UNIQUEMENT les articles fournis. N'invente jamais rien (ni article, ni délai, ni montant).
+- Utilise UNIQUEMENT les articles fournis. N'invente jamais rien (ni article, ni délai, ni montant, ni numéro IDCC) : le nom du texte et son IDCC sont indiqués dans le titre de chaque article.
 - Cite les numéros d'articles entre parenthèses, par exemple (art. L1237-19).
 - Si les articles fournis ne permettent pas de conclure, dis-le clairement.
 - Si l'enjeu est important, termine en conseillant de vérifier auprès d'un professionnel (avocat, inspection du travail, ADIL, mairie selon le cas).
@@ -100,7 +100,7 @@ export async function expandQuery(q: string, codes: string[], retry = 1): Promis
       { model: process.env.OPENROUTER_EXPAND_MODEL ?? "google/gemini-3.5-flash-lite", maxTokens: 150, temperature: 0, timeoutMs: 8_000 },
     );
     const words = content.replace(/^.*articles?\s*:.*$/gim, "").replace(/mots(-cl[ée]s)?\s*:/gi, "");
-    const nums = content.matchAll(/(?:\bart(?:icles?)?\.?\s*|\b(?=[LRD]\*?\d))([LRD]?\*?\d+(?:-\d+)*)/gi);
+    const nums = content.matchAll(/(?:\bart(?:icles?)?\.?\s*|\b(?=[LRD]\*?\d))([LRD]?\*?\d+(?:[.-]\d+)*)/gi);
     return { words, nums: [...nums].slice(0, 6).map((m) => m[1].replace("*", "").toUpperCase()) };
   } catch {
     if (retry > 0) return expandQuery(q, codes, retry - 1);
@@ -164,13 +164,33 @@ export async function ask(question: string, theme?: string, llm: LlmCall = realL
   }
 
   // 3. LLM over retrieved articles
-  const codes: string[] = themeDef ? [...themeDef.codes] : Object.keys(CODES);
+  let codes: string[] = themeDef ? [...themeDef.codes] : Object.keys(CODES);
+  // A named convention ("Syntec", "IDCC 1486") narrows the scope, even outside the conventions theme.
+  const named = mentionedConventions(q).filter((c) => codes.includes(c));
+  if (named.length) codes = named;
   // Query expansion defaults on only with the real LLM, so tests with a fake stay offline.
   const { words, nums } = expand ? await expand(q, codes) : { words: "", nums: [] };
-  const byNum = nums.flatMap((n) => codes.map((c) => getArticleByNum(c, n)).filter((a): a is Article => !!a));
-  const scope = { codes: themeDef ? codes : undefined, limit: MAX_ARTICLES };
+  // Convention article numbers repeat across avenants ("article 9" x25), so exact lookup only for codes and laws.
+  const byNum = nums.flatMap((n) => codes.filter((c) => !c.startsWith("ccn-")).map((c) => getArticleByNum(c, n)).filter((a): a is Article => !!a));
+  const scope = { codes, limit: MAX_ARTICLES };
   const seen = new Set<string>();
-  const found: Article[] = [...byNum, ...(words ? searchArticles(words, scope) : []), ...searchArticles(q, scope)]
+  const wide = { codes, limit: 20 };
+  const byWords = words ? searchArticles(words, wide) : [];
+  const byQuestion = searchArticles(q, wide);
+  // Interleave both searches, then rerank by distinct keyword coverage: bm25 buries long articles
+  // that cover the topic in depth. ponytail: stem = 5-char prefix; upgrade path = embeddings rerank.
+  const stems = [...tokens(`${q} ${words}`)].filter((t) => t.length > 3).map((t) => t.slice(0, 5));
+  const coverage = (a: Article) => {
+    const seen = new Set(tokens(a.texte).values().map((t) => t.slice(0, 5)));
+    return stems.filter((st) => seen.has(st)).length;
+  };
+  const mixed = Array.from({ length: 20 }, (_, i) => [byWords[i], byQuestion[i]])
+    .flat()
+    .filter((a): a is (typeof byQuestion)[number] => !!a)
+    .map((a, i) => ({ a, i, c: coverage(a) }))
+    .sort((x, y) => y.c - x.c || x.i - y.i)
+    .map((x) => x.a);
+  const found: Article[] = [...byNum, ...mixed]
     .filter((a) => !seen.has(a.id) && !!seen.add(a.id))
     .slice(0, MAX_ARTICLES);
   if (!found.length) {
@@ -184,14 +204,14 @@ export async function ask(question: string, theme?: string, llm: LlmCall = realL
 
   const keywords = tokens(`${q} ${words}`);
   const context = found
-    .map((a) => `### Article ${a.num} (${a.code})\n${excerpt(a.texte, keywords)}`)
+    .map((a) => `### ${CODES[a.code as keyof typeof CODES]?.name ?? a.code} — article ${a.num || "sans numéro"}${a.section ? ` — ${a.section}` : ""}\n${excerpt(a.texte, keywords)}`)
     .join("\n\n");
   const { content, model } = await llm([
     { role: "system", content: SYSTEM_PROMPT },
     { role: "user", content: `Articles :\n\n${context}\n\nQuestion : ${q}` },
   ]);
 
-  const cited = found.filter((a) => new RegExp(`(?<![\\w-])${escapeRe(a.num)}(?![\\d-])`).test(content));
+  const cited = found.filter((a) => !!a.num && new RegExp(`(?<![\\w-])${escapeRe(a.num)}(?![\\d-])`).test(content));
   const used = cited.length ? cited : found;
   if (!isNonAnswer(content)) db.prepare("INSERT OR REPLACE INTO qa_cache (hash, question, answer_md, article_ids, model) VALUES (?, ?, ?, ?, ?)").run(
     hash, q, content, JSON.stringify(used.map((a) => a.id)), model,
