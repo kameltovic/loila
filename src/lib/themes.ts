@@ -4,6 +4,22 @@ export const CODES = {
   "code-urbanisme": { name: "Code de l'urbanisme", legitext: "LEGITEXT000006074075" },
   "code-construction-habitation": { name: "Code de la construction et de l'habitation", legitext: "LEGITEXT000006074096" },
   "loi-89-462": { name: "Loi n° 89-462 du 6 juillet 1989 (baux d'habitation)", legitext: "JORFTEXT000000509310" },
+  // Conventions collectives (KALI): legitext holds the KALICONT (IDCC container) id.
+  "ccn-1486": { name: "Convention collective Syntec, bureaux d'études techniques (IDCC 1486)", legitext: "KALICONT000005635173", idcc: "1486" },
+  "ccn-1979": { name: "Convention collective HCR, hôtels cafés restaurants (IDCC 1979)", legitext: "KALICONT000005635534", idcc: "1979" },
+  "ccn-2216": { name: "Convention collective Commerce de détail et de gros à prédominance alimentaire (IDCC 2216)", legitext: "KALICONT000005635085", idcc: "2216" },
+  "ccn-3248": { name: "Convention collective Métallurgie (IDCC 3248)", legitext: "KALICONT000046993250", idcc: "3248" },
+  "ccn-1597": { name: "Convention collective Bâtiment ouvriers, plus de 10 salariés (IDCC 1597)", legitext: "KALICONT000005635220", idcc: "1597" },
+  "ccn-1596": { name: "Convention collective Bâtiment ouvriers, jusqu'à 10 salariés (IDCC 1596)", legitext: "KALICONT000005635221", idcc: "1596" },
+  "ccn-3127": { name: "Convention collective Services à la personne (IDCC 3127)", legitext: "KALICONT000027084096", idcc: "3127" },
+  "ccn-3239": { name: "Convention collective Particulier employeur et emploi à domicile (IDCC 3239)", legitext: "KALICONT000044594539", idcc: "3239" },
+  "ccn-3043": { name: "Convention collective Propreté et services associés (IDCC 3043)", legitext: "KALICONT000027172335", idcc: "3043" },
+  "ccn-1090": { name: "Convention collective Services de l'automobile (IDCC 1090)", legitext: "KALICONT000005635191", idcc: "1090" },
+  "ccn-2120": { name: "Convention collective Banque (IDCC 2120)", legitext: "KALICONT000005635780", idcc: "2120" },
+  "ccn-1527": { name: "Convention collective Immobilier (IDCC 1527)", legitext: "KALICONT000005635413", idcc: "1527" },
+  "ccn-2596": { name: "Convention collective Coiffure (IDCC 2596)", legitext: "KALICONT000018563755", idcc: "2596" },
+  "ccn-0016": { name: "Convention collective Transports routiers (IDCC 0016)", legitext: "KALICONT000005635624", idcc: "0016" },
+  "ccn-1996": { name: "Convention collective Pharmacie d'officine (IDCC 1996)", legitext: "KALICONT000005635528", idcc: "1996" },
 } as const;
 export type CodeSlug = keyof typeof CODES;
 
@@ -11,5 +27,6 @@ export const THEMES = [
   { slug: "travail", emoji: "💼", title: "Travail", tagline: "Contrat, congés, licenciement, rupture conventionnelle.", codes: ["code-du-travail"] },
   { slug: "urbanisme", emoji: "🏡", title: "Construire & aménager", tagline: "Permis de construire, déclaration préalable, PLU.", codes: ["code-urbanisme"] },
   { slug: "logement", emoji: "🔑", title: "Louer un logement", tagline: "Bail, dépôt de garantie, préavis, loyers.", codes: ["loi-89-462", "code-construction-habitation"] },
+  { slug: "conventions", emoji: "📑", title: "Conventions collectives", tagline: "Salaires minimums, primes, préavis, congés propres à votre branche.", codes: ["ccn-1486", "ccn-1979", "ccn-2216", "ccn-3248", "ccn-1597", "ccn-1596", "ccn-3127", "ccn-3239", "ccn-3043", "ccn-1090", "ccn-2120", "ccn-1527", "ccn-2596", "ccn-0016", "ccn-1996"] },
 ] as const;
 export type ThemeSlug = (typeof THEMES)[number]["slug"];

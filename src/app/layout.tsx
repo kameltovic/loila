@@ -6,7 +6,7 @@ import "./globals.css";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 
-const NAV_LABEL = { travail: "Travail", urbanisme: "Urbanisme", logement: "Logement" };
+const NAV_LABEL = { travail: "Travail", urbanisme: "Urbanisme", logement: "Logement", conventions: "Conventions" };
 
 export const metadata: Metadata = {
   title: { default: "Loilà — Le droit français, enfin lisible", template: "%s · Loilà" },

@@ -1,4 +1,5 @@
 import { getDb, type Article } from "./db";
+import { CODES } from "./themes";
 
 const STOPWORDS = new Set(
   `a à au aux avec ce ces cet cette dans de des du elle en et eux il ils je la le les leur leurs lui ma mais me
@@ -35,13 +36,50 @@ export function toFtsQuery(input: string): string {
   return [...terms].join(" OR ");
 }
 
+// Branch nicknames -> ccn slug, so "préavis Syntec" searches only IDCC 1486.
+const CCN_KEYWORDS: Record<string, RegExp> = {
+  "ccn-1486": /syntec|bureaux? d.études|ingénieurs?-conseils/,
+  "ccn-1979": /\bhcr\b|hôtel|café|restaura/,
+  "ccn-2216": /alimentaire|supermarché|hypermarché|grande distribution/,
+  "ccn-3248": /métallurgi/,
+  "ccn-1597": /bâtiment|\bbtp\b/,
+  "ccn-1596": /bâtiment|\bbtp\b/,
+  "ccn-3127": /services? à la personne/,
+  "ccn-3239": /particuliers? employeurs?|emploi à domicile|assistante? maternelle|nounou/,
+  "ccn-3043": /propreté|nettoyage/,
+  "ccn-1090": /automobile|garage/,
+  "ccn-2120": /banque|bancaire/,
+  "ccn-1527": /immobili/,
+  "ccn-2596": /coiff/,
+  "ccn-0016": /transports? routiers?|routier/,
+  "ccn-1996": /pharmacie/,
+};
+
+/** CCN slugs a question refers to, by IDCC ("1486", "IDCC 16") or branch keyword. */
+export function mentionedConventions(query: string): string[] {
+  const q = query.toLowerCase();
+  return Object.entries(CODES).flatMap(([slug, c]) => {
+    if (!("idcc" in c)) return [];
+    const byIdcc = new RegExp(`\\b${c.idcc}\\b|idcc\\s*n?°?\\s*0*${+c.idcc}\\b`).test(q);
+    return byIdcc || CCN_KEYWORDS[slug]?.test(q) ? [slug] : [];
+  });
+}
+
 export function searchArticles(
   query: string,
   opts: { codes?: string[]; limit?: number } = {},
 ): (Article & { snippet: string })[] {
+  let codes = opts.codes?.length ? opts.codes : null;
+  // Within a scope that includes conventions, a named branch narrows the search to it,
+  // and the branch name itself is dropped from the query (it only matches "champ d'application" boilerplate).
+  const named = codes ? mentionedConventions(query).filter((c) => codes!.includes(c)) : [];
+  if (named.length) {
+    codes = named;
+    for (const c of named) query = query.toLowerCase().replace(new RegExp(CCN_KEYWORDS[c].source, "g"), " ");
+    query = query.replace(/\bidcc\b|\b\d{4}\b|conventions? collectives?/g, " ");
+  }
   const match = toFtsQuery(query);
   if (!match) return [];
-  const codes = opts.codes?.length ? opts.codes : null;
   const sql = `SELECT a.*, snippet(articles_fts, 2, '<mark>', '</mark>', '…', 24) AS snippet
     FROM articles_fts JOIN articles a ON a.rowid = articles_fts.rowid
     WHERE articles_fts MATCH ? ${codes ? `AND a.code IN (${codes.map(() => "?").join(",")})` : ""}

@@ -1,8 +1,8 @@
 import { createHash } from "node:crypto";
 import { getDb, type Article, type Faq } from "./db";
-import { THEMES } from "./themes";
+import { CODES, THEMES } from "./themes";
 import { chat, type ChatMessage } from "./openrouter";
-import { searchArticles } from "./search";
+import { getArticleByNum, searchArticles } from "./search";
 
 export type AskArticle = { id: string; num: string; code: string; url: string };
 export type AskResult = {
@@ -17,8 +17,8 @@ export class AskValidationError extends Error {}
 
 // ponytail: naive token-overlap heuristic; upgrade path = embeddings + cosine similarity.
 const FAQ_MIN_JACCARD = 0.5;
-const MAX_ARTICLES = 6;
-const ARTICLE_CHARS = 1500;
+const MAX_ARTICLES = 8;
+const ARTICLE_CHARS = 2500;
 
 const STOPWORDS = new Set(
   ("a au aux avec ce ces cet cette d dans de des du elle en est et il ils je j l la le les leur lui m ma mais me mes mon " +
@@ -85,9 +85,57 @@ Règles :
 - Si l'enjeu est important, termine en conseillant de vérifier auprès d'un professionnel (avocat, inspection du travail, ADIL, mairie selon le cas).
 - Réponds en français, en Markdown.`;
 
+const EXPAND_PROMPT = `Tu aides un moteur de recherche plein texte sur des textes de loi français.
+Transforme la question d'un particulier en vocabulaire juridique tel qu'il apparaît dans les textes.
+Réponds sur exactement deux lignes, sans rien d'autre :
+mots: 5 à 10 mots ou expressions juridiques, séparés par des virgules
+articles: numéros d'articles probables dans les textes indiqués (ex. 7, L3141-16, R421-14), séparés par des virgules, ou vide`;
+
+// Question in plain words → legal vocabulary + likely article numbers (~100 tokens on the cheap model).
+export async function expandQuery(q: string, codes: string[], retry = 1): Promise<{ words: string; nums: string[] }> {
+  const texts = codes.map((c) => CODES[c as keyof typeof CODES]?.name).filter(Boolean).join(" ; ");
+  try {
+    const { content } = await chat(
+      [{ role: "system", content: EXPAND_PROMPT }, { role: "user", content: `Textes : ${texts}\nQuestion : ${q}` }],
+      { model: process.env.OPENROUTER_EXPAND_MODEL ?? "google/gemini-3.5-flash-lite", maxTokens: 150, temperature: 0, timeoutMs: 8_000 },
+    );
+    const words = content.replace(/^.*articles?\s*:.*$/gim, "").replace(/mots(-cl[ée]s)?\s*:/gi, "");
+    const nums = content.matchAll(/(?:\bart(?:icles?)?\.?\s*|\b(?=[LRD]\*?\d))([LRD]?\*?\d+(?:-\d+)*)/gi);
+    return { words, nums: [...nums].slice(0, 6).map((m) => m[1].replace("*", "").toUpperCase()) };
+  } catch {
+    if (retry > 0) return expandQuery(q, codes, retry - 1);
+    return { words: "", nums: [] }; // retrieval still works on the raw question
+  }
+}
+
+// ponytail: phrase sniffing; upgrade path = ask the model for a JSON {answered: boolean}.
+const isNonAnswer = (md: string) => /ne (me )?(permettent|traitent|mentionnent|abordent|précisent) pas|ne permet pas de (répondre|conclure)/i.test(md.slice(0, 400));
+
+// Long articles: keep the first paragraph + the paragraphs sharing the most keywords, in original order.
+export function excerpt(texte: string, keywords: Set<string>, max = ARTICLE_CHARS): string {
+  if (texte.length <= max) return texte;
+  const paras = texte.split(/\n+/);
+  const score = (p: string) => [...tokens(p)].filter((t) => keywords.has(t) || [...keywords].some((k) => k.length > 4 && t.startsWith(k.slice(0, 5)))).length;
+  const ranked = paras.map((p, i) => ({ i, s: i === 0 ? Infinity : score(p) })).sort((a, b) => b.s - a.s);
+  const keep = new Set<number>();
+  let len = 0;
+  for (const { i, s } of ranked) {
+    if (!s || len + paras[i].length > max) continue;
+    keep.add(i);
+    len += paras[i].length;
+  }
+  return paras.map((p, i) => (keep.has(i) ? p : null)).reduce<string[]>((out, p) => {
+    if (p !== null) out.push(p);
+    else if (out.at(-1) !== "[…]") out.push("[…]");
+    return out;
+  }, []).join("\n");
+}
+
+const realLlm: LlmCall = (m) => chat(m);
+
 const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-export async function ask(question: string, theme?: string, llm: LlmCall = (m) => chat(m)): Promise<AskResult> {
+export async function ask(question: string, theme?: string, llm: LlmCall = realLlm, expand = llm === realLlm ? expandQuery : undefined): Promise<AskResult> {
   const q = typeof question === "string" ? question.trim() : "";
   if (q.length < 3 || q.length > 500) throw new AskValidationError("La question doit faire entre 3 et 500 caractères.");
   const themeDef = theme ? THEMES.find((t) => t.slug === theme) : undefined;
@@ -116,7 +164,15 @@ export async function ask(question: string, theme?: string, llm: LlmCall = (m) =
   }
 
   // 3. LLM over retrieved articles
-  const found: Article[] = searchArticles(q, { codes: themeDef ? [...themeDef.codes] : undefined, limit: MAX_ARTICLES });
+  const codes: string[] = themeDef ? [...themeDef.codes] : Object.keys(CODES);
+  // Query expansion defaults on only with the real LLM, so tests with a fake stay offline.
+  const { words, nums } = expand ? await expand(q, codes) : { words: "", nums: [] };
+  const byNum = nums.flatMap((n) => codes.map((c) => getArticleByNum(c, n)).filter((a): a is Article => !!a));
+  const scope = { codes: themeDef ? codes : undefined, limit: MAX_ARTICLES };
+  const seen = new Set<string>();
+  const found: Article[] = [...byNum, ...(words ? searchArticles(words, scope) : []), ...searchArticles(q, scope)]
+    .filter((a) => !seen.has(a.id) && !!seen.add(a.id))
+    .slice(0, MAX_ARTICLES);
   if (!found.length) {
     return {
       source: "none",
@@ -126,17 +182,18 @@ export async function ask(question: string, theme?: string, llm: LlmCall = (m) =
     };
   }
 
+  const keywords = tokens(`${q} ${words}`);
   const context = found
-    .map((a) => `### Article ${a.num} (${a.code})\n${a.texte.length > ARTICLE_CHARS ? a.texte.slice(0, ARTICLE_CHARS) + "…" : a.texte}`)
+    .map((a) => `### Article ${a.num} (${a.code})\n${excerpt(a.texte, keywords)}`)
     .join("\n\n");
   const { content, model } = await llm([
     { role: "system", content: SYSTEM_PROMPT },
     { role: "user", content: `Articles :\n\n${context}\n\nQuestion : ${q}` },
   ]);
 
-  const cited = found.filter((a) => new RegExp(`(?<![\\w-])${escapeRe(a.num)}(?![\\w-])`).test(content));
+  const cited = found.filter((a) => new RegExp(`(?<![\\w-])${escapeRe(a.num)}(?![\\d-])`).test(content));
   const used = cited.length ? cited : found;
-  db.prepare("INSERT OR REPLACE INTO qa_cache (hash, question, answer_md, article_ids, model) VALUES (?, ?, ?, ?, ?)").run(
+  if (!isNonAnswer(content)) db.prepare("INSERT OR REPLACE INTO qa_cache (hash, question, answer_md, article_ids, model) VALUES (?, ?, ?, ?, ?)").run(
     hash, q, content, JSON.stringify(used.map((a) => a.id)), model,
   );
   return { source: "llm", answer_md: content, articles: used.map(({ id, num, code, url }) => ({ id, num, code, url })) };

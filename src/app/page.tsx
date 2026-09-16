@@ -47,7 +47,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="themes" className="mx-auto grid max-w-5xl scroll-mt-20 gap-4 px-5 py-8 sm:grid-cols-3">
+      <section id="themes" className="mx-auto grid max-w-5xl scroll-mt-20 gap-4 px-5 py-8 sm:grid-cols-2 lg:grid-cols-4">
         {THEMES.map((t) => (
           <Link key={t.slug} href={`/${t.slug}`} className={`${card} p-6`}>
             <span aria-hidden className={`inline-flex h-12 w-12 items-center justify-center rounded-2xl text-2xl ${accent(t.slug).bg}`}>

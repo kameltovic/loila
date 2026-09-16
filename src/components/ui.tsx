@@ -18,6 +18,11 @@ export const ACCENT: Record<string, { bg: string; soft: string; ring: string }> 
     soft: "bg-amber-50 dark:bg-amber-400/10",
     ring: "border-amber-200 dark:border-amber-400/30",
   },
+  conventions: {
+    bg: "bg-rose-100 dark:bg-rose-400/15",
+    soft: "bg-rose-50 dark:bg-rose-400/10",
+    ring: "border-rose-200 dark:border-rose-400/30",
+  },
 };
 export const accent = (slug: string) => ACCENT[slug] ?? ACCENT.travail;
 
