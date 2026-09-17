@@ -8,6 +8,7 @@ import { SITE_URL } from "./seo";
 const PROD = process.env.NODE_ENV === "production";
 export const ANON_COOKIE = "loila_anon";
 export const SESSION_COOKIE = "loila_session";
+export const LOGIN_COOKIE = "loila_login"; // magic-link token parked between opening the link and confirming
 const SESSION_DAYS = 90;
 const LOGIN_TOKEN_TTL = 15 * 60;
 
@@ -81,7 +82,7 @@ export function canonicalEmail(email: string): string {
   return base ? `${base}@${domain}` : e;
 }
 
-const cookieOpts = (maxAge: number) => ({ httpOnly: true, secure: PROD, sameSite: "lax" as const, path: "/", maxAge });
+export const cookieOpts = (maxAge: number) => ({ httpOnly: true, secure: PROD, sameSite: "lax" as const, path: "/", maxAge });
 
 export type Identity = { userId: number | null; email: string | null; anonId: string; ipHash: string };
 

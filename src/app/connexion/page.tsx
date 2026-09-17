@@ -12,7 +12,8 @@ export const metadata: Metadata = {
   robots: { index: false },
 };
 
-export default function Login() {
+export default async function Login({ searchParams }: { searchParams: Promise<{ erreur?: string }> }) {
+  const linkError = (await searchParams).erreur === "lien";
   return (
     <section className={`${container} max-w-3xl! pt-12 pb-20 sm:pt-20 sm:pb-28`}>
       <p className={`${label} flex items-center gap-3 text-fg-2`}>
@@ -26,6 +27,11 @@ export default function Login() {
         Entrez votre email : nous vous envoyons un lien de connexion à usage unique. Cliquez dessus et c’est tout. Utilisez
         l’adresse de votre achat pour retrouver vos questions et votre abonnement.
       </p>
+      {linkError && (
+        <p role="alert" className="mt-8 border-2 border-signal bg-danger-bg px-4 py-3">
+          Ce lien de connexion n’est plus valable : il a expiré (15 minutes) ou a déjà servi. Demandez-en un nouveau ci-dessous.
+        </p>
+      )}
       <div className="mt-10 border-2 border-fg bg-surface p-5 shadow-hard sm:p-8">
         <LoginForm />
       </div>
