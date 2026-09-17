@@ -268,7 +268,7 @@ function quota(me: Me): string {
   return dossier || "Questions IA offertes utilisées, voir les tarifs";
 }
 
-function Answer({ result }: { result: AskResult }) {
+export function Answer({ result }: { result: AskResult }) {
   const instant = result.source === "faq" || result.source === "cache";
   return (
     <div className="rounded-xl border-2 border-fg bg-bg px-5 py-5 sm:px-7 sm:py-6">

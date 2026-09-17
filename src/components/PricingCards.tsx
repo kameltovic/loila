@@ -11,7 +11,8 @@ const DOSSIER = OFFERS.dossier;
 const PRO = OFFERS.pro;
 
 export const DOSSIER_FEATURES = [
-  `${DOSSIER.credits} questions à l’IA sur votre situation`,
+  "Décrivez votre situation : questions ciblées, puis synthèse des règles, délais et prochaines étapes",
+  `${DOSSIER.credits} questions à l’IA (synthèse et questions de suivi)`,
   `Valables ${DOSSIER.validityDays} jours après l’achat`,
   "Chaque réponse cite ses articles de loi",
   "Paiement unique, sans abonnement",
@@ -69,6 +70,14 @@ function DossierCard({ compact }: { compact: boolean }) {
         ))}
       </ul>
       <div className={`mt-auto ${compact ? "pt-5" : "pt-7"}`}>
+        {!compact && (
+          <div className="mb-6 border-b border-rule pb-6">
+            <Link href="/dossier/nouveau" className={`${btnPrimary} w-full bg-fg! text-bg!`}>
+              <ArrowRight aria-hidden className="size-4" /> Décrire ma situation
+            </Link>
+            <p className="mt-2 text-sm text-fg-2">Commencez gratuitement : le dossier n’est demandé qu’au moment de la synthèse, si vos questions offertes sont utilisées.</p>
+          </div>
+        )}
         <label htmlFor={waiverId} className="flex cursor-pointer items-start gap-3 text-sm text-fg-2">
           <input
             id={waiverId}
@@ -90,7 +99,7 @@ function DossierCard({ compact }: { compact: boolean }) {
           onClick={checkout}
           disabled={busy}
           aria-label={`Ouvrir un dossier, ${formatPrice(DOSSIER.priceCents)}`}
-          className={`${btnPrimary} mt-4 w-full bg-fg! text-bg! disabled:opacity-60`}
+          className={`${btnPrimary} mt-4 w-full disabled:opacity-60 ${compact ? "bg-fg! text-bg!" : ""}`}
         >
           {busy ? <Loader2 aria-hidden className="size-4 animate-spin" /> : <ArrowRight aria-hidden className="size-4" />}
           {busy ? "Redirection…" : "Ouvrir un dossier"}

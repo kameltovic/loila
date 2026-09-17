@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
-import { Lock, UserRound, X } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { ArrowRight, Lock, UserRound, X } from "lucide-react";
 import { FREE_QUESTIONS, OFFERS, formatDate, type Me } from "@/lib/plans";
 import { display, label } from "@/components/ui";
 import PricingCards from "@/components/PricingCards";
@@ -16,6 +17,7 @@ export default function Paywall({ me, reason = "quota", onClose }: { me: Me | nu
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
   const subscriber = !!me && me.plan !== "free";
+  const inDossier = usePathname()?.startsWith("/dossier");
 
   // Same focus handling as ArticleDrawer: focus close, trap Tab, Esc closes, restore focus.
   useEffect(() => {
@@ -117,6 +119,15 @@ export default function Paywall({ me, reason = "quota", onClose }: { me: Me | nu
               </p>
             )}
             <PricingCards compact />
+            {!inDossier && (
+              <p className="border-2 border-fg bg-surface px-4 py-3">
+                <strong>Une situation à démêler ?</strong> Décrivez-la : quelques questions ciblées, puis une synthèse des règles, délais
+                et prochaines étapes.{" "}
+                <Link href="/dossier/nouveau" onClick={onClose} className="inline-flex items-center gap-1 font-semibold underline decoration-signal decoration-2 underline-offset-4">
+                  Décrire ma situation <ArrowRight aria-hidden className="size-4" />
+                </Link>
+              </p>
+            )}
 
             <p className="border-l-4 border-signal pl-4 text-[0.9375rem]">
               <strong>Les réponses existantes restent gratuites et illimitées</strong> : fiches pratiques et réponses instantanées

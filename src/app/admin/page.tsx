@@ -35,6 +35,10 @@ export default async function Admin() {
   const questions = (k: string) => usage.find((u) => u.kind === k) ?? { total: 0, week: 0 };
   const credits = n("SELECT COALESCE(SUM(credits_left), 0) n FROM credit_batches WHERE expires_at > unixepoch()");
   const waitlistCount = n("SELECT COUNT(*) n FROM pro_waitlist");
+  const wizard = db.prepare(`SELECT COUNT(*) started, COALESCE(SUM(answers IS NOT NULL), 0) completed, COALESCE(SUM(synthesis_md IS NOT NULL), 0) synthesized,
+    COALESCE(SUM(created_at >= ${week}), 0) started7, COALESCE(SUM(synthesis_md IS NOT NULL AND created_at >= ${week}), 0) synthesized7 FROM dossiers`).get() as
+    { started: number; completed: number; synthesized: number; started7: number; synthesized7: number };
+  const followups = n("SELECT COUNT(*) n FROM dossier_messages");
 
   const users = db.prepare("SELECT id, email, stripe_customer_id, created_at FROM users ORDER BY id DESC LIMIT 100").all() as
     { id: number; email: string; stripe_customer_id: string | null; created_at: number }[];
@@ -66,6 +70,9 @@ export default async function Admin() {
           <Kpi key={k} name={`Questions IA · ${k}`} value={questions(k).total} sub={`+${questions(k).week} sur 7 jours`} />
         ))}
         <Kpi name="Liste d'attente Pro" value={waitlistCount} />
+        <Kpi name="Dossiers démarrés" value={wizard.started} sub={`+${wizard.started7} sur 7 jours`} />
+        <Kpi name="Dossiers complétés" value={wizard.completed} sub="réponses aux questions envoyées" />
+        <Kpi name="Synthèses générées" value={wizard.synthesized} sub={`+${wizard.synthesized7} sur 7 jours · ${followups} questions de suivi`} />
       </div>
 
       <Section title="Comptes récents">

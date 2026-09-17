@@ -127,6 +127,32 @@ CREATE TABLE IF NOT EXISTS usage (
   created_at INTEGER NOT NULL DEFAULT (unixepoch())
 );
 CREATE INDEX IF NOT EXISTS usage_subject ON usage(subject, kind, created_at);
+-- Dossier wizard (src/lib/wizard.ts). JSON columns are written and read by wizard.ts only.
+CREATE TABLE IF NOT EXISTS dossiers (
+  id           TEXT PRIMARY KEY,            -- random, unguessable
+  user_id      INTEGER NOT NULL REFERENCES users(id),
+  status       TEXT NOT NULL,               -- 'analyse' | 'questions' | 'answered' | 'generating' | 'done' | 'hors_sujet' | 'failed'
+  story        TEXT NOT NULL,
+  analysis     TEXT,                        -- JSON: theme, title, facts, legal_terms, likely_articles, unknowns, high_stakes
+  questions    TEXT,                        -- JSON: [{ id, question, type, options, article, why }]
+  answers      TEXT,                        -- JSON: { items: [{ id, question, answer }], note }
+  synthesis_md TEXT,
+  article_ids  TEXT NOT NULL DEFAULT '[]',  -- cited in the synthesis
+  calls        TEXT NOT NULL DEFAULT '[]',  -- JSON: [{ step, model, provider, ms, cost, note }]
+  created_at   INTEGER NOT NULL DEFAULT (unixepoch()),
+  updated_at   INTEGER NOT NULL DEFAULT (unixepoch())
+);
+CREATE INDEX IF NOT EXISTS dossiers_user ON dossiers(user_id, created_at);
+CREATE TABLE IF NOT EXISTS dossier_messages (
+  id          INTEGER PRIMARY KEY,
+  dossier_id  TEXT NOT NULL REFERENCES dossiers(id),
+  question    TEXT NOT NULL,
+  answer_md   TEXT NOT NULL,
+  article_ids TEXT NOT NULL DEFAULT '[]',
+  calls       TEXT NOT NULL DEFAULT '[]',
+  created_at  INTEGER NOT NULL DEFAULT (unixepoch())
+);
+CREATE INDEX IF NOT EXISTS dossier_messages_dossier ON dossier_messages(dossier_id, id);
 CREATE TABLE IF NOT EXISTS stripe_events (
   id          TEXT PRIMARY KEY,
   received_at INTEGER NOT NULL DEFAULT (unixepoch())

@@ -92,6 +92,12 @@ export default function Home() {
 
           <div id="question" className="mt-10 max-w-4xl scroll-mt-28 sm:mt-12">
             <Chat variant="hero" />
+            <p className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 border-l-4 border-signal pl-4">
+              <span className="font-semibold">Une situation plus complexe ?</span>
+              <Link href="/dossier/nouveau" className="inline-flex items-center gap-1.5 font-mono text-sm font-bold uppercase underline decoration-signal decoration-2 underline-offset-4">
+                Décrire ma situation <ArrowRight aria-hidden strokeWidth={2} className="size-4" />
+              </Link>
+            </p>
           </div>
 
           <ul className="mt-14 grid border-y border-fg sm:grid-cols-3">

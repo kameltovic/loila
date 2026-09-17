@@ -67,7 +67,7 @@ npm run batch:faq -- --force                      # régénère aussi les questi
 
 Les questions sont dans `seed/questions.json` (`theme`, `slug`, `emoji`, `question`, `hints`). Les `hints` aident la recherche : mots-clés, et numéros d'articles (`L1237-11`, `22`…) récupérés directement. Seuls les articles réellement cités par le modèle et présents en base sont enregistrés.
 
-`npm run check` lance la vérification des types, le self-check de la cascade et celui de la facturation (`scripts/check-billing.ts`).
+`npm run check` lance la vérification des types, le self-check de la cascade celui de la facturation (`scripts/check-billing.ts`) et celui du wizard avec un faux LLM (`scripts/check-wizard.ts`).
 
 ## Paiements
 
@@ -130,6 +130,29 @@ stripe trigger checkout.session.completed --override checkout_session:metadata.o
 ```
 
 Carte de test : `4242 4242 4242 4242`, date future, CVC quelconque.
+
+## Wizard (dossier guidé)
+
+`/dossier/nouveau` → `/dossier/[id]`, logique dans `src/lib/wizard.ts`, API `POST /api/dossiers` et `POST /api/dossiers/[id]`. Évaluation et choix des prompts : `docs/wizard-eval.md`.
+
+1. **Récit** en texte libre (compte obligatoire, 30 à 3 000 caractères).
+2. **Analyse** (JSON : thème travail/logement/urbanisme/ambigu/hors sujet, titre, faits, termes juridiques, articles probables, `high_stakes`). Hors sujet : arrêt, rien n'est décompté.
+3. **Recherche** avec `retrieve()` (`src/lib/ask.ts`) sur les termes et articles extraits.
+4. **Au plus 3 questions** tirées des conditions des articles trouvés (choix + « Je ne sais pas », date ou texte), plus une précision libre facultative.
+5. **Recherche affinée** avec le récit, les réponses et les articles cités par les questions.
+6. **Synthèse** (En bref, règles, délais, prochaines étapes, professionnel), puis **questions de suivi** dans le contexte du dossier (récit, réponses, « En bref » de la synthèse) avec une nouvelle recherche.
+
+**Modèles.** Étapes 2 et 4 : `deepseek/deepseek-v4-flash-0731`, raisonnement désactivé (`reasoning: { enabled: false }`), JSON parsé avec tolérance (blocs ```json). En cas d'erreur ou de JSON invalide : un nouvel essai, puis bascule sur le modèle de réponse. Étapes 6 et suivi : `OPENROUTER_CHAT_MODEL` (Haiku 4.5). Coût observé : environ 0,011 $ par dossier complet (analyse + questions ≈ 0,0003 $, synthèse ≈ 0,010 $).
+
+**Cadre juridique.** Le prompt interdit les verdicts (« votre propriétaire n'a pas le droit », « vous avez droit à X € »…) et impose la recommandation d'un professionnel dans « En bref » quand `high_stakes` est vrai. Après génération, `VERDICT_RES` (liste de regex) et ce contrôle déclenchent **une** régénération plus stricte ; si le texte échoue encore, il est gardé et un avertissement `[wizard] post-check still failing` est journalisé (et noté dans `dossiers.calls`).
+
+**Routage des données.** Chaque appel envoie `provider.data_collection: "deny"`. Pour DeepSeek, en plus : `provider.only` = hébergeurs établis aux États-Unis (`deepinfra, together, fireworks, parasail, coreweave, baseten, digitalocean, cloudflare`) et `allow_fallbacks: false`. Exclus : Baidu, Alibaba, SiliconFlow, StreamLake (Chine) ; hébergeurs au siège ou à la localisation des données incertains ; endpoints fp4. Un hébergeur hors liste renvoyé par OpenRouter est journalisé (`provider_not_allowed`). Liste relevée le 17/09/2026 via `GET https://openrouter.ai/api/v1/models/deepseek/deepseek-v4-flash-0731/endpoints` : à revoir si les endpoints changent.
+
+**Facturation.** Étapes 1 à 4 gratuites, limitées à 5 dossiers par compte sur 24 h (en base) et 10 par IP (en mémoire). La synthèse et chaque question de suivi consomment **une** question via `consume()` (abonnement → lot Dossier → gratuites), uniquement après succès. Si `canAsk` est faux, l'API répond `402 { code: "paywall", dossier, me }` : les réponses sont enregistrées (statut `answered`), et après l'achat `/merci` propose « Reprendre mon dossier ». Un verrou (statut `generating`) empêche une double synthèse facturée deux fois.
+
+**Données.** Tables `dossiers` et `dossier_messages` ; lecture et écriture filtrées par `user_id` (un dossier d'un autre compte renvoie 404). Historique dans `/compte` (« Mes dossiers »), compteurs dans `/admin`, liste (titre, statut, coût, hébergeurs, sans le récit) dans `/admin/users/[id]`.
+
+Variables : `WIZARD_ANALYSIS_MODEL` (défaut `deepseek/deepseek-v4-flash-0731`), `WIZARD_PROVIDERS` (slugs OpenRouter séparés par des virgules, remplace la liste par défaut ; à adapter si `WIZARD_ANALYSIS_MODEL` change), `OPENROUTER_CHAT_MODEL` (synthèse).
 
 ## Docker
 

@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { cookies } from "next/headers";
+import { SESSION_COOKIE, userBySessionToken } from "@/lib/auth";
 import { pageMetadata } from "@/lib/seo";
+import { pendingDossier } from "@/lib/wizard";
 import { btnPrimary, container, display, label } from "@/components/ui";
 import { MerciPanel } from "@/components/AccountMenu";
 
@@ -28,6 +31,9 @@ export default async function Thanks({ searchParams }: { searchParams: Promise<{
       </section>
     );
   }
+  // A wizard stopped at the paywall resumes where it was, answers kept.
+  const user = userBySessionToken((await cookies()).get(SESSION_COOKIE)?.value);
+  const pending = user ? pendingDossier(user.id) : undefined;
   return (
     <section className={`${container} max-w-3xl! pt-12 pb-20 sm:pt-20 sm:pb-28`}>
       <p className={`${label} flex items-center gap-3 text-fg-2`}>
@@ -45,9 +51,15 @@ export default async function Thanks({ searchParams }: { searchParams: Promise<{
         <MerciPanel />
       </div>
       <div className="mt-10 flex flex-wrap gap-3">
-        <Link href="/#question" className={btnPrimary}>
-          Poser ma question <ArrowRight aria-hidden className="size-4" />
-        </Link>
+        {pending ? (
+          <Link href={`/dossier/${pending.id}`} className={btnPrimary}>
+            Reprendre mon dossier <ArrowRight aria-hidden className="size-4" />
+          </Link>
+        ) : (
+          <Link href="/#question" className={btnPrimary}>
+            Poser ma question <ArrowRight aria-hidden className="size-4" />
+          </Link>
+        )}
         <Link href="/compte" className="px-3 py-2.5 font-mono text-sm font-bold uppercase underline decoration-signal decoration-2 underline-offset-4">
           Mon compte
         </Link>

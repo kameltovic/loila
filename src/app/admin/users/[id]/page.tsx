@@ -23,6 +23,10 @@ export default async function AdminUser({ params }: PageProps<"/admin/users/[id]
     { id: number; credits_granted: number; credits_left: number; expires_at: number; expired: number; stripe_ref: string | null; created_at: number }[];
   const usage = db.prepare("SELECT id, kind, batch_id, created_at FROM usage WHERE subject = ? ORDER BY id DESC LIMIT 500").all(`user:${id}`) as
     { id: number; kind: string; batch_id: number | null; created_at: number }[];
+  // Titles and status only: the story itself stays private to its owner.
+  const dossiers = db.prepare("SELECT id, status, analysis, created_at, updated_at, calls, (SELECT COUNT(*) FROM dossier_messages m WHERE m.dossier_id = d.id) followups FROM dossiers d WHERE user_id = ? ORDER BY created_at DESC LIMIT 200").all(id) as
+    { id: string; status: string; analysis: string | null; created_at: number; updated_at: number; calls: string; followups: number }[];
+  const parse = <T,>(s: string | null, fallback: T): T => { try { return s ? JSON.parse(s) : fallback; } catch { return fallback; } };
   const sub = db.prepare("SELECT stripe_subscription_id, plan, status, current_period_start, current_period_end FROM subscriptions WHERE user_id = ?").get(id) as
     { stripe_subscription_id: string; plan: string; status: string; current_period_start: number; current_period_end: number } | undefined;
 
@@ -61,6 +65,25 @@ export default async function AdminUser({ params }: PageProps<"/admin/users/[id]
               <td>{b.stripe_ref ?? "—"}</td>
             </tr>
           ))}
+        </Table>
+      </Section>
+
+      <Section title="Dossiers">
+        <Table head={["Dossier", "Créé", "Titre", "Statut", "Suivi", "Coût LLM", "Hébergeurs"]}>
+          {dossiers.map((d) => {
+            const calls = parse<{ cost?: number; provider?: string }[]>(d.calls, []);
+            return (
+              <tr key={d.id}>
+                <td>{d.id}</td>
+                <td>{fmt(d.created_at)}</td>
+                <td className="max-w-xs truncate">{parse<{ title?: string }>(d.analysis, {}).title ?? "—"}</td>
+                <td>{d.status}</td>
+                <td>{d.followups}</td>
+                <td>${calls.reduce((t, c) => t + (c.cost ?? 0), 0).toFixed(4)}</td>
+                <td>{[...new Set(calls.map((c) => c.provider).filter(Boolean))].join(", ") || "—"}</td>
+              </tr>
+            );
+          })}
         </Table>
       </Section>
 
