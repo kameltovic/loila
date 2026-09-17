@@ -125,6 +125,10 @@ async function main() {
   assert.equal((db.prepare("SELECT COUNT(*) n FROM articles_fts WHERE articles_fts MATCH 'quuxwort'").get() as { n: number }).n, 1);
   assert.equal((db.prepare("SELECT short FROM faq WHERE slug = 'bundle-delai-convocation'").get() as { short: string }).short, "Vingt et un jours.");
   assert.equal((db.prepare("SELECT COUNT(*) n FROM faq WHERE slug = 'bundle-delai-convocation'").get() as { n: number }).n, 1);
+  fs.writeFileSync(path.join(bundleDir, "test.json.gz"), gzipSync(JSON.stringify({ deleteArticleIds: ["BUNDLE-1", "NOT-THERE"] })));
+  importContent(db, bundleDir);
+  assert.equal((db.prepare("SELECT COUNT(*) n FROM articles WHERE id = 'BUNDLE-1'").get() as { n: number }).n, 0);
+  assert.equal((db.prepare("SELECT COUNT(*) n FROM articles_fts WHERE articles_fts MATCH 'quuxwort'").get() as { n: number }).n, 0);
 
   console.log("check-ask: OK");
 }

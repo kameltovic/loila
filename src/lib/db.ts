@@ -229,7 +229,9 @@ export function importContent(d: Database.Database, dir = path.join(process.cwd(
       const sha = createHash("sha256").update(buf).digest("hex");
       const done = d.prepare("SELECT sha FROM content_imports WHERE name = ?").get(file) as { sha: string } | undefined;
       if (done?.sha === sha) continue;
-      const { articles = [], faq = [] } = JSON.parse(gunzipSync(buf).toString("utf8")) as { articles?: Article[]; faq?: Omit<Faq, "id">[] };
+      const { articles = [], faq = [], deleteArticleIds = [] } = JSON.parse(gunzipSync(buf).toString("utf8")) as {
+        articles?: Article[]; faq?: Omit<Faq, "id">[]; deleteArticleIds?: string[]; // ids no longer in force (re-ingest diffs)
+      };
       const art = d.prepare(
         `INSERT INTO articles (id, code, num, section, texte, date_debut, url) VALUES (@id, @code, @num, @section, @texte, @date_debut, @url)
          ON CONFLICT(id) DO UPDATE SET code = excluded.code, num = excluded.num, section = excluded.section, texte = excluded.texte, date_debut = excluded.date_debut, url = excluded.url`,
@@ -240,10 +242,12 @@ export function importContent(d: Database.Database, dir = path.join(process.cwd(
       );
       d.transaction(() => {
         for (const a of articles) art.run(a);
+        const del = d.prepare("DELETE FROM articles WHERE id = ?");
+        for (const id of deleteArticleIds) del.run(id);
         for (const f of faq) q.run({ ...f, topic: f.topic ?? null, emoji: f.emoji ?? null, article_ids: typeof f.article_ids === "string" ? f.article_ids : JSON.stringify(f.article_ids) });
         d.prepare("INSERT INTO content_imports (name, sha) VALUES (?, ?) ON CONFLICT(name) DO UPDATE SET sha = excluded.sha, imported_at = unixepoch()").run(file, sha);
       })();
-      console.log(`[db] content ${file}: ${articles.length} articles, ${faq.length} faq`);
+      console.log(`[db] content ${file}: ${articles.length} articles, ${faq.length} faq, ${deleteArticleIds.length} deleted`);
     } catch (e) {
       console.error(`[db] content ${file} failed`, e instanceof Error ? e.message : e);
     }

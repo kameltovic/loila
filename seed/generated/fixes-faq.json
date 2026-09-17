@@ -27,5 +27,37 @@
       "LEGIARTI000043966496",
       "LEGIARTI000043977099"
     ]
+  },
+  {
+    "theme": "travail",
+    "topic": "accident-du-travail",
+    "slug": "employeur-refuse-declarer-accident",
+    "emoji": null,
+    "question": "Mon employeur refuse de déclarer mon accident du travail, que faire ?",
+    "short": "C'est en principe l'employeur qui doit déclarer l'accident, mais si il refuse, vous pouvez le faire vous-même dans les deux ans qui suivent l'accident. Vous pouvez aussi signaler ce refus à l'inspection du travail.",
+    "answer_md": "### Qui doit déclarer l'accident ?\n\nEn principe, c'est votre employeur (ou une personne qu'il désigne) qui doit déclarer l'accident du travail à la caisse primaire d'assurance maladie (CPAM). Cette déclaration doit respecter des modalités et un délai fixés par la réglementation (art. L441-2).\n\n### Que faire si l'employeur refuse ?\n\nBonne nouvelle : vous n'êtes pas bloqué. Le texte prévoit clairement que **vous pouvez faire cette déclaration vous-même**, ou la faire faire par vos représentants, jusqu'à l'expiration des deux années qui suivent l'accident (art. L441-2).\n\nConcrètement :\n- Contactez votre CPAM pour signaler l'accident et demander comment procéder à la déclaration en l'absence de démarche de l'employeur.\n- Gardez toutes les preuves possibles de l'accident (témoins, certificat médical, échanges avec l'employeur, etc.).\n\n### Le refus de l'employeur peut-il être sanctionné ?\n\nLe fait de ne pas respecter cette obligation de déclaration peut être constaté par les inspecteurs du travail (art. L471-1).\n\nDe plus, si l'employeur n'a pas déclaré l'accident correctement, la CPAM peut réclamer auprès de lui le remboursement des dépenses engagées à l'occasion de l'accident, et peut aussi lui infliger une pénalité (art. L471-1).\n\n### Attention au délai\n\nVos droits aux prestations et indemnités se prescrivent (c'est-à-dire qu'ils s'éteignent) par deux ans à partir du jour de l'accident (art. L431-2). Il est donc important d'agir rapidement, sans attendre la limite des deux ans.\n\n### Nos conseils\n\n- Faites vous-même la déclaration auprès de votre CPAM, sans attendre que l'employeur s'en charge.\n- Signalez le refus de votre employeur à l'**inspection du travail**, qui peut constater ce manquement.\n- Si la situation est complexe ou si vous rencontrez des difficultés (contestation par l'employeur, absence de réponse, etc.), il est recommandé de consulter un **avocat en droit du travail** ou de vous rapprocher d'un **syndicat** pour être accompagné dans vos démarches.",
+    "article_ids": [
+      "LEGIARTI000006743085",
+      "LEGIARTI000033714673",
+      "LEGIARTI000041399093"
+    ]
+  },
+  {
+    "theme": "travail",
+    "topic": "salaire-et-heures-sup",
+    "slug": "smic-obligatoire-tous-salaries",
+    "emoji": null,
+    "question": "Tout salarié doit-il être payé au moins au SMIC ?",
+    "short": "Oui, en principe tout salarié dont le salaire horaire descend sous le SMIC doit recevoir un complément pour atteindre ce minimum. Il existe cependant des règles particulières pour certains secteurs, comme les hôtels-cafés-restaurants.",
+    "answer_md": "### La règle générale\n\nLe SMIC (salaire minimum de croissance) garantit à tous les salariés :\n- le maintien de leur pouvoir d'achat,\n- une part du développement économique du pays (art. L3231-2).\n\nSi le salaire horaire prévu au contrat d'un salarié de 18 ans ou plus devient inférieur au SMIC en vigueur, l'employeur doit lui verser un complément pour atteindre ce montant minimum (art. D3231-5).\n\nLe SMIC est aussi revalorisé automatiquement dès que les prix à la consommation augmentent d'au moins 2 % (art. L3231-5), et il peut faire l'objet de revalorisations annuelles supplémentaires (art. L3231-9). Son taux exact est fixé par un texte réglementaire (art. L3231-7) — les montants précis ne sont pas donnés dans les articles fournis.\n\n### Le lien avec la rémunération mensuelle\n\nLa rémunération mensuelle minimale correspond au SMIC horaire multiplié par la durée légale hebdomadaire du travail pour le mois considéré (art. L3232-3).\n\n### Des exceptions ou adaptations existent\n\n- **Apprentis et salariés en contrat de professionnalisation en activité partielle** : ils reçoivent une indemnité calculée selon un pourcentage du SMIC qui leur est applicable, pas nécessairement 100 % du SMIC (art. L5122-5).\n\n### En résumé\n\nOui, le principe est que personne ne doit être payé en dessous du SMIC. Mais le mode de calcul peut varier selon le secteur d'activité ou le type de contrat (apprentissage, professionnalisation, activité partielle).\n\n### Notre conseil\n\nSi vous pensez être payé sous le SMIC ou si votre situation est particulière (contrat d'apprentissage, secteur hôtellerie-restauration, activité partielle), nous vous conseillons de vérifier votre convention collective et, si besoin, de contacter l'inspection du travail ou un avocat en droit du travail.",
+    "article_ids": [
+      "LEGIARTI000006902832",
+      "LEGIARTI000018533878",
+      "LEGIARTI000006902835",
+      "LEGIARTI000006902840",
+      "LEGIARTI000006902837",
+      "LEGIARTI000006902847",
+      "LEGIARTI000044979483"
+    ]
   }
 ]

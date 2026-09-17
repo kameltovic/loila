@@ -71,6 +71,7 @@ function textDir(textId: string) {
 type Link = { id: string; debut: string; fin: string; etat: string; num?: string; url?: string; "#text"?: string };
 const inForce = (l: Link) => l.debut <= TODAY && TODAY < l.fin;
 // ABROGE_DIFF = in force today, abrogated/replaced at a future date (e.g. Code de commerce L441-10 until 2027-01-01).
+const LEGACY_PART = /^Partie (législative|réglementaire) ancienne/;
 const vigueur = (etat: string) => etat.startsWith("VIGUEUR") || etat === "ABROGE_DIFF"; // VIGUEUR, VIGUEUR_ETEN, VIGUEUR_NON_ETEN (KALI)
 
 function htmlToText(html: string): string {
@@ -133,7 +134,8 @@ async function ingestCode(slug: CodeSlug): Promise<Row[]> {
   async function walk(root: Root, node: Node, crumbs: string[]) {
     if (!node) return;
     for (const a of node.LIEN_ART ?? []) if (vigueur(a.etat) && inForce(a)) artLinks.push({ link: a, crumbs, root });
-    await Promise.all((node.LIEN_SECTION_TA ?? []).filter(inForce).map(async (s) => {
+    // Pre-2008 Code du travail / santé publique parts stay "in force" in LEGI for residual cases: skip, they pollute search.
+    await Promise.all((node.LIEN_SECTION_TA ?? []).filter((s) => inForce(s) && !LEGACY_PART.test(s["#text"] ?? "")).map(async (s) => {
       const xml = await cached(root.src, `${root.dir}section_ta${s.url}`, !refresh);
       const sec = parser.parse(xml).SECTION_TA;
       await walk(root, sec.STRUCTURE_TA, [...crumbs, htmlToText(String(sec.TITRE_TA ?? s["#text"] ?? "")).replace(/\s+/g, " ")]);
