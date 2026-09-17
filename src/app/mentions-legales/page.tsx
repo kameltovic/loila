@@ -156,6 +156,14 @@ export default function LegalNotice() {
           identifiant technique de visiteur non connecté (<code>loila_anon</code>). La mesure d’audience est assurée par
           Umami, auto-hébergé, sans cookie et sans suivi entre sites. Aucun traceur publicitaire n’est utilisé.
         </p>
+        <p>
+          Pour améliorer l’ergonomie du site, Umami enregistre aussi une partie des visites sous forme de relecture de
+          session : mouvements, clics, défilement et pages consultées, avec les champs de saisie masqués. Les pages de compte,
+          de dossier, de connexion, de contact et d’administration sont exclues de cet enregistrement. Les enregistrements
+          sont conservés 30 jours sur le serveur de l’Éditeur et ne sont transmis à aucun tiers. Base légale : intérêt
+          légitime à améliorer le site. <mark className="rounded-full border-[1.5px] border-ink bg-travail px-2 py-0.5 text-sm font-semibold text-ink">à valider</mark>{" "}
+          (consentement préalable recommandé par la CNIL pour ce type d’outil)
+        </p>
 
         <h3>Vos droits</h3>
         <p>
