@@ -42,7 +42,7 @@ export const THEMES = [
   { slug: "travail", emoji: "💼", title: "Travail", tagline: "Contrat, congés, licenciement, rupture conventionnelle.", codes: ["code-du-travail"] },
   { slug: "urbanisme", emoji: "🏡", title: "Construire & aménager", tagline: "Permis de construire, déclaration préalable, PLU.", codes: ["code-urbanisme"] },
   { slug: "logement", emoji: "🔑", title: "Louer un logement", tagline: "Bail, dépôt de garantie, préavis, loyers.", codes: ["loi-89-462", "code-construction-habitation"] },
-  { slug: "copropriete", emoji: "🏢", title: "Copropriété", tagline: "Assemblée générale, syndic, charges, travaux.", codes: ["loi-65-557"] },
+  { slug: "copropriete", emoji: "🏢", title: "Copropriété", tagline: "Assemblée générale, syndic, charges, travaux.", codes: ["loi-65-557", "decret-67-223", "decret-2015-342", "decret-2005-240"] },
   { slug: "construction", emoji: "🦺", title: "Construction et BTP", tagline: "Garanties, assurances, paiement, sous-traitance.", codes: ["code-civil", "code-construction-habitation"] },
   { slug: "conventions", emoji: "📑", title: "Conventions collectives", tagline: "Salaires minimums, primes, préavis, congés propres à votre branche.", codes: ["ccn-1486", "ccn-1979", "ccn-2216", "ccn-3248", "ccn-1597", "ccn-1596", "ccn-3127", "ccn-3239", "ccn-3043", "ccn-1090", "ccn-2120", "ccn-1527", "ccn-2596", "ccn-0016", "ccn-1996"] },
 ] as const;
