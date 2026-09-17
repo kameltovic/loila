@@ -8967,6 +8967,549 @@
         "travaux-parties-communes-autorisation",
         "fonds-travaux-obligatoire"
       ]
+    },
+    {
+      "slug": "assurances-entreprise-btp",
+      "title": "Assurances des entreprises du BTP",
+      "h1": "Assurance décennale et dommages-ouvrage : les obligations de l'entreprise du bâtiment",
+      "category": "construction",
+      "intro": "Une entreprise qui réalise des travaux de construction doit être assurée pour sa responsabilité décennale et pouvoir le prouver. Voici ce que prévoit le Code des assurances, de l'attestation jointe au devis aux sanctions en cas de défaut d'assurance.",
+      "keywords": [
+        "assurance décennale obligatoire",
+        "attestation décennale devis",
+        "dommages-ouvrage",
+        "artisan sans décennale",
+        "entreprise du bâtiment"
+      ],
+      "codes": [
+        "code-assurances",
+        "code-civil"
+      ],
+      "questions": [
+        {
+          "slug": "entreprise-decennale-obligatoire-qui",
+          "question": "Quelles entreprises du bâtiment doivent avoir une assurance décennale ?",
+          "hints": [
+            "assurance obligatoire",
+            "responsabilité décennale",
+            "réputé constructeur",
+            "code-assurances:L241-1",
+            "code-civil:1792",
+            "code-civil:1792-1"
+          ]
+        },
+        {
+          "slug": "decennale-travaux-exclus-obligation",
+          "question": "Tous les travaux sont-ils soumis à l'obligation d'assurance décennale ?",
+          "hints": [
+            "ouvrages exclus",
+            "voiries",
+            "ouvrages existants",
+            "code-assurances:L243-1-1",
+            "code-assurances:L241-1"
+          ]
+        },
+        {
+          "slug": "attestation-decennale-devis-factures",
+          "question": "L'attestation d'assurance décennale doit-elle être jointe aux devis et factures ?",
+          "hints": [
+            "attestation d'assurance",
+            "jointes aux devis et factures",
+            "ouverture de chantier",
+            "code-assurances:L243-2",
+            "code-assurances:L241-1",
+            "code-assurances:A243-3"
+          ]
+        },
+        {
+          "slug": "entreprise-sans-decennale-sanctions",
+          "question": "Que risque une entreprise qui travaille sans assurance décennale ?",
+          "hints": [
+            "emprisonnement",
+            "amende",
+            "défaut d'assurance",
+            "code-assurances:L243-3",
+            "code-assurances:L241-1"
+          ]
+        },
+        {
+          "slug": "dommages-ouvrage-qui-doit-souscrire",
+          "question": "Qui doit souscrire l'assurance dommages-ouvrage : l'entreprise ou le client ?",
+          "hints": [
+            "dommages-ouvrage",
+            "propriétaire de l'ouvrage",
+            "avant l'ouverture du chantier",
+            "code-assurances:L242-1",
+            "code-assurances:L243-3",
+            "code-assurances:L241-1"
+          ]
+        }
+      ],
+      "relatedFaqs": [
+        "artisan-sans-assurance-decennale",
+        "garantie-decennale-ce-quelle-couvre"
+      ]
+    },
+    {
+      "slug": "reception-travaux-entreprise",
+      "title": "Réception des travaux et garanties",
+      "h1": "Réception des travaux : réserves, levée et garanties dues par l'entreprise",
+      "category": "construction",
+      "intro": "La réception marque la fin du chantier et le point de départ des garanties de l'entreprise : parfait achèvement, biennale et décennale. Le Code civil fixe la procédure et les durées, et interdit de les réduire par contrat.",
+      "keywords": [
+        "réception des travaux",
+        "procès-verbal de réception",
+        "levée des réserves",
+        "garantie de parfait achèvement",
+        "responsabilité de l'entreprise"
+      ],
+      "codes": [
+        "code-civil"
+      ],
+      "questions": [
+        {
+          "slug": "reception-travaux-client-refuse",
+          "question": "Le client refuse la réception des travaux : que peut faire l'entreprise ?",
+          "hints": [
+            "réception",
+            "partie la plus diligente",
+            "judiciairement",
+            "contradictoirement",
+            "code-civil:1792-6"
+          ]
+        },
+        {
+          "slug": "reserves-reception-delai-reprise",
+          "question": "Réserves à la réception : dans quel délai l'entreprise doit-elle les lever ?",
+          "hints": [
+            "réserves",
+            "procès-verbal de réception",
+            "commun accord",
+            "mise en demeure",
+            "aux frais et risques",
+            "code-civil:1792-6"
+          ]
+        },
+        {
+          "slug": "duree-responsabilite-entreprise-apres-reception",
+          "question": "Après la réception, pendant combien de temps l'entreprise reste-t-elle responsable ?",
+          "hints": [
+            "un an",
+            "deux ans",
+            "dix ans",
+            "à compter de la réception",
+            "code-civil:1792-6",
+            "code-civil:1792-3",
+            "code-civil:1792-4-1",
+            "code-civil:1792-4-3"
+          ]
+        },
+        {
+          "slug": "clause-limitant-garantie-decennale",
+          "question": "Une entreprise peut-elle limiter ses garanties dans le contrat de travaux ?",
+          "hints": [
+            "clause réputée non écrite",
+            "exclure ou limiter la responsabilité",
+            "code-civil:1792-5"
+          ]
+        }
+      ],
+      "relatedFaqs": [
+        "garantie-parfait-achevement-un-an",
+        "garantie-biennale-equipements",
+        "garantie-decennale-ce-quelle-couvre"
+      ]
+    },
+    {
+      "slug": "paiement-travaux-entreprise",
+      "title": "Se faire payer ses travaux",
+      "h1": "Retenue de garantie, délais de paiement, pénalités : se faire payer ses travaux",
+      "category": "construction",
+      "intro": "Retenue de garantie plafonnée à 5 %, délais de paiement maximaux entre professionnels, pénalités de retard et indemnité de 40 € : la loi encadre la façon dont une entreprise du bâtiment est payée. Voici les règles et leurs limites.",
+      "keywords": [
+        "retenue de garantie 5 %",
+        "délais de paiement",
+        "pénalités de retard",
+        "indemnité forfaitaire 40 euros",
+        "travaux supplémentaires"
+      ],
+      "codes": [
+        "loi-71-584",
+        "code-commerce",
+        "code-civil"
+      ],
+      "questions": [
+        {
+          "slug": "retenue-de-garantie-5-pourcent",
+          "question": "Le client peut-il retenir 5 % du montant des travaux ?",
+          "hints": [
+            "retenue de garantie",
+            "5 p. 100",
+            "consignataire",
+            "loi-71-584:1",
+            "loi-71-584:3"
+          ]
+        },
+        {
+          "slug": "liberation-retenue-de-garantie",
+          "question": "Quand la retenue de garantie doit-elle être rendue à l'entreprise ?",
+          "hints": [
+            "une année",
+            "réception",
+            "opposition motivée",
+            "lettre recommandée",
+            "loi-71-584:2"
+          ]
+        },
+        {
+          "slug": "caution-bancaire-retenue-de-garantie",
+          "question": "Peut-on remplacer la retenue de garantie par une caution bancaire ?",
+          "hints": [
+            "caution personnelle et solidaire",
+            "établissement financier",
+            "loi-71-584:1",
+            "loi-71-584:2"
+          ]
+        },
+        {
+          "slug": "delai-paiement-facture-travaux-professionnel",
+          "question": "Quel délai de paiement maximum pour une facture de travaux entre professionnels ?",
+          "hints": [
+            "soixante jours",
+            "quarante-cinq jours fin de mois",
+            "délai de règlement",
+            "code-commerce:L441-10",
+            "code-commerce:L441-16"
+          ]
+        },
+        {
+          "slug": "penalites-retard-indemnite-40-euros",
+          "question": "Facture impayée à l'échéance : quelles pénalités de retard et indemnité de 40 € ?",
+          "hints": [
+            "pénalités de retard",
+            "indemnité forfaitaire pour frais de recouvrement",
+            "code-commerce:L441-10",
+            "code-commerce:D441-5",
+            "code-commerce:L441-9"
+          ]
+        },
+        {
+          "slug": "travaux-supplementaires-sans-accord-ecrit",
+          "question": "Travaux supplémentaires sans accord écrit du client : peut-on les facturer ?",
+          "hints": [
+            "marché à forfait",
+            "autorisés par écrit",
+            "augmentation de prix",
+            "code-civil:1793"
+          ]
+        },
+        {
+          "slug": "garantie-de-paiement-marche-prive",
+          "question": "Le maître d'ouvrage doit-il garantir le paiement de l'entreprise ?",
+          "hints": [
+            "garantir à l'entrepreneur le paiement",
+            "cautionnement solidaire",
+            "surseoir à l'exécution",
+            "code-civil:1799-1",
+            "code-civil:1779"
+          ]
+        },
+        {
+          "slug": "client-resilie-marche-forfait-indemnite",
+          "question": "Le client arrête le chantier en cours : l'entreprise peut-elle être indemnisée ?",
+          "hints": [
+            "résilier le marché à forfait",
+            "dédommageant l'entrepreneur",
+            "code-civil:1794"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "sous-traitance-btp",
+      "title": "Sous-traitance dans le BTP",
+      "h1": "Sous-traitance dans le bâtiment : acceptation, caution et action directe",
+      "category": "construction",
+      "intro": "La loi du 31 décembre 1975 protège le sous-traitant : il doit être accepté par le maître d'ouvrage, son paiement doit être garanti et il dispose d'une action directe en cas d'impayé. Ces règles s'imposent aux deux entreprises.",
+      "keywords": [
+        "sous-traitance BTP",
+        "agrément du sous-traitant",
+        "action directe",
+        "caution sous-traitant",
+        "loi du 31 décembre 1975"
+      ],
+      "codes": [
+        "loi-75-1334",
+        "code-civil"
+      ],
+      "questions": [
+        {
+          "slug": "faire-accepter-sous-traitant-maitre-ouvrage",
+          "question": "L'entreprise doit-elle faire accepter son sous-traitant par le client ?",
+          "hints": [
+            "accepter chaque sous-traitant",
+            "agréer les conditions de paiement",
+            "loi-75-1334:3",
+            "loi-75-1334:1",
+            "loi-75-1334:11"
+          ]
+        },
+        {
+          "slug": "sous-traitant-non-declare-consequences",
+          "question": "Sous-traitant non déclaré au maître d'ouvrage : quelles conséquences ?",
+          "hints": [
+            "ne pourra invoquer le contrat de sous-traitance",
+            "mettre l'entrepreneur principal en demeure",
+            "loi-75-1334:3",
+            "loi-75-1334:14-1",
+            "loi-75-1334:11"
+          ]
+        },
+        {
+          "slug": "action-directe-sous-traitant-impaye",
+          "question": "Sous-traitant impayé : peut-il se faire payer par le maître d'ouvrage ?",
+          "hints": [
+            "action directe",
+            "mise en demeure",
+            "un mois",
+            "loi-75-1334:12",
+            "loi-75-1334:13",
+            "loi-75-1334:11"
+          ]
+        },
+        {
+          "slug": "caution-paiement-sous-traitant",
+          "question": "L'entreprise principale doit-elle fournir une caution à son sous-traitant ?",
+          "hints": [
+            "caution personnelle et solidaire",
+            "nullité du sous-traité",
+            "délégation",
+            "loi-75-1334:14",
+            "loi-75-1334:14-1",
+            "loi-75-1334:15",
+            "loi-75-1334:11"
+          ]
+        },
+        {
+          "slug": "sous-traitant-de-second-rang",
+          "question": "Un sous-traitant peut-il lui-même sous-traiter une partie des travaux ?",
+          "hints": [
+            "considéré comme entrepreneur principal",
+            "ses propres sous-traitants",
+            "loi-75-1334:2",
+            "loi-75-1334:3",
+            "loi-75-1334:14",
+            "loi-75-1334:11"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "devis-travaux-particulier",
+      "title": "Devis et contrat avec un particulier",
+      "h1": "Devis de travaux chez un particulier : information, rétractation et acompte",
+      "category": "construction",
+      "intro": "Quand un artisan signe un devis avec un particulier, le Code de la consommation s'applique : information avant la signature, droit de rétractation de 14 jours si le contrat est signé hors de l'entreprise, règles sur les sommes versées d'avance.",
+      "keywords": [
+        "devis travaux particulier",
+        "droit de rétractation 14 jours",
+        "contrat hors établissement",
+        "acompte ou arrhes",
+        "artisan"
+      ],
+      "codes": [
+        "code-consommation"
+      ],
+      "questions": [
+        {
+          "slug": "informations-obligatoires-devis-particulier",
+          "question": "Quelles informations donner à un particulier avant qu'il signe un devis de travaux ?",
+          "hints": [
+            "caractéristiques essentielles",
+            "prix",
+            "délai",
+            "garanties légales",
+            "médiateur",
+            "code-consommation:L111-1",
+            "code-consommation:L111-2"
+          ]
+        },
+        {
+          "slug": "retractation-devis-signe-chez-client",
+          "question": "Un devis signé au domicile du client peut-il être annulé sous 14 jours ?",
+          "hints": [
+            "contrat hors établissement",
+            "quatorze jours",
+            "droit de rétractation",
+            "code-consommation:L221-18",
+            "code-consommation:L221-1",
+            "code-consommation:L221-5"
+          ]
+        },
+        {
+          "slug": "commencer-travaux-pendant-delai-retractation",
+          "question": "Peut-on commencer les travaux avant la fin du délai de rétractation ?",
+          "hints": [
+            "demande expresse",
+            "support durable",
+            "montant correspondant au service fourni",
+            "code-consommation:L221-25",
+            "code-consommation:L221-28",
+            "code-consommation:L221-18",
+            "code-consommation:L221-5"
+          ]
+        },
+        {
+          "slug": "acompte-devis-signe-hors-etablissement",
+          "question": "Peut-on encaisser un acompte sur un devis signé chez le client ?",
+          "hints": [
+            "aucun paiement",
+            "sept jours",
+            "contrat hors établissement",
+            "code-consommation:L221-10"
+          ]
+        },
+        {
+          "slug": "acompte-ou-arrhes-devis-travaux",
+          "question": "Acompte ou arrhes sur un devis de travaux : quelle différence pour l'artisan ?",
+          "hints": [
+            "sommes versées d'avance",
+            "arrhes",
+            "restituant au double",
+            "code-consommation:L214-1",
+            "code-consommation:L214-2",
+            "code-consommation:L214-3"
+          ]
+        },
+        {
+          "slug": "oubli-information-retractation-12-mois",
+          "question": "L'artisan n'a pas informé le client de son droit de rétractation : quelles conséquences ?",
+          "hints": [
+            "prolongé de douze mois",
+            "formulaire type de rétractation",
+            "code-consommation:L221-20",
+            "code-consommation:L221-5",
+            "code-consommation:L221-25"
+          ]
+        },
+        {
+          "slug": "depannage-urgence-retractation-paiement",
+          "question": "Dépannage en urgence chez un particulier : droit de rétractation et paiement immédiat ?",
+          "hints": [
+            "réparation à réaliser en urgence",
+            "expressément sollicités",
+            "strictement nécessaires",
+            "code-consommation:L221-28",
+            "code-consommation:L221-10"
+          ]
+        }
+      ],
+      "relatedFaqs": [
+        "exceptions-droit-retractation"
+      ]
+    },
+    {
+      "slug": "salaries-du-btp",
+      "title": "Salariés du BTP",
+      "h1": "Salariés du bâtiment et des travaux publics : essai, préavis, déplacements, intempéries",
+      "category": "construction",
+      "intro": "Ouvriers, ETAM et cadres du BTP relèvent de conventions collectives propres qui fixent la période d'essai, le préavis et les indemnités de déplacement. Les règles diffèrent selon la catégorie et selon que l'entreprise relève du bâtiment ou des travaux publics.",
+      "keywords": [
+        "période d'essai bâtiment",
+        "préavis ouvrier bâtiment",
+        "grand déplacement",
+        "intempéries BTP",
+        "convention collective bâtiment"
+      ],
+      "codes": [
+        "ccn-1597",
+        "ccn-1596",
+        "ccn-2609",
+        "ccn-2420",
+        "ccn-1702",
+        "code-du-travail"
+      ],
+      "questions": [
+        {
+          "slug": "periode-essai-ouvrier-batiment",
+          "question": "Quelle est la durée de la période d'essai d'un ouvrier du bâtiment ?",
+          "hints": [
+            "IDCC 1597",
+            "IDCC 1596",
+            "période d'essai",
+            "3 semaines",
+            "usages locaux",
+            "ccn-1596:2-4",
+            "code-du-travail:L1221-19",
+            "code-du-travail:L1221-22"
+          ]
+        },
+        {
+          "slug": "periode-essai-etam-cadre-batiment",
+          "question": "Quelle période d'essai pour un ETAM ou un cadre du bâtiment ?",
+          "hints": [
+            "IDCC 2609",
+            "IDCC 2420",
+            "période d'essai",
+            "techniciens et agents de maîtrise",
+            "cadres du bâtiment",
+            "délai de prévenance",
+            "code-du-travail:L1221-19",
+            "code-du-travail:L1221-21",
+            "code-du-travail:L1221-22"
+          ]
+        },
+        {
+          "slug": "periode-essai-travaux-publics",
+          "question": "Quelle période d'essai dans les travaux publics ?",
+          "hints": [
+            "IDCC 1702",
+            "ouvriers des travaux publics",
+            "périodes d'essai",
+            "renouvellement",
+            "délai de prévenance"
+          ]
+        },
+        {
+          "slug": "preavis-ouvrier-batiment-licenciement-demission",
+          "question": "Quel préavis pour un ouvrier du bâtiment en cas de licenciement ou de démission ?",
+          "hints": [
+            "IDCC 1597",
+            "délai de préavis",
+            "ancienneté dans l'entreprise",
+            "démission",
+            "licenciement"
+          ]
+        },
+        {
+          "slug": "grand-deplacement-ouvrier-batiment",
+          "question": "Quand un ouvrier du bâtiment est-il en grand déplacement et que doit-on lui payer ?",
+          "hints": [
+            "IDCC 1597",
+            "grand déplacement",
+            "regagner chaque soir",
+            "indemnité journalière",
+            "second logement"
+          ]
+        },
+        {
+          "slug": "arret-chantier-intemperies-qui-decide",
+          "question": "Qui décide l'arrêt d'un chantier pour intempéries ?",
+          "hints": [
+            "intempéries",
+            "conditions atmosphériques",
+            "arrêt du travail",
+            "code-du-travail:L5424-8",
+            "code-du-travail:L5424-9",
+            "code-du-travail:L5424-6"
+          ]
+        }
+      ],
+      "relatedFaqs": [
+        "batiment-intemperies",
+        "batiment-indemnite-trajet",
+        "periode-essai"
+      ]
     }
   ]
 }

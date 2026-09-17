@@ -70,7 +70,8 @@ function textDir(textId: string) {
 
 type Link = { id: string; debut: string; fin: string; etat: string; num?: string; url?: string; "#text"?: string };
 const inForce = (l: Link) => l.debut <= TODAY && TODAY < l.fin;
-const vigueur = (etat: string) => etat.startsWith("VIGUEUR"); // VIGUEUR, VIGUEUR_ETEN, VIGUEUR_NON_ETEN (KALI)
+// ABROGE_DIFF = in force today, abrogated/replaced at a future date (e.g. Code de commerce L441-10 until 2027-01-01).
+const vigueur = (etat: string) => etat.startsWith("VIGUEUR") || etat === "ABROGE_DIFF"; // VIGUEUR, VIGUEUR_ETEN, VIGUEUR_NON_ETEN (KALI)
 
 function htmlToText(html: string): string {
   return html

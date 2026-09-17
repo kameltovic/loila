@@ -1,0 +1,112 @@
+{
+  "slug": "entreprise-btp",
+  "title": "Entreprises du BTP",
+  "theme": "construction",
+  "seo": {
+    "title": "Artisans et entreprises du BTP : vos obligations légales",
+    "description": "Décennale, réception, retenue de garantie, délais de paiement, sous-traitance, devis chez un particulier : les règles du BTP, article par article."
+  },
+  "h1": "Le droit du chantier, expliqué aux entreprises du",
+  "h1Accent": "bâtiment",
+  "intro": "Assurance décennale, réception des travaux, retenue de garantie, sous-traitant à faire accepter, rétractation du client particulier : une entreprise du BTP applique chaque jour des règles précises. Loilà les explique en français simple, avec l'article de loi ou de convention collective à l'appui.",
+  "audience": [
+    "Artisan du bâtiment",
+    "Dirigeant de TPE du BTP",
+    "Dirigeant de PME du BTP",
+    "Auto-entrepreneur du bâtiment",
+    "Entreprise de travaux publics",
+    "Sous-traitant du BTP"
+  ],
+  "obligations": [
+    {
+      "title": "Être assuré en décennale dès l'ouverture du chantier",
+      "detail": "L'entreprise dont la responsabilité décennale peut être engagée doit être assurée et le justifier à l'ouverture du chantier. À défaut : jusqu'à 6 mois d'emprisonnement et 75 000 € d'amende.",
+      "refs": ["code-assurances:L241-1", "code-assurances:L243-3"]
+    },
+    {
+      "title": "Joindre l'attestation d'assurance aux devis et factures",
+      "detail": "L'attestation d'assurance décennale est jointe aux devis et factures. Elle couvre les travaux dont le chantier est ouvert pendant sa période de validité.",
+      "refs": ["code-assurances:L243-2", "code-assurances:A243-3"]
+    },
+    {
+      "title": "Garantir le parfait achèvement pendant un an",
+      "detail": "Pendant un an à compter de la réception, l'entreprise répare les désordres signalés par réserves ou par écrit. Faute d'accord sur le délai ou d'exécution, les travaux peuvent être faits à ses frais après mise en demeure.",
+      "refs": ["code-civil:1792-6"]
+    },
+    {
+      "title": "Ne pas limiter les garanties par contrat",
+      "detail": "Toute clause qui exclut ou limite la responsabilité décennale, la garantie de bon fonctionnement ou la garantie de parfait achèvement est réputée non écrite.",
+      "refs": ["code-civil:1792-5"]
+    },
+    {
+      "title": "Retenue de garantie : 5 % maximum, rendue au bout d'un an",
+      "detail": "Le client peut retenir au plus 5 % des acomptes, à consigner, sauf caution bancaire. Les sommes sont libérées un an après la réception, sauf opposition motivée par lettre recommandée.",
+      "refs": ["loi-71-584:1", "loi-71-584:2"]
+    },
+    {
+      "title": "Respecter les délais de paiement entre professionnels",
+      "detail": "Le délai convenu ne peut dépasser 60 jours après la facture (ou 45 jours fin de mois). En cas de retard, les pénalités sont dues sans rappel, plus une indemnité forfaitaire de 40 €.",
+      "refs": ["code-commerce:L441-10", "code-commerce:D441-5"]
+    },
+    {
+      "title": "Faire accepter chaque sous-traitant et garantir son paiement",
+      "detail": "L'entreprise principale fait accepter chaque sous-traitant et agréer ses conditions de paiement par le maître d'ouvrage. En marché privé, elle fournit une caution ou une délégation de paiement, à peine de nullité du sous-traité.",
+      "refs": ["loi-75-1334:3", "loi-75-1334:14"]
+    },
+    {
+      "title": "Travaux supplémentaires au forfait : un accord écrit",
+      "detail": "Dans un marché à forfait, l'entreprise ne peut réclamer de supplément pour des changements ou ajouts que s'ils ont été autorisés par écrit et leur prix convenu avec le client.",
+      "refs": ["code-civil:1793"]
+    },
+    {
+      "title": "Devis signé chez un particulier : 14 jours de rétractation, pas de paiement avant 7 jours",
+      "detail": "Le client dispose de 14 jours pour se rétracter d'un contrat conclu hors établissement, et l'entreprise ne peut recevoir aucun paiement avant 7 jours, sauf dépannage urgent demandé par le client.",
+      "refs": ["code-consommation:L221-18", "code-consommation:L221-10"]
+    },
+    {
+      "title": "Garantie de paiement du maître d'ouvrage",
+      "detail": "Dans un marché privé, le maître d'ouvrage garantit le paiement au-delà d'un seuil fixé par décret. Sans garantie et en cas d'impayé, l'entreprise peut suspendre les travaux 15 jours après une mise en demeure, sauf client agissant pour ses besoins personnels.",
+      "refs": ["code-civil:1799-1"]
+    }
+  ],
+  "faqSlugs": [
+    "entreprise-sans-decennale-sanctions",
+    "attestation-decennale-devis-factures",
+    "retenue-de-garantie-5-pourcent",
+    "penalites-retard-indemnite-40-euros",
+    "delai-paiement-facture-travaux-professionnel",
+    "reserves-reception-delai-reprise",
+    "duree-responsabilite-entreprise-apres-reception",
+    "travaux-supplementaires-sans-accord-ecrit",
+    "retractation-devis-signe-chez-client",
+    "acompte-devis-signe-hors-etablissement",
+    "faire-accepter-sous-traitant-maitre-ouvrage",
+    "action-directe-sous-traitant-impaye",
+    "liberation-retenue-de-garantie",
+    "reception-travaux-client-refuse",
+    "garantie-de-paiement-marche-prive",
+    "entreprise-decennale-obligatoire-qui",
+    "commencer-travaux-pendant-delai-retractation",
+    "caution-paiement-sous-traitant",
+    "periode-essai-ouvrier-batiment",
+    "grand-deplacement-ouvrier-batiment",
+    "arret-chantier-intemperies-qui-decide",
+    "client-resilie-marche-forfait-indemnite"
+  ],
+  "texts": [
+    "code-civil",
+    "code-assurances",
+    "loi-71-584",
+    "loi-75-1334",
+    "code-commerce",
+    "code-consommation",
+    "code-construction-habitation",
+    "code-du-travail",
+    "ccn-1596",
+    "ccn-1597",
+    "ccn-2609",
+    "ccn-2420",
+    "ccn-1702"
+  ],
+  "proPitch": "Avec Pro, exportez des réponses sourcées à joindre à un courrier ou un dossier, recevez une alerte quand un article de la décennale, de la sous-traitance ou de votre convention collective change, suivez plusieurs conventions (ouvriers, ETAM, cadres, travaux publics) et gardez l'historique de vos questions par chantier."
+}
