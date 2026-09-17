@@ -1,6 +1,8 @@
 import Database from "better-sqlite3";
 import fs from "node:fs";
 import path from "node:path";
+import { createHash } from "node:crypto";
+import { gunzipSync } from "node:zlib";
 
 const DB_PATH = process.env.DATABASE_PATH ?? path.join(process.cwd(), "data", "loila.db");
 
@@ -211,8 +213,41 @@ export function getDb() {
     // Migration for DBs created before credit batches existed.
     const usageCols = db.prepare("PRAGMA table_info(usage)").all() as { name: string }[];
     if (!usageCols.some((c) => c.name === "batch_id")) db.exec("ALTER TABLE usage ADD COLUMN batch_id INTEGER");
+    if (process.env.NODE_ENV === "production" || process.env.CONTENT_IMPORT === "1") importContent(db);
   }
   return db;
+}
+
+// Content bundles (seed/content/*.json.gz, made by scripts/export-content.ts): new legal texts and reviewed FAQ rows
+// for a DB that can't be rebuilt (it holds user data). Each bundle is applied once per content hash, as upserts.
+export function importContent(d: Database.Database, dir = path.join(process.cwd(), "seed", "content")) {
+  if (!fs.existsSync(dir)) return;
+  d.exec("CREATE TABLE IF NOT EXISTS content_imports (name TEXT PRIMARY KEY, sha TEXT NOT NULL, imported_at INTEGER NOT NULL DEFAULT (unixepoch()))");
+  for (const file of fs.readdirSync(dir).filter((f) => f.endsWith(".json.gz")).sort()) {
+    try {
+      const buf = fs.readFileSync(path.join(dir, file));
+      const sha = createHash("sha256").update(buf).digest("hex");
+      const done = d.prepare("SELECT sha FROM content_imports WHERE name = ?").get(file) as { sha: string } | undefined;
+      if (done?.sha === sha) continue;
+      const { articles = [], faq = [] } = JSON.parse(gunzipSync(buf).toString("utf8")) as { articles?: Article[]; faq?: Omit<Faq, "id">[] };
+      const art = d.prepare(
+        `INSERT INTO articles (id, code, num, section, texte, date_debut, url) VALUES (@id, @code, @num, @section, @texte, @date_debut, @url)
+         ON CONFLICT(id) DO UPDATE SET code = excluded.code, num = excluded.num, section = excluded.section, texte = excluded.texte, date_debut = excluded.date_debut, url = excluded.url`,
+      );
+      const q = d.prepare(
+        `INSERT INTO faq (theme, topic, slug, emoji, question, short, answer_md, article_ids) VALUES (@theme, @topic, @slug, @emoji, @question, @short, @answer_md, @article_ids)
+         ON CONFLICT(slug) DO UPDATE SET theme = excluded.theme, topic = excluded.topic, emoji = excluded.emoji, question = excluded.question, short = excluded.short, answer_md = excluded.answer_md, article_ids = excluded.article_ids`,
+      );
+      d.transaction(() => {
+        for (const a of articles) art.run(a);
+        for (const f of faq) q.run({ ...f, topic: f.topic ?? null, emoji: f.emoji ?? null, article_ids: typeof f.article_ids === "string" ? f.article_ids : JSON.stringify(f.article_ids) });
+        d.prepare("INSERT INTO content_imports (name, sha) VALUES (?, ?) ON CONFLICT(name) DO UPDATE SET sha = excluded.sha, imported_at = unixepoch()").run(file, sha);
+      })();
+      console.log(`[db] content ${file}: ${articles.length} articles, ${faq.length} faq`);
+    } catch (e) {
+      console.error(`[db] content ${file} failed`, e instanceof Error ? e.message : e);
+    }
+  }
 }
 
 export type Article = {

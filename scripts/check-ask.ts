@@ -105,6 +105,27 @@ async function main() {
   assert.deepEqual(db.prepare("SELECT hash FROM qa_cache").all(), [{ hash: "h-short" }]);
   assert.deepEqual(purgeCacheCitingLong(), { deleted: 0, backup: null });
 
+  // Content bundles: upserts once per hash, FTS stays in sync, a changed bundle re-applies.
+  const { importContent } = await import("../src/lib/db");
+  const { gzipSync } = await import("node:zlib");
+  const bundleDir = fs.mkdtempSync(path.join(os.tmpdir(), "loila-content-"));
+  const bundle = (texte: string, short: string) =>
+    fs.writeFileSync(path.join(bundleDir, "test.json.gz"), gzipSync(JSON.stringify({
+      articles: [{ id: "BUNDLE-1", code: "decret-67-223", num: "9", section: null, texte, date_debut: null, url: "u" }],
+      faq: [{ theme: "sujets", topic: "organiser-ag", slug: "bundle-delai-convocation", emoji: null, question: "Quel délai pour convoquer l'AG ?", short, answer_md: "x", article_ids: ["BUNDLE-1"] }],
+    })));
+  bundle("La convocation est notifiée au moins vingt et un jours avant la date de la réunion zorblax.", "21 jours.");
+  importContent(db, bundleDir);
+  importContent(db, bundleDir); // same hash: no-op
+  assert.equal((db.prepare("SELECT COUNT(*) n FROM articles_fts WHERE articles_fts MATCH 'zorblax'").get() as { n: number }).n, 1);
+  assert.equal((db.prepare("SELECT article_ids FROM faq WHERE slug = 'bundle-delai-convocation'").get() as { article_ids: string }).article_ids, '["BUNDLE-1"]');
+  bundle("Texte modifié quuxwort.", "Vingt et un jours.");
+  importContent(db, bundleDir);
+  assert.equal((db.prepare("SELECT COUNT(*) n FROM articles_fts WHERE articles_fts MATCH 'zorblax'").get() as { n: number }).n, 0);
+  assert.equal((db.prepare("SELECT COUNT(*) n FROM articles_fts WHERE articles_fts MATCH 'quuxwort'").get() as { n: number }).n, 1);
+  assert.equal((db.prepare("SELECT short FROM faq WHERE slug = 'bundle-delai-convocation'").get() as { short: string }).short, "Vingt et un jours.");
+  assert.equal((db.prepare("SELECT COUNT(*) n FROM faq WHERE slug = 'bundle-delai-convocation'").get() as { n: number }).n, 1);
+
   console.log("check-ask: OK");
 }
 
