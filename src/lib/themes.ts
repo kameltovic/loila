@@ -55,6 +55,17 @@ export const THEMES = [
 ] as const;
 export type ThemeSlug = (typeof THEMES)[number]["slug"];
 
+// Codes shared by too many subjects to identify a theme (a succession topic cites the Code civil, not construction).
+const GENERIC_CODES = new Set(["code-civil"]);
+
+/** Colour theme of a /sujets topic: its category when it is a theme (copropriete, construction), else its specific codes. */
+export function topicThemeSlug(topic: { category: string; codes: readonly string[] }): ThemeSlug | undefined {
+  return (
+    THEMES.find((t) => t.slug === topic.category)?.slug ??
+    THEMES.find((t) => topic.codes.some((c) => !GENERIC_CODES.has(c) && (t.codes as readonly string[]).includes(c)))?.slug
+  );
+}
+
 /** Public URL of a FAQ: topic questions live under /sujets. Kept here (no DB import) so client components can use it. */
 export function faqUrl(faq: { theme: string; slug: string; topic?: string | null }): string {
   return faq.topic ? `/sujets/${faq.topic}/${faq.slug}` : `/${faq.theme}/${faq.slug}`;

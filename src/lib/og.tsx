@@ -2,9 +2,8 @@ import { ImageResponse } from "next/og";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { clip } from "./seo";
-import { THEMES } from "./themes";
+import { topicThemeSlug } from "./themes";
 
-const THEME_CODES = Object.fromEntries(THEMES.map((t) => [t.slug, t.codes as readonly string[]]));
 
 export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_CONTENT_TYPE = "image/png";
@@ -271,8 +270,8 @@ export function renderIcon(px: number, padded = false) {
 }
 
 /** Topic card; `theme` colour comes from the topic's legal codes when they map to a theme. */
-export function topicOg(topic: { title: string; h1: string; codes: string[] } | undefined) {
+export function topicOg(topic: { title: string; h1: string; category: string; codes: string[] } | undefined) {
   if (!topic) return renderOg({ kind: "home" });
-  const theme = Object.entries(THEME_CODES).find(([, codes]) => topic.codes.some((c) => codes.includes(c)))?.[0];
+  const theme = topicThemeSlug(topic);
   return renderOg({ kind: "topic", title: topic.h1, label: `Sujet · ${topic.title}`, theme });
 }

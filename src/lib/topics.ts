@@ -1,6 +1,6 @@
 import topicsJson from "../../seed/topics.json";
 import { getDb, type Faq } from "./db";
-import { THEMES } from "./themes";
+import { THEMES, topicThemeSlug } from "./themes";
 
 export type TopicQuestion = { slug: string; question: string; hints: string[] };
 export type Topic = {
@@ -44,9 +44,8 @@ export type RelatedFaq = Pick<Faq, "id" | "theme" | "topic" | "slug" | "question
 /** Theme colour + kicker of a FAQ: topic questions borrow the theme whose codes they cite. */
 function decorate(f: Pick<Faq, "id" | "theme" | "topic" | "slug" | "question" | "short">): RelatedFaq {
   const topic = f.topic ? getTopic(f.topic) : undefined;
-  const theme = topic
-    ? THEMES.find((t) => topic.codes.some((c) => (t.codes as readonly string[]).includes(c)))
-    : THEMES.find((t) => t.slug === f.theme);
+  const slug = topic ? topicThemeSlug(topic) : f.theme;
+  const theme = THEMES.find((t) => t.slug === slug);
   return { ...f, color: theme?.slug ?? "travail", kicker: topic?.title ?? theme?.title ?? "Droit" };
 }
 

@@ -3,11 +3,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Chat from "@/components/Chat";
 import RelatedFaqs from "@/components/RelatedFaqs";
+import Backdrop from "@/components/Backdrop";
 import { ArticleDrawerProvider } from "@/components/ArticleDrawer";
 import FaqAnswer, { faqArticles } from "@/components/FaqAnswer";
 import { display, label } from "@/components/ui";
 import { getDb, type Faq } from "@/lib/db";
-import { CODES } from "@/lib/themes";
+import { CODES, topicThemeSlug } from "@/lib/themes";
 import { JsonLd, SITE_NAME, SITE_URL, abs, breadcrumbJsonLd, clip, contentUpdatedAt, faqJsonLd, ogImagePath, pageMetadata, plain } from "@/lib/seo";
 import { getTopic } from "@/lib/topics";
 
@@ -56,6 +57,8 @@ export default async function TopicQuestionPage({ params }: PageProps<"/sujets/[
   const crumb = "hover:text-fg hover:underline hover:decoration-signal hover:decoration-2 hover:underline-offset-4";
 
   return (
+    <div className="relative isolate">
+    <Backdrop theme={topicThemeSlug(topic) ?? "logement"} words={topic.keywords.filter((k) => k.length <= 12).slice(0, 2)} />
     <article className="mx-auto max-w-4xl px-4 pt-8 pb-16 sm:px-6 sm:pt-10 sm:pb-24">
       <JsonLd data={jsonLd} />
       <ArticleDrawerProvider>
@@ -76,5 +79,6 @@ export default async function TopicQuestionPage({ params }: PageProps<"/sujets/[
         <Chat title="Poser une autre question" />
       </div>
     </article>
+    </div>
   );
 }
