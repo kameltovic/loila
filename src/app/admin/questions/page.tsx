@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { requireAdmin } from "@/lib/auth";
+import { TRUNCATED_BEFORE, countCacheCitingLong } from "@/lib/ask";
 import { getDb } from "@/lib/db";
 import { container, display, label } from "@/components/ui";
 import { Section, Table, fmt } from "../ui";
@@ -18,15 +19,17 @@ const OUTCOMES: Record<string, string> = {
   error: "Erreur",
 };
 
-export default async function AdminQuestions({ searchParams }: { searchParams: Promise<{ issue?: string }> }) {
+export default async function AdminQuestions({ searchParams }: { searchParams: Promise<{ issue?: string; purge?: string }> }) {
   await requireAdmin();
-  const { issue } = await searchParams;
+  const { issue, purge } = await searchParams;
   const filter = issue && issue in OUTCOMES ? issue : null;
   const db = getDb();
 
   const byOutcome = db
     .prepare("SELECT outcome, COUNT(*) total, SUM(created_at >= unixepoch() - 7 * 86400) week FROM question_log GROUP BY outcome ORDER BY total DESC")
     .all() as { outcome: string; total: number; week: number }[];
+  const cacheTotal = (db.prepare("SELECT COUNT(*) n FROM qa_cache").get() as { n: number }).n;
+  const cacheLong = countCacheCitingLong();
   const total = byOutcome.reduce((a, o) => a + o.total, 0);
   const top = db
     .prepare("SELECT MIN(question) question, COUNT(*) n, MAX(created_at) last FROM question_log GROUP BY lower(trim(question)) HAVING n > 1 ORDER BY n DESC, last DESC LIMIT 30")
@@ -72,6 +75,31 @@ export default async function AdminQuestions({ searchParams }: { searchParams: P
           </div>
         ))}
       </div>
+
+      <Section id="cache" title="Cache des réponses IA">
+        {purge != null && (
+          <p role="status" className="mb-4 border-2 border-fg bg-urbanisme px-4 py-3 text-ink">
+            {purge} réponse{Number(purge) > 1 ? "s" : ""} supprimée{Number(purge) > 1 ? "s" : ""} du cache (sauvegarde JSON à côté de la base).
+          </p>
+        )}
+        <div className="border-2 border-fg bg-surface p-5">
+          <p>
+            <strong>{cacheTotal}</strong> réponses en cache, dont <strong>{cacheLong}</strong> citent un article de plus de{" "}
+            {TRUNCATED_BEFORE.toLocaleString("fr-FR")} caractères (rédigées avant les extraits par passages, possiblement incomplètes).
+          </p>
+          {cacheLong > 0 && (
+            <details className="mt-4">
+              <summary className="cursor-pointer font-semibold underline decoration-signal decoration-2 underline-offset-4">Vider ces {cacheLong} réponses…</summary>
+              <form method="post" action="/admin/cache" className="mt-3">
+                <p className="text-sm text-fg-2">Elles seront sauvegardées puis régénérées à la prochaine question identique (moins d’un centime chacune).</p>
+                <button type="submit" className="mt-3 border-2 border-fg bg-fg px-4 py-2 font-mono text-sm font-bold uppercase text-bg">
+                  Confirmer la suppression
+                </button>
+              </form>
+            </details>
+          )}
+        </div>
+      </Section>
 
       {top.length > 0 && (
         <Section title="Questions les plus fréquentes">

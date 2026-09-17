@@ -90,6 +90,21 @@ async function main() {
   assert.equal(b[1], 800);
   assert.ok(b[0] > b[7] && b.reduce((x, y) => x + y) <= 16_000, String(b));
 
+  // Admin cache purge: only answers citing a long article go, after a JSON backup.
+  const { countCacheCitingLong, purgeCacheCitingLong } = await import("../src/lib/ask");
+  const cacheRow = db.prepare("INSERT INTO qa_cache (hash, question, answer_md, article_ids, model) VALUES (?, ?, 'a', ?, 'm')");
+  const longId = "PURGE-LONG", shortId = "PURGE-SHORT";
+  db.prepare("INSERT INTO articles (id, code, num, texte, url) VALUES (?, 'loi-89-462', 'p1', ?, 'u'), (?, 'loi-89-462', 'p2', 'court', 'u')").run(longId, "x ".repeat(1300), shortId);
+  db.prepare("DELETE FROM qa_cache").run();
+  cacheRow.run("h-long", "q1", JSON.stringify([shortId, longId]));
+  cacheRow.run("h-short", "q2", JSON.stringify([shortId]));
+  assert.equal(countCacheCitingLong(), 1);
+  const purge = purgeCacheCitingLong();
+  assert.equal(purge.deleted, 1);
+  assert.deepEqual((JSON.parse(fs.readFileSync(purge.backup!, "utf8")) as { hash: string }[]).map((r) => r.hash), ["h-long"]);
+  assert.deepEqual(db.prepare("SELECT hash FROM qa_cache").all(), [{ hash: "h-short" }]);
+  assert.deepEqual(purgeCacheCitingLong(), { deleted: 0, backup: null });
+
   console.log("check-ask: OK");
 }
 

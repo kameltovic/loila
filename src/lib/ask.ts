@@ -1,4 +1,6 @@
 import { createHash } from "node:crypto";
+import fs from "node:fs";
+import path from "node:path";
 import { getDb, type Article, type Faq } from "./db";
 import { CODES, THEMES } from "./themes";
 import { chat, type ChatMessage } from "./openrouter";
@@ -289,4 +291,28 @@ export async function ask(
     hash, q, content, JSON.stringify(used.map((a) => a.id)), model,
   );
   return { source: "llm", answer_md: content, articles: used.map(({ id, num, code, url }) => ({ id, num, code, url })) };
+}
+
+// Cached answers citing an article longer than `minChars` were possibly written from a truncated excerpt
+// (before passage-level excerpts, the limit was 2,500 chars). Admin purge: they regenerate on next ask.
+export const TRUNCATED_BEFORE = 2500;
+const citingLong = (minChars: number) =>
+  getDb()
+    .prepare(
+      `SELECT q.* FROM qa_cache q WHERE EXISTS (SELECT 1 FROM json_each(q.article_ids) j JOIN articles a ON a.id = j.value WHERE length(a.texte) > ?)`,
+    )
+    .all(minChars) as { hash: string }[];
+
+export const countCacheCitingLong = (minChars = TRUNCATED_BEFORE) => citingLong(minChars).length;
+
+/** Backs the rows up as JSON next to the DB, then deletes them. Returns the count and backup path. */
+export function purgeCacheCitingLong(minChars = TRUNCATED_BEFORE, at = new Date()) {
+  const db = getDb();
+  const rows = citingLong(minChars);
+  if (!rows.length) return { deleted: 0, backup: null };
+  const backup = path.join(path.dirname(db.name), `qa_cache_backup_${at.toISOString().replace(/[:.]/g, "-")}.json`);
+  fs.writeFileSync(backup, JSON.stringify(rows, null, 1));
+  const del = db.prepare("DELETE FROM qa_cache WHERE hash = ?");
+  const deleted = db.transaction(() => rows.reduce((n, r) => n + del.run(r.hash).changes, 0))();
+  return { deleted, backup };
 }
