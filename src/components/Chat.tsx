@@ -120,7 +120,7 @@ export default function Chat({
         e.preventDefault();
         send(input);
       }}
-      className={`flex items-stretch gap-2 border-2 border-ink bg-white text-ink transition focus-within:outline-3 focus-within:outline-offset-4 focus-within:outline-focus dark:border-paper ${
+      className={`flex items-stretch gap-2 border-2 border-ink bg-white text-ink transition focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-fg dark:border-paper ${
         hero
           ? "rounded-2xl p-2 pl-5 shadow-[6px_6px_0_0_#0e0e0e] sm:p-2.5 sm:pl-7 dark:shadow-[6px_6px_0_0_#ff4a1c]"
           : "rounded-xl p-1.5 pl-4 shadow-hard-ink dark:shadow-[4px_4px_0_0_#ff4a1c]"

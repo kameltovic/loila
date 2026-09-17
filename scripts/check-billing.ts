@@ -25,6 +25,14 @@ async function main() {
   assert.equal(auth.safeNext("//evil.com"), "/compte");
   assert.equal(auth.safeNext("/sujets"), "/sujets");
 
+  // --- email aliases collapse to a single account (no free-account farming)
+  assert.equal(auth.canonicalEmail("Jean+Loila@Example.com"), "jean@example.com");
+  assert.equal(auth.canonicalEmail("J.E.A.N@gmail.com"), "jean@gmail.com");
+  assert.equal(auth.canonicalEmail("j.e.a.n@googlemail.com"), "jean@googlemail.com");
+  assert.equal(auth.canonicalEmail("Jean@Example.com"), "jean@example.com");
+  assert.equal(auth.canonicalEmail("+tag@example.com"), "+tag@example.com"); // nothing before "+": keep as-is
+  assert.equal(auth.upsertUser("alias+one@example.com"), auth.upsertUser("ALIAS+two@Example.com"));
+
   // --- asking requires an account: anonymous visitors cannot ask, free questions are account-scoped
   db.prepare("INSERT INTO articles (id, code, num, texte, url) VALUES ('A1', 'loi-89-462', '15', 'Le délai de préavis du locataire est de trois mois.', 'u')").run();
   const anon = { userId: null, email: null, anonId: "anon1", ipHash: "ip1" };

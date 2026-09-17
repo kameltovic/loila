@@ -61,6 +61,24 @@ export const safeNext = (next: string | null, fallback = "/compte") =>
 export const isEmail = (s: unknown): s is string =>
   typeof s === "string" && s.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s);
 
+/**
+ * Canonical account key: lowercased, "+tag" aliases stripped, Gmail dots ignored.
+ * Without this, one person could register foo+1@, foo+2@… and mint unlimited free accounts.
+ * Only used to key the account (and rate limits), never to send mail.
+ */
+export function canonicalEmail(email: string): string {
+  const e = email.trim().toLowerCase();
+  const at = e.lastIndexOf("@");
+  if (at <= 0 || at === e.length - 1) return e;
+  const local = e.slice(0, at);
+  const domain = e.slice(at + 1);
+  const plus = local.indexOf("+");
+  let base = plus >= 0 ? local.slice(0, plus) : local;
+  // Gmail (and Googlemail) deliver foo.bar@ and foobar@ to the same inbox.
+  if (/^(g(oogle)?mail)\.com$/.test(domain)) base = base.replace(/\./g, "");
+  return base ? `${base}@${domain}` : e;
+}
+
 const cookieOpts = (maxAge: number) => ({ httpOnly: true, secure: PROD, sameSite: "lax" as const, path: "/", maxAge });
 
 export type Identity = { userId: number | null; email: string | null; anonId: string; ipHash: string };
@@ -98,14 +116,14 @@ export async function getIdentity(req: Request): Promise<Identity> {
 
 export function upsertUser(email: string): number {
   const db = getDb();
-  const e = email.trim().toLowerCase();
+  const e = canonicalEmail(email);
   db.prepare("INSERT INTO users (email) VALUES (?) ON CONFLICT(email) DO NOTHING").run(e);
   return (db.prepare("SELECT id FROM users WHERE email = ?").get(e) as { id: number }).id;
 }
 
 export function createLoginToken(email: string, at = now()) {
   const raw = token();
-  getDb().prepare("INSERT INTO login_tokens (token_hash, email, expires_at) VALUES (?, ?, ?)").run(sha256(raw), email.trim().toLowerCase(), at + LOGIN_TOKEN_TTL);
+  getDb().prepare("INSERT INTO login_tokens (token_hash, email, expires_at) VALUES (?, ?, ?)").run(sha256(raw), canonicalEmail(email), at + LOGIN_TOKEN_TTL);
   return raw;
 }
 

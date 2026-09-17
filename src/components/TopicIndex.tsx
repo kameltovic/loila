@@ -24,7 +24,7 @@ export default function TopicIndex({ categories }: { categories: Category[] }) {
     <>
       <div className={`${container} pb-4`}>
         <label htmlFor="topic-filter" className={`${label} text-fg-2`}>Filtrer les sujets</label>
-        <div className="mt-3 flex items-center gap-3 border-2 border-fg bg-surface px-4 shadow-[4px_4px_0_0_var(--fg)] focus-within:outline-3 focus-within:outline-focus">
+        <div className="mt-3 flex items-center gap-3 border-2 border-fg bg-surface px-4 shadow-[4px_4px_0_0_var(--fg)] focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-fg">
           <Search aria-hidden strokeWidth={1.75} className="size-5 shrink-0 text-fg-2" />
           <input
             id="topic-filter"

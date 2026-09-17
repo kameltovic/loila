@@ -1,4 +1,4 @@
-import { appUrl, clientIp, createLoginToken, isEmail, rateLimited, safeNext, sameOrigin } from "@/lib/auth";
+import { appUrl, canonicalEmail, clientIp, createLoginToken, isEmail, rateLimited, safeNext, sameOrigin } from "@/lib/auth";
 import { sendMagicLink } from "@/lib/email";
 
 // Same answer whether or not the account exists (no enumeration).
@@ -14,7 +14,8 @@ export async function POST(request: Request) {
   }
   const email = typeof body?.email === "string" ? body.email.trim().toLowerCase() : "";
   if (!isEmail(email)) return Response.json({ error: "Adresse e-mail invalide." }, { status: 400 });
-  if (rateLimited(`login-ip:${clientIp(request)}`, 10, 60 * 60_000) || rateLimited(`login-email:${email}`, 3, 15 * 60_000)) {
+  // Rate-limit on the canonical address so "+tag" aliases share one budget. The email itself is sent unchanged.
+  if (rateLimited(`login-ip:${clientIp(request)}`, 10, 60 * 60_000) || rateLimited(`login-email:${canonicalEmail(email)}`, 3, 15 * 60_000)) {
     return Response.json({ error: "Trop de demandes, réessayez dans quelques minutes." }, { status: 429 });
   }
 
