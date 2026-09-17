@@ -47,6 +47,8 @@ export default async function Admin() {
     .all() as { id: number; user_id: number; email: string; credits_granted: number; credits_left: number; expires_at: number; expired: number; created_at: number }[];
   const waitlist = db.prepare("SELECT email, metier, created_at FROM pro_waitlist ORDER BY created_at DESC LIMIT 100").all() as
     { email: string; metier: string | null; created_at: number }[];
+  const contacts = db.prepare("SELECT id, first_name, last_name, company, email, message, emailed, created_at FROM contact_messages ORDER BY id DESC LIMIT 100").all() as
+    { id: number; first_name: string; last_name: string; company: string | null; email: string; message: string; emailed: number; created_at: number }[];
 
   return (
     <div className={`${container} pt-12 pb-20 sm:pt-16`}>
@@ -97,6 +99,23 @@ export default async function Admin() {
               <td>{fmt(b.created_at)}</td>
               <td>{b.credits_left}/{b.credits_granted}</td>
               <td>{fmt(b.expires_at)} {!!b.expired && <span className="ml-2 border border-fg px-1.5 text-xs uppercase">expiré</span>}</td>
+            </tr>
+          ))}
+        </Table>
+      </Section>
+
+      <Section id="contact" title="Messages de contact">
+        <Table head={["Reçu", "Nom", "Entreprise", "E-mail", "Notifié", "Message"]}>
+          {contacts.map((c) => (
+            <tr key={c.id}>
+              <td>{fmt(c.created_at)}</td>
+              <td>{c.first_name} {c.last_name}</td>
+              <td>{c.company ?? "—"}</td>
+              <td>
+                <a href={`mailto:${c.email}?subject=${encodeURIComponent("Re: votre message à Loilà")}`} className="underline underline-offset-2">{c.email}</a>
+              </td>
+              <td>{c.emailed ? "oui" : "non"}</td>
+              <td className="min-w-[24rem] whitespace-pre-wrap font-sans">{c.message}</td>
             </tr>
           ))}
         </Table>

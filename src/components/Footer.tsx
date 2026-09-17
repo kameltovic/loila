@@ -24,7 +24,7 @@ export default function Footer() {
         { href: "/tarifs", label: "Tarifs" },
         { href: "/cgv", label: "CGV" },
         { href: "/mentions-legales", label: "Mentions légales" },
-        { href: "mailto:contact@loila.fr", label: "Contact" },
+        { href: "/contact", label: "Contact" },
       ],
     },
   ];

@@ -9,8 +9,6 @@ export const metadata: Metadata = pageMetadata({
   path: "/mentions-legales",
 });
 
-const CONTACT = "contact@loila.fr";
-
 export default function LegalNotice() {
   return (
     <>
@@ -34,7 +32,7 @@ export default function LegalNotice() {
           <li>SIRET : 521 998 120 00021</li>
           <li>TVA intracommunautaire : FR85521998120</li>
           <li>
-            Contact : <a href={`mailto:${CONTACT}`}>{CONTACT}</a>
+            Contact : <Link href="/contact">formulaire de contact</Link>
           </li>
         </ul>
 
@@ -103,6 +101,10 @@ export default function LegalNotice() {
             Base légale : consentement, retirable à tout moment.
           </li>
           <li>
+            <strong>Messages de contact</strong> (prénom, nom, entreprise, adresse email, message) : vous répondre. Base légale :
+            intérêt légitime à traiter les demandes reçues.
+          </li>
+          <li>
             <strong>Sécurité</strong> (adresse IP, utilisée en mémoire vive uniquement, sans stockage) : limiter les abus et
             les envois massifs. Base légale : intérêt légitime.
           </li>
@@ -119,6 +121,7 @@ export default function LegalNotice() {
           <li>Liens de connexion : supprimés un jour après leur expiration ; sessions : 90 jours au plus.</li>
           <li>Données d’achat et de facturation : 10 ans, conformément à l’article L123-22 du Code de commerce.</li>
           <li>Liste d’attente Pro : jusqu’à l’ouverture de l’offre ou votre désinscription.</li>
+          <li>Messages de contact : 3 ans à compter de leur envoi, puis suppression automatique.</li>
         </ul>
 
         <h3>Destinataires et sous-traitants</h3>
@@ -130,7 +133,7 @@ export default function LegalNotice() {
           <li>Amazon Web Services (hébergement, région de Paris) ;</li>
           <li>Cloudflare (diffusion du site et protection contre les attaques) ;</li>
           <li>Stripe (paiement : l’Éditeur n’a jamais accès à vos coordonnées bancaires) ;</li>
-          <li>Sweego (envoi des emails de connexion, France) ;</li>
+          <li>Sweego (envoi des emails de connexion et de notification, France) ;</li>
           <li>
             OpenRouter et les fournisseurs de modèles d’intelligence artificielle auxquels il transmet les questions et les
             dossiers pour générer les réponses (notamment Anthropic, Google et, pour l’analyse des dossiers, des hébergeurs
@@ -158,8 +161,8 @@ export default function LegalNotice() {
         <p>
           Vous disposez d’un droit d’accès, de rectification, d’effacement, de limitation, d’opposition et de portabilité de
           vos données, ainsi que du droit de retirer votre consentement et de définir des directives sur leur sort après
-          votre décès. Pour les exercer, écrivez à <a href={`mailto:${CONTACT}`}>{CONTACT}</a> depuis l’adresse de votre
-          compte ; une réponse vous est apportée dans un délai d’un mois.
+          votre décès. Pour les exercer, utilisez le <Link href="/contact">formulaire de contact</Link> en indiquant
+          l’adresse email de votre compte ; une réponse vous est apportée dans un délai d’un mois.
         </p>
         <p>
           Si vous estimez que vos droits ne sont pas respectés, vous pouvez introduire une réclamation auprès de la CNIL

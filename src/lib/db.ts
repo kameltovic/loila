@@ -167,14 +167,27 @@ CREATE TABLE IF NOT EXISTS question_log (
   created_at INTEGER NOT NULL DEFAULT (unixepoch())
 );
 CREATE INDEX IF NOT EXISTS question_log_created ON question_log(created_at);
+-- /contact form. Stored before emailing so a failed send loses nothing.
+CREATE TABLE IF NOT EXISTS contact_messages (
+  id         INTEGER PRIMARY KEY,
+  first_name TEXT NOT NULL,
+  last_name  TEXT NOT NULL,
+  company    TEXT,
+  email      TEXT NOT NULL,
+  message    TEXT NOT NULL,
+  emailed    INTEGER NOT NULL DEFAULT 0,  -- 1 once the notification email was accepted by Sweego
+  created_at INTEGER NOT NULL DEFAULT (unixepoch())
+);
 `;
 
 let db: Database.Database | undefined;
 
-// Retention (see /mentions-legales#donnees-personnelles): question stats 12 months, used/expired login links 1 day.
+// Retention (see /mentions-legales#donnees-personnelles): question stats 12 months, contact messages 3 years,
+// used/expired login links 1 day.
 function purgeExpired(d: Database.Database) {
   try {
     d.exec(`DELETE FROM question_log WHERE created_at < unixepoch() - ${365 * 86400}`);
+    d.exec(`DELETE FROM contact_messages WHERE created_at < unixepoch() - ${3 * 365 * 86400}`);
     d.exec("DELETE FROM login_tokens WHERE expires_at < unixepoch() - 86400");
     d.exec("DELETE FROM sessions WHERE expires_at < unixepoch()");
   } catch (e) {

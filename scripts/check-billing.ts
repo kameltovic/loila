@@ -18,7 +18,7 @@ async function main() {
   const { handleStripeEvent } = await import("../src/lib/stripe");
   const email = await import("../src/lib/email");
   const notices: string[] = [];
-  email.adminMailer.send = async (_to, n) => void notices.push(n.subject);
+  email.adminMailer.send = async (_to, n) => { notices.push(n.subject); return true; };
   const sent = (prefix: string) => notices.filter((x) => x.startsWith(prefix)).length;
   const db = getDb();
   const T = 1_800_000_000;
@@ -45,7 +45,7 @@ async function main() {
   email.adminMailer.send = async () => { throw new Error("boom"); };
   assert.ok(auth.upsertUser("async-fail@example.com"));
   await new Promise((r) => setTimeout(r, 0)); // a rejection would surface as unhandled here
-  email.adminMailer.send = async (_to, n) => void notices.push(n.subject);
+  email.adminMailer.send = async (_to, n) => { notices.push(n.subject); return true; };
 
   // --- /admin guard: ADMIN_EMAILS compared canonically; anonymous and non-admins get nothing
   const session = (uid: number) => {
@@ -197,6 +197,30 @@ async function main() {
   const old = auth.createLoginToken("late@example.com", T);
   assert.equal(auth.consumeLoginToken(old, T + 15 * 60 + 1), null);
   assert.equal(auth.consumeLoginToken("garbage", T), null);
+
+  // --- contact form: validation, honeypot, saved before emailing, "emailed" only once the send succeeded
+  const contact = await import("../src/lib/contact");
+  const base = { firstName: "Jeanne", lastName: "Martin", company: "", email: "Jeanne@Example.com", message: "Bonjour, une question sur l'offre Pro." };
+  assert.deepEqual(contact.parseContact({ ...base, website: "http://spam" }), { spam: true });
+  assert.ok("error" in (contact.parseContact({ ...base, lastName: " " }) as object));
+  assert.ok("error" in (contact.parseContact({ ...base, email: "nope" }) as object));
+  assert.ok("error" in (contact.parseContact({ ...base, message: "court" }) as object));
+  const parsed = contact.parseContact(base);
+  assert.ok(!("error" in parsed) && !("spam" in parsed));
+  const input = parsed as import("../src/lib/contact").ContactInput;
+  assert.equal(input.company, null);
+  assert.equal(input.email, "jeanne@example.com");
+  let quote: string | undefined;
+  email.adminMailer.send = async (_to, n) => { notices.push(n.subject); quote = n.quote; return true; };
+  const c1 = await contact.submitContact(input);
+  assert.equal(quote, base.message);
+  assert.equal(sent("Message de Jeanne Martin"), 1);
+  email.adminMailer.send = async () => false; // Sweego refused
+  const c2 = await contact.submitContact(input);
+  email.adminMailer.send = async () => { throw new Error("network"); };
+  const c3 = await contact.submitContact(input);
+  const emailed = (id: number) => (db.prepare("SELECT emailed FROM contact_messages WHERE id = ?").get(id) as { emailed: number }).emailed;
+  assert.deepEqual([emailed(c1), emailed(c2), emailed(c3)], [1, 0, 0]); // all three saved, failures flagged
 
   console.log("check-billing: OK");
 }
