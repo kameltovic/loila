@@ -1,0 +1,100 @@
+{
+  "slug": "syndic-benevole",
+  "title": "Syndic bénévole",
+  "theme": "copropriete",
+  "seo": {
+    "title": "Syndic bénévole : obligations, AG et comptes",
+    "description": "Convocation de l'AG, procès-verbal, compte séparé, comptabilité, impayés, conseil syndical : les règles de la copropriété, article par article."
+  },
+  "h1": "Gérer une copropriété quand on n'est pas",
+  "h1Accent": "du métier",
+  "intro": "Vous êtes syndic bénévole, membre du conseil syndical ou président de séance. Vous trouverez ici les délais et obligations prévus par la loi du 10 juillet 1965 et ses décrets, pour l'assemblée générale, les comptes, les impayés et les travaux. Chaque règle renvoie à l'article officiel.",
+  "audience": [
+    "Syndic bénévole",
+    "Syndic coopératif",
+    "Membre du conseil syndical",
+    "Président de séance d'AG",
+    "Copropriétaire chargé du contrôle des comptes"
+  ],
+  "obligations": [
+    {
+      "title": "Réunir l'assemblée générale chaque année",
+      "detail": "Une assemblée générale se tient au moins une fois par an. Sauf urgence, la convocation est notifiée au moins 21 jours avant la réunion, ou plus si le règlement de copropriété le prévoit.",
+      "refs": ["decret-67-223:7", "decret-67-223:9"]
+    },
+    {
+      "title": "Joindre les bons documents à la convocation",
+      "detail": "Comptes, projet de budget, conditions essentielles des contrats ou devis : ces pièces sont notifiées au plus tard avec l'ordre du jour. Sans elles, la décision sur la question concernée n'est pas valable.",
+      "refs": ["decret-67-223:11", "decret-67-223:13"]
+    },
+    {
+      "title": "Établir et notifier le procès-verbal",
+      "detail": "Le procès-verbal est signé en fin de séance ou dans les 8 jours. Le syndic le notifie aux opposants et défaillants dans le mois suivant l'AG, ce qui ouvre leur délai de contestation de 2 mois.",
+      "refs": ["decret-67-223:17", "loi-65-557:42", "decret-67-223:18"]
+    },
+    {
+      "title": "Ouvrir un compte bancaire séparé",
+      "detail": "Le syndic ouvre un compte séparé au nom du syndicat, et un compte séparé rémunéré pour le fonds de travaux. À défaut, son mandat est nul de plein droit 3 mois après sa désignation.",
+      "refs": ["loi-65-557:18"]
+    },
+    {
+      "title": "Faire voter le budget prévisionnel",
+      "detail": "Le budget est voté dans les 6 mois suivant la clôture de l'exercice précédent. Sauf autre décision de l'AG, les copropriétaires versent chaque trimestre une provision égale au quart du budget.",
+      "refs": ["loi-65-557:14-1", "decret-67-223:43"]
+    },
+    {
+      "title": "Alimenter le fonds de travaux",
+      "detail": "Dans les immeubles d'habitation de plus de 10 ans, la cotisation annuelle au fonds de travaux ne peut être inférieure à 5 % du budget prévisionnel (et à 2,5 % des travaux du plan pluriannuel adopté, s'il existe).",
+      "refs": ["loi-65-557:14-2-1"]
+    },
+    {
+      "title": "Tenir la comptabilité du syndicat",
+      "detail": "Les comptes suivent des règles comptables spécifiques et les pièces justificatives sont conservées 10 ans. Une copropriété d'au plus 5 lots ou au budget moyen inférieur à 15 000 € peut se passer de la comptabilité en partie double.",
+      "refs": ["loi-65-557:14-3", "decret-2005-240:6", "loi-65-557:41-8", "loi-65-557:41-10"]
+    },
+    {
+      "title": "Immatriculer la copropriété au registre national",
+      "detail": "Le syndic déclare le syndicat et tient ses données à jour. Après une mise en demeure restée sans effet un mois, une astreinte de 20 € maximum par lot et par semaine peut être appliquée.",
+      "refs": ["loi-65-557:18", "code-construction-habitation:L711-2", "code-construction-habitation:L711-6"]
+    },
+    {
+      "title": "Tenir la fiche synthétique, le carnet d'entretien et les archives",
+      "detail": "La fiche synthétique est mise à jour chaque année ; des pénalités s'appliquent si elle n'est pas fournie dans le mois suivant la demande d'un copropriétaire. Le syndic conserve les archives du syndicat et tient le carnet d'entretien à disposition des copropriétaires.",
+      "refs": ["loi-65-557:8-2", "loi-65-557:18", "decret-67-223:33"]
+    },
+    {
+      "title": "Rester copropriétaire pendant le mandat",
+      "detail": "Seul un copropriétaire peut être syndic non professionnel. S'il cesse de l'être, son mandat devient caduc au bout de 3 mois, pendant lesquels il convoque une AG pour désigner un nouveau syndic.",
+      "refs": ["loi-65-557:17-2"]
+    }
+  ],
+  "faqSlugs": [
+    "delai-convocation-ag-copropriete",
+    "compte-bancaire-separe-copropriete",
+    "syndic-benevole-copropriete",
+    "documents-convocation-ag-copropriete",
+    "proces-verbal-ag-copropriete-contenu",
+    "notifier-proces-verbal-ag-delai",
+    "majorites-vote-copropriete",
+    "comptabilite-copropriete-syndic-benevole",
+    "petite-copropriete-regles-simplifiees",
+    "travaux-urgents-sans-ag",
+    "syndic-justice-impayes-sans-ag",
+    "interets-retard-charges-copropriete",
+    "frais-recouvrement-coproprietaire-debiteur",
+    "immatriculation-registre-coproprietes",
+    "vote-par-correspondance-date-limite",
+    "pouvoirs-sans-nom-mandataire-ag",
+    "second-vote-article-24-apres-25",
+    "conseil-syndical-acces-documents-syndic",
+    "mise-en-concurrence-contrat-syndic",
+    "delegation-pouvoirs-conseil-syndical",
+    "appel-de-fonds-travaux-copropriete",
+    "archives-carnet-entretien-copropriete",
+    "syndic-benevole-vend-son-lot",
+    "budget-previsionnel-copropriete",
+    "contester-decision-ag"
+  ],
+  "texts": ["loi-65-557", "decret-67-223", "decret-2005-240", "decret-2015-342"],
+  "proPitch": "Un export sourcé de chaque réponse à joindre au dossier de l'AG ou au procès-verbal, et une alerte quand un article de la loi de 1965 ou de ses décrets change. L'historique par dossier garde la trace des questions posées pour chaque immeuble."
+}

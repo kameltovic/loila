@@ -8045,6 +8045,481 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "organiser-assemblee-generale-copropriete",
+      "title": "Organiser l'AG de copropriété",
+      "h1": "Assemblée générale de copropriété : convoquer, tenir la séance, notifier le procès-verbal",
+      "category": "copropriete",
+      "intro": "Syndic bénévole, président de séance ou membre du conseil syndical : voici les règles de forme d'une assemblée générale, de la convocation à la notification du procès-verbal. Une étape mal faite peut fragiliser les décisions votées.",
+      "keywords": [
+        "convocation assemblée générale copropriété",
+        "délai convocation AG",
+        "procès-verbal AG",
+        "vote par correspondance",
+        "président de séance"
+      ],
+      "codes": [
+        "loi-65-557",
+        "decret-67-223"
+      ],
+      "questions": [
+        {
+          "slug": "delai-convocation-ag-copropriete",
+          "question": "Quel délai pour convoquer l'assemblée générale de copropriété ?",
+          "hints": [
+            "vingt et un jours",
+            "convocation notifiée",
+            "au moins une fois chaque année",
+            "decret-67-223:9",
+            "decret-67-223:7",
+            "loi-65-557:42-1"
+          ]
+        },
+        {
+          "slug": "documents-convocation-ag-copropriete",
+          "question": "Quels documents joindre à la convocation de l'AG de copropriété ?",
+          "hints": [
+            "notifiés au plus tard en même temps que l'ordre du jour",
+            "état financier",
+            "projet du budget",
+            "formulaire de vote par correspondance",
+            "decret-67-223:11",
+            "decret-67-223:9",
+            "decret-67-223:13"
+          ]
+        },
+        {
+          "slug": "vote-par-correspondance-date-limite",
+          "question": "Jusqu'à quand le syndic doit-il recevoir les votes par correspondance ?",
+          "hints": [
+            "formulaire de vote par correspondance",
+            "réceptionné par le syndic",
+            "trois jours francs avant la date de la réunion",
+            "amendée défaillant",
+            "loi-65-557:17-1 A"
+          ]
+        },
+        {
+          "slug": "pouvoirs-sans-nom-mandataire-ag",
+          "question": "Que faire des pouvoirs reçus sans nom de mandataire pour l'AG ?",
+          "hints": [
+            "mandat sans indication du nom du mandataire",
+            "président du conseil syndical",
+            "président de séance",
+            "plus de trois délégations de vote",
+            "decret-67-223:15-1",
+            "loi-65-557:22"
+          ]
+        },
+        {
+          "slug": "proces-verbal-ag-copropriete-contenu",
+          "question": "Que doit contenir le procès-verbal d'AG de copropriété et qui le signe ?",
+          "hints": [
+            "procès-verbal des décisions",
+            "signé par le président, le secrétaire et les scrutateurs",
+            "huit jours",
+            "opposants abstenus",
+            "decret-67-223:17",
+            "decret-67-223:15"
+          ]
+        },
+        {
+          "slug": "notifier-proces-verbal-ag-delai",
+          "question": "Dans quel délai le syndic doit-il notifier le procès-verbal d'AG ?",
+          "hints": [
+            "notification du procès-verbal",
+            "délai d'un mois à compter de la tenue de l'assemblée",
+            "opposants ou défaillants",
+            "reproduire le texte du deuxième alinéa de l'article 42",
+            "loi-65-557:42",
+            "decret-67-223:18",
+            "loi-65-557:42-1"
+          ]
+        },
+        {
+          "slug": "second-vote-article-24-apres-25",
+          "question": "Résolution rejetée à la majorité de l'article 25 : peut-on revoter tout de suite ?",
+          "hints": [
+            "second vote",
+            "au moins le tiers de ces voix",
+            "passerelle",
+            "loi-65-557:25-1",
+            "decret-67-223:19",
+            "loi-65-557:25"
+          ]
+        }
+      ],
+      "relatedFaqs": [
+        "majorites-vote-copropriete",
+        "ajouter-question-ordre-du-jour",
+        "ag-en-visioconference",
+        "pouvoir-procuration-ag",
+        "contester-decision-ag"
+      ]
+    },
+    {
+      "slug": "syndic-benevole-obligations",
+      "title": "Syndic bénévole : obligations",
+      "h1": "Syndic bénévole ou coopératif : les obligations de gestion à connaître",
+      "category": "copropriete",
+      "intro": "Un copropriétaire peut gérer lui-même l'immeuble comme syndic non professionnel. Les obligations de base restent celles d'un syndic : compte bancaire séparé, comptabilité, registre national, archives. Voici les règles et les allègements prévus pour les petites copropriétés.",
+      "keywords": [
+        "syndic bénévole obligations",
+        "syndic non professionnel",
+        "compte bancaire séparé copropriété",
+        "immatriculation copropriété",
+        "syndicat coopératif",
+        "petite copropriété"
+      ],
+      "codes": [
+        "loi-65-557",
+        "decret-67-223",
+        "decret-2005-240"
+      ],
+      "questions": [
+        {
+          "slug": "compte-bancaire-separe-copropriete",
+          "question": "Le syndic doit-il ouvrir un compte bancaire séparé au nom du syndicat des copropriétaires ?",
+          "hints": [
+            "compte séparé au nom du syndicat",
+            "nullité de plein droit de son mandat",
+            "trois mois",
+            "compte séparé rémunéré fonds de travaux",
+            "loi-65-557:18"
+          ]
+        },
+        {
+          "slug": "comptabilite-copropriete-syndic-benevole",
+          "question": "Quelle comptabilité tenir quand on est syndic bénévole ?",
+          "hints": [
+            "règles comptables spécifiques",
+            "exercice comptable douze mois",
+            "pièces justificatives conservées dix ans",
+            "comptabilité en partie double",
+            "loi-65-557:14-3",
+            "decret-2005-240:5",
+            "decret-2005-240:6",
+            "loi-65-557:41-10",
+            "loi-65-557:41-8"
+          ]
+        },
+        {
+          "slug": "petite-copropriete-regles-simplifiees",
+          "question": "Petite copropriété : quelles règles simplifiées s'appliquent ?",
+          "hints": [
+            "au plus cinq lots",
+            "budget prévisionnel moyen inférieur à 15 000 €",
+            "pas tenu de constituer un conseil syndical",
+            "consultation écrite unanimité",
+            "loi-65-557:41-8",
+            "loi-65-557:41-9",
+            "loi-65-557:41-10",
+            "loi-65-557:41-12"
+          ]
+        },
+        {
+          "slug": "immatriculation-registre-coproprietes",
+          "question": "Comment immatriculer la copropriété au registre national et qui s'en charge ?",
+          "hints": [
+            "registre d'immatriculation des syndicats de copropriétaires",
+            "astreinte 20 € par lot et par semaine",
+            "code-construction-habitation:L711-1",
+            "code-construction-habitation:L711-2",
+            "code-construction-habitation:L711-6",
+            "loi-65-557:18"
+          ]
+        },
+        {
+          "slug": "fiche-synthetique-copropriete",
+          "question": "Qu'est-ce que la fiche synthétique de la copropriété et qui doit l'établir ?",
+          "hints": [
+            "fiche synthétique",
+            "mise à jour chaque année",
+            "délai d'un mois pénalités",
+            "loi-65-557:8-2"
+          ]
+        },
+        {
+          "slug": "syndic-benevole-vend-son-lot",
+          "question": "Que se passe-t-il si le syndic bénévole vend son lot ?",
+          "hints": [
+            "syndic non professionnel",
+            "mandat devient caduc",
+            "délai de trois mois",
+            "désignation d'un nouveau syndic",
+            "loi-65-557:17-2"
+          ]
+        },
+        {
+          "slug": "syndicat-cooperatif-copropriete",
+          "question": "Comment fonctionne un syndicat coopératif de copropriété ?",
+          "hints": [
+            "forme coopérative",
+            "syndic élu par les membres du conseil syndical",
+            "contrôle des comptes",
+            "majorité de l'article 25",
+            "loi-65-557:17-1",
+            "loi-65-557:41-11"
+          ]
+        },
+        {
+          "slug": "archives-carnet-entretien-copropriete",
+          "question": "Quels documents le syndic doit-il conserver et tenir à jour ?",
+          "hints": [
+            "archives du syndicat",
+            "carnet d'entretien",
+            "registre des procès-verbaux",
+            "transmission bordereau changement de syndic",
+            "decret-67-223:33",
+            "decret-67-223:33-1",
+            "loi-65-557:18"
+          ]
+        }
+      ],
+      "relatedFaqs": [
+        "syndic-benevole-copropriete",
+        "missions-syndic",
+        "fonds-travaux-obligatoire",
+        "budget-previsionnel-copropriete"
+      ]
+    },
+    {
+      "slug": "impayes-de-charges-copropriete",
+      "title": "Impayés de charges en copropriété",
+      "h1": "Charges impayées en copropriété : intérêts, frais, garanties et recours",
+      "category": "copropriete",
+      "intro": "Quand un copropriétaire ne paie pas, c'est au syndic d'agir pour le syndicat. Voici les outils prévus par les textes : intérêts, frais imputables au débiteur, hypothèque légale, action en justice, et ce qui se passe quand les impayés deviennent trop lourds.",
+      "keywords": [
+        "charges impayées copropriété",
+        "recouvrement charges",
+        "mise en demeure copropriétaire",
+        "hypothèque légale syndicat",
+        "syndic action en justice"
+      ],
+      "codes": [
+        "loi-65-557",
+        "decret-67-223"
+      ],
+      "questions": [
+        {
+          "slug": "interets-retard-charges-copropriete",
+          "question": "Des intérêts de retard sont-ils dus sur les charges de copropriété impayées ?",
+          "hints": [
+            "intérêt au taux légal",
+            "à compter de la mise en demeure",
+            "avis indiquant le montant de la provision exigible",
+            "decret-67-223:36",
+            "decret-67-223:35",
+            "decret-67-223:35-2"
+          ]
+        },
+        {
+          "slug": "frais-recouvrement-coproprietaire-debiteur",
+          "question": "Qui paie les frais de relance et de mise en demeure pour charges impayées ?",
+          "hints": [
+            "imputables au seul copropriétaire concerné",
+            "frais de mise en demeure, de relance",
+            "créance justifiée",
+            "loi-65-557:10-1"
+          ]
+        },
+        {
+          "slug": "hypotheque-legale-syndicat-copropriete",
+          "question": "Comment le syndicat peut-il garantir sa créance sur un copropriétaire ?",
+          "hints": [
+            "hypothèque légale sur son lot",
+            "sans autorisation préalable de l'assemblée générale",
+            "cinq ans",
+            "privilège du bailleur",
+            "loi-65-557:19",
+            "loi-65-557:19-1"
+          ]
+        },
+        {
+          "slug": "syndic-justice-impayes-sans-ag",
+          "question": "Le syndic a-t-il besoin d'un vote de l'AG pour poursuivre un copropriétaire qui ne paie pas ?",
+          "hints": [
+            "autorisation d'agir en justice",
+            "actions en recouvrement de créance",
+            "saisie en vue de la vente d'un lot",
+            "decret-67-223:55",
+            "loi-65-557:19-2"
+          ]
+        },
+        {
+          "slug": "impayes-copropriete-mandataire-ad-hoc",
+          "question": "Trop d'impayés dans la copropriété : quand faut-il saisir le juge ?",
+          "hints": [
+            "25 % des sommes exigibles",
+            "mandataire ad hoc",
+            "informe le conseil syndical",
+            "loi-65-557:29-1 A"
+          ]
+        }
+      ],
+      "relatedFaqs": [
+        "coproprietaire-ne-paie-pas-charges",
+        "budget-previsionnel-copropriete"
+      ]
+    },
+    {
+      "slug": "conseil-syndical-copropriete",
+      "title": "Conseil syndical",
+      "h1": "Conseil syndical : pouvoirs, contrôle du syndic et mise en concurrence",
+      "category": "copropriete",
+      "intro": "Le conseil syndical assiste le syndic et contrôle sa gestion. Ses membres disposent de droits précis : accès aux documents, mise en concurrence des contrats de syndic, convocation de l'AG en cas de blocage, délégation de pouvoirs. Voici ce que prévoient les textes.",
+      "keywords": [
+        "conseil syndical pouvoirs",
+        "membre du conseil syndical",
+        "mise en concurrence syndic",
+        "contrôle des comptes du syndic",
+        "délégation de pouvoirs conseil syndical"
+      ],
+      "codes": [
+        "loi-65-557",
+        "decret-67-223"
+      ],
+      "questions": [
+        {
+          "slug": "conseil-syndical-convoquer-ag",
+          "question": "Le conseil syndical peut-il convoquer lui-même l'assemblée générale ?",
+          "hints": [
+            "convocation de droit",
+            "mise en demeure au syndic restée infructueuse pendant plus de huit jours",
+            "président du conseil syndical",
+            "quart des voix",
+            "decret-67-223:8",
+            "decret-67-223:7",
+            "decret-67-223:50"
+          ]
+        },
+        {
+          "slug": "mise-en-concurrence-contrat-syndic",
+          "question": "Comment le conseil syndical met-il en concurrence les contrats de syndic ?",
+          "hints": [
+            "met en concurrence plusieurs projets de contrats",
+            "contrat type",
+            "fiche d'information",
+            "dispensé de mise en concurrence",
+            "loi-65-557:21",
+            "decret-67-223:26",
+            "loi-65-557:18-1 A"
+          ]
+        },
+        {
+          "slug": "conseil-syndical-acces-documents-syndic",
+          "question": "Le conseil syndical peut-il exiger des documents du syndic ?",
+          "hints": [
+            "prendre connaissance et copie",
+            "délai d'un mois pénalités par jour de retard",
+            "contrôle la gestion du syndic",
+            "loi-65-557:21",
+            "decret-67-223:26"
+          ]
+        },
+        {
+          "slug": "delegation-pouvoirs-conseil-syndical",
+          "question": "L'AG peut-elle déléguer des décisions au conseil syndical ?",
+          "hints": [
+            "au moins trois membres",
+            "majorité des voix de tous les copropriétaires",
+            "montant maximum des sommes allouées",
+            "rend compte",
+            "loi-65-557:21-1",
+            "loi-65-557:21-2",
+            "loi-65-557:21-5",
+            "decret-67-223:26-1"
+          ]
+        },
+        {
+          "slug": "membres-mandat-conseil-syndical",
+          "question": "Qui peut être membre du conseil syndical et pour quelle durée ?",
+          "hints": [
+            "désignés par l'assemblée générale parmi les copropriétaires",
+            "trois années renouvelables",
+            "rend compte chaque année",
+            "decret-67-223:22",
+            "loi-65-557:21"
+          ]
+        }
+      ],
+      "relatedFaqs": [
+        "role-conseil-syndical",
+        "changer-de-syndic",
+        "missions-syndic"
+      ]
+    },
+    {
+      "slug": "travaux-urgents-appels-de-fonds",
+      "title": "Travaux urgents et appels de fonds",
+      "h1": "Travaux en copropriété : urgence, appels de fonds et plan pluriannuel",
+      "category": "copropriete",
+      "intro": "Fuite, péril, travaux votés : le syndic doit savoir ce qu'il peut engager seul, comment appeler les fonds et quand lancer le chantier. Voici les règles applicables, y compris le plan pluriannuel de travaux.",
+      "keywords": [
+        "travaux urgents copropriété",
+        "appel de fonds travaux",
+        "syndic travaux sans AG",
+        "plan pluriannuel de travaux",
+        "provision travaux"
+      ],
+      "codes": [
+        "loi-65-557",
+        "decret-67-223"
+      ],
+      "questions": [
+        {
+          "slug": "travaux-urgents-sans-ag",
+          "question": "Le syndic peut-il faire des travaux urgents sans vote de l'AG ?",
+          "hints": [
+            "cas d'urgence",
+            "sauvegarde de l'immeuble",
+            "convoque immédiatement une assemblée générale",
+            "provision tiers du devis",
+            "decret-67-223:37",
+            "loi-65-557:18"
+          ]
+        },
+        {
+          "slug": "appel-de-fonds-travaux-copropriete",
+          "question": "Comment appeler les fonds pour des travaux votés hors budget prévisionnel ?",
+          "hints": [
+            "dépenses non comprises dans le budget prévisionnel",
+            "exigibles selon les modalités votées",
+            "avis indiquant le montant et l'objet de la dépense",
+            "loi-65-557:14-1",
+            "decret-67-223:44",
+            "decret-67-223:35-2",
+            "decret-67-223:35"
+          ]
+        },
+        {
+          "slug": "travaux-votes-attendre-delai-contestation",
+          "question": "Faut-il attendre la fin du délai de contestation pour lancer des travaux votés ?",
+          "hints": [
+            "exécution suspendue",
+            "délai de deux mois",
+            "sauf urgence",
+            "articles 25 et 26",
+            "loi-65-557:42"
+          ]
+        },
+        {
+          "slug": "plan-pluriannuel-travaux-copropriete",
+          "question": "Quand la copropriété doit-elle établir un plan pluriannuel de travaux ?",
+          "hints": [
+            "projet de plan pluriannuel de travaux",
+            "quinze ans",
+            "actualisé tous les dix ans",
+            "diagnostic technique global",
+            "loi-65-557:14-2"
+          ]
+        }
+      ],
+      "relatedFaqs": [
+        "travaux-parties-communes-autorisation",
+        "fonds-travaux-obligatoire"
+      ]
     }
   ]
 }
