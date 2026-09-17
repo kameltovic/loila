@@ -50,7 +50,7 @@ export default function Header() {
           <Logo />
         </Link>
 
-        <ul className="hidden items-center gap-1 font-mono text-[0.8125rem] font-bold tracking-wide uppercase lg:flex">
+        <ul className="hidden items-center gap-1 font-mono text-[0.8125rem] font-bold tracking-wide uppercase xl:flex">
           {NAV.map((n) => (
             <li key={n.slug}>
               <Link
@@ -65,7 +65,7 @@ export default function Header() {
         </ul>
 
         <div className="flex items-center gap-2">
-          <AccountMenu className={`${navItem} hidden font-mono text-[0.8125rem] font-bold tracking-wide uppercase lg:block`} />
+          <AccountMenu className={`${navItem} hidden font-mono text-[0.8125rem] font-bold tracking-wide uppercase xl:block`} />
           <Link
             href="/#question"
             className={`${btnPrimary} hidden! sm:inline-flex!`}
@@ -75,7 +75,7 @@ export default function Header() {
           </Link>
           <button
             type="button"
-            className="inline-flex size-10 items-center justify-center border-2 border-fg lg:hidden"
+            className="inline-flex size-10 items-center justify-center border-2 border-fg xl:hidden"
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
@@ -87,7 +87,7 @@ export default function Header() {
       </nav>
 
       {open && (
-        <div id="mobile-menu" className="border-t border-rule bg-bg lg:hidden">
+        <div id="mobile-menu" className="border-t border-rule bg-bg xl:hidden">
           <ul className="mx-auto max-w-6xl px-4 pt-2 pb-5">
             {NAV.map((n) => (
               <li key={n.slug} className="border-b border-rule">
