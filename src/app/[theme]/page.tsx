@@ -8,6 +8,10 @@ import { getDb, type Faq } from "@/lib/db";
 import { THEMES, faqUrl } from "@/lib/themes";
 import { getCategories } from "@/lib/topics";
 import { getMetiers } from "@/lib/metiers";
+import diagnosticsHub from "../../../seed/generated/diagnostics-hub.json";
+
+// Existing questions filed under other topics that also belong on a theme page.
+const HUB: Record<string, string[]> = { diagnostics: diagnosticsHub.faqSlugs };
 import { conventionUrl, getConventions } from "@/lib/conventions";
 import { Empty, FaqIndex, SectionHead, block, container, display, label } from "@/components/ui";
 import { JsonLd, breadcrumbJsonLd, clip, faqJsonLd, pageMetadata } from "@/lib/seo";
@@ -19,9 +23,13 @@ const findTheme = (slug: string) => THEMES.find((t) => t.slug === slug);
 // Theme FAQs, plus topic questions of the /sujets category sharing the theme slug (copropriete, construction).
 function themeFaqs(slug: string) {
   const topics = getCategories().find((c) => c.slug === slug)?.topics.map((t) => t.slug) ?? [];
+  const extra = HUB[slug] ?? [];
+  const list = (xs: string[]) => xs.map(() => "?").join(",");
   return getDb()
-    .prepare(`SELECT theme, topic, slug, emoji, question, short FROM faq WHERE theme = ?${topics.length ? ` OR topic IN (${topics.map(() => "?").join(",")})` : ""} ORDER BY id`)
-    .all(slug, ...topics) as Faq[];
+    .prepare(
+      `SELECT theme, topic, slug, emoji, question, short FROM faq WHERE theme = ?${topics.length ? ` OR topic IN (${list(topics)})` : ""}${extra.length ? ` OR slug IN (${list(extra)})` : ""} ORDER BY id`,
+    )
+    .all(slug, ...topics, ...extra) as Faq[];
 }
 
 // Search-intent copy per theme (title is absolute: ≤ 60 chars without the site suffix).

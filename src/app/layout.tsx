@@ -42,6 +42,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <main className="flex-1">{children}</main>
         <Footer />
         <Script defer src="https://stats.coffee-beans.fr/script.js" data-website-id="5b4eedbb-3ed8-47f8-9905-194f768bd92a" strategy="afterInteractive" />
+        {process.env.NEXT_PUBLIC_UMAMI_DEV_URL && (
+          <Script defer src={`${process.env.NEXT_PUBLIC_UMAMI_DEV_URL}/script.js`} data-website-id={process.env.NEXT_PUBLIC_UMAMI_DEV_ID} strategy="afterInteractive" />
+        )}
       </body>
     </html>
   );
