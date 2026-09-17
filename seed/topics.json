@@ -8045,6 +8045,445 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "gerer-ses-locations-bailleur",
+      "title": "Gérer ses locations",
+      "h1": "Bailleur de plusieurs logements : bail, loyer, charges et congé",
+      "category": "proprietaires",
+      "intro": "Louer plusieurs logements, c'est appliquer les mêmes règles à chaque bail : type de location, charges, quittances, travaux et fin de bail. Voici les points que les bailleurs se posent le plus souvent.",
+      "keywords": [
+        "bailleur",
+        "location vide ou meublée",
+        "congé meublé",
+        "quittance de loyer",
+        "charges forfaitaires",
+        "SCI familiale"
+      ],
+      "codes": [
+        "loi-89-462",
+        "code-civil"
+      ],
+      "questions": [
+        {
+          "slug": "choix-bail-vide-ou-meuble-bailleur",
+          "question": "Louer vide ou meublé : qu'est-ce qui change pour le bailleur ?",
+          "hints": [
+            "durée du bail",
+            "dépôt de garantie",
+            "congé",
+            "loi-89-462:10",
+            "loi-89-462:22",
+            "loi-89-462:25-3",
+            "loi-89-462:25-6",
+            "loi-89-462:25-7",
+            "loi-89-462:25-8"
+          ]
+        },
+        {
+          "slug": "conge-bailleur-location-meublee",
+          "question": "Location meublée : comment et quand donner congé à son locataire ?",
+          "hints": [
+            "congé du bailleur",
+            "trois mois",
+            "motif",
+            "loi-89-462:25-8"
+          ]
+        },
+        {
+          "slug": "conge-motif-legitime-serieux",
+          "question": "Peut-on donner congé à son locataire pour motif légitime et sérieux, et à quel moment ?",
+          "hints": [
+            "congé du bailleur",
+            "terme du contrat",
+            "inexécution des obligations",
+            "préavis de six mois",
+            "loi-89-462:15",
+            "loi-89-462:10"
+          ]
+        },
+        {
+          "slug": "reprise-logement-sci-familiale",
+          "question": "Une SCI peut-elle donner congé pour reprendre le logement ?",
+          "hints": [
+            "société civile familiale",
+            "associé",
+            "reprise",
+            "loi-89-462:13",
+            "loi-89-462:15"
+          ]
+        },
+        {
+          "slug": "travaux-amelioration-hausse-loyer",
+          "question": "Des travaux d'amélioration permettent-ils d'augmenter le loyer en cours de bail ?",
+          "hints": [
+            "travaux d'amélioration",
+            "clause expresse",
+            "majoration du loyer",
+            "loi-89-462:17-1"
+          ]
+        },
+        {
+          "slug": "quittance-loyer-obligation-bailleur",
+          "question": "Le bailleur doit-il remettre une quittance de loyer ?",
+          "hints": [
+            "quittance",
+            "gratuitement",
+            "loi-89-462:21"
+          ]
+        },
+        {
+          "slug": "charges-forfait-ou-provisions",
+          "question": "Charges locatives : provisions avec régularisation ou forfait ?",
+          "hints": [
+            "provisions",
+            "régularisation annuelle",
+            "forfait",
+            "loi-89-462:23",
+            "loi-89-462:25-10",
+            "loi-89-462:8-1"
+          ]
+        },
+        {
+          "slug": "abandon-logement-locataire",
+          "question": "Le locataire a abandonné le logement : comment le récupérer ?",
+          "hints": [
+            "abandon de domicile",
+            "mise en demeure",
+            "constat",
+            "loi-89-462:14-1",
+            "loi-89-462:14"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "loyers-impayes-bailleur",
+      "title": "Loyers impayés côté bailleur",
+      "h1": "Loyers impayés : les étapes pour le bailleur, du commandement à l'expulsion",
+      "category": "proprietaires",
+      "intro": "Face à un impayé, le bailleur doit suivre une procédure précise : commandement de payer, clause résolutoire, appel au garant, puis décision du juge. Se faire justice soi-même est interdit.",
+      "keywords": [
+        "loyers impayés",
+        "clause résolutoire",
+        "commandement de payer",
+        "caution",
+        "prescription",
+        "expulsion"
+      ],
+      "codes": [
+        "loi-89-462",
+        "code-procedures-civiles-execution",
+        "code-civil"
+      ],
+      "questions": [
+        {
+          "slug": "clause-resolutoire-impayes-bailleur",
+          "question": "Bailleur : comment mettre en œuvre la clause résolutoire en cas de loyers impayés ?",
+          "hints": [
+            "clause résolutoire",
+            "commandement de payer",
+            "six semaines",
+            "loi-89-462:24"
+          ]
+        },
+        {
+          "slug": "actionner-garant-loyers-impayes",
+          "question": "Loyers impayés : comment se retourner contre le garant ?",
+          "hints": [
+            "caution",
+            "commandement",
+            "quinze jours",
+            "loi-89-462:22-1",
+            "loi-89-462:24"
+          ]
+        },
+        {
+          "slug": "prescription-loyers-impayes",
+          "question": "Combien de temps un bailleur a-t-il pour réclamer des loyers impayés ?",
+          "hints": [
+            "prescription",
+            "trois ans",
+            "loi-89-462:7-1"
+          ]
+        },
+        {
+          "slug": "expulsion-apres-jugement-etapes",
+          "question": "Après le jugement d'expulsion, quelles étapes avant de récupérer le logement ?",
+          "hints": [
+            "commandement de quitter les lieux",
+            "deux mois",
+            "trêve hivernale",
+            "code-procedures-civiles-execution:L411-1",
+            "code-procedures-civiles-execution:L412-1",
+            "code-procedures-civiles-execution:L412-3",
+            "code-procedures-civiles-execution:L412-6"
+          ]
+        }
+      ],
+      "relatedFaqs": [
+        "delai-commandement-de-payer",
+        "delais-paiement-dette-loyer",
+        "treve-hivernale-dates",
+        "proprietaire-change-serrure"
+      ]
+    },
+    {
+      "slug": "embaucher-un-salarie-tpe",
+      "title": "Embaucher un salarié",
+      "h1": "Embaucher dans une petite entreprise : DPAE, CDD, temps partiel et durée du travail",
+      "category": "travail",
+      "intro": "Sans service RH, chaque embauche demande de vérifier les mêmes points : déclaration préalable, type de contrat, durée du travail. Voici les règles du Code du travail qui reviennent le plus souvent.",
+      "keywords": [
+        "DPAE",
+        "CDD",
+        "temps partiel",
+        "heures complémentaires",
+        "durée maximale du travail",
+        "employeur"
+      ],
+      "codes": [
+        "code-du-travail"
+      ],
+      "questions": [
+        {
+          "slug": "declaration-prealable-embauche-dpae",
+          "question": "Quand et comment faire la déclaration préalable à l'embauche (DPAE) ?",
+          "hints": [
+            "déclaration préalable à l'embauche",
+            "URSSAF",
+            "code-du-travail:L1221-10",
+            "code-du-travail:L1221-11",
+            "code-du-travail:L1221-12",
+            "code-du-travail:R1221-1",
+            "code-du-travail:R1221-5",
+            "code-du-travail:L8221-5"
+          ]
+        },
+        {
+          "slug": "cdd-motifs-duree-maximale",
+          "question": "Pour quels motifs peut-on embaucher en CDD et pour combien de temps ?",
+          "hints": [
+            "contrat à durée déterminée",
+            "remplacement",
+            "accroissement temporaire d'activité",
+            "code-du-travail:L1242-1",
+            "code-du-travail:L1242-2",
+            "code-du-travail:L1242-8",
+            "code-du-travail:L1242-8-1"
+          ]
+        },
+        {
+          "slug": "cdd-ecrit-delai-transmission",
+          "question": "CDD : quelles mentions et dans quel délai remettre le contrat au salarié ?",
+          "hints": [
+            "contrat écrit",
+            "mentions",
+            "deux jours ouvrables",
+            "requalification",
+            "code-du-travail:L1242-12",
+            "code-du-travail:L1242-13",
+            "code-du-travail:L1245-1"
+          ]
+        },
+        {
+          "slug": "delai-carence-entre-deux-cdd",
+          "question": "Faut-il respecter un délai entre deux CDD sur le même poste ?",
+          "hints": [
+            "délai de carence",
+            "succession de contrats",
+            "code-du-travail:L1244-3",
+            "code-du-travail:L1244-3-1",
+            "code-du-travail:L1244-4-1"
+          ]
+        },
+        {
+          "slug": "temps-partiel-contrat-duree-minimale",
+          "question": "Temps partiel : quelle durée minimale et quelles mentions dans le contrat ?",
+          "hints": [
+            "temps partiel",
+            "vingt-quatre heures",
+            "contrat écrit",
+            "code-du-travail:L3123-6",
+            "code-du-travail:L3123-7",
+            "code-du-travail:L3123-27"
+          ]
+        },
+        {
+          "slug": "heures-complementaires-temps-partiel",
+          "question": "Combien d'heures complémentaires un salarié à temps partiel peut-il faire ?",
+          "hints": [
+            "heures complémentaires",
+            "limite du dixième",
+            "tiers de la durée contractuelle",
+            "majoration",
+            "code-du-travail:L3123-9",
+            "code-du-travail:L3123-20",
+            "code-du-travail:L3123-21",
+            "code-du-travail:L3123-28",
+            "code-du-travail:L3123-29"
+          ]
+        },
+        {
+          "slug": "durees-maximales-travail-repos",
+          "question": "Quelles durées maximales de travail et quels repos l'employeur doit-il respecter ?",
+          "hints": [
+            "durée quotidienne maximale",
+            "repos quotidien",
+            "repos hebdomadaire",
+            "code-du-travail:L3121-18",
+            "code-du-travail:L3121-20",
+            "code-du-travail:L3121-22",
+            "code-du-travail:L3131-1",
+            "code-du-travail:L3132-2"
+          ]
+        },
+        {
+          "slug": "contingent-heures-sup-contrepartie-repos",
+          "question": "Contingent d'heures supplémentaires : que se passe-t-il au-delà ?",
+          "hints": [
+            "contingent annuel",
+            "contrepartie obligatoire en repos",
+            "code-du-travail:L3121-30",
+            "code-du-travail:L3121-33",
+            "code-du-travail:L3121-38",
+            "code-du-travail:D3121-24"
+          ]
+        }
+      ],
+      "relatedFaqs": [
+        "periode-essai",
+        "cdd-renouvellement",
+        "prime-precarite",
+        "heures-supplementaires",
+        "visite-medicale-embauche"
+      ]
+    },
+    {
+      "slug": "obligations-employeur-tpe",
+      "title": "Obligations de l'employeur",
+      "h1": "Employeur d'une TPE : registre, document unique, affichage et convention collective",
+      "category": "travail",
+      "intro": "Même avec un ou deux salariés, l'employeur a des obligations permanentes : tenir des registres, évaluer les risques, informer les salariés, appliquer la bonne convention collective. Voici l'essentiel, article par article.",
+      "keywords": [
+        "registre unique du personnel",
+        "document unique",
+        "affichage obligatoire",
+        "convention collective",
+        "seuils d'effectif",
+        "mutuelle d'entreprise"
+      ],
+      "codes": [
+        "code-du-travail",
+        "code-securite-sociale"
+      ],
+      "questions": [
+        {
+          "slug": "registre-unique-personnel",
+          "question": "Le registre unique du personnel est-il obligatoire et que doit-il contenir ?",
+          "hints": [
+            "registre unique du personnel",
+            "mentions",
+            "code-du-travail:L1221-13",
+            "code-du-travail:L1221-15",
+            "code-du-travail:D1221-23",
+            "code-du-travail:D1221-24",
+            "code-du-travail:D1221-25"
+          ]
+        },
+        {
+          "slug": "document-unique-evaluation-risques",
+          "question": "Le document unique d'évaluation des risques est-il obligatoire dès le premier salarié ?",
+          "hints": [
+            "document unique d'évaluation des risques professionnels",
+            "mise à jour",
+            "code-du-travail:L4121-3",
+            "code-du-travail:L4121-3-1",
+            "code-du-travail:R4121-1",
+            "code-du-travail:R4121-2",
+            "code-du-travail:R4121-4"
+          ]
+        },
+        {
+          "slug": "affichages-obligatoires-employeur",
+          "question": "Quelles informations l'employeur doit-il afficher ou communiquer aux salariés ?",
+          "hints": [
+            "affichage",
+            "information des salariés",
+            "inspection du travail",
+            "code-du-travail:L3171-1",
+            "code-du-travail:L1142-6",
+            "code-du-travail:L1152-4",
+            "code-du-travail:L1153-5",
+            "code-du-travail:R2262-3",
+            "code-du-travail:D4711-1"
+          ]
+        },
+        {
+          "slug": "convention-collective-applicable-entreprise",
+          "question": "Employeur : comment déterminer la convention collective applicable à son entreprise ?",
+          "hints": [
+            "activité principale",
+            "convention collective",
+            "bulletin de paie",
+            "code-du-travail:L2261-2",
+            "code-du-travail:R2262-1",
+            "code-du-travail:R2262-3",
+            "code-du-travail:R3243-1"
+          ]
+        },
+        {
+          "slug": "calcul-seuils-effectif",
+          "question": "Comment se calcule l'effectif de l'entreprise et quand un seuil est-il franchi ?",
+          "hints": [
+            "effectif",
+            "seuil",
+            "cinq années civiles consécutives",
+            "code-du-travail:L1111-2",
+            "code-securite-sociale:L130-1"
+          ]
+        },
+        {
+          "slug": "visite-reprise-apres-arret",
+          "question": "Après un arrêt de travail, quand organiser la visite de reprise ?",
+          "hints": [
+            "visite de reprise",
+            "médecine du travail",
+            "soixante jours",
+            "code-du-travail:R4624-29",
+            "code-du-travail:R4624-31",
+            "code-du-travail:R4624-32"
+          ]
+        },
+        {
+          "slug": "procedure-sanction-disciplinaire",
+          "question": "Comment sanctionner un salarié (avertissement, mise à pied) dans les règles ?",
+          "hints": [
+            "sanction disciplinaire",
+            "entretien",
+            "deux mois",
+            "code-du-travail:L1332-1",
+            "code-du-travail:L1332-2",
+            "code-du-travail:L1332-4"
+          ]
+        },
+        {
+          "slug": "mutuelle-entreprise-obligatoire",
+          "question": "La mutuelle d'entreprise est-elle obligatoire et combien l'employeur doit-il payer ?",
+          "hints": [
+            "complémentaire santé",
+            "financement employeur",
+            "cinquante pour cent",
+            "code-securite-sociale:L911-7",
+            "code-securite-sociale:L911-7-1"
+          ]
+        }
+      ],
+      "relatedFaqs": [
+        "mentions-bulletin-de-paie",
+        "obligation-securite-employeur",
+        "entretien-professionnel-obligatoire"
+      ]
     }
   ]
 }

@@ -1,0 +1,463 @@
+[
+  {
+    "theme": "logement",
+    "topic": "gerer-ses-locations-bailleur",
+    "slug": "choix-bail-vide-ou-meuble-bailleur",
+    "emoji": null,
+    "question": "Louer vide ou meublé : qu'est-ce qui change pour le bailleur ?",
+    "short": "Les principales différences portent sur la durée du bail, le dépôt de garantie et les règles de congé. Le meublé est plus flexible pour le bailleur, avec des baux plus courts et un dépôt de garantie plus élevé.",
+    "answer_md": "### Location vide\n- Le bail dure au moins **3 ans** si le bailleur est une personne physique, et **6 ans** si c'est une personne morale (art. 10).\n- Si le bailleur ne donne pas congé dans les formes et délais prévus, le bail se reconduit tacitement pour la même durée (art. 10).\n- Le **dépôt de garantie** ne peut pas dépasser **1 mois de loyer** (hors charges) (art. 22).\n- La restitution du dépôt se fait sous **1 mois** si l'état des lieux de sortie est conforme à l'entrée, ou **2 mois** dans le cas contraire (art. 22).\n\n### Location meublée (résidence principale du locataire)\n- Le bail dure au moins **1 an**, ou **9 mois** si le locataire est étudiant (sans reconduction tacite dans ce cas) (art. 25-7).\n- Le contrat se reconduit tacitement pour **1 an** si aucune des parties ne donne congé (art. 25-7).\n- Le **dépôt de garantie** peut aller jusqu'à **2 mois de loyer** (au lieu de 1 mois en location vide) (art. 25-6).\n- Le locataire peut résilier à tout moment avec un préavis de **1 mois** (art. 25-8).\n- Le bailleur qui ne veut pas renouveler doit donner un préavis de **3 mois**, motivé par une reprise, une vente, ou un motif légitime et sérieux (art. 25-8).\n- Certains locataires âgés de plus de 65 ans avec des ressources modestes bénéficient d'une protection contre le non-renouvellement, sauf si le bailleur lui-même est dans une situation similaire (art. 25-8).\n- Un bailleur qui donne un congé frauduleux (fausse reprise ou vente) risque une **amende pénale** (jusqu'à 6 000 € pour une personne physique, 30 000 € pour une personne morale) (art. 25-8).\n\n### Bail mobilité (une forme spécifique de location meublée)\n- Aucun **dépôt de garantie** ne peut être demandé (art. 25-17).\n- Le loyer est **librement fixé** mais ne peut pas être révisé en cours de bail (art. 25-16).\n- Le contrat doit préciser plusieurs informations obligatoires, dont le motif justifiant le bail mobilité (art. 25-13).\n\n### En résumé pour le bailleur\n- **Vide** : engagement plus long (3 ou 6 ans), dépôt de garantie plus faible (1 mois).\n- **Meublé classique** : bail plus court (1 an ou 9 mois), dépôt de garantie plus élevé (2 mois), plus de formalités pour donner congé.\n- **Bail mobilité** : très flexible, mais sans dépôt de garantie et réservé à des situations précises (étudiant, formation, mission temporaire, etc.).\n\n⚠️ Ces règles ne couvrent pas tous les cas particuliers (par exemple logements-foyers, conventionnement ANAH, ou fonction/emploi). Pour une situation précise, il est conseillé de consulter l'ADIL ou un professionnel du droit.",
+    "article_ids": [
+      "LEGIARTI000028806675",
+      "LEGIARTI000028806696",
+      "LEGIARTI000028779187",
+      "LEGIARTI000028779189",
+      "LEGIARTI000047900072",
+      "LEGIARTI000037649090",
+      "LEGIARTI000037649096",
+      "LEGIARTI000037649098"
+    ]
+  },
+  {
+    "theme": "logement",
+    "topic": "gerer-ses-locations-bailleur",
+    "slug": "conge-bailleur-location-meublee",
+    "emoji": null,
+    "question": "Location meublée : comment et quand donner congé à son locataire ?",
+    "short": "Dans une location meublée, le locataire peut partir à tout moment avec 1 mois de préavis. Le bailleur, lui, doit prévenir 3 mois avant la fin du bail, justifier son refus de renouveler et respecter des règles strictes de forme (art. 25-8, art. 25-7).",
+    "answer_md": "### La durée du bail meublé\n\nUn bail de location meublée (résidence principale) est conclu pour **au moins 1 an**. Si personne ne donne congé, il se renouvelle automatiquement pour 1 an de plus (art. 25-7).\n\nCas particulier : pour un étudiant, le bail peut être réduit à **9 mois**. Dans ce cas, il n'y a pas de reconduction automatique (art. 25-7).\n\n### Si c'est le locataire qui part\n\nLe locataire peut résilier le bail **à tout moment**, même pendant un bail de 9 mois pour étudiant. Il doit juste respecter un préavis de **1 mois** (art. 25-8).\n\nPendant ce préavis, le locataire doit payer le loyer et les charges pour toute la durée du préavis, sauf si un nouveau locataire arrive avant la fin, avec l'accord du bailleur (art. 25-8).\n\n### Si c'est le bailleur qui donne congé\n\nLe bailleur doit prévenir avec un préavis de **3 mois** avant la fin du bail (art. 25-8).\n\nIl doit obligatoirement justifier son refus de renouveler par l'un de ces motifs :\n- il souhaite **reprendre** le logement (pour lui-même ou un proche autorisé : conjoint, partenaire de PACS, concubin depuis au moins 1 an, ascendants ou descendants de l'un d'eux) ;\n- il souhaite **vendre** le logement ;\n- un **motif légitime et sérieux**, par exemple si le locataire n'a pas respecté ses obligations (art. 25-8).\n\nSi le bailleur veut reprendre le logement, il doit prouver que sa décision est **réelle et sérieuse** (art. 25-8).\n\n### Formalités obligatoires, sous peine de nullité\n\nLe congé doit indiquer :\n- le motif invoqué ;\n- en cas de reprise : le nom, l'adresse du bénéficiaire, et le lien avec le bailleur (art. 25-8).\n\nLe congé doit être envoyé par l'un de ces moyens :\n- lettre recommandée avec accusé de réception ;\n- acte de commissaire de justice (ex-huissier) ;\n- remise en main propre contre récépissé ou émargement (art. 25-8).\n\nLe délai de préavis démarre à la réception de la lettre, de l'acte, ou de la remise en main propre (art. 25-8).\n\n### Protection de certains locataires âgés\n\nLe bailleur ne peut pas refuser de renouveler le bail d'un locataire de **plus de 65 ans** avec des ressources modestes (sous un plafond fixé par arrêté), sauf s'il lui propose un logement adapté à ses besoins. Cette protection s'applique aussi si une personne de plus de 65 ans à charge du locataire remplit ces conditions de ressources (art. 25-8).\n\nCette protection ne s'applique pas si le bailleur lui-même a plus de 65 ans ou a des ressources sous ce même plafond (art. 25-8).\n\n### En cas de litige\n\nSi le congé est contesté, le juge peut vérifier si le motif est réel et sérieux. Il peut annuler le congé si rien ne le justifie sérieusement (art. 25-8).\n\nDonner un faux motif de reprise ou de vente pour se débarrasser d'un locataire est puni d'une amende pouvant aller jusqu'à 6 000 € (particulier) ou 30 000 € (société). Le locataire peut aussi demander réparation de son préjudice (art. 25-8).\n\n### Besoin d'aide ?\n\nSi votre situation est particulière (litige, doute sur un motif de reprise, vente en cours), il est recommandé de consulter un **avocat** ou l'**ADIL** (Agence départementale d'information sur le logement) pour vérifier la validité du congé.",
+    "article_ids": [
+      "LEGIARTI000047900072",
+      "LEGIARTI000028779189"
+    ]
+  },
+  {
+    "theme": "logement",
+    "topic": "gerer-ses-locations-bailleur",
+    "slug": "conge-motif-legitime-serieux",
+    "emoji": null,
+    "question": "Peut-on donner congé à son locataire pour motif légitime et sérieux, et à quel moment ?",
+    "short": "Oui, le bailleur peut donner congé pour motif légitime et sérieux (par exemple si le locataire ne respecte pas ses obligations), mais seulement au terme du contrat de location, avec un préavis de six mois (art. 15).",
+    "answer_md": "### Le congé pour motif légitime et sérieux\n\nLe bailleur peut mettre fin au bail en donnant congé à son locataire pour un **motif légitime et sérieux**. La loi cite comme exemple le fait que le locataire ne respecte pas l'une de ses obligations (par exemple, ne pas payer son loyer) (art. 15).\n\n### À quel moment peut-il donner ce congé ?\n\n- Le congé ne peut pas être donné n'importe quand : il doit intervenir **au terme du contrat de location** (à la fin du bail), et non en cours de bail (art. 10, art. 15).\n- Si le bailleur ne donne pas congé à ce moment-là, le bail est automatiquement reconduit ou renouvelé (art. 10).\n\n### Le délai de préavis\n\n- Le bailleur doit respecter un **délai de préavis de six mois** avant la fin du bail (art. 15).\n- Ce délai commence à courir à partir de la réception du congé par le locataire (lettre recommandée avec avis de réception, acte de commissaire de justice, ou remise en main propre contre récépissé) (art. 15).\n\n### Les conditions de forme\n\nÀ peine de nullité, le congé doit :\n- Indiquer le **motif précis** invoqué (art. 15).\n- Être notifié selon l'un des trois moyens légaux mentionnés ci-dessus (art. 15).\n\n### Le contrôle du juge\n\nEn cas de désaccord, le locataire peut contester le congé devant le juge. Celui-ci peut vérifier si le motif est réel et sérieux. Il peut annuler le congé si la fin du bail n'apparaît pas justifiée par des éléments sérieux (art. 15).\n\n### Cas particulier : violences conjugales\n\nSi le locataire ne paie plus son loyer après avoir commis des violences ayant poussé son conjoint, partenaire ou concubin à quitter le logement, cela constitue en soi un motif légitime et sérieux permettant au bailleur de donner congé (art. 8-2).\n\n### Cas des logements meublés\n\nPour un logement meublé loué comme résidence principale, les règles sont similaires : le bailleur doit motiver son refus de renouvellement par un motif légitime et sérieux, avec un préavis de **trois mois** (au lieu de six) (art. 25-8).\n\n### Ce que Loilà vous conseille\n\nSi vous recevez un congé et que vous doutez de sa validité, ou si vous êtes bailleur et hésitez sur la procédure à suivre, il est recommandé de consulter un professionnel (avocat, ADIL) pour vérifier que toutes les conditions de forme et de fond sont bien respectées.",
+    "article_ids": [
+      "LEGIARTI000047900030",
+      "LEGIARTI000028806675",
+      "LEGIARTI000037650864",
+      "LEGIARTI000047900072"
+    ]
+  },
+  {
+    "theme": "logement",
+    "topic": "gerer-ses-locations-bailleur",
+    "slug": "reprise-logement-sci-familiale",
+    "emoji": null,
+    "question": "Une SCI peut-elle donner congé pour reprendre le logement ?",
+    "short": "Oui, mais seulement dans un cas précis : si la SCI est composée uniquement de parents ou alliés jusqu'au 4e degré, elle peut donner congé pour reprise au profit d'un de ses associés (art. 13, art. 15).",
+    "answer_md": "### Une SCI peut-elle reprendre un logement loué ?\n\nEn principe, le congé pour reprise (le bailleur qui reprend le logement pour lui-même ou un proche) est réservé aux personnes physiques. Une société civile immobilière (SCI) ne peut donc pas reprendre un logement pour elle-même.\n\n**Mais il existe une exception.**\n\nSi la SCI est constituée **uniquement entre parents et alliés, jusqu'au 4e degré inclus** (par exemple une SCI familiale), alors elle peut donner congé pour reprise, mais seulement **au profit de l'un de ses associés** (art. 13).\n\n### Les règles du congé pour reprise s'appliquent quand même\n\nMême dans ce cas, la SCI doit respecter toutes les règles de l'article 15 :\n\n- Le congé doit préciser le motif, ainsi que **le nom, l'adresse du bénéficiaire de la reprise** et le lien qui l'unit au bailleur (art. 15).\n- Le bénéficiaire de la reprise ne peut être que : le bailleur (ici, l'associé), son conjoint, son partenaire de PACS, son concubin depuis au moins un an, ses ascendants, descendants, ou ceux de son conjoint/partenaire/concubin (art. 15).\n- Le bailleur doit **justifier du caractère réel et sérieux** de sa décision de reprise (art. 15).\n- Le délai de préavis est de **six mois** (art. 15).\n- Une **notice d'information** sur les droits du locataire doit être jointe au congé (art. 15).\n- Des protections particulières existent pour les locataires **de plus de 65 ans** avec des ressources modestes : dans ce cas, le congé ne peut pas être donné, sauf si le bailleur (personne physique) est lui-même âgé de plus de 65 ans ou a des ressources limitées (art. 15, III). Attention : ce cas concerne le bailleur personne physique — pour une SCI, il est conseillé de vérifier ce point avec un professionnel, car le texte ne précise pas clairement comment cette protection s'applique quand le bailleur est une société.\n- Si le congé est frauduleux (motif de reprise inventé), le bailleur risque une **amende pénale** (jusqu'à 6 000 € pour une personne physique, 30 000 € pour une personne morale) (art. 15, V).\n\n### En cas de litige\n\nLe locataire peut contester le congé devant le juge, qui vérifie si le motif est réel et sérieux (art. 15).\n\n### Notre conseil\n\nCe sujet est technique, surtout si la SCI a une structure particulière (associés, indivision, etc.). Il est recommandé de consulter un avocat ou l'ADIL pour vérifier que toutes les conditions sont bien réunies avant de délivrer un congé.",
+    "article_ids": [
+      "LEGIARTI000006475107",
+      "LEGIARTI000047900030"
+    ]
+  },
+  {
+    "theme": "logement",
+    "topic": "gerer-ses-locations-bailleur",
+    "slug": "travaux-amelioration-hausse-loyer",
+    "emoji": null,
+    "question": "Des travaux d'amélioration permettent-ils d'augmenter le loyer en cours de bail ?",
+    "short": "Oui, si le contrat prévoit une clause spécifique : le bailleur peut majorer le loyer après des travaux d'amélioration qu'il fait exécuter, mais cette majoration n'est possible que si elle a été prévue à l'avance dans le contrat ou dans un avenant.",
+    "answer_md": "### Ce que dit la loi\n\nEn principe, le loyer ne bouge pas en cours de bail, sauf clause de révision annuelle prévue au contrat (art. 17-1, I).\n\nPour les travaux d'amélioration, une règle spécifique existe :\n\n- Si les parties (bailleur et locataire) sont **d'accord par une clause expresse** sur des travaux d'amélioration que le bailleur va faire réaliser, alors le contrat de location ou un avenant peut **fixer à l'avance la majoration de loyer** qui s'appliquera après ces travaux (art. 17-1, II).\n- Cette majoration, une fois fixée dans cette clause, **ne peut pas être contestée** par une action en diminution de loyer (art. 17-1, II).\n\nCette règle s'applique aussi bien aux logements vides qu'aux logements meublés loués comme résidence principale (art. 25-9).\n\n### Une limite importante : les logements très énergivores\n\nCette majoration liée aux travaux, tout comme la révision annuelle classique, **n'est pas possible** si le logement est classé F ou G au diagnostic de performance énergétique (art. 17-1, III).\n\n### Ce qu'il faut retenir\n\n- Le bailleur ne peut pas décider seul, en cours de bail, d'augmenter le loyer parce qu'il a fait des travaux.\n- Il faut un accord écrit et exprès entre les deux parties, prévu **avant** les travaux (dans le bail ou par avenant).\n- Sans cette clause, aucune majoration liée à des travaux n'est possible en cours de bail.\n\n### Cas particulier du bail mobilité\n\nPour un bail mobilité (logement meublé de courte durée), le loyer est fixé librement au départ mais **ne peut pas être révisé en cours de bail**, quelle qu'en soit la raison (art. 25-16). Les règles de majoration pour travaux ne s'appliquent donc pas à ce type de bail.\n\n### Besoin d'aller plus loin ?\n\nSi un désaccord existe sur la rédaction ou la validité d'une clause de majoration, il est conseillé de consulter l'ADIL (Agence départementale d'information sur le logement) ou un avocat spécialisé en droit du logement.",
+    "article_ids": [
+      "LEGIARTI000043977085",
+      "LEGIARTI000043977076",
+      "LEGIARTI000037649096"
+    ]
+  },
+  {
+    "theme": "logement",
+    "topic": "gerer-ses-locations-bailleur",
+    "slug": "quittance-loyer-obligation-bailleur",
+    "emoji": null,
+    "question": "Le bailleur doit-il remettre une quittance de loyer ?",
+    "short": "Le bailleur doit remettre gratuitement une quittance au locataire qui en fait la demande, avec le détail du loyer et des charges (art. 21). Refuser de la délivrer est même puni par la loi (art. 3-4).",
+    "answer_md": "### La quittance de loyer\n\n- Le bailleur (ou son mandataire) **doit transmettre gratuitement une quittance** au locataire, mais **seulement si le locataire la demande** (art. 21).\n- La quittance doit **détailler** le montant du loyer et celui des charges séparément (art. 21).\n- **Aucun frais** de gestion (avis d'échéance ou quittance) ne peut être facturé au locataire (art. 21).\n- Si le locataire est d'accord, la quittance peut être **envoyée par voie électronique** (art. 21).\n- En cas de **paiement partiel** du locataire, le bailleur doit quand même délivrer un **reçu** (art. 21).\n\n### Que risque le bailleur qui refuse ?\n\nSi le bailleur (ou un intermédiaire) **refuse de délivrer une quittance ou un reçu**, ou cache cette obligation, il risque une sanction pénale : **jusqu'à 1 an de prison et 20 000 € d'amende** (art. 3-4). Pour une société, l'amende est calculée selon des règles spécifiques du code pénal.\n\n### À retenir\n\nLa quittance n'est **pas automatique** : c'est une obligation du bailleur **uniquement sur demande** du locataire (art. 21). Si le bailleur refuse malgré une demande, il est conseillé de lui adresser une demande écrite (lettre recommandée avec accusé de réception) pour garder une preuve, et de se rapprocher de l'**ADIL** ou d'un avocat en cas de refus persistant.",
+    "article_ids": [
+      "LEGIARTI000028806698",
+      "LEGIARTI000049395050"
+    ]
+  },
+  {
+    "theme": "logement",
+    "topic": "gerer-ses-locations-bailleur",
+    "slug": "charges-forfait-ou-provisions",
+    "emoji": null,
+    "question": "Charges locatives : provisions avec régularisation ou forfait ?",
+    "short": "Cela dépend du type de location : en location vide, pas de forfait : les charges se récupèrent sur justificatifs, en général par provisions avec régularisation annuelle. En location meublée ou en bail mobilité, un forfait sans régularisation est possible.",
+    "answer_md": "### Location vide (logement non meublé)\nPas de forfait possible : les charges récupérables sont exigibles sur justification, en général sous forme de **provisions avec régularisation** (art. 23) :\n- Le locataire verse des provisions, justifiées par les résultats des charges de l'année précédente ou un budget prévisionnel (art. 23).\n- Chaque année, le bailleur doit faire une **régularisation** : il envoie un décompte par nature de charges, un mois avant, avec la répartition entre locataires si besoin (art. 23).\n- Les pièces justificatives doivent être disponibles pendant 6 mois après l'envoi du décompte (art. 23).\n- Si la régularisation n'est pas faite dans l'année suivant l'exigibilité, le locataire peut demander à payer par douzième (art. 23).\n\n### Location meublée (résidence principale)\nLe choix est laissé aux parties, prévu dans le bail (art. 25-10) :\n- **Soit des provisions** avec régularisation, comme en location vide (art. 23, art. 25-10).\n- **Soit un forfait** versé en même temps que le loyer, fixe, sans complément ni régularisation possible. Ce forfait doit être cohérent avec les charges réelles, et peut être révisé chaque année comme le loyer (art. 25-10).\n\n### Colocation\nMême principe qu'en meublé : les parties choisissent entre provisions (avec régularisation) ou forfait (sans régularisation), selon ce que prévoit le contrat (art. 8-1).\n\n### Bail mobilité (location meublée courte durée)\nSeul le **forfait** est possible, sans régularisation. Il doit rester cohérent avec le dernier décompte de charges connu (art. 25-18).\n\n### En résumé\n| Type de bail | Provisions + régularisation | Forfait sans régularisation |\n|---|---|---|\n| Location vide | Oui (mode habituel) | Non |\n| Meublé (résidence principale) | Possible | Possible |\n| Colocation | Possible | Possible |\n| Bail mobilité | Non | Obligatoire |\n\n### Bon à savoir\nSi un litige survient sur les charges (montant, régularisation, forfait disproportionné), il est possible de saisir la **commission départementale de conciliation** pour les meublés (art. 25-11). Pour aller plus loin ou en cas de désaccord persistant, l'ADIL ou un avocat peuvent aider à faire valoir vos droits.",
+    "article_ids": [
+      "LEGIARTI000041587263",
+      "LEGIARTI000028779195",
+      "LEGIARTI000041587279",
+      "LEGIARTI000037649100",
+      "LEGIARTI000028779197"
+    ]
+  },
+  {
+    "theme": "logement",
+    "topic": "gerer-ses-locations-bailleur",
+    "slug": "abandon-logement-locataire",
+    "emoji": null,
+    "question": "Le locataire a abandonné le logement : comment le récupérer ?",
+    "short": "Si le logement semble abandonné, le bailleur doit d'abord mettre en demeure le locataire par un commissaire de justice ; sans réponse sous un mois, une procédure de constat d'abandon puis de résiliation du bail par le juge peut être engagée.",
+    "answer_md": "### Procédure en cas de logement abandonné\n\nSi vous pensez que votre locataire a abandonné le logement, vous ne pouvez pas reprendre les lieux vous-même. Une procédure précise doit être suivie.\n\n**1. La mise en demeure**\n- Vous devez faire constater les choses par un **commissaire de justice** (ex-huissier).\n- Il envoie une mise en demeure au locataire, lui demandant de prouver qu'il occupe toujours le logement (art. 14-1).\n- Cette mise en demeure peut être intégrée à certains commandements prévus par la loi (art. 14-1).\n\n**2. Si le locataire ne répond pas**\n- S'il ne répond pas dans un délai d'**un mois** après la signification, le commissaire de justice peut alors constater l'état d'abandon du logement (art. 14-1).\n- Il dresse un **procès-verbal** décrivant la situation. Si des biens sont laissés sur place, il en fait l'inventaire et indique s'ils ont une valeur marchande ou non (art. 14-1).\n\n**3. Le rôle du juge**\n- C'est le **juge** qui constate officiellement la résiliation du bail (art. 14-1).\n- Il peut aussi autoriser la vente aux enchères des biens laissés sur place, ou déclarer abandonnés ceux qui n'ont pas de valeur marchande (art. 14-1).\n\n**Attention : cas particulier de la continuation du bail**\nMême en cas d'abandon du domicile, le bail peut continuer au profit de certaines personnes qui vivaient avec le locataire, notamment (art. 14) :\n- le conjoint,\n- le partenaire de Pacs,\n- les descendants vivant avec lui depuis au moins un an,\n- les ascendants, le concubin notoire ou les personnes à charge, vivant avec lui depuis au moins un an.\n\nSi personne ne remplit ces conditions, le bail est résilié de plein droit du fait de l'abandon (art. 14).\n\n### En résumé, les étapes sont :\n1. Faire intervenir un commissaire de justice pour la mise en demeure.\n2. Attendre un mois sans réponse.\n3. Faire constater l'état d'abandon par procès-verbal.\n4. Saisir le juge pour faire constater la résiliation du bail et, si besoin, statuer sur les biens laissés sur place.\n\n### Conseil\nCette procédure est encadrée par un décret non fourni ici, qui précise les modalités pratiques. Il est recommandé de vous faire accompagner par un **commissaire de justice** dès le début, et éventuellement de consulter un **avocat** ou l'**ADIL** de votre département pour sécuriser la procédure et éviter toute contestation ultérieure du locataire ou de ses proches.",
+    "article_ids": [
+      "LEGIARTI000047900077",
+      "LEGIARTI000006475111"
+    ]
+  },
+  {
+    "theme": "logement",
+    "topic": "loyers-impayes-bailleur",
+    "slug": "clause-resolutoire-impayes-bailleur",
+    "emoji": null,
+    "question": "Bailleur : comment mettre en œuvre la clause résolutoire en cas de loyers impayés ?",
+    "short": "Pour utiliser la clause résolutoire, le bailleur doit faire délivrer par commissaire de justice un commandement de payer respectant des mentions obligatoires, puis attendre six semaines avant d'agir en justice. Des étapes supplémentaires (signalement, saisine de commission) s'ajoutent selon le type de bailleur.",
+    "answer_md": "### La clause résolutoire pour loyers impayés\n\nSi le locataire ne paie pas son loyer, ses charges, ou son dépôt de garantie, le bailleur peut mettre en œuvre la clause résolutoire prévue dans le bail (art. 24 I). Voici les étapes à respecter.\n\n#### 1. Faire délivrer un commandement de payer\n\nLe bailleur doit faire signifier un commandement de payer par un commissaire de justice (huissier). Ce document est obligatoire et doit contenir, sous peine de nullité (art. 24 I) :\n\n- La mention que le locataire a **6 semaines** pour payer sa dette ;\n- Le montant mensuel du loyer et des charges ;\n- Le détail de la dette (décompte) ;\n- Un avertissement sur les risques : procédure judiciaire, résiliation du bail, expulsion ;\n- L'adresse du fonds de solidarité pour le logement (FSL) du département, pour demander une aide financière ;\n- La mention que le locataire peut, à tout moment, demander au juge un délai de paiement.\n\nSi le locataire a une caution, le commandement doit aussi lui être signifié dans les **15 jours** suivant sa signification au locataire. Sinon, la caution ne pourra pas être poursuivie pour les pénalités et intérêts de retard (art. 24 I).\n\n#### 2. Attendre le délai de 6 semaines\n\nLa clause résolutoire ne produit effet que **6 semaines après** ce commandement, s'il reste sans effet (art. 24 I).\n\n#### 3. Signalement à la commission de prévention des expulsions\n\nSi le locataire est impayé depuis 2 mois sans interruption, ou si sa dette atteint 2 fois le loyer mensuel hors charges, le commissaire de justice doit signaler la situation à la commission de coordination des actions de prévention des expulsions locatives. Cela concerne les bailleurs personnes physiques ou certaines sociétés civiles familiales (art. 24 I).\n\nLe préfet saisit alors un organisme pour réaliser un diagnostic social et financier du locataire (art. 24 I).\n\n#### 4. Cas des bailleurs personnes morales (hors sociétés civiles familiales)\n\nCes bailleurs ne peuvent pas assigner le locataire en justice avant d'avoir attendu **2 mois** après la saisine de la commission de coordination des actions de prévention des expulsions (art. 24 II).\n\n#### 5. Notification de l'assignation au représentant de l'État\n\nAvant l'audience, l'assignation doit être notifiée par le commissaire de justice au préfet, au moins **6 semaines** avant la date de l'audience. Cela permet de déclencher un diagnostic social et financier du locataire, transmis au juge (art. 24 III).\n\n#### 6. Devant le juge\n\nLe juge peut accorder des délais de paiement au locataire (jusqu'à 3 ans), si celui-ci est en capacité de régler sa dette et a repris le paiement du loyer courant (art. 24 V). Des règles particulières s'appliquent si le locataire est en situation de surendettement (art. 24 VI).\n\nSi le locataire respecte les délais fixés par le juge, la clause résolutoire est considérée comme n'ayant jamais joué. Sinon, elle reprend son effet et l'expulsion peut être poursuivie (art. 24 VII et VIII).\n\n#### 7. Notification de la décision d'expulsion\n\nSi le juge prononce l'expulsion, la décision doit indiquer comment saisir la commission de médiation compétente (art. 24 IX).\n\n### En résumé\n\nCette procédure est longue et très encadrée : commandement de payer avec mentions obligatoires, délais à respecter, signalements aux autorités, possibilité pour le locataire d'obtenir des délais devant le juge.\n\nCompte tenu de la complexité et des risques de nullité de la procédure, il est fortement conseillé de se faire accompagner par un commissaire de justice (huissier) et, si besoin, par un avocat.",
+    "article_ids": [
+      "LEGIARTI000047900019"
+    ]
+  },
+  {
+    "theme": "logement",
+    "topic": "loyers-impayes-bailleur",
+    "slug": "actionner-garant-loyers-impayes",
+    "emoji": null,
+    "question": "Loyers impayés : comment se retourner contre le garant ?",
+    "short": "Si le locataire ne paie plus, le bailleur peut demander à la caution (le garant) de payer, mais seulement dans les limites prévues par l'acte de cautionnement, et après avoir respecté certaines formalités comme l'envoi du commandement de payer à la caution.",
+    "answer_md": "### Ce qu'il faut savoir avant d'agir contre le garant\n\n**1. Le commandement de payer doit être envoyé à la caution**\n\nSi le contrat de location est garanti par un cautionnement, le bailleur doit faire signifier le commandement de payer à la caution dans un délai de 15 jours après l'avoir signifié au locataire. Si ce délai n'est pas respecté, la caution ne peut pas être tenue de payer les pénalités ou intérêts de retard (art. 24).\n\n**2. Le montant que peut réclamer le bailleur est limité**\n\nLe cautionnement ne peut pas dépasser ce que doit le locataire, ni être plus lourd que son obligation. Si le montant demandé est supérieur à la dette réelle, il est réduit à hauteur de cette dette (art. 2296, code civil).\n\nSauf clause contraire dans l'acte de cautionnement, la garantie couvre aussi les intérêts, les accessoires de la dette, et les frais liés à la première demande de paiement (art. 2295, code civil).\n\n**3. Une information annuelle est due à la caution**\n\nSi le créancier (le bailleur, s'il agit à titre professionnel) est un professionnel, il doit informer chaque année la caution (personne physique) du montant restant dû, avant le 31 mars. À défaut, il perd le droit de réclamer les intérêts et pénalités accumulés depuis la dernière information (art. 2302, code civil).\n\nLe créancier doit aussi rappeler à la caution la durée de son engagement, ou sa possibilité de résilier si le cautionnement est à durée indéterminée (art. 2302, code civil).\n\n**4. Si la caution s'est engagée sans durée précise**\n\nLa caution peut résilier unilatéralement son engagement si le cautionnement est à durée indéterminée. Cette résiliation prend effet à la fin du contrat de location en cours au moment où le bailleur reçoit la demande (art. 22-1).\n\n**5. L'obligation de la caution s'éteint dans certains cas**\n\nL'engagement de la caution s'éteint pour les mêmes raisons que toute autre obligation, et aussi si la dette principale (celle du locataire) est elle-même éteinte, par exemple si elle a été entièrement payée (art. 2313, code civil).\n\n**6. Une simple prolongation de délai ne libère pas la caution**\n\nSi le bailleur accorde un délai supplémentaire au locataire pour payer, cela ne libère pas automatiquement la caution de son engagement (art. 2320, code civil).\n\n### Ce que Loilà ne peut pas vous dire ici\n\nCes articles ne précisent pas la procédure exacte à suivre pour saisir un juge afin d'obtenir le paiement par la caution, ni les délais de prescription applicables. Ces points dépendent souvent des circonstances précises du dossier.\n\n### Notre conseil\n\nAvant d'agir contre le garant, vérifiez que :\n- vous respectez le délai de 15 jours pour l'informer du commandement de payer (art. 24) ;\n- vous avez bien rempli votre obligation d'information annuelle si vous êtes un bailleur professionnel (art. 2302).\n\nSi la situation est bloquée ou complexe, il est conseillé de consulter un avocat, ou de vous rapprocher de l'ADIL (Agence départementale d'information sur le logement) de votre département pour être accompagné dans cette démarche.",
+    "article_ids": [
+      "LEGIARTI000044073458",
+      "LEGIARTI000047900019",
+      "LEGIARTI000044071238",
+      "LEGIARTI000044071234",
+      "LEGIARTI000044071269",
+      "LEGIARTI000044071330",
+      "LEGIARTI000044071305"
+    ]
+  },
+  {
+    "theme": "logement",
+    "topic": "loyers-impayes-bailleur",
+    "slug": "prescription-loyers-impayes",
+    "emoji": null,
+    "question": "Combien de temps un bailleur a-t-il pour réclamer des loyers impayés ?",
+    "short": "Le bailleur a en principe 3 ans pour réclamer des loyers impayés, à partir du moment où il a su ou aurait dû savoir qu'il pouvait agir.",
+    "answer_md": "### Délai pour réclamer des loyers impayés\n\n- Le bailleur dispose d'un délai de **3 ans** pour agir en justice afin de réclamer des loyers impayés (art. 7-1).\n- Ce délai commence à courir à partir du jour où le bailleur **a connu ou aurait dû connaître** les faits lui permettant de réclamer ces loyers (art. 7-1).\n\n### À savoir\n\n- Ce délai de 3 ans est un cas particulier : normalement, un contrat peut prévoir de raccourcir ou d'allonger un délai de prescription. Mais pour les loyers (comme pour les salaires ou les pensions alimentaires), ce n'est **pas possible** : le délai légal s'applique obligatoirement, sans aménagement possible par accord entre les parties (art. 2254).\n\n### Ce qu'il faut retenir\n\nSi le bailleur laisse passer plus de 3 ans sans réclamer les loyers dus, il risque de ne plus pouvoir les récupérer par voie judiciaire.\n\n### Besoin d'aller plus loin ?\n\nSi une situation de loyers impayés se complique (calcul des sommes dues, dates précises, contestations du locataire), il est conseillé de se rapprocher d'un **avocat** ou de l'**ADIL** (Agence départementale d'information sur le logement) pour un accompagnement personnalisé.",
+    "article_ids": [
+      "LEGIARTI000028777184",
+      "LEGIARTI000019017063"
+    ]
+  },
+  {
+    "theme": "logement",
+    "topic": "loyers-impayes-bailleur",
+    "slug": "expulsion-apres-jugement-etapes",
+    "emoji": null,
+    "question": "Après le jugement d'expulsion, quelles étapes avant de récupérer le logement ?",
+    "short": "Après un jugement d'expulsion, le propriétaire doit faire signifier un commandement de quitter les lieux par un commissaire de justice, puis respecter un délai d'au moins deux mois avant toute expulsion forcée, sauf exceptions. La trêve hivernale peut aussi retarder l'exécution.",
+    "answer_md": "### Les étapes après le jugement d'expulsion\n\nMême avec un jugement, le propriétaire ne peut pas expulser directement. Plusieurs étapes légales sont obligatoires.\n\n#### 1. Signification d'un commandement de quitter les lieux\n- L'expulsion ne peut être poursuivie qu'après la signification d'un **commandement d'avoir à libérer les locaux**, délivré par un commissaire de justice (huissier) (art. L411-1).\n- Ce commandement doit obligatoirement indiquer : le titre exécutoire (le jugement), le tribunal compétent pour contester ou demander des délais, la date à partir de laquelle les locaux doivent être libérés, et un avertissement sur le risque d'expulsion forcée (art. R411-1).\n\n#### 2. Un délai minimum de deux mois\n- Après ce commandement, l'occupant dispose en principe d'un **délai de deux mois** avant que l'expulsion forcée puisse avoir lieu (art. L412-1).\n- Ce délai peut être réduit ou supprimé par le juge dans certains cas (mauvaise foi de l'occupant, entrée par la force, etc.) (art. L412-1).\n- Le juge peut aussi accorder des **délais supplémentaires renouvelables**, notamment si un relogement dans des conditions normales n'est pas possible (art. L412-3).\n\n#### 3. Information des autorités et prévention\n- Dès le commandement, le commissaire de justice doit informer le préfet, qui saisit la commission de coordination des actions de prévention des expulsions locatives. Le ménage locataire est aussi informé de la possibilité de demander un relogement au titre du droit au logement opposable (art. L412-5).\n- Si l'huissier ne fait pas cette démarche, le délai avant expulsion est suspendu (art. L412-5).\n- Le juge peut aussi transmettre le jugement au préfet pour la prise en compte d'une demande de relogement (art. R412-2).\n\n#### 4. La trêve hivernale\n- Sauf exceptions (entrée par la force dans le logement par exemple), aucune expulsion ne peut être exécutée entre le **1er novembre et le 31 mars** de l'année suivante, même si le jugement est définitif (art. L412-6).\n\n#### 5. Contestations possibles\n- L'occupant peut saisir le juge de l'exécution du lieu où se trouve le logement pour demander des délais ou contester les opérations d'expulsion (art. R412-4).\n\n#### 6. Départ volontaire\n- Si l'occupant quitte les lieux volontairement après le commandement, le commissaire de justice peut simplement constater ce départ et reprendre les lieux, sans passer par la force publique (art. L451-1).\n\n### En résumé, l'ordre des étapes est :\n1. Jugement d'expulsion.\n2. Signification du commandement de quitter les lieux.\n3. Délai légal (au moins deux mois, sauf exceptions).\n4. Vérification de la trêve hivernale.\n5. Si besoin, recours à la force publique pour l'expulsion effective (ce point n'est pas détaillé dans les articles fournis).\n\n**Conseil** : la procédure d'expulsion est complexe et encadrée par de nombreux délais et protections pour l'occupant. Il est recommandé de se faire accompagner par un avocat, ou de contacter l'ADIL (Agence départementale d'information sur le logement) pour vérifier les délais applicables à une situation précise.",
+    "article_ids": [
+      "LEGIARTI000028808273",
+      "LEGIARTI000025939302",
+      "LEGIARTI000047900004",
+      "LEGIARTI000047899976",
+      "LEGIARTI000033974972",
+      "LEGIARTI000039375511",
+      "LEGIARTI000047900053",
+      "LEGIARTI000025939316",
+      "LEGIARTI000025026096"
+    ]
+  },
+  {
+    "theme": "travail",
+    "topic": "embaucher-un-salarie-tpe",
+    "slug": "declaration-prealable-embauche-dpae",
+    "emoji": null,
+    "question": "Quand et comment faire la déclaration préalable à l'embauche (DPAE) ?",
+    "short": "La déclaration préalable à l'embauche (DPAE) doit être faite avant que le salarié commence à travailler, au plus tôt dans les 8 jours précédant l'embauche, en principe par voie électronique.",
+    "answer_md": "### Quand faire la DPAE ?\n\n- L'embauche d'un salarié ne peut avoir lieu qu'**après** que l'employeur a fait cette déclaration auprès des organismes de protection sociale (art. L1221-10).\n- La déclaration doit être envoyée **au plus tôt 8 jours avant** la date prévue de l'embauche (art. R1221-4).\n- Si l'employeur utilise le formulaire papier (par lettre recommandée), il doit l'envoyer **au plus tard le dernier jour ouvrable avant l'embauche** (le cachet de la poste fait foi) (art. R1221-5).\n\n### Comment faire la DPAE ?\n\n- En principe, la déclaration se fait **par voie électronique** (art. R1221-5).\n- Si la voie électronique n'est pas possible, l'employeur utilise un **formulaire officiel**, signé, envoyé par lettre recommandée avec avis de réception (art. R1221-5).\n- Si un moyen de transmission ne fonctionne pas, cela n'exonère pas l'employeur : il doit utiliser l'autre moyen (art. R1221-5).\n- Certains employeurs sont **obligés** d'utiliser la voie électronique : ceux qui ont fait plus de 50 déclarations l'année précédente (hors particuliers employeurs) (art. D1221-18).\n\n### Que doit contenir la déclaration ?\n\nLa déclaration doit comporter plusieurs informations obligatoires, notamment (art. R1221-1) :\n- Les informations sur l'employeur (nom, adresse, code APE, numéro d'identification, service de santé au travail).\n- Les informations sur le salarié (nom, prénoms, sexe, date et lieu de naissance, numéro de sécurité sociale s'il existe).\n- La date et l'heure d'embauche.\n- La nature et la durée du contrat, ainsi que la période d'essai si le contrat dépasse 6 mois (CDD) ou s'il s'agit d'un CDI.\n\n### Ce que l'employeur doit conserver et transmettre\n\n- L'organisme destinataire envoie un **accusé de réception** dans les 5 jours ouvrables suivant la réception du formulaire (art. R1221-7).\n- Si l'employeur ne conteste pas les informations de cet accusé dans les 2 jours ouvrables, ce document **prouve** que la déclaration a été faite (art. R1221-7).\n- L'employeur doit **remettre une copie** de la déclaration ou de l'accusé de réception au salarié lors de l'embauche. Cette obligation est remplie si le salarié a un contrat de travail écrit mentionnant l'organisme destinataire (art. R1221-9).\n- L'employeur doit conserver l'avis de réception jusqu'à l'accomplissement d'une autre déclaration prévue par le code de la sécurité sociale (art. R1221-8).\n\n### Que se passe-t-il si la déclaration n'est pas faite ?\n\n- Ne pas faire cette déclaration, si c'est fait **volontairement**, est considéré comme du **travail dissimulé** (art. L8221-5).\n- Le non-respect de cette obligation, constaté par les agents de contrôle, entraîne une **pénalité financière** dont le montant est fixé par la loi (art. L1221-11).\n- Les agents de contrôle peuvent demander à l'employeur de présenter l'avis de réception, ou, à défaut, des éléments prouvant que la déclaration a été faite (art. R1221-12).\n\n### Conseil\n\nSi vous avez un doute sur une situation précise (retard, oubli, contrôle en cours), il est conseillé de contacter l'inspection du travail ou un avocat spécialisé en droit du travail.",
+    "article_ids": [
+      "LEGIARTI000006900849",
+      "LEGIARTI000006900850",
+      "LEGIARTI000035492419",
+      "LEGIARTI000024214323",
+      "LEGIARTI000053220410",
+      "LEGIARTI000024214313",
+      "LEGIARTI000024214311",
+      "LEGIARTI000024214309",
+      "LEGIARTI000024214305",
+      "LEGIARTI000029134788",
+      "LEGIARTI000033024966"
+    ]
+  },
+  {
+    "theme": "travail",
+    "topic": "embaucher-un-salarie-tpe",
+    "slug": "cdd-motifs-duree-maximale",
+    "emoji": null,
+    "question": "Pour quels motifs peut-on embaucher en CDD et pour combien de temps ?",
+    "short": "Un CDD ne peut être conclu que pour des motifs précis prévus par la loi (remplacement, surcroît d'activité, saisonnier, etc.), et sa durée totale est en général limitée à 18 mois, avec des variantes selon les cas.",
+    "answer_md": "### Dans quels cas peut-on recourir à un CDD ?\n\nUn CDD ne peut jamais servir à occuper durablement un poste lié à l'activité normale et permanente de l'entreprise (art. L1242-1). Il doit correspondre à une tâche précise et temporaire, et seulement dans les cas suivants (art. L1242-2) :\n\n- **Remplacement d'un salarié** : absence, passage à temps partiel, suspension du contrat, départ définitif avant suppression du poste, ou attente de l'arrivée d'un salarié en CDI.\n- **Accroissement temporaire de l'activité** de l'entreprise.\n- **Emploi saisonnier**, ou emploi pour lequel il est d'usage de ne pas recourir au CDI (certains secteurs définis par décret ou accord collectif).\n- **Remplacement d'un chef d'entreprise** artisanale, industrielle, commerciale, ou d'une profession libérale (et situations proches).\n- **Remplacement du chef d'une exploitation agricole** ou situations proches.\n- **Recrutement d'ingénieurs ou de cadres** pour un projet précis (« CDD à objet défini »), si un accord de branche ou d'entreprise le permet.\n\n### Quelle est la durée du CDD ?\n\nLe CDD doit en principe avoir un terme précis fixé dès sa signature (art. L1242-7). \n\nDans certains cas, il peut ne pas avoir de terme précis (remplacement d'un salarié absent, attente d'un salarié en CDI, emploi saisonnier, etc.) : il dure alors jusqu'à la fin de l'absence ou jusqu'à la réalisation de l'objet du contrat (art. L1242-7).\n\n**Durée maximale** (art. L1242-8-1), sauf si une convention ou un accord de branche prévoit une autre durée (art. L1242-8) :\n\n- **18 mois** en général (renouvellements compris).\n- **9 mois** si le CDD sert à attendre l'arrivée d'un salarié en CDI, ou pour des travaux urgents liés à la sécurité.\n- **24 mois** si le contrat est exécuté à l'étranger, s'il s'agit d'un départ définitif avant suppression de poste, ou en cas de commande exceptionnelle à l'exportation (avec une durée initiale d'au moins 6 mois dans ce dernier cas).\n\nCes règles de durée ne s'appliquent pas au CDD à objet défini pour les ingénieurs et cadres (art. L1242-8-1).\n\n### À retenir\n\n- Les motifs de recours sont limités par la loi : on ne peut pas inventer un CDD « par confort ».\n- La durée dépend du motif et peut varier selon les conventions collectives (non fournies ici).\n\n👉 Pour vérifier la durée maximale applicable à un secteur précis, ou en cas de doute sur la légalité d'un CDD, il est conseillé de consulter la convention collective concernée ou de se rapprocher de l'inspection du travail ou d'un avocat en droit du travail.",
+    "article_ids": [
+      "LEGIARTI000006901194",
+      "LEGIARTI000037312980",
+      "LEGIARTI000033024651",
+      "LEGIARTI000035643967",
+      "LEGIARTI000035643961"
+    ]
+  },
+  {
+    "theme": "travail",
+    "topic": "embaucher-un-salarie-tpe",
+    "slug": "cdd-ecrit-delai-transmission",
+    "emoji": null,
+    "question": "CDD : quelles mentions et dans quel délai remettre le contrat au salarié ?",
+    "short": "Le CDD doit être écrit, préciser son motif et comporter plusieurs mentions obligatoires (durée, poste, rémunération, etc.). Il doit être transmis au salarié au plus tard 2 jours ouvrables après l'embauche.",
+    "answer_md": "### Les mentions obligatoires du CDD\n\nLe contrat à durée déterminée (CDD) doit être **écrit** et préciser **son motif de recours**. Si ce n'est pas le cas, il est considéré comme un contrat à durée indéterminée (art. L1242-12).\n\nIl doit notamment contenir :\n\n- Le **nom et la qualification** de la personne remplacée, si le CDD est conclu pour un remplacement (art. L1242-12).\n- La **date de fin** du contrat, et une clause de renouvellement si elle existe, quand le contrat a un terme précis (art. L1242-12).\n- La **durée minimale** du contrat, s'il n'a pas de terme précis (art. L1242-12).\n- Le **poste de travail**, avec une précision si ce poste présente des risques particuliers pour la santé ou la sécurité (art. L1242-12).\n- Le **nom de la convention collective** applicable (art. L1242-12).\n- La **durée de la période d'essai**, si elle existe (art. L1242-12).\n- Le **montant du salaire** et de tous ses éléments (primes, accessoires) (art. L1242-12).\n- Le **nom et l'adresse** de la caisse de retraite complémentaire et, si besoin, de l'organisme de prévoyance (art. L1242-12).\n\n### Le délai de remise du contrat\n\nL'employeur doit remettre le contrat de travail au salarié **au plus tard dans les deux jours ouvrables suivant l'embauche** (art. L1242-13).\n\n### Que se passe-t-il en cas de non-respect ?\n\n- Si le contrat ne précise pas son motif, il est **automatiquement requalifié en CDI** (art. L1242-12, art. L1245-1).\n- Si l'employeur ne respecte que le délai de transmission (2 jours ouvrables), cela **ne suffit pas à lui seul** pour requalifier le contrat en CDI. Mais le salarié a droit à une **indemnité**, à la charge de l'employeur, qui ne peut pas dépasser **un mois de salaire** (art. L1245-1).\n\n### Notre conseil\n\nSi vous pensez que votre CDD n'a pas été rédigé correctement, ou que les délais n'ont pas été respectés, vous pouvez contacter l'**inspection du travail** ou consulter un **avocat en droit du travail** pour faire valoir vos droits.",
+    "article_ids": [
+      "LEGIARTI000006901206",
+      "LEGIARTI000006901207",
+      "LEGIARTI000036262152"
+    ]
+  },
+  {
+    "theme": "travail",
+    "topic": "embaucher-un-salarie-tpe",
+    "slug": "delai-carence-entre-deux-cdd",
+    "emoji": null,
+    "question": "Faut-il respecter un délai entre deux CDD sur le même poste ?",
+    "short": "Oui, en principe il faut respecter un délai de carence entre deux CDD sur le même poste, sauf exceptions prévues par accord de branche ou par la loi.",
+    "answer_md": "### La règle du délai de carence\n\nÀ la fin d'un CDD, l'employeur ne peut pas tout de suite reprendre quelqu'un en CDD (ou en intérim) sur le **même poste**. Il doit attendre un certain temps, appelé **délai de carence** (art. L1244-3).\n\n### Comment calculer ce délai\n\nSi aucun accord de branche ne fixe une autre règle, le délai dépend de la durée du CDD qui vient de se terminer (renouvellements inclus) (art. L1244-3-1) :\n\n- Si le CDD durait **14 jours ou plus** : le délai de carence est égal au **tiers** de la durée du contrat.\n- Si le CDD durait **moins de 14 jours** : le délai de carence est égal à la **moitié** de la durée du contrat.\n\nOn compte les **jours d'ouverture de l'entreprise**, et non les jours calendaires (art. L1244-3-1).\n\nUn accord de branche étendu peut prévoir d'autres modalités de calcul (art. L1244-3).\n\n### Les cas où ce délai ne s'applique pas\n\nDans certaines situations, l'employeur peut reprendre un CDD sans attendre (art. L1244-4-1) :\n\n- Remplacement d'un salarié encore absent (nouvelle absence du même salarié remplacé) ;\n- Travaux urgents liés à la sécurité ;\n- Emplois saisonniers, ou emplois où il est d'usage de ne pas faire de CDI (certains secteurs définis par décret ou accord collectif) ;\n- Remplacement de certaines catégories de personnes prévues par la loi ;\n- CDD conclus dans le cadre de dispositifs spécifiques prévus à l'article L. 1242-3 ;\n- Rupture anticipée du contrat à l'initiative du salarié ;\n- Refus par le salarié du renouvellement de son contrat (pour la durée non renouvelée).\n\nUn accord de branche étendu peut aussi ajouter d'autres cas d'exception (art. L1244-4).\n\n### En résumé\n\nOui, un délai de carence est en principe obligatoire entre deux CDD sur le même poste, sauf si un accord de branche prévoit autre chose ou si l'on est dans un des cas d'exception listés par la loi.\n\n👉 Si votre situation dépend d'un accord de branche spécifique (ce texte n'a pas été fourni ici), il est conseillé de consulter la convention collective applicable ou de se rapprocher de l'inspection du travail pour vérifier les règles exactes.",
+    "article_ids": [
+      "LEGIARTI000035644007",
+      "LEGIARTI000035639421",
+      "LEGIARTI000035643994",
+      "LEGIARTI000035639433"
+    ]
+  },
+  {
+    "theme": "travail",
+    "topic": "embaucher-un-salarie-tpe",
+    "slug": "temps-partiel-contrat-duree-minimale",
+    "emoji": null,
+    "question": "Temps partiel : quelle durée minimale et quelles mentions dans le contrat ?",
+    "short": "Le contrat à temps partiel doit être écrit avec des mentions précises, et la durée minimale est en principe de 24 heures par semaine, sauf accord collectif ou dérogations prévues par la loi.",
+    "answer_md": "### Le contrat de travail à temps partiel\n\nLe contrat de travail à temps partiel doit obligatoirement être **écrit** (art. L3123-6).\n\nIl doit mentionner :\n\n- la qualification du salarié, les éléments de la rémunération, la durée hebdomadaire ou mensuelle prévue et, sauf exceptions (associations et entreprises d'aide à domicile, accord collectif d'aménagement du temps de travail), la répartition du travail entre les jours de la semaine ou les semaines du mois (art. L3123-6) ;\n- les cas dans lesquels cette répartition peut être modifiée, et la nature de cette modification (art. L3123-6) ;\n- les modalités de communication écrite des horaires de travail pour chaque journée (chaque mois pour l'aide à domicile) (art. L3123-6) ;\n- les limites dans lesquelles des heures complémentaires peuvent être demandées au-delà de la durée fixée par le contrat (art. L3123-6).\n\n⚠️ Si l'employeur omet ces mentions dans le contrat écrit, il risque une amende pouvant aller jusqu'à celle prévue pour les contraventions de 5ème classe, par salarié concerné (art. R3124-5).\n\n### La durée minimale de travail\n\nEn principe, tout salarié à temps partiel a droit à une **durée minimale hebdomadaire de travail**, fixée par accord collectif ou, à défaut, à **24 heures par semaine** (ou l'équivalent mensuel) (art. L3123-7, art. L3123-27).\n\n**Exceptions** où cette durée minimale ne s'applique pas :\n\n- contrats de 7 jours maximum ;\n- certains contrats à durée déterminée de remplacement ;\n- certains contrats de travail temporaire de remplacement ;\n- CDI cumulés avec certains contrats d'insertion, pour atteindre un temps plein (art. L3123-7).\n\n**Dérogations possibles à la demande du salarié**, pour une durée inférieure à cette durée minimale :\n\n- pour des contraintes personnelles, ou pour cumuler plusieurs activités et atteindre un temps plein (demande écrite et motivée) ;\n- pour les salariés ayant atteint l'âge de la retraite prévu par le code de la sécurité sociale ;\n- de droit, pour les salariés de moins de 26 ans poursuivant des études, avec une durée compatible avec leurs études (art. L3123-7).\n\n### Heures complémentaires\n\nÀ défaut d'accord collectif spécifique, les heures complémentaires accomplies au-delà de la durée prévue au contrat sont majorées de :\n\n- 10 % pour les heures effectuées dans la limite du dixième de la durée contractuelle ;\n- 25 % pour les heures effectuées au-delà, jusqu'au tiers de la durée contractuelle (art. L3123-29).\n\n👉 Si votre situation est plus complexe (convention collective spécifique, cas particulier non couvert ici), il est conseillé de contacter l'inspection du travail ou un avocat spécialisé en droit du travail.",
+    "article_ids": [
+      "LEGIARTI000033020080",
+      "LEGIARTI000047453545",
+      "LEGIARTI000033019953",
+      "LEGIARTI000033471450",
+      "LEGIARTI000033019947",
+      "LEGIARTI000043992080",
+      "LEGIARTI000043991970",
+      "LEGIARTI000043991802"
+    ]
+  },
+  {
+    "theme": "travail",
+    "topic": "embaucher-un-salarie-tpe",
+    "slug": "heures-complementaires-temps-partiel",
+    "emoji": null,
+    "question": "Combien d'heures complémentaires un salarié à temps partiel peut-il faire ?",
+    "short": "Sans accord d'entreprise ou de branche, un salarié à temps partiel peut faire des heures complémentaires dans la limite du dixième de sa durée de travail prévue au contrat. Un accord collectif peut porter cette limite jusqu'au tiers de cette durée.",
+    "answer_md": "### Les heures complémentaires : combien et dans quelle limite ?\n\nLes heures complémentaires sont les heures effectuées par un salarié à temps partiel **en plus** de sa durée de travail prévue au contrat.\n\n#### La règle de base\n\n- **Sans accord collectif** (dispositions applicables par défaut) : le nombre d'heures complémentaires ne peut pas dépasser **le dixième (1/10e)** de la durée hebdomadaire ou mensuelle prévue au contrat (art. L3123-28).\n\n- **Si un accord d'entreprise ou de branche le prévoit** : cette limite peut être portée jusqu'au **tiers (1/3)** de la durée prévue au contrat (art. L3123-20).\n\n#### Une limite absolue à ne jamais dépasser\n\nQuel que soit l'accord applicable, les heures complémentaires ne peuvent jamais avoir pour effet de porter la durée de travail du salarié au niveau de la **durée légale du travail** (ou de la durée conventionnelle si elle est inférieure) (art. L3123-9). Autrement dit, un salarié à temps partiel ne peut pas se retrouver, via des heures complémentaires, à travailler comme un salarié à temps plein.\n\n#### La majoration de salaire\n\nChaque heure complémentaire donne obligatoirement lieu à une majoration de salaire (art. L3123-8). Le taux dépend de la situation :\n\n- **Sans accord collectif spécifique** :\n - **10 %** de majoration pour les heures effectuées dans la limite du dixième du temps de travail prévu au contrat ;\n - **25 %** de majoration pour les heures effectuées entre le dixième et le tiers du temps de travail prévu au contrat (art. L3123-29).\n\n- **Avec un accord de branche étendu** : celui-ci peut fixer un taux de majoration différent, mais **jamais inférieur à 10 %** (art. L3123-21).\n\n#### Cas particulier : les avenants « compléments d'heures »\n\nUn accord de branche étendu peut aussi permettre d'augmenter temporairement la durée de travail par un avenant au contrat (jusqu'à 8 avenants par an et par salarié, hors remplacement d'un salarié absent nommément désigné). Les heures effectuées **au-delà** de la durée fixée par cet avenant sont alors majorées d'au moins **25 %** (art. L3123-22).\n\n#### À noter\n\nLes heures liées à la journée de solidarité ne comptent pas dans le calcul des heures complémentaires (art. L3133-9).\n\n---\n\n**Conseil pratique :** Pour savoir précisément quelle limite et quel taux de majoration s'appliquent à votre situation, il faut vérifier votre convention collective ou l'accord d'entreprise applicable. Ces textes ne sont pas fournis ici : renseignez-vous auprès de votre employeur, des représentants du personnel, ou contactez l'inspection du travail.",
+    "article_ids": [
+      "LEGIARTI000033020058",
+      "LEGIARTI000033019991",
+      "LEGIARTI000033019988",
+      "LEGIARTI000033019950",
+      "LEGIARTI000033019947",
+      "LEGIARTI000033019984",
+      "LEGIARTI000033020061",
+      "LEGIARTI000033020858"
+    ]
+  },
+  {
+    "theme": "travail",
+    "topic": "embaucher-un-salarie-tpe",
+    "slug": "durees-maximales-travail-repos",
+    "emoji": null,
+    "question": "Quelles durées maximales de travail et quels repos l'employeur doit-il respecter ?",
+    "short": "En principe, l'employeur doit respecter une durée maximale de 10h par jour et 48h par semaine (44h en moyenne sur 12 semaines), plus 11h de repos quotidien et 24h de repos hebdomadaire. Des exceptions existent selon les situations.",
+    "answer_md": "### Les durées maximales de travail\n\n- **Par jour** : un salarié ne peut pas travailler plus de **10 heures** (art. L3121-18).\n- **Par semaine** : la durée ne peut pas dépasser **48 heures** (art. L3121-20).\n- **En moyenne sur 12 semaines consécutives** : la durée ne peut pas dépasser **44 heures** (art. L3121-22).\n\n### Les exceptions possibles\n\nCes maximums peuvent être dépassés dans certains cas :\n\n- **Accord de l'inspecteur du travail** : l'employeur peut demander une dérogation à l'inspection du travail, avec justifications et avis du comité social et économique s'il existe. L'inspecteur répond sous 15 jours (art. L3121-18, art. D3121-5).\n- **En cas d'urgence** : l'employeur peut dépasser la durée maximale sous sa responsabilité, puis doit régulariser rapidement auprès de l'inspection du travail (art. D3121-6).\n- **Motifs précis de surcroît d'activité** : travaux urgents, saisonniers, ou pics d'activité peuvent justifier une demande de dépassement (art. D3121-4).\n- **Accord collectif** (accord d'entreprise ou de branche) : un accord peut autoriser un dépassement jusqu'à **12 heures par jour** maximum, en cas d'activité accrue ou pour des raisons d'organisation (art. L3121-19).\n- **Recours possible** : si l'employeur conteste une décision de l'inspecteur du travail, il peut faire un recours devant le directeur régional du travail (DREETS), dans un délai d'un mois (art. D3121-7).\n\n⚠️ **Cas particulier des forfaits en jours** : les salariés ayant signé une convention de forfait en jours ne sont pas soumis aux durées maximales quotidienne et hebdomadaires classiques (art. L3121-62).\n\n⚠️ **Cas particulier des jeunes travailleurs** (moins de 18 ans) : les règles sont différentes, avec un maximum de principe de **8 heures par jour et 35 heures par semaine**, sauf dérogations encadrées (art. L3162-1).\n\n### Les temps de repos obligatoires\n\n- **Repos quotidien** : chaque salarié doit bénéficier d'au moins **11 heures consécutives** de repos entre deux journées de travail, sauf exceptions prévues par la loi ou en cas d'urgence (art. L3131-1).\n- **Repos hebdomadaire** : le repos hebdomadaire doit durer au moins **24 heures consécutives**, auxquelles s'ajoutent les 11 heures de repos quotidien. Cela fait donc un repos hebdomadaire total d'au moins **35 heures consécutives** (art. L3132-2).\n\n### En pratique\n\nSi vous pensez que ces règles ne sont pas respectées dans votre entreprise, vous pouvez :\n\n- Vérifier votre **convention collective**, qui peut prévoir des règles spécifiques (non fournies ici, à consulter séparément).\n- Contacter l'**inspection du travail** pour signaler un abus ou demander des précisions.\n- Vous rapprocher d'un **avocat en droit du travail** si un litige apparaît avec votre employeur.\n\n*Remarque : cette réponse ne couvre pas les règles spécifiques à certaines professions (transport, travail de nuit, etc.), ni les dispositions d'une convention collective particulière, qui n'ont pas été fournies.*",
+    "article_ids": [
+      "LEGIARTI000033020428",
+      "LEGIARTI000033020422",
+      "LEGIARTI000033020414",
+      "LEGIARTI000033020402",
+      "LEGIARTI000033003264",
+      "LEGIARTI000033020918",
+      "LEGIARTI000006902581",
+      "LEGIARTI000033509331",
+      "LEGIARTI000036483289",
+      "LEGIARTI000033509368",
+      "LEGIARTI000033516338",
+      "LEGIARTI000037385958"
+    ]
+  },
+  {
+    "theme": "travail",
+    "topic": "embaucher-un-salarie-tpe",
+    "slug": "contingent-heures-sup-contrepartie-repos",
+    "emoji": null,
+    "question": "Contingent d'heures supplémentaires : que se passe-t-il au-delà ?",
+    "short": "Au-delà du contingent annuel d'heures supplémentaires (220 heures par salarié à défaut d'accord), chaque heure supplémentaire donne droit à un repos obligatoire en plus du paiement des heures et de leur majoration.",
+    "answer_md": "### Le contingent annuel d'heures supplémentaires\n\nLes heures supplémentaires peuvent être effectuées dans la limite d'un contingent annuel (art. L3121-30).\n\n- Ce contingent est fixé par accord collectif d'entreprise ou, à défaut, de branche (art. L3121-33).\n- **À défaut d'accord**, le contingent est fixé à **220 heures par salarié et par an** (art. D3121-24).\n\n### Que se passe-t-il au-delà du contingent ?\n\nLes heures effectuées au-delà de ce contingent ouvrent droit à une **contrepartie obligatoire sous forme de repos**, en plus du paiement normal des heures supplémentaires et de leur majoration (art. L3121-30, art. L3121-39).\n\n**Montant de cette contrepartie, à défaut d'accord collectif :**\n- **50 %** des heures accomplies au-delà du contingent, pour les entreprises de **20 salariés au plus** ;\n- **100 %** de ces heures, pour les entreprises de **plus de 20 salariés** (art. L3121-38).\n\nUn accord collectif peut prévoir des règles différentes, mais toujours au moins aussi favorables que ces minima (art. L3121-33).\n\n### Comment ce repos est-il pris ?\n\n- Le droit au repos est ouvert dès que celui-ci atteint **7 heures** (art. D3121-18).\n- Il doit être pris dans un délai maximum de **2 mois** après l'ouverture du droit (art. D3121-18).\n- Si le salarié ne demande pas à le prendre, il ne perd pas son droit : l'employeur doit lui demander de le prendre dans un délai maximum d'**un an** (art. D3121-17).\n\n### À noter\n\n- Les heures de la journée de solidarité ne comptent pas dans le contingent annuel et ne donnent pas droit à cette contrepartie (art. L3133-9), sauf cas particulier de changement d'employeur (art. L3133-10).\n- Avant d'atteindre le contingent, les heures supplémentaires sont accomplies après simple information du comité social et économique (CSE). Au-delà, un avis du CSE est nécessaire (art. L3121-33).\n\n### Besoin d'aller plus loin ?\n\nLe contingent exact et les modalités de repos peuvent varier selon la convention collective applicable à l'entreprise, qui n'est pas fournie ici. Il est conseillé de vérifier sa convention collective ou de se rapprocher de l'inspection du travail pour confirmer les règles applicables à sa situation.",
+    "article_ids": [
+      "LEGIARTI000033020367",
+      "LEGIARTI000038610166",
+      "LEGIARTI000038610163",
+      "LEGIARTI000033020330",
+      "LEGIARTI000033509251",
+      "LEGIARTI000033925156",
+      "LEGIARTI000033516401",
+      "LEGIARTI000033020858",
+      "LEGIARTI000033020852"
+    ]
+  },
+  {
+    "theme": "travail",
+    "topic": "obligations-employeur-tpe",
+    "slug": "registre-unique-personnel",
+    "emoji": null,
+    "question": "Le registre unique du personnel est-il obligatoire et que doit-il contenir ?",
+    "short": "Oui, tout établissement employant des salariés doit tenir un registre unique du personnel. Il doit contenir le nom, prénom et diverses informations sur chaque salarié et stagiaire, dans l'ordre d'arrivée.",
+    "answer_md": "### Le registre unique du personnel est-il obligatoire ?\n\nOui. La loi est claire : **un registre unique du personnel doit être tenu dans tout établissement où travaillent des salariés** (art. L1221-13). Ce n'est pas une option.\n\n### Que doit contenir ce registre ?\n\n**Pour les salariés :**\n- Les noms et prénoms de tous les salariés, inscrits **dans l'ordre des embauches** (art. L1221-13).\n- Ces informations doivent être notées **au moment de l'embauche**, de façon indélébile (art. L1221-13).\n\nDes indications complémentaires sont aussi exigées pour chaque salarié (art. D1221-23) :\n- Nationalité, date de naissance, sexe\n- Emploi occupé et qualification\n- Dates d'entrée et de sortie de l'établissement\n- Si besoin, la date d'autorisation d'embauche ou de licenciement\n- Pour les travailleurs étrangers : type et numéro du titre de travail\n- Des mentions spécifiques selon le type de contrat : « contrat à durée déterminée », « salarié temporaire » (avec nom et adresse de l'entreprise d'intérim), « mis à disposition par un groupement d'employeurs », « salarié à temps partiel », « apprenti » ou « contrat de professionnalisation »\n\n**Pour les stagiaires et volontaires en service civique :**\n- Ils sont inscrits **dans une partie spécifique** du registre, dans l'ordre d'arrivée (art. L1221-13).\n- Des informations complémentaires sont requises (art. D1221-23-1) :\n  - Nom et prénoms du stagiaire\n  - Dates de début et de fin du stage\n  - Nom et prénoms du tuteur, et lieu où le stagiaire est présent\n\n**Autres éléments à annexer ou noter :**\n- Une copie des titres de travail des salariés étrangers doit être annexée au registre (art. D1221-24).\n- Si l'entreprise accueille des salariés détachés, une déclaration spécifique doit aussi être annexée au registre (art. L1221-15-1).\n- Tout événement survenant après l'embauche (ex : changement de poste) doit être noté au registre **au moment où il se produit** (art. D1221-25).\n\n### Qui peut consulter ce registre ?\n\nLe registre doit être tenu à la disposition :\n- du comité social et économique (CSE),\n- des fonctionnaires et agents chargés de contrôler l'application du droit du travail et de la sécurité sociale (art. L1221-15).\n\n### Combien de temps faut-il le conserver ?\n\nLes informations doivent être gardées **pendant 5 ans** à partir de la date où le salarié ou le stagiaire a quitté l'établissement (art. R1221-26).\n\n### Cas particulier : les associations utilisant le chèque-emploi associatif\n\nLes associations et fondations qui utilisent le chèque-emploi associatif sont considérées comme remplissant automatiquement cette obligation d'inscription au registre (art. L1272-4).\n\n### En résumé\n\nCe registre est une obligation légale pour l'employeur. Si vous êtes salarié et que vous avez un doute sur son existence dans votre entreprise, vous pouvez vous adresser aux représentants du personnel (CSE) ou à l'inspection du travail.",
+    "article_ids": [
+      "LEGIARTI000033971569",
+      "LEGIARTI000018537878",
+      "LEGIARTI000029814209",
+      "LEGIARTI000036483477",
+      "LEGIARTI000029825324",
+      "LEGIARTI000035653242",
+      "LEGIARTI000031392972",
+      "LEGIARTI000033021155",
+      "LEGIARTI000029230933"
+    ]
+  },
+  {
+    "theme": "travail",
+    "topic": "obligations-employeur-tpe",
+    "slug": "document-unique-evaluation-risques",
+    "emoji": null,
+    "question": "Le document unique d'évaluation des risques est-il obligatoire dès le premier salarié ?",
+    "short": "Oui. Dès qu'il y a au moins un salarié, l'employeur doit évaluer les risques professionnels et les transcrire dans un document unique (art. L4121-3, art. L4121-3-1, art. R4121-1).",
+    "answer_md": "### La règle\nL'employeur a l'obligation d'évaluer les risques pour la santé et la sécurité des travailleurs, quelle que soit la taille de l'entreprise (art. L4121-3).\n\nCette évaluation doit obligatoirement être transcrite et mise à jour dans un **document unique d'évaluation des risques professionnels (DUERP)** (art. L4121-3-1, art. R4121-1).\n\nAucun texte fourni ne prévoit de seuil minimal de salariés en dessous duquel cette obligation ne s'appliquerait pas. Elle existe donc **dès le premier salarié**.\n\n### Ce qui varie selon la taille de l'entreprise\n- **Fréquence de mise à jour** : au moins chaque année pour les entreprises d'au moins onze salariés. En dessous de onze salariés, la mise à jour peut être moins fréquente, à condition de garantir un niveau de protection équivalent (art. L4121-3, art. R4121-2).\n- **Suites à donner** : \n - Si l'entreprise a moins de cinquante salariés, l'employeur doit définir des actions de prévention des risques, consignées dans le document unique (art. L4121-3-1).\n - Si l'entreprise a cinquante salariés ou plus, un programme annuel de prévention plus détaillé est exigé (art. L4121-3-1).\n\n### Conservation et accès\nLe document unique doit être conservé pendant une durée d'au moins quarante ans et tenu à disposition des salariés, anciens salariés et de certaines autorités (art. L4121-3-1, art. R4121-4).\n\n### En pratique\nMême avec un seul salarié, l'employeur doit donc réaliser ce document. En cas de doute sur la façon de le remplir pour une petite structure, il est possible de solliciter le service de prévention et de santé au travail auquel l'entreprise adhère (art. L4121-3), ou de se rapprocher de l'inspection du travail pour être accompagné.",
+    "article_ids": [
+      "LEGIARTI000043893923",
+      "LEGIARTI000043893919",
+      "LEGIARTI000023795562",
+      "LEGIARTI000045386446",
+      "LEGIARTI000045386451"
+    ]
+  },
+  {
+    "theme": "travail",
+    "topic": "obligations-employeur-tpe",
+    "slug": "affichages-obligatoires-employeur",
+    "emoji": null,
+    "question": "Quelles informations l'employeur doit-il afficher ou communiquer aux salariés ?",
+    "short": "L'employeur doit afficher plusieurs informations obligatoires (horaires, contacts santé/sécurité, textes du code pénal sur discriminations et harcèlement) et communiquer certains documents écrits aux salariés, comme la liste des conventions collectives applicables ou les informations sur la relation de travail.",
+    "answer_md": "### Ce que l'employeur doit afficher ou communiquer\n\nPlusieurs obligations coexistent, selon le sujet concerné.\n\n#### 1. Horaires et temps de travail\n- L'employeur affiche les heures de début et de fin du travail, ainsi que les heures et la durée des repos (art. L3171-1).\n- Si l'organisation du travail suit un régime particulier (article L. 3121-44), l'affichage doit aussi montrer la répartition du temps de travail dans ce cadre (art. L3171-1).\n- La programmation individuelle des astreintes est portée à la connaissance de chaque salarié, selon des règles fixées par décret (art. L3171-1).\n\n#### 2. Discriminations et harcèlement\n- Le texte du code pénal sur les discriminations (articles 225-1 à 225-4) doit être affiché ou porté à connaissance sur le lieu de travail et à l'embauche (art. L1142-6).\n- L'employeur doit prévenir le harcèlement moral et informer les salariés du texte de l'article 222-33-2 du code pénal (art. L1152-4).\n- L'employeur doit prévenir, faire cesser et sanctionner le harcèlement sexuel. Il informe les salariés du texte de l'article 222-33 du code pénal, des actions en justice possibles, et des coordonnées des autorités compétentes (art. L1153-5).\n\n#### 3. Conventions et accords collectifs\n- Un avis doit être communiqué aux salariés, indiquant l'intitulé des conventions et accords applicables dans l'entreprise, et où consulter ces textes (art. R2262-3).\n- Pour certains salariés isolés (concierges, employés de maison, travailleurs à domicile...), un document individuel remplace l'affichage (art. R2262-4).\n\n#### 4. Santé et sécurité\n- L'employeur affiche, dans des locaux accessibles, les coordonnées du médecin du travail ou du service de santé au travail, des services de secours d'urgence, et de l'inspection du travail compétente avec le nom de l'inspecteur (art. D4711-1).\n- Les informations liées à certains registres de santé-sécurité peuvent être regroupées en un registre unique pour faciliter leur consultation (art. L4711-5).\n\n#### 5. Informations liées au contrat de travail\n- L'employeur doit remettre au salarié un ou plusieurs documents écrits contenant les informations principales sur sa relation de travail. Le contenu précis est fixé par décret (art. L1221-5-1).\n- Si le salarié n'a pas reçu ces informations, il doit d'abord mettre en demeure l'employeur avant de saisir le juge (art. L1221-5-1).\n\n### En résumé\nLes obligations d'affichage et de communication touchent plusieurs domaines : horaires, prévention des discriminations et du harcèlement, conventions collectives, santé-sécurité et informations contractuelles. Chaque obligation a ses propres règles de forme (affichage physique, document écrit, mention dans un registre, etc.).\n\n### Besoin d'aller plus loin ?\nSi vous cherchez à savoir si votre employeur respecte toutes ces obligations dans votre situation précise, l'inspection du travail peut vérifier la conformité de l'affichage et des documents fournis.",
+    "article_ids": [
+      "LEGIARTI000033021067",
+      "LEGIARTI000029144893",
+      "LEGIARTI000029144897",
+      "LEGIARTI000037389712",
+      "LEGIARTI000033292505",
+      "LEGIARTI000018535591",
+      "LEGIARTI000018527636",
+      "LEGIARTI000006903389",
+      "LEGIARTI000047285930"
+    ]
+  },
+  {
+    "theme": "travail",
+    "topic": "obligations-employeur-tpe",
+    "slug": "convention-collective-applicable-entreprise",
+    "emoji": null,
+    "question": "Employeur : comment déterminer la convention collective applicable à son entreprise ?",
+    "short": "La convention collective applicable est celle qui correspond à l'activité principale réellement exercée par l'entreprise (art. L2261-2). En cas d'activités multiples rendant ce choix difficile, il faut regarder si des clauses spécifiques des conventions concernées prévoient des règles de rattachement.",
+    "answer_md": "### La règle de base\n\nLa convention collective applicable à une entreprise est celle qui correspond à **l'activité principale exercée par l'employeur** (art. L2261-2).\n\nCela veut dire qu'il faut regarder :\n- quelle est l'activité réelle et dominante de l'entreprise (pas seulement le code d'activité administratif),\n- et vérifier quelle convention collective couvre ce secteur d'activité.\n\n### En cas d'activités multiples\n\nSi l'entreprise exerce **plusieurs activités** et qu'il devient difficile de savoir laquelle est \"principale\", la loi prévoit une solution : certaines conventions collectives et accords professionnels peuvent contenir des **clauses réciproques** qui organisent elles-mêmes les règles de rattachement entre plusieurs champs conventionnels possibles (art. L2261-2).\n\nConcrètement, il faut alors consulter les conventions collectives concernées pour voir si elles contiennent ce type de clause.\n\n### Ce que dit le texte fourni ne suffit pas pour tout\n\nLes articles fournis ne donnent pas de méthode précise pour déterminer objectivement \"l'activité principale\" (chiffre d'affaires, effectif, temps de travail, etc.). Cette question dépend souvent de la jurisprudence et de l'analyse concrète de l'activité de l'entreprise.\n\n### Une fois la convention identifiée\n\nL'employeur doit ensuite :\n- informer les salariés des conventions et accords applicables (art. R2262-1),\n- tenir un exemplaire à jour à disposition des salariés sur le lieu de travail, et sur l'intranet si l'entreprise en a un (art. R2262-1),\n- communiquer un avis aux salariés précisant l'intitulé des conventions applicables et les modalités de consultation (art. R2262-3),\n- mentionner l'intitulé de la convention collective de branche applicable sur le bulletin de paie, ou à défaut se référer au code du travail pour les congés payés et le préavis (art. R3243-1).\n\n### Conseil\n\nSi l'activité de l'entreprise est complexe ou mixte, il est recommandé de se faire aider par un **avocat en droit du travail** ou de contacter les services compétents (par exemple une organisation professionnelle du secteur), car le choix de la convention collective a des conséquences importantes pour les salariés et l'employeur.",
+    "article_ids": [
+      "LEGIARTI000006901780",
+      "LEGIARTI000048288541",
+      "LEGIARTI000033292505",
+      "LEGIARTI000048841718"
+    ]
+  },
+  {
+    "theme": "travail",
+    "topic": "obligations-employeur-tpe",
+    "slug": "calcul-seuils-effectif",
+    "emoji": null,
+    "question": "Comment se calcule l'effectif de l'entreprise et quand un seuil est-il franchi ?",
+    "short": "L'effectif se calcule en général selon les règles de l'article L.130-1 du code de la sécurité sociale (moyenne mensuelle sur l'année précédente), mais le code du travail garde aussi ses propres règles de décompte pour les relations individuelles de travail. Un seuil n'est considéré comme franchi que s'il est atteint pendant plusieurs années ou mois consécutifs, selon le seuil concerné.",
+    "answer_md": "### Deux façons de calculer l'effectif\n\nIl existe deux méthodes selon le domaine concerné :\n\n**1. Pour les relations individuelles de travail (code du travail)**\n\nL'effectif est calculé ainsi (art. L1111-2) :\n- Les salariés en CDI à temps plein et les travailleurs à domicile comptent chacun pour une unité entière.\n- Les salariés en CDD, en contrat intermittent, les intérimaires et les salariés mis à disposition (présents depuis au moins un an) comptent à hauteur de leur temps de présence sur les 12 derniers mois. Attention : s'ils remplacent un salarié absent (maladie, congé maternité, congé parental, etc.), ils ne sont pas comptés.\n- Les salariés à temps partiel comptent au prorata : on divise le total de leurs heures de contrat par la durée légale ou conventionnelle du travail.\n\n**2. Pour la sécurité sociale et de nombreux seuils (formation professionnelle, participation, etc.)**\n\nDepuis la loi PACTE, un calcul unifié s'applique (art. L130-1) :\n- L'effectif annuel correspond à la **moyenne du nombre de personnes employées chaque mois de l'année civile précédente**.\n- Exception : pour la tarification des accidents du travail, on prend l'effectif de la dernière année connue.\n- Pour une entreprise qui vient d'embaucher son premier salarié, l'effectif pris en compte est celui du dernier jour du mois de cette première embauche.\n- Un décret précise qui est inclus dans ce décompte (ce décret n'est pas fourni ici).\n\nCe mode de calcul s'applique notamment :\n- à la participation aux résultats de l'entreprise (art. L3322-1),\n- au financement de la formation professionnelle (art. L6331-1 A et art. L6332-1 A).\n\n### Quand un seuil est-il considéré comme franchi ?\n\n**Règle générale (sécurité sociale et dispositifs qui y renvoient)**\n\nUn seuil est franchi **à la hausse** seulement s'il est atteint ou dépassé pendant **5 années civiles consécutives** (art. L130-1, II). \nSi l'effectif repasse sous le seuil une seule année, le compteur des 5 ans repart à zéro.\n\nCette règle s'applique par exemple à l'obligation de mettre en place la participation (art. L3322-1).\n\n**Règle spécifique au comité social et économique (seuil de 300 salariés)**\n\nPour les obligations liées au CSE, le seuil de 300 salariés est considéré comme franchi lorsque l'effectif dépasse ce seuil pendant **12 mois consécutifs** (art. L2312-34). L'employeur a alors 1 an pour se mettre en conformité avec les obligations d'information et de consultation du CSE.\n\nCette règle des 12 mois s'applique aussi pour déterminer à partir de quand l'entreprise doit présenter un bilan social (art. L2312-29).\n\n**Cas particulier : délégué syndical dans les établissements de 50 salariés et plus**\n\nPour apprécier ce seuil de 50 salariés, il faut se référer à un mode de calcul particulier prévu par un autre article du code du travail (art. R2143-3), qui n'est pas fourni dans son détail ici.\n\n### En résumé\n\n- Le mode de calcul et la règle de franchissement du seuil **dépendent du sujet concerné** (droit individuel du travail, CSE, participation, formation professionnelle...).\n- Il n'y a pas une seule règle universelle : il faut regarder le texte applicable à la situation précise.\n\n### Conseil\n\nSi la question porte sur un cas concret (mise en place d'un CSE, obligation de participation, seuil pour un délégué syndical...), il est recommandé de vérifier l'article spécifique applicable, et si besoin de se rapprocher de l'inspection du travail ou d'un avocat en droit du travail pour confirmer le calcul.",
+    "article_ids": [
+      "LEGIARTI000019353569",
+      "LEGIARTI000051287151",
+      "LEGIARTI000035609830",
+      "LEGIARTI000038613215",
+      "LEGIARTI000035609820",
+      "LEGIARTI000018535798"
+    ]
+  },
+  {
+    "theme": "travail",
+    "topic": "obligations-employeur-tpe",
+    "slug": "visite-reprise-apres-arret",
+    "emoji": null,
+    "question": "Après un arrêt de travail, quand organiser la visite de reprise ?",
+    "short": "La visite de reprise doit être organisée le jour de la reprise effective du travail, et au plus tard dans les 8 jours qui suivent (art. R4624-31). Elle est obligatoire seulement dans certains cas : après un congé maternité, une maladie professionnelle, un accident du travail d'au moins 30 jours, ou une maladie/accident non professionnel d'au moins 60 jours.",
+    "answer_md": "### Dans quels cas la visite de reprise est-elle obligatoire ?\n\nLa visite de reprise avec le médecin du travail est prévue dans les situations suivantes (art. R4624-31) :\n\n- Après un **congé de maternité**\n- Après une absence pour **maladie professionnelle**\n- Après une absence d'**au moins 30 jours** pour **accident du travail**\n- Après une absence d'**au moins 60 jours** pour **maladie ou accident non professionnel**\n\n### Quand doit-elle avoir lieu ?\n\nDès que l'employeur connaît la date de fin de l'arrêt de travail, il doit saisir le service de prévention et de santé au travail. La visite doit alors être organisée :\n\n- **Le jour de la reprise effective** du travail par le salarié,\n- Et **au plus tard dans les 8 jours** qui suivent cette reprise (art. R4624-31).\n\n### Un cas où la visite n'est pas obligatoire\n\nPar exception, la visite de reprise n'est pas requise si **toutes** ces conditions sont réunies (art. R4624-31) :\n\n1. Le salarié a bénéficié d'une **visite de préreprise** dans les 30 jours précédant la reprise ;\n2. Lors de cette visite, le médecin du travail a conclu qu'**aucun aménagement** du poste ou du temps de travail n'était nécessaire.\n\nAttention : même dans ce cas, si le médecin du travail, l'employeur ou le salarié le demande, la visite de reprise doit tout de même être organisée.\n\n### Bon à savoir\n\n- Pour un arrêt de travail lié à un accident du travail de **moins de 30 jours**, il n'y a pas de visite de reprise obligatoire, mais l'employeur doit informer le médecin du travail de cet arrêt, qui pourra décider d'un nouvel examen si nécessaire (art. R4624-33).\n- Le but de cette visite est de vérifier que le poste de travail est compatible avec l'état de santé du salarié, d'examiner les éventuels aménagements, et de délivrer, si besoin, un avis d'inaptitude (art. R4624-32).\n\n### Cas particulier : plusieurs employeurs\n\nSi le salarié a plusieurs employeurs, c'est l'employeur principal qui doit demander la visite (sauf pour un accident du travail, où c'est l'employeur ayant déclaré l'accident) (art. D4624-63).\n\n### Conseil\n\nSi vous êtes salarié ou employeur et que vous avez un doute sur l'organisation de cette visite, vous pouvez contacter directement le service de prévention et de santé au travail dont vous dépendez, ou vous renseigner auprès de l'inspection du travail.",
+    "article_ids": [
+      "LEGIARTI000054250639",
+      "LEGIARTI000045371021",
+      "LEGIARTI000045371018",
+      "LEGIARTI000047775980"
+    ]
+  },
+  {
+    "theme": "travail",
+    "topic": "obligations-employeur-tpe",
+    "slug": "procedure-sanction-disciplinaire",
+    "emoji": null,
+    "question": "Comment sanctionner un salarié (avertissement, mise à pied) dans les règles ?",
+    "short": "Selon la sanction envisagée, l'employeur doit respecter des règles différentes : pour un avertissement, une simple notification écrite des griefs suffit ; pour une mise à pied, une procédure complète avec convocation et entretien est obligatoire.",
+    "answer_md": "### Qu'est-ce qu'une sanction disciplinaire ?\n\nToute mesure prise par l'employeur suite à un comportement qu'il juge fautif est une sanction, sauf s'il s'agit d'une simple observation verbale. Cela vaut que la mesure affecte immédiatement la présence, la fonction, la carrière ou la rémunération du salarié, ou non (art. L1331-1).\n\n### Cas 1 : l'avertissement\n\nL'avertissement est une sanction qui n'a pas d'incidence directe sur le poste, la carrière ou le salaire. Dans ce cas :\n\n- Pas besoin de convoquer le salarié à un entretien préalable (art. L1332-2).\n- Mais le salarié doit être informé **par écrit** des faits reprochés, en même temps que la sanction (art. L1332-1).\n\n### Cas 2 : la mise à pied et les sanctions plus lourdes\n\nSi la sanction envisagée peut affecter la présence, la fonction, la carrière ou la rémunération (comme une mise à pied), une procédure précise doit être suivie :\n\n**1. Convocation à un entretien préalable**\n- L'employeur informe le salarié par écrit, en précisant l'objet de la convocation (art. L1332-2).\n- La lettre indique aussi la date, l'heure et le lieu de l'entretien (art. R1332-1).\n- Elle rappelle que le salarié peut se faire assister par une personne de l'entreprise de son choix (art. R1332-1).\n- Elle est remise contre récépissé ou envoyée en recommandé (art. R1332-1).\n\n**2. L'entretien**\n- Le salarié peut être assisté par une personne du personnel de l'entreprise (art. L1332-2).\n- L'employeur explique le motif de la sanction envisagée et écoute les explications du salarié (art. L1332-2).\n\n**3. Délais à respecter**\n- La sanction ne peut pas être prononcée moins de deux jours ouvrables après l'entretien, ni plus d'un mois après (art. L1332-2).\n- La décision doit être écrite, motivée, et notifiée au salarié par lettre remise contre récépissé ou recommandée, dans ce délai d'un mois (art. R1332-2).\n\n### La mise à pied conservatoire (immédiate)\n\nSi les faits sont graves, l'employeur peut mettre le salarié à pied immédiatement, en attendant la décision finale. Mais attention : la procédure décrite ci-dessus (convocation, entretien, délais) doit quand même être respectée avant toute sanction définitive (art. L1332-3).\n\n### Délai pour agir : la prescription des faits\n\nL'employeur ne peut pas sanctionner un fait fautif si plus de deux mois se sont écoulés depuis qu'il en a eu connaissance, sauf si des poursuites pénales ont été engagées dans ce même délai (art. L1332-4).\n\n### En résumé\n\n| Sanction | Convocation obligatoire ? | Entretien ? | Délai de notification |\n|---|---|---|---|\n| Avertissement (sans incidence) | Non | Non | Immédiat, par écrit |\n| Mise à pied, sanction avec incidence | Oui | Oui | Entre 2 jours ouvrables et 1 mois après l'entretien |\n\n### Cas particulier : salarié protégé\n\nSi le salarié est un représentant du personnel protégé (délégué syndical, élu, etc.), des règles spécifiques s'appliquent, notamment pour la mise à pied en cas de faute grave, avec des délais liés à la consultation du comité social et économique et à l'autorisation de l'inspecteur du travail. Ces règles ne sont pas détaillées ici.\n\n### Conseil\n\nSi la situation est complexe (salarié protégé, doute sur la gravité de la faute, procédure interne particulière prévue par une convention collective), il est recommandé de consulter un avocat en droit du travail ou de se rapprocher de l'inspection du travail.",
+    "article_ids": [
+      "LEGIARTI000006901445",
+      "LEGIARTI000006901447",
+      "LEGIARTI000025560074",
+      "LEGIARTI000006901449",
+      "LEGIARTI000006901450",
+      "LEGIARTI000018536889",
+      "LEGIARTI000018536887"
+    ]
+  },
+  {
+    "theme": "travail",
+    "topic": "obligations-employeur-tpe",
+    "slug": "mutuelle-entreprise-obligatoire",
+    "emoji": null,
+    "question": "La mutuelle d'entreprise est-elle obligatoire et combien l'employeur doit-il payer ?",
+    "short": "Oui, l'employeur doit en principe proposer une couverture complémentaire santé collective à ses salariés, avec un contenu minimal garanti, et financer au moins la moitié de son coût (art. L911-7). Des exceptions existent selon le type de contrat.",
+    "answer_md": "### La mutuelle d'entreprise est-elle obligatoire ?\n\nOui, en principe. Si les salariés d'une entreprise ne bénéficient pas déjà d'une couverture collective obligatoire pour les frais de santé (maladie, maternité, accident), l'employeur doit leur en proposer une par décision unilatérale (art. L911-7).\n\n### Que doit couvrir cette mutuelle au minimum ?\n\nLa couverture minimale doit prendre en charge, en tout ou partie :\n- La participation du salarié aux tarifs de la Sécurité sociale (le \"ticket modérateur\") (art. L911-7).\n- Le forfait journalier hospitalier (art. L911-7).\n- Une partie des frais dentaires prothétiques et de certains dispositifs médicaux (art. L911-7).\n\nUn décret (non fourni ici) précise les niveaux exacts de remboursement. Il faut donc s'y référer pour les montants précis.\n\n### Combien l'employeur doit-il payer ?\n\nL'employeur doit financer **au moins la moitié** du coût de cette couverture collective obligatoire (art. L911-7). Le salarié paie donc l'autre moitié au maximum, sauf si l'employeur choisit de prendre en charge davantage.\n\n### Y a-t-il des exceptions ?\n\nOui, certains salariés peuvent refuser d'adhérer à la mutuelle d'entreprise :\n- Les salariés en CDD ou en contrat de mission, si la durée de leur couverture collective est inférieure à un seuil fixé par décret et s'ils ont déjà une autre complémentaire santé conforme (art. L911-7).\n- D'autres catégories de salariés peuvent aussi être dispensées, selon des règles fixées par décret (non fourni ici) (art. L911-7).\n\nPour les salariés en CDD, en contrat de mission ou à temps partiel dans certains cas, l'employeur peut aussi verser une somme équivalente au financement de la mutuelle, plutôt que de les affilier directement, à condition qu'ils justifient déjà d'une couverture santé complémentaire par ailleurs (art. L911-7-1).\n\n### Bon à savoir\n\nLes chiffres précis (niveaux de remboursement, seuils de durée de contrat) sont fixés par des décrets qui ne sont pas fournis ici. Pour connaître les montants exacts applicables à votre situation, il est conseillé de :\n- Consulter votre convention collective, qui peut prévoir des règles plus favorables.\n- Vous rapprocher du service des ressources humaines de votre entreprise.\n- Contacter l'inspection du travail ou un avocat en droit social en cas de litige.",
+    "article_ids": [
+      "LEGIARTI000031686110",
+      "LEGIARTI000037950320"
+    ]
+  }
+]

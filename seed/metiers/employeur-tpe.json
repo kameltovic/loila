@@ -1,0 +1,135 @@
+{
+  "slug": "employeur-tpe",
+  "title": "Employeurs de TPE",
+  "theme": "travail",
+  "seo": {
+    "title": "Employeur de TPE : obligations du Code du travail",
+    "description": "DPAE, CDD, temps partiel, registre du personnel, document unique, convention collective : les règles pour les TPE sans service RH, articles cités."
+  },
+  "h1": "Employer sans service RH,",
+  "h1Accent": "en règle",
+  "intro": "Dans une petite entreprise, c'est souvent le dirigeant qui gère seul les embauches, les contrats et les obligations administratives. Voici les règles du Code du travail qui reviennent le plus souvent, de la déclaration d'embauche à la fin du contrat.",
+  "audience": [
+    "Dirigeant de TPE",
+    "Artisan ou commerçant employeur",
+    "Profession libérale avec salariés",
+    "Gérant d'association employeuse",
+    "Premier recrutement"
+  ],
+  "obligations": [
+    {
+      "title": "Déclarer l'embauche avant la prise de poste",
+      "detail": "La DPAE est faite avant que le salarié commence, au plus tôt huit jours avant. Son absence est sanctionnée par une pénalité égale à 300 fois le minimum garanti horaire.",
+      "refs": [
+        "code-du-travail:L1221-10",
+        "code-du-travail:R1221-4",
+        "code-du-travail:L1221-11"
+      ]
+    },
+    {
+      "title": "Tenir le registre unique du personnel",
+      "detail": "Chaque salarié y est inscrit dès l'embauche, dans l'ordre des embauches. Les mentions sont conservées cinq ans après son départ.",
+      "refs": [
+        "code-du-travail:L1221-13",
+        "code-du-travail:R1221-26"
+      ]
+    },
+    {
+      "title": "Rédiger le document unique d'évaluation des risques",
+      "detail": "L'évaluation des risques est transcrite dans le document unique dès le premier salarié. Il est mis à jour au moins une fois par an à partir de 11 salariés, et à chaque changement important.",
+      "refs": [
+        "code-du-travail:L4121-3-1",
+        "code-du-travail:R4121-2"
+      ]
+    },
+    {
+      "title": "Écrire et remettre le CDD à temps",
+      "detail": "Le CDD est écrit et précise son motif, sinon il est réputé à durée indéterminée. Il est remis au salarié au plus tard dans les deux jours ouvrables suivant l'embauche.",
+      "refs": [
+        "code-du-travail:L1242-12",
+        "code-du-travail:L1242-13"
+      ]
+    },
+    {
+      "title": "Encadrer le temps partiel",
+      "detail": "Le contrat est écrit et fixe la durée et sa répartition. À défaut d'accord, la durée minimale est de 24 heures par semaine, sauf dérogations.",
+      "refs": [
+        "code-du-travail:L3123-6",
+        "code-du-travail:L3123-27"
+      ]
+    },
+    {
+      "title": "Respecter durées maximales et repos",
+      "detail": "Au plus 10 heures par jour, 48 heures sur une semaine et 44 heures en moyenne sur 12 semaines. Au moins 11 heures de repos entre deux journées et 24 heures consécutives par semaine, en plus du repos quotidien.",
+      "refs": [
+        "code-du-travail:L3121-18",
+        "code-du-travail:L3121-20",
+        "code-du-travail:L3121-22",
+        "code-du-travail:L3131-1",
+        "code-du-travail:L3132-2"
+      ]
+    },
+    {
+      "title": "Appliquer et afficher la bonne convention collective",
+      "detail": "La convention applicable est celle de l'activité principale. Un avis indique aux salariés les textes applicables et où les consulter.",
+      "refs": [
+        "code-du-travail:L2261-2",
+        "code-du-travail:R2262-3"
+      ]
+    },
+    {
+      "title": "Financer la complémentaire santé",
+      "detail": "L'employeur fait bénéficier ses salariés d'une couverture collective minimale et en finance au moins la moitié.",
+      "refs": [
+        "code-securite-sociale:L911-7"
+      ]
+    },
+    {
+      "title": "Organiser la visite de reprise",
+      "detail": "Après un congé maternité, une maladie professionnelle, 30 jours d'accident du travail ou 60 jours de maladie, la visite a lieu le jour de la reprise et au plus tard dans les huit jours.",
+      "refs": [
+        "code-du-travail:R4624-31"
+      ]
+    },
+    {
+      "title": "Sanctionner dans les délais",
+      "detail": "Un fait fautif ne peut plus être sanctionné deux mois après que l'employeur en a eu connaissance. Hors avertissement, un entretien préalable est obligatoire et la sanction intervient entre deux jours ouvrables et un mois après.",
+      "refs": [
+        "code-du-travail:L1332-4",
+        "code-du-travail:L1332-2"
+      ]
+    }
+  ],
+  "faqSlugs": [
+    "declaration-prealable-embauche-dpae",
+    "convention-collective-applicable-entreprise",
+    "cdd-motifs-duree-maximale",
+    "cdd-ecrit-delai-transmission",
+    "periode-essai",
+    "temps-partiel-contrat-duree-minimale",
+    "heures-supplementaires",
+    "durees-maximales-travail-repos",
+    "conges-payes-acquisition",
+    "employeur-impose-dates-conges",
+    "complement-salaire-employeur-maladie",
+    "visite-reprise-apres-arret",
+    "rupture-conventionnelle",
+    "entretien-prealable",
+    "preavis-licenciement",
+    "indemnite-licenciement",
+    "procedure-sanction-disciplinaire",
+    "preavis-demission",
+    "documents-fin-contrat",
+    "registre-unique-personnel",
+    "document-unique-evaluation-risques",
+    "affichages-obligatoires-employeur",
+    "calcul-seuils-effectif",
+    "mutuelle-entreprise-obligatoire",
+    "delai-carence-entre-deux-cdd"
+  ],
+  "texts": [
+    "code-du-travail",
+    "code-securite-sociale"
+  ],
+  "proPitch": "Loilà Pro exporte des réponses sourcées à garder dans le dossier de chaque salarié, vous alerte quand un article du Code du travail que vous suivez change et interroge plusieurs conventions collectives si vos salariés relèvent de branches différentes."
+}
