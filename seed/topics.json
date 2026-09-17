@@ -3548,7 +3548,8 @@
       "codes": [
         "loi-89-462",
         "code-construction-habitation",
-        "code-penal"
+        "code-penal",
+        "code-procedures-civiles-execution"
       ],
       "questions": [
         {
@@ -3557,7 +3558,8 @@
           "hints": [
             "trêve hivernale",
             "1er novembre",
-            "31 mars"
+            "31 mars",
+            "code-procedures-civiles-execution:L412-6"
           ]
         },
         {
@@ -4457,14 +4459,6 @@
             "moins de cinq mètres carrés",
             "hauteur douze mètres",
             "code-urbanisme:R421-2"
-          ]
-        },
-        {
-          "slug": "abri-jardin-taxe-amenagement",
-          "question": "Paie-t-on une taxe pour un abri de jardin ?",
-          "hints": [
-            "taxe d'aménagement",
-            "surface taxable"
           ]
         },
         {
@@ -5446,14 +5440,6 @@
             "antériorité",
             "conformes aux lois",
             "code-civil:1253"
-          ]
-        },
-        {
-          "slug": "cloches-coq-bruits-campagne",
-          "question": "Chant du coq, cloches, grenouilles : sont-ils protégés à la campagne ?",
-          "hints": [
-            "patrimoine sensoriel des campagnes",
-            "code-environnement:L110-1"
           ]
         },
         {

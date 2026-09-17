@@ -7,6 +7,7 @@ export const CODES = {
   "loi-65-557": { name: "Loi n° 65-557 du 10 juillet 1965 (copropriété)", legitext: "JORFTEXT000000880200" },
   "code-penal": { name: "Code pénal", legitext: "LEGITEXT000006070719" },
   "code-civil": { name: "Code civil", legitext: "LEGITEXT000006070721" },
+  "code-procedures-civiles-execution": { name: "Code des procédures civiles d'exécution", legitext: "LEGITEXT000025024948" },
   "code-securite-sociale": { name: "Code de la sécurité sociale", legitext: "LEGITEXT000006073189" },
   "code-forestier": { name: "Code forestier", legitext: "LEGITEXT000025244092" },
   "code-environnement": { name: "Code de l'environnement", legitext: "LEGITEXT000006074220" },
