@@ -33,7 +33,7 @@ const FAQ = [
   },
   {
     question: "Et l’offre Pro ?",
-    answer: `Elle s’adresse à ceux qui posent des questions de droit toute l’année : syndics bénévoles, bailleurs de plusieurs logements, TPE sans service RH, agences immobilières, artisans. ${formatPrice(P.priceCents)} ${P.taxLabel} par mois pour ${P.monthlyQuota} questions, avec l’export des réponses sourcées, un historique par dossier, des alertes quand un article cité change et une facture au nom de la société. Elle n’est pas encore ouverte : inscrivez-vous sur la liste d’attente pour être prévenu.`,
+    answer: `Elle s’adresse à ceux qui posent des questions de droit toute l’année : syndics bénévoles, bailleurs de plusieurs logements, TPE sans service RH, agences immobilières, artisans. ${formatPrice(P.priceCents)} ${P.taxLabel} par mois pour ${P.monthlyQuota} questions, avec l’export des réponses sourcées, des alertes quand un article cité change et une facture au nom de la société. Elle n’est pas encore ouverte : inscrivez-vous sur la liste d’attente pour être prévenu.`,
   },
   {
     question: "Est-ce un conseil juridique ?",
@@ -51,7 +51,7 @@ const ROWS: { k: string; v: (string | boolean)[] }[] = [
   { k: "Nouvelles questions à l’IA", v: [`${FREE_QUESTIONS} offertes à l’inscription`, `${D.credits} par dossier`, `${P.monthlyQuota} / mois*`] },
   { k: "Articles de loi cités", v: [true, true, true] },
   { k: "Validité", v: ["—", `${D.validityDays} jours après l’achat`, "Chaque mois"] },
-  { k: "Export, historique, alertes", v: [false, false, "Bientôt"] },
+  { k: "Export, alertes", v: [false, false, "Bientôt"] },
   { k: "Engagement", v: ["Aucun", "Paiement unique", "Sans engagement"] },
 ];
 const COLS = [

@@ -20,7 +20,6 @@ export const DOSSIER_FEATURES = [
 export const PRO_AUDIENCE = "Syndics bénévoles, bailleurs multi-lots, TPE sans RH, agences immobilières, artisans.";
 export const PRO_SOON = [
   "Export des réponses avec leurs sources",
-  "Historique classé par dossier",
   "Alerte quand un article cité change",
   "Plusieurs conventions collectives",
   "Facture au nom de la société",

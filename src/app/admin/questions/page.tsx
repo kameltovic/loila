@@ -38,6 +38,13 @@ export default async function AdminQuestions({ searchParams }: { searchParams: P
     )
     .all(...(filter ? [filter] : [])) as { id: number; question: string; theme: string | null; outcome: string; created_at: number; user_id: number | null; email: string | null }[];
 
+  const stories = db
+    .prepare(
+      `SELECT d.id, d.story, d.status, d.created_at, d.user_id, u.email, (SELECT COUNT(*) FROM dossier_messages m WHERE m.dossier_id = d.id) followups
+       FROM dossiers d LEFT JOIN users u ON u.id = d.user_id ORDER BY d.created_at DESC LIMIT 100`,
+    )
+    .all() as { id: string; story: string; status: string; created_at: number; user_id: number; email: string | null; followups: number }[];
+
   const chip = (value: string | null, text: string) => (
     <Link
       key={value ?? "all"}
@@ -80,7 +87,21 @@ export default async function AdminQuestions({ searchParams }: { searchParams: P
         </Section>
       )}
 
-      <Section title="Dernières questions">
+      <Section title="Récits des dossiers (wizard)">
+        <Table head={["Date", "Statut", "Suivis", "Compte", "Récit"]}>
+          {stories.map((d) => (
+            <tr key={d.id}>
+              <td>{fmt(d.created_at)}</td>
+              <td>{d.status}</td>
+              <td>{d.followups}</td>
+              <td><Link href={`/admin/users/${d.user_id}`} className="underline underline-offset-2">{d.email}</Link></td>
+              <td className="min-w-[24rem] whitespace-normal font-sans">{d.story}</td>
+            </tr>
+          ))}
+        </Table>
+      </Section>
+
+      <Section title="Dernières questions (chat)">
         <div className="mb-4 flex flex-wrap gap-2">
           {chip(null, "Toutes")}
           {Object.entries(OUTCOMES).map(([k, v]) => chip(k, v))}
