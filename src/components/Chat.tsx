@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
 import { AlertTriangle, ArrowRight, ArrowUp, Bot, Loader2, Scale, Zap } from "lucide-react";
 import type { AskResult } from "@/lib/ask";
@@ -8,7 +8,7 @@ import { faqUrl } from "@/lib/themes";
 import { ArticleDrawerProvider, ArticleLink, ArticleMarkdown } from "@/components/ArticleDrawer";
 import { useMe } from "@/components/AccountMenu";
 import Paywall from "@/components/Paywall";
-import type { Me } from "@/lib/plans";
+import { FREE_QUESTIONS, type Me } from "@/lib/plans";
 
 const EXAMPLES: Record<string, string[]> = {
   travail: [
@@ -48,17 +48,40 @@ export default function Chat({
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
-  const [paywall, setPaywall] = useState(false);
-  const closePaywall = useCallback(() => setPaywall(false), []);
+  const [gate, setGate] = useState<"auth" | "quota" | null>(null);
+  const closeGate = useCallback(() => setGate(null), []);
   const { me, setMe } = useMe();
   const nextId = useRef(0);
   const inputId = useId();
   const examples = EXAMPLES[theme ?? ""] ?? EXAMPLES.default;
   const hero = variant === "hero";
 
+  // A question typed before signing up is kept so it can be sent right after the magic link.
+  useEffect(() => {
+    try {
+      const pending = sessionStorage.getItem("loila.pending");
+      if (pending) {
+        sessionStorage.removeItem("loila.pending");
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time hydration from sessionStorage, unavailable during SSR
+        setInput(pending);
+      }
+    } catch {}
+  }, []);
+
+  function requireAccount(question: string, pendingId?: number) {
+    if (pendingId !== undefined) setMessages((m) => m.filter((msg) => msg.id !== pendingId));
+    try {
+      sessionStorage.setItem("loila.pending", question);
+    } catch {}
+    setInput(question);
+    setLoading(false);
+    setGate("auth");
+  }
+
   async function send(text: string) {
     const question = text.trim();
     if (question.length < 3 || loading) return;
+    if (me && !me.email) return requireAccount(question); // asking requires an account
     const id = nextId.current++;
     setMessages((m) => [...m, { id, question }]);
     setInput("");
@@ -72,12 +95,13 @@ export default function Chat({
       });
       const data = await res.json().catch(() => ({}));
       if (data.me) setMe(data.me as Me);
+      if (res.status === 401 && data.code === "auth") return requireAccount(question, id);
       if (res.status === 402) {
         // Paywall: drop the pending bubble, give the question back so it can be resent after purchase/login.
         setMessages((m) => m.filter((msg) => msg.id !== id));
         setInput(question);
         setLoading(false);
-        setPaywall(true);
+        setGate("quota");
         return;
       }
       patch = res.ok ? { result: data as AskResult } : { error: data.error ?? "Une erreur est survenue." };
@@ -182,7 +206,7 @@ export default function Chat({
 
   const disclaimer = (
     <p className="mt-4 text-xs text-fg-2">
-      {me && (
+      {me?.email ? (
         <>
           <Link href="/tarifs" className="underline decoration-rule underline-offset-2 hover:decoration-signal">
             {quota(me)}
@@ -190,11 +214,19 @@ export default function Chat({
           {" · les réponses existantes sont gratuites"}
           <br />
         </>
-      )}
+      ) : me ? (
+        <>
+          <Link href="/connexion" className="underline decoration-rule underline-offset-2 hover:decoration-signal">
+            Créez votre compte pour poser une question
+          </Link>
+          {` · ${FREE_QUESTIONS} questions offertes`}
+          <br />
+        </>
+      ) : null}
       Information générale, pas un conseil juridique.
     </p>
   );
-  const modal = paywall && <Paywall me={me} onClose={closePaywall} />;
+  const modal = gate && <Paywall me={me} reason={gate} onClose={closeGate} />;
 
   if (hero) {
     return (

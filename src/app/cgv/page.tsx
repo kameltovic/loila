@@ -41,7 +41,7 @@ export default function Cgv() {
         <h2>2. Offres et prix</h2>
         <p>Les prix sont indiqués en euros, toutes taxes comprises (TTC) :</p>
         <ul>
-          <li>{FREE_QUESTIONS} questions offertes par visiteur, sans achat ;</li>
+          <li>{FREE_QUESTIONS} questions offertes par compte, sans achat ;</li>
           <li>
             {OFFERS.single.name} : {formatPrice(OFFERS.single.priceCents)} la question, sans date d’expiration ;
           </li>

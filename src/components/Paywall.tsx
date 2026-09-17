@@ -3,13 +3,15 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
-import { Lock, X } from "lucide-react";
+import { Lock, UserRound, X } from "lucide-react";
 import { FREE_QUESTIONS, type Me } from "@/lib/plans";
 import { display, label } from "@/components/ui";
 import PricingCards from "@/components/PricingCards";
 import { LoginForm } from "@/components/AccountMenu";
 
-export default function Paywall({ me, onClose }: { me: Me | null; onClose: () => void }) {
+/** Modal shown when a question can't be answered: `auth` = must sign up first, `quota` = free/subscription exhausted. */
+export default function Paywall({ me, reason = "quota", onClose }: { me: Me | null; reason?: "auth" | "quota"; onClose: () => void }) {
+  const auth = reason === "auth";
   const [login, setLogin] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -57,18 +59,27 @@ export default function Paywall({ me, onClose }: { me: Me | null; onClose: () =>
         <header className="flex items-start gap-4 border-b-2 border-fg px-5 py-5 sm:px-8 sm:py-7">
           <div className="min-w-0 flex-1">
             <p className={`${label} flex items-center gap-2 text-fg-2`}>
-              <Lock aria-hidden strokeWidth={2} className="size-3.5" />
-              Nouvelle question à l’IA
+              {auth ? <UserRound aria-hidden strokeWidth={2} className="size-3.5" /> : <Lock aria-hidden strokeWidth={2} className="size-3.5" />}
+              {auth ? "Compte requis" : "Nouvelle question à l’IA"}
             </p>
             <h2 id="paywall-title" className={`${display} mt-3 text-3xl leading-[0.95] text-balance sm:text-5xl`}>
-              {subscriber ? (
+              {auth ? (
+                <>Un compte est <span className="font-serif font-normal italic">nécessaire.</span></>
+              ) : subscriber ? (
                 <>Quota du mois <span className="font-serif font-normal italic">atteint.</span></>
               ) : (
                 <>Vos {FREE_QUESTIONS} questions offertes sont <span className="font-serif font-normal italic">utilisées.</span></>
               )}
             </h2>
             <p id="paywall-desc" className="mt-3 max-w-2xl text-fg-2">
-              Continuez avec une question à l’unité ou un abonnement. Votre question est conservée : renvoyez-la après l’achat.
+              {auth ? (
+                <>
+                  Entrez votre email : le compte se crée automatiquement, sans mot de passe. Vos {FREE_QUESTIONS} premières
+                  questions générées sont offertes, et votre question est conservée pour être renvoyée après connexion.
+                </>
+              ) : (
+                <>Continuez avec une question à l’unité ou un abonnement. Votre question est conservée : renvoyez-la après l’achat.</>
+              )}
             </p>
           </div>
           <button
@@ -82,34 +93,46 @@ export default function Paywall({ me, onClose }: { me: Me | null; onClose: () =>
           </button>
         </header>
 
-        <div className="space-y-6 px-5 py-7 sm:px-8">
-          <PricingCards compact />
-
-          <p className="border-l-4 border-signal pl-4 text-[0.9375rem]">
-            <strong>Les réponses existantes restent gratuites et illimitées</strong> : fiches pratiques et réponses instantanées
-            ne consomment aucune question.
-          </p>
-
-          <p className="text-sm text-fg-2">
-            Paiement sécurisé par Stripe · Sans engagement · Résiliable en 1 clic ·{" "}
-            <Link href="/tarifs" className="underline decoration-signal decoration-2 underline-offset-4" onClick={onClose}>
-              Détail des tarifs
-            </Link>
-          </p>
-
-          <div className="border-t border-rule pt-5">
-            {login ? (
-              <LoginForm autoFocus />
-            ) : (
-              <p>
-                Déjà client ?{" "}
-                <button type="button" onClick={() => setLogin(true)} className="font-semibold underline decoration-signal decoration-2 underline-offset-4">
-                  Se connecter
-                </button>
-              </p>
-            )}
+        {auth ? (
+          <div className="space-y-6 px-5 py-7 sm:px-8">
+            <LoginForm autoFocus />
+            <p className="text-sm text-fg-2">
+              Un seul lien par email, valable quelques minutes : il vous connecte et crée votre compte si besoin.{" "}
+              <Link href="/tarifs" className="underline decoration-signal decoration-2 underline-offset-4" onClick={onClose}>
+                Voir les offres
+              </Link>
+            </p>
           </div>
-        </div>
+        ) : (
+          <div className="space-y-6 px-5 py-7 sm:px-8">
+            <PricingCards compact />
+
+            <p className="border-l-4 border-signal pl-4 text-[0.9375rem]">
+              <strong>Les réponses existantes restent gratuites et illimitées</strong> : fiches pratiques et réponses instantanées
+              ne consomment aucune question.
+            </p>
+
+            <p className="text-sm text-fg-2">
+              Paiement sécurisé par Stripe · Sans engagement · Résiliable en 1 clic ·{" "}
+              <Link href="/tarifs" className="underline decoration-signal decoration-2 underline-offset-4" onClick={onClose}>
+                Détail des tarifs
+              </Link>
+            </p>
+
+            <div className="border-t border-rule pt-5">
+              {login ? (
+                <LoginForm autoFocus />
+              ) : (
+                <p>
+                  Déjà client ?{" "}
+                  <button type="button" onClick={() => setLogin(true)} className="font-semibold underline decoration-signal decoration-2 underline-offset-4">
+                    Se connecter
+                  </button>
+                </p>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>,
     document.body,

@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS credit_ledger (
 CREATE INDEX IF NOT EXISTS credit_ledger_user ON credit_ledger(user_id);
 CREATE TABLE IF NOT EXISTS usage (
   id         INTEGER PRIMARY KEY,
-  subject    TEXT NOT NULL,                 -- 'user:<id>' | 'anon:<id>' | 'ip:<hash>'
+  subject    TEXT NOT NULL,                 -- 'user:<id>' (asking requires an account)
   kind       TEXT NOT NULL,                 -- 'free' | 'credit' | 'sub'
   created_at INTEGER NOT NULL DEFAULT (unixepoch())
 );

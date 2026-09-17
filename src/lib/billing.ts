@@ -22,7 +22,9 @@ export function getMe(id: Identity, at = now()): Me {
   const monthlyLimit = sub ? OFFERS[sub.plan].monthlyQuota : 0;
   const monthlyUsed = sub ? countUsage(`user:${id.userId}`, "sub", sub.current_period_start) : 0;
   const credits = id.userId ? count("SELECT COALESCE(SUM(delta), 0) n FROM credit_ledger WHERE user_id = ?", id.userId) : 0;
-  const freeUsed = Math.max(countUsage(`anon:${id.anonId}`, "free"), countUsage(`ip:${id.ipHash}`, "free"));
+  // Free questions are bound to the account: signing up is required before asking. Anonymous visitors
+  // still see the offer (freeLeft = FREE_QUESTIONS) but cannot spend it until they register.
+  const freeUsed = id.userId ? countUsage(`user:${id.userId}`, "free") : 0;
   const freeLeft = Math.max(0, FREE_QUESTIONS - freeUsed);
   return {
     email: id.email,
@@ -32,30 +34,30 @@ export function getMe(id: Identity, at = now()): Me {
     monthlyUsed,
     monthlyLimit,
     periodEnd: sub ? new Date(sub.current_period_end * 1000).toISOString() : null,
-    canAsk: monthlyUsed < monthlyLimit || credits > 0 || freeLeft > 0,
+    canAsk: !!id.userId && (monthlyUsed < monthlyLimit || credits > 0 || freeLeft > 0),
   };
 }
 
 // Charge one generated answer: subscription quota, then purchased credits, then free questions.
 // Synchronous transaction: re-reads balances inside, so concurrent requests can't spend the same unit twice.
 export function consume(id: Identity, at = now()): "sub" | "credit" | "free" | null {
+  const userId = id.userId;
+  if (!userId) return null; // asking requires an account
   const db = getDb();
   const insert = db.prepare("INSERT INTO usage (subject, kind, created_at) VALUES (?, ?, ?)");
   return db.transaction(() => {
     const me = getMe(id, at);
-    if (id.userId && me.monthlyUsed < me.monthlyLimit) {
-      insert.run(`user:${id.userId}`, "sub", at);
+    if (me.monthlyUsed < me.monthlyLimit) {
+      insert.run(`user:${userId}`, "sub", at);
       return "sub" as const;
     }
-    if (id.userId && me.credits > 0) {
-      db.prepare("INSERT INTO credit_ledger (user_id, delta, reason, created_at) VALUES (?, -1, 'use', ?)").run(id.userId, at);
-      insert.run(`user:${id.userId}`, "credit", at);
+    if (me.credits > 0) {
+      db.prepare("INSERT INTO credit_ledger (user_id, delta, reason, created_at) VALUES (?, -1, 'use', ?)").run(userId, at);
+      insert.run(`user:${userId}`, "credit", at);
       return "credit" as const;
     }
     if (me.freeLeft > 0) {
-      // Recorded under both keys: clearing cookies or switching network alone doesn't reset the free quota.
-      insert.run(`anon:${id.anonId}`, "free", at);
-      insert.run(`ip:${id.ipHash}`, "free", at);
+      insert.run(`user:${userId}`, "free", at);
       return "free" as const;
     }
     return null;

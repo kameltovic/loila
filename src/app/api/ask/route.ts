@@ -20,6 +20,13 @@ export async function POST(request: Request) {
   }
 
   const id = await getIdentity(request);
+  if (!id.userId) {
+    // Asking requires an account (free quota is account-scoped), so the client can open the sign-up gate.
+    return Response.json(
+      { error: "Créez votre compte pour poser une question.", code: "auth", me: getMe(id) },
+      { status: 401 },
+    );
+  }
   try {
     const result = await ask(body.question, (body.theme as string | undefined) || undefined, undefined, undefined, () => getMe(id).canAsk);
     if (result.source === "paywall") {

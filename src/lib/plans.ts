@@ -1,6 +1,6 @@
 // Pricing contract shared by billing backend and UI. Client-safe (no DB/Stripe imports).
 // Margins computed 2026-09-17: generated answer ≈ 0.7 c€ avg, 1.4 c€ worst (Haiku 4.5 + Flash Lite expand).
-export const FREE_QUESTIONS = 3; // lifetime per visitor (cookie + IP), generated answers only
+export const FREE_QUESTIONS = 3; // lifetime per account, generated answers only (asking requires signing up)
 
 export const OFFERS = {
   single: {

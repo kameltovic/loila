@@ -74,7 +74,9 @@ export function LoginForm({ autoFocus = false }: { autoFocus?: boolean }) {
         setState("loading");
         setError("");
         try {
-          await postJson("/api/auth/request", { email: email.trim() });
+          // Come back to the current page after the magic link (keeps the pending question in view).
+          const next = window.location.pathname + window.location.search;
+          await postJson("/api/auth/request", { email: email.trim(), next });
           setState("sent");
         } catch (err) {
           setError((err as Error).message);

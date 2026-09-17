@@ -14,8 +14,7 @@ export const metadata = pageMetadata({
 const FAQ = [
   {
     question: "Qu’est-ce qui compte comme une question ?",
-    answer:
-      "Seule une nouvelle question à laquelle l’IA rédige une réponse est décomptée. Les fiches pratiques et les réponses instantanées (questions déjà traitées) sont gratuites et illimitées, même sans compte.",
+    answer: `Seule une nouvelle question à laquelle l’IA rédige une réponse est décomptée. Les fiches pratiques et les réponses instantanées (questions déjà traitées) sont gratuites et illimitées. Poser une question nécessite un compte, créé automatiquement par le lien de connexion envoyé par email : les ${FREE_QUESTIONS} premières réponses générées sont alors offertes.`,
   },
   {
     question: "Les questions non utilisées sont-elles reportées ?",
@@ -44,11 +43,11 @@ const FAQ = [
 
 const ROWS: { k: string; v: (string | boolean)[] }[] = [
   { k: "Fiches et réponses existantes", v: ["Illimitées", "Illimitées", "Illimitées", "Illimitées"] },
-  { k: "Nouvelles questions à l’IA", v: [`${FREE_QUESTIONS} offertes`, "1 par achat", "100 / mois", "Illimitées*"] },
+  { k: "Nouvelles questions à l’IA", v: [`${FREE_QUESTIONS} offertes à l’inscription`, "1 par achat", "100 / mois", "Illimitées*"] },
   { k: "Articles de loi cités", v: [true, true, true, true] },
   { k: "Expiration", v: ["—", "Jamais", "Chaque mois", "Chaque mois"] },
   { k: "Engagement", v: ["Aucun", "Aucun", "Aucun", "Aucun"] },
-  { k: "Compte requis", v: [false, true, true, true] },
+  { k: "Compte requis", v: [true, true, true, true] },
 ];
 const COLS = ["Gratuit", OFFERS.single.name, OFFERS.essentiel.name, OFFERS.illimite.name];
 
@@ -88,8 +87,8 @@ export default async function Pricing({ searchParams }: { searchParams: Promise<
             Lire est gratuit. <span className="font-serif font-normal tracking-[-0.02em] italic">Demander</span> coûte peu.
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-pretty text-fg-2 sm:text-xl">
-            Toutes les fiches et réponses déjà publiées restent gratuites, sans limite et sans compte. Vous ne payez que les
-            nouvelles questions rédigées par l’IA.
+            Toutes les fiches et réponses déjà publiées restent gratuites, sans limite et sans compte. Pour poser une question,
+            créez votre compte en quelques secondes : {FREE_QUESTIONS} réponses générées sont offertes.
           </p>
         </div>
       </section>
@@ -109,7 +108,7 @@ export default async function Pricing({ searchParams }: { searchParams: Promise<
                 </li>
                 <li className="flex items-start gap-3">
                   <Check aria-hidden strokeWidth={2.5} className="mt-1 size-6 shrink-0" />
-                  {FREE_QUESTIONS} questions à l’IA offertes
+                  {FREE_QUESTIONS} questions à l’IA offertes à la création du compte
                 </li>
               </ul>
             </div>

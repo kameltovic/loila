@@ -25,30 +25,35 @@ async function main() {
   assert.equal(auth.safeNext("//evil.com"), "/compte");
   assert.equal(auth.safeNext("/sujets"), "/sujets");
 
-  // --- free questions through the paywall hook, like /api/ask does
+  // --- asking requires an account: anonymous visitors cannot ask, free questions are account-scoped
   db.prepare("INSERT INTO articles (id, code, num, texte, url) VALUES ('A1', 'loi-89-462', '15', 'Le délai de préavis du locataire est de trois mois.', 'u')").run();
   const anon = { userId: null, email: null, anonId: "anon1", ipHash: "ip1" };
   const fakeLlm = async () => ({ content: "Trois mois (art. 15).", model: "fake" });
-  const askAs = async (id: typeof anon, q: string) => {
+  const askAs = async (id: { userId: number | null; email: string | null; anonId: string; ipHash: string }, q: string) => {
     const r = await ask(q, "logement", fakeLlm, undefined, () => getMe(id).canAsk);
     if (r.source === "llm") consume(id);
     return r.source;
   };
-  assert.equal(getMe(anon).freeLeft, 3);
+  assert.equal(getMe(anon).canAsk, false); // no account, no question
+  assert.equal(consume(anon), null);
+  assert.equal(await askAs(anon, "préavis locataire"), "paywall"); // → 401 auth, not answered
+
+  const freeId = auth.upsertUser("Free@Example.com");
+  const free = { ...anon, userId: freeId, email: "free@example.com" };
+  assert.equal(getMe(free).freeLeft, 3);
   for (const [i, q] of ["préavis locataire", "délai préavis trois", "préavis mois locataire"].entries()) {
-    assert.equal(await askAs(anon, q), "llm");
-    assert.equal(getMe(anon).freeLeft, 2 - i);
+    assert.equal(await askAs(free, q), "llm");
+    assert.equal(getMe(free).freeLeft, 2 - i);
   }
-  assert.equal(await askAs(anon, "préavis du locataire délai"), "paywall"); // → 402
-  assert.equal(await askAs(anon, "préavis locataire"), "cache"); // cache stays free
-  assert.equal(await askAs(anon, "xylophone zébulon"), "paywall"); // hook runs before retrieval
-  // new cookie, same IP: still no free questions
-  assert.equal(getMe({ ...anon, anonId: "anon2" }).freeLeft, 0);
-  assert.equal(getMe({ ...anon, ipHash: "ip2" }).freeLeft, 0);
+  assert.equal(await askAs(free, "préavis du locataire délai"), "paywall"); // → 402
+  assert.equal(await askAs(free, "préavis locataire"), "cache"); // cache stays free
+  assert.equal(await askAs(free, "xylophone zébulon"), "paywall"); // hook runs before retrieval
 
   // --- credits via webhook, idempotent
   const userId = auth.upsertUser("Buyer@Example.com");
   const buyer = { userId, email: "buyer@example.com", anonId: "anon1", ipHash: "ip1" };
+  for (let i = 0; i < 3; i++) assert.equal(consume(buyer), "free"); // spend the account's free questions first
+  assert.equal(getMe(buyer).freeLeft, 0);
   const checkout = (id: string, sessionId: string) =>
     ({
       id, type: "checkout.session.completed",

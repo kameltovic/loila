@@ -199,8 +199,8 @@ export default function Home() {
                 {faqCount.toLocaleString("fr-FR")} réponses, <span className="font-serif font-normal italic">gratuites.</span>
               </h2>
               <p className="mt-4 max-w-xl text-fg-2">
-                Toutes les fiches et réponses existantes sont libres d’accès, sans limite. Une question inédite ? {FREE_QUESTIONS} offertes, puis dès{" "}
-                {formatPrice(OFFERS.single.priceCents)}.
+                Toutes les fiches et réponses existantes sont libres d’accès, sans limite. Une question inédite ? Créez votre compte :{" "}
+                {FREE_QUESTIONS} offertes, puis dès {formatPrice(OFFERS.single.priceCents)}.
               </p>
             </div>
             <Link href="/tarifs" className="inline-flex items-center gap-1.5 justify-self-start font-semibold underline decoration-signal decoration-2 underline-offset-4 md:justify-self-end">
