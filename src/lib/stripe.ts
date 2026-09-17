@@ -63,6 +63,8 @@ export async function syncSubscription(sub: Stripe.Subscription, stripe?: Stripe
 // Shared by the webhook and /api/checkout/return (whichever comes first). Returns the buyer's user id.
 export async function fulfillCheckout(session: Stripe.Checkout.Session, stripe?: Stripe): Promise<number | null> {
   if (session.status !== "complete" || session.payment_status === "unpaid") return null;
+  // The Stripe account is shared with other businesses: only Loilà checkouts (metadata.offer) are ours.
+  if (!session.metadata?.offer || !(session.metadata.offer in OFFERS)) return null;
   const email = session.customer_details?.email ?? session.customer_email;
   const metaUser = Number(session.metadata?.user_id) || null;
   const known = metaUser && getDb().prepare("SELECT id FROM users WHERE id = ?").get(metaUser) ? metaUser : null;
