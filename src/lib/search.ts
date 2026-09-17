@@ -54,6 +54,9 @@ const CCN_KEYWORDS: Record<string, RegExp> = {
   "ccn-2596": /coiff/,
   "ccn-0016": /transports? routiers?|routier/,
   "ccn-1996": /pharmacie/,
+  "ccn-2609": /\betam\b/,
+  "ccn-2420": /cadres? du bâtiment/,
+  "ccn-1702": /travaux publics/,
 };
 
 /** CCN slugs a question refers to, by IDCC ("1486", "IDCC 16") or branch keyword. */
@@ -76,7 +79,7 @@ export function searchArticles(
   const named = codes ? mentionedConventions(query).filter((c) => codes!.includes(c)) : [];
   if (named.length) {
     codes = named;
-    for (const c of named) query = query.toLowerCase().replace(new RegExp(CCN_KEYWORDS[c].source, "g"), " ");
+    for (const c of named) if (CCN_KEYWORDS[c]) query = query.toLowerCase().replace(new RegExp(CCN_KEYWORDS[c].source, "g"), " ");
     query = query.replace(/\bidcc\b|\b\d{4}\b|conventions? collectives?/g, " ");
   }
   const match = toFtsQuery(query);
