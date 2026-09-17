@@ -20,6 +20,7 @@ export default function Footer() {
     {
       title: "Loilà",
       links: [
+        { href: "/pour", label: "Pour les pros" },
         { href: "/a-propos", label: "À propos" },
         { href: "/tarifs", label: "Tarifs" },
         { href: "/cgv", label: "CGV" },

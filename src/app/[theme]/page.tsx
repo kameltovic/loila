@@ -6,6 +6,8 @@ import Chat from "@/components/Chat";
 import ThemeIcon from "@/components/ThemeIcon";
 import { getDb, type Faq } from "@/lib/db";
 import { THEMES, faqUrl } from "@/lib/themes";
+import { getCategories } from "@/lib/topics";
+import { getMetiers } from "@/lib/metiers";
 import { conventionUrl, getConventions } from "@/lib/conventions";
 import { Empty, FaqIndex, SectionHead, block, container, display, label } from "@/components/ui";
 import { JsonLd, breadcrumbJsonLd, clip, faqJsonLd, pageMetadata } from "@/lib/seo";
@@ -14,18 +16,28 @@ export const dynamic = "force-dynamic";
 
 const findTheme = (slug: string) => THEMES.find((t) => t.slug === slug);
 
+// Theme FAQs, plus topic questions of the /sujets category sharing the theme slug (copropriete, construction).
+function themeFaqs(slug: string) {
+  const topics = getCategories().find((c) => c.slug === slug)?.topics.map((t) => t.slug) ?? [];
+  return getDb()
+    .prepare(`SELECT theme, topic, slug, emoji, question, short FROM faq WHERE theme = ?${topics.length ? ` OR topic IN (${topics.map(() => "?").join(",")})` : ""} ORDER BY id`)
+    .all(slug, ...topics) as Faq[];
+}
+
 // Search-intent copy per theme (title is absolute: ≤ 60 chars without the site suffix).
 const SEO: Record<string, { title: string; lead: string }> = {
   travail: { title: "Droit du travail expliqué simplement : congés, licenciement", lead: "Congés payés, licenciement, rupture conventionnelle, heures sup :" },
   urbanisme: { title: "Permis de construire ou déclaration préalable ? Guide 2026", lead: "Permis de construire, déclaration préalable, PLU, abri de jardin :" },
   logement: { title: "Location : bail, dépôt de garantie, préavis expliqués (2026)", lead: "Bail, dépôt de garantie, préavis, hausse de loyer, état des lieux :" },
   conventions: { title: "Conventions collectives 2026 : salaires, primes, préavis", lead: "Syntec, HCR, métallurgie, BTP, services à la personne :" },
+  copropriete: { title: "Copropriété : AG, syndic, charges, travaux expliqués", lead: "Assemblée générale, syndic bénévole, charges impayées, travaux :" },
+  construction: { title: "BTP : garantie décennale, retenue de garantie, paiement", lead: "Assurance décennale, réception des travaux, sous-traitance, délais de paiement :" },
 };
 
 export async function generateMetadata({ params }: PageProps<"/[theme]">): Promise<Metadata> {
   const theme = findTheme((await params).theme);
   if (!theme) return {};
-  const { n } = getDb().prepare("SELECT COUNT(*) AS n FROM faq WHERE theme = ?").get(theme.slug) as { n: number };
+  const n = themeFaqs(theme.slug).length;
   const seo = SEO[theme.slug] ?? { title: theme.title, lead: theme.tagline };
   const meta = pageMetadata({
     title: seo.title,
@@ -39,9 +51,8 @@ export default async function ThemePage({ params }: PageProps<"/[theme]">) {
   const theme = findTheme((await params).theme);
   if (!theme) notFound();
 
-  const faqs = getDb()
-    .prepare("SELECT theme, topic, slug, emoji, question, short FROM faq WHERE theme = ? ORDER BY id")
-    .all(theme.slug) as Faq[];
+  const faqs = themeFaqs(theme.slug);
+  const metiers = getMetiers().filter((m) => m.theme === theme.slug);
 
   const counts = new Map(
     (getDb().prepare("SELECT code, COUNT(*) AS n FROM articles GROUP BY code").all() as { code: string; n: number }[]).map((r) => [r.code, r.n]),
@@ -100,6 +111,27 @@ export default async function ThemePage({ params }: PageProps<"/[theme]">) {
                         <ArrowRight aria-hidden strokeWidth={1.75} className="size-4 transition group-hover:translate-x-1 motion-reduce:transition-none" />
                       </span>
                     </p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
+      {metiers.length > 0 && (
+        <section aria-labelledby="metiers-title" className="pt-16 sm:pt-24">
+          <div className={container}>
+            <SectionHead num={num()} kicker="Pour les pros" id="metiers-title" title="Un espace pour votre métier" />
+            <ul className="mt-12 grid gap-5 sm:grid-cols-2">
+              {metiers.map((m) => (
+                <li key={m.slug}>
+                  <Link href={`/pour/${m.slug}`} className="group flex h-full items-center justify-between gap-6 border-2 border-fg bg-surface p-5 shadow-hard transition-[transform,box-shadow] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-hard-sm sm:p-6 motion-reduce:transition-none">
+                    <span>
+                      <span className={`${display} block text-2xl leading-tight sm:text-3xl`}>{m.title}</span>
+                      <span className="mt-2 block text-fg-2">{m.audience.slice(0, 3).join(" · ")}</span>
+                    </span>
+                    <ArrowRight aria-hidden strokeWidth={1.75} className="size-7 shrink-0 transition group-hover:translate-x-1 motion-reduce:transition-none" />
                   </Link>
                 </li>
               ))}

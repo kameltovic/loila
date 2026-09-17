@@ -17,6 +17,8 @@ export const THEME_COLORS: Record<string, string> = {
   urbanisme: "#8FD3A8",
   logement: "#9DC4FF",
   conventions: "#FFB0C4",
+  copropriete: "#C4B5FD",
+  construction: "#7FDBDA",
 };
 
 // Static instances (satori cannot pick weights inside variable fonts). OFL, see src/assets/fonts/OFL-*.txt

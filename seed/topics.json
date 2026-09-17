@@ -22,7 +22,15 @@
     },
     {
       "slug": "proprietaires",
-      "title": "Propriétaires & copropriété"
+      "title": "Propriétaires"
+    },
+    {
+      "slug": "copropriete",
+      "title": "Copropriété"
+    },
+    {
+      "slug": "construction",
+      "title": "Construction et BTP"
     },
     {
       "slug": "maison",
@@ -3864,7 +3872,7 @@
       "slug": "assemblee-generale-copropriete",
       "title": "Assemblée générale de copro",
       "h1": "Assemblée générale de copropriété : vote, majorités et contestation",
-      "category": "proprietaires",
+      "category": "copropriete",
       "intro": "Les décisions d'une copropriété se prennent en assemblée générale selon différentes majorités. Un copropriétaire peut contester une décision dans un délai court.",
       "keywords": [
         "assemblée générale",
@@ -3932,7 +3940,7 @@
       "slug": "charges-de-copropriete",
       "title": "Charges de copropriété",
       "h1": "Charges de copropriété : répartition, impayés et fonds de travaux",
-      "category": "proprietaires",
+      "category": "copropriete",
       "intro": "Chaque copropriétaire participe aux charges selon des règles de répartition. Les impayés fragilisent la copropriété, qui dispose de moyens pour recouvrer sa créance.",
       "keywords": [
         "charges de copropriété",
@@ -4001,7 +4009,7 @@
       "slug": "travaux-en-copropriete",
       "title": "Travaux en copropriété",
       "h1": "Travaux en copropriété : ce qu'on peut faire chez soi et ce qui doit être voté",
-      "category": "proprietaires",
+      "category": "copropriete",
       "intro": "Chez soi, on est libre d'aménager ses parties privatives, tant qu'on ne touche pas aux parties communes ni à l'aspect extérieur. Sinon, l'accord de l'assemblée générale est nécessaire.",
       "keywords": [
         "travaux copropriété",
@@ -4066,7 +4074,7 @@
       "slug": "syndic-de-copropriete",
       "title": "Syndic de copropriété",
       "h1": "Syndic de copropriété : rôle, contrat et comment en changer",
-      "category": "proprietaires",
+      "category": "copropriete",
       "intro": "Le syndic exécute les décisions de l'assemblée et gère l'immeuble au quotidien. Son contrat est encadré et la copropriété peut en changer.",
       "keywords": [
         "syndic",
@@ -4685,7 +4693,7 @@
       "slug": "malfacons-garantie-decennale",
       "title": "Malfaçons",
       "h1": "Malfaçons après travaux : garantie décennale, biennale et parfait achèvement",
-      "category": "maison",
+      "category": "construction",
       "intro": "Après des travaux, plusieurs garanties protègent le maître d'ouvrage pendant un an, deux ans ou dix ans selon la gravité du désordre. Encore faut-il agir dans les délais.",
       "keywords": [
         "garantie décennale",

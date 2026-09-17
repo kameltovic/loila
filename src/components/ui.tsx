@@ -9,6 +9,8 @@ const BLOCK: Record<string, string> = {
   urbanisme: "bg-urbanisme",
   logement: "bg-logement",
   conventions: "bg-conventions",
+  copropriete: "bg-copropriete",
+  construction: "bg-construction",
 };
 export const block = (slug: string) => `${BLOCK[slug] ?? BLOCK.travail} text-ink`;
 

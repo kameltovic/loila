@@ -2,6 +2,7 @@ import { getDb, type Article, type Faq } from "@/lib/db";
 import { renderOg, renderWordmark, topicOg } from "@/lib/og";
 import { CODES, THEMES } from "@/lib/themes";
 import { getTopic } from "@/lib/topics";
+import { getMetier } from "@/lib/metiers";
 import { conventionHeading, getConvention } from "@/lib/conventions";
 
 // Share images live at /og/<page path>.png (home: /og/index.png). A real .png extension:
@@ -33,6 +34,11 @@ function image(parts: string[]) {
   if (a === "conventions" && b === "branche" && parts.length === 3) {
     const conv = getConvention(c);
     if (conv) return renderOg({ kind: "topic", title: conventionHeading(conv), label: `Convention collective · IDCC ${conv.idcc}`, theme: "conventions" });
+  }
+  if (a === "pour" && parts.length === 1) return renderOg({ kind: "topic", title: "Le droit de votre métier, expliqué simplement", label: "Pour les pros" });
+  if (a === "pour" && parts.length === 2) {
+    const m = getMetier(b);
+    return m ? renderOg({ kind: "topic", title: `${m.h1} ${m.h1Accent}`, label: `Pour les pros · ${m.title}`, theme: m.theme }) : null;
   }
   if (theme && parts.length === 1) return renderOg({ kind: "theme", theme: theme.slug, title: theme.title, tagline: theme.tagline });
   if (theme && parts.length === 2) {
