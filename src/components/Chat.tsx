@@ -1,11 +1,14 @@
 "use client";
 
-import { useId, useRef, useState } from "react";
+import { useCallback, useId, useRef, useState } from "react";
 import Link from "next/link";
 import { AlertTriangle, ArrowRight, ArrowUp, Bot, Loader2, Scale, Zap } from "lucide-react";
 import type { AskResult } from "@/lib/ask";
 import { faqUrl } from "@/lib/themes";
 import { ArticleDrawerProvider, ArticleLink, ArticleMarkdown } from "@/components/ArticleDrawer";
+import { useMe } from "@/components/AccountMenu";
+import Paywall from "@/components/Paywall";
+import type { Me } from "@/lib/plans";
 
 const EXAMPLES: Record<string, string[]> = {
   travail: [
@@ -45,6 +48,9 @@ export default function Chat({
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
+  const [paywall, setPaywall] = useState(false);
+  const closePaywall = useCallback(() => setPaywall(false), []);
+  const { me, setMe } = useMe();
   const nextId = useRef(0);
   const inputId = useId();
   const examples = EXAMPLES[theme ?? ""] ?? EXAMPLES.default;
@@ -65,6 +71,15 @@ export default function Chat({
         body: JSON.stringify({ question, theme }),
       });
       const data = await res.json().catch(() => ({}));
+      if (data.me) setMe(data.me as Me);
+      if (res.status === 402) {
+        // Paywall: drop the pending bubble, give the question back so it can be resent after purchase/login.
+        setMessages((m) => m.filter((msg) => msg.id !== id));
+        setInput(question);
+        setLoading(false);
+        setPaywall(true);
+        return;
+      }
       patch = res.ok ? { result: data as AskResult } : { error: data.error ?? "Une erreur est survenue." };
     } catch {
       patch = { error: "Impossible de joindre le serveur. Vérifiez votre connexion." };
@@ -166,8 +181,20 @@ export default function Chat({
   );
 
   const disclaimer = (
-    <p className="mt-4 text-xs text-fg-2">Information générale, pas un conseil juridique.</p>
+    <p className="mt-4 text-xs text-fg-2">
+      {me && (
+        <>
+          <Link href="/tarifs" className="underline decoration-rule underline-offset-2 hover:decoration-signal">
+            {quota(me)}
+          </Link>
+          {" · les réponses existantes sont gratuites"}
+          <br />
+        </>
+      )}
+      Information générale, pas un conseil juridique.
+    </p>
   );
+  const modal = paywall && <Paywall me={me} onClose={closePaywall} />;
 
   if (hero) {
     return (
@@ -178,6 +205,7 @@ export default function Chat({
           {disclaimer}
           {messages.length > 0 && <div className="mt-8">{thread}</div>}
         </section>
+        {modal}
       </ArticleDrawerProvider>
     );
   }
@@ -191,8 +219,19 @@ export default function Chat({
         {chips}
         {disclaimer}
       </section>
+      {modal}
     </ArticleDrawerProvider>
   );
+}
+
+const plural = (n: number, word: string) => `${n} ${word}${n > 1 ? "s" : ""}`;
+
+function quota(me: Me): string {
+  const credits = me.credits > 0 ? ` + ${plural(me.credits, "question")} à l’unité` : "";
+  if (me.plan === "illimite") return `Illimité${credits}`;
+  if (me.plan === "essentiel") return `${plural(Math.max(0, me.monthlyLimit - me.monthlyUsed), "question")} IA ce mois${credits}`;
+  if (me.freeLeft > 0) return `${plural(me.freeLeft, "question")} IA ${me.freeLeft > 1 ? "offertes" : "offerte"}${credits}`;
+  return me.credits > 0 ? `${plural(me.credits, "question")} IA à l’unité` : "Questions IA offertes utilisées, voir les tarifs";
 }
 
 function Answer({ result }: { result: AskResult }) {

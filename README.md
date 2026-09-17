@@ -67,7 +67,52 @@ npm run batch:faq -- --force                      # régénère aussi les questi
 
 Les questions sont dans `seed/questions.json` (`theme`, `slug`, `emoji`, `question`, `hints`). Les `hints` aident la recherche : mots-clés, et numéros d'articles (`L1237-11`, `22`…) récupérés directement. Seuls les articles réellement cités par le modèle et présents en base sont enregistrés.
 
-`npm run check` lance la vérification des types et le self-check de la cascade.
+`npm run check` lance la vérification des types, le self-check de la cascade et celui de la facturation (`scripts/check-billing.ts`).
+
+## Paiements
+
+Seules les réponses **générées par le LLM** sont payantes : FAQ et cache restent gratuits et illimités. Chaque visiteur a 3 questions gratuites (cookie signé `loila_anon` + IP), puis offres de `src/lib/plans.ts` : à l'unité (crédit sans expiration), Essentiel, Illimité. Un crédit n'est débité qu'après une réponse LLM réussie ; au-delà, `/api/ask` répond `402 { code: "paywall", me }`. Ordre de débit : quota d'abonnement → crédits → questions gratuites.
+
+Connexion sans mot de passe par lien magique (15 min, usage unique), session de 90 jours (cookie `loila_session`). Paiement via Stripe Checkout ; les montants viennent toujours des prix Stripe (`lookup_key`).
+
+| Route | Rôle |
+| --- | --- |
+| `GET /api/me` | état du visiteur (`Me`) |
+| `POST /api/auth/request` `{email, next?}` | envoie le lien magique |
+| `GET /api/auth/verify?token=` | ouvre la session, redirige vers `/compte` ou `next` |
+| `POST /api/auth/logout` | ferme la session |
+| `POST /api/checkout` `{offer}` | crée la session Checkout → `{url}` |
+| `GET /api/checkout/return?session_id=` | retour de Stripe : crédite (idempotent), connecte, redirige vers `/merci?ok=1` |
+| `POST /api/portal` | portail de facturation Stripe → `{url}` |
+| `POST /api/stripe/webhook` | webhooks Stripe (signature vérifiée, idempotent) |
+
+Variables :
+
+| Variable | Rôle |
+| --- | --- |
+| `AUTH_SECRET` | secret HMAC des cookies (obligatoire en production, `openssl rand -base64 32`) |
+| `STRIPE_SECRET_KEY` | clé secrète Stripe (`sk_live_…` en production) |
+| `STRIPE_WEBHOOK_SECRET` | secret de signature du webhook (`whsec_…`) |
+| `SWEEGO_API_KEY` | clé API [Sweego](https://www.sweego.io) pour les e-mails ; absente en dev, le lien est affiché dans la console du serveur |
+| `EMAIL_FROM` | expéditeur (défaut `Loilà <connexion@loila.fr>`) |
+| `SITE_URL` | URL publique (défaut `https://loila.fr`), utilisée pour les liens et redirections en production |
+
+Mise en production :
+
+1. `STRIPE_SECRET_KEY=sk_live_… npx tsx scripts/stripe-setup.ts --live` crée le produit « Loilà » et les 3 prix (idempotent).
+2. Dans le dashboard Stripe, ajouter l'endpoint `https://loila.fr/api/stripe/webhook` avec les événements `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.paid`, puis copier son secret dans `STRIPE_WEBHOOK_SECRET`.
+3. Activer le portail client (Paramètres → Billing → Customer portal) : annulation et moyens de paiement.
+4. Dans Sweego, vérifier le domaine d'envoi `loila.fr` (enregistrements DNS SPF et DKIM à ajouter sur la zone de loila.fr), puis créer la clé API.
+
+En local (mode test) :
+
+```bash
+npm run stripe:setup                                                  # produit + prix de test
+stripe listen --forward-to localhost:3000/api/stripe/webhook          # copier le whsec_ dans .env
+stripe trigger checkout.session.completed --override checkout_session:metadata.offer=single
+```
+
+Carte de test : `4242 4242 4242 4242`, date future, CVC quelconque.
 
 ## Docker
 

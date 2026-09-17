@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import { Bricolage_Grotesque, Inter, Instrument_Serif } from "next/font/google";
+import Script from "next/script";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import "./globals.css";
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
+        <Script defer src="https://stats.coffee-beans.fr/script.js" data-website-id="5b4eedbb-3ed8-47f8-9905-194f768bd92a" strategy="afterInteractive" />
       </body>
     </html>
   );

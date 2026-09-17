@@ -1,23 +1,13 @@
 import { ask, AskValidationError } from "@/lib/ask";
+import { clientIp, getIdentity, rateLimited, sameOrigin } from "@/lib/auth";
+import { consume, getMe } from "@/lib/billing";
 import { MissingApiKeyError } from "@/lib/openrouter";
 
-// ponytail: in-memory, single-instance only; move to a shared store (Redis/DynamoDB) on AWS multi-instance.
-const WINDOW_MS = 10 * 60_000;
-const MAX_REQ = 20;
-const hits = new Map<string, number[]>();
-
-function limited(ip: string) {
-  const now = Date.now();
-  const recent = (hits.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
-  recent.push(now);
-  hits.set(ip, recent);
-  if (hits.size > 10_000) for (const [k, v] of hits) if (now - v[v.length - 1] >= WINDOW_MS) hits.delete(k);
-  return recent.length > MAX_REQ;
-}
-
 export async function POST(request: Request) {
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0].trim() || request.headers.get("x-real-ip") || "local";
-  if (limited(ip)) return Response.json({ error: "Trop de questions, réessayez dans quelques minutes." }, { status: 429 });
+  if (!sameOrigin(request)) return Response.json({ error: "Origine non autorisée." }, { status: 403 });
+  if (rateLimited(`ask:${clientIp(request)}`, 20, 10 * 60_000)) {
+    return Response.json({ error: "Trop de questions, réessayez dans quelques minutes." }, { status: 429 });
+  }
 
   let body: { question?: unknown; theme?: unknown };
   try {
@@ -29,8 +19,18 @@ export async function POST(request: Request) {
     return Response.json({ error: "Requête invalide." }, { status: 400 });
   }
 
+  const id = await getIdentity(request);
   try {
-    return Response.json(await ask(body.question, (body.theme as string | undefined) || undefined));
+    const result = await ask(body.question, (body.theme as string | undefined) || undefined, undefined, undefined, () => getMe(id).canAsk);
+    if (result.source === "paywall") {
+      return Response.json(
+        { error: "Vous avez utilisé vos questions gratuites. Choisissez une offre pour continuer.", code: "paywall", me: getMe(id) },
+        { status: 402 },
+      );
+    }
+    // Charged only once the LLM actually answered. ponytail: two concurrent last-unit requests can both get an answer (one unpaid); reserve before the call if abused.
+    if (result.source === "llm") consume(id);
+    return Response.json({ ...result, me: getMe(id) });
   } catch (e) {
     if (e instanceof AskValidationError) return Response.json({ error: e.message }, { status: 400 });
     if (e instanceof MissingApiKeyError) {

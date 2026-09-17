@@ -21,6 +21,8 @@ export default function Footer() {
       title: "Loilà",
       links: [
         { href: "/a-propos", label: "À propos" },
+        { href: "/tarifs", label: "Tarifs" },
+        { href: "/cgv", label: "CGV" },
         { href: "/mentions-legales", label: "Mentions légales" },
         { href: "mailto:contact@loila.fr", label: "Contact" },
       ],

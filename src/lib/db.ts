@@ -67,6 +67,53 @@ CREATE TABLE IF NOT EXISTS qa_cache (
   hits        INTEGER NOT NULL DEFAULT 1,
   created_at  TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+-- Billing & auth. Timestamps are unix seconds.
+CREATE TABLE IF NOT EXISTS users (
+  id                 INTEGER PRIMARY KEY,
+  email              TEXT NOT NULL UNIQUE,  -- lowercased
+  stripe_customer_id TEXT UNIQUE,
+  created_at         INTEGER NOT NULL DEFAULT (unixepoch())
+);
+CREATE TABLE IF NOT EXISTS sessions (
+  token_hash TEXT PRIMARY KEY,              -- sha256 of the cookie token
+  user_id    INTEGER NOT NULL REFERENCES users(id),
+  expires_at INTEGER NOT NULL
+);
+CREATE TABLE IF NOT EXISTS login_tokens (
+  token_hash TEXT PRIMARY KEY,
+  email      TEXT NOT NULL,
+  expires_at INTEGER NOT NULL,
+  used_at    INTEGER
+);
+CREATE TABLE IF NOT EXISTS subscriptions (
+  user_id                INTEGER PRIMARY KEY REFERENCES users(id),
+  stripe_subscription_id TEXT NOT NULL,
+  plan                   TEXT NOT NULL,     -- 'essentiel' | 'illimite'
+  status                 TEXT NOT NULL,     -- Stripe status
+  current_period_start   INTEGER NOT NULL,
+  current_period_end     INTEGER NOT NULL
+);
+CREATE TABLE IF NOT EXISTS credit_ledger (
+  id         INTEGER PRIMARY KEY,
+  user_id    INTEGER NOT NULL REFERENCES users(id),
+  delta      INTEGER NOT NULL,
+  reason     TEXT NOT NULL,                 -- 'purchase' | 'use'
+  stripe_ref TEXT UNIQUE,                   -- checkout session id: a purchase is granted once
+  created_at INTEGER NOT NULL DEFAULT (unixepoch())
+);
+CREATE INDEX IF NOT EXISTS credit_ledger_user ON credit_ledger(user_id);
+CREATE TABLE IF NOT EXISTS usage (
+  id         INTEGER PRIMARY KEY,
+  subject    TEXT NOT NULL,                 -- 'user:<id>' | 'anon:<id>' | 'ip:<hash>'
+  kind       TEXT NOT NULL,                 -- 'free' | 'credit' | 'sub'
+  created_at INTEGER NOT NULL DEFAULT (unixepoch())
+);
+CREATE INDEX IF NOT EXISTS usage_subject ON usage(subject, kind, created_at);
+CREATE TABLE IF NOT EXISTS stripe_events (
+  id          TEXT PRIMARY KEY,
+  received_at INTEGER NOT NULL DEFAULT (unixepoch())
+);
 `;
 
 let db: Database.Database | undefined;

@@ -27,5 +27,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...faqs.map((f) => url(faqUrl(f), 0.7)),
     ...articles.map((a) => ({ ...url(`/article/${a.id}`, 0.4, "monthly"), ...(a.date_debut && { lastModified: new Date(a.date_debut) }) })),
     url("/a-propos", 0.3, "monthly"),
+    url("/tarifs", 0.6, "monthly"),
+    url("/cgv", 0.2, "monthly"),
   ];
 }

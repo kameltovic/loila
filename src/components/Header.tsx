@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowRight, Menu, X } from "lucide-react";
 import { btnPrimary } from "@/components/ui";
+import AccountMenu from "@/components/AccountMenu";
 
 const NAV = [
   { slug: "travail", label: "Travail" },
@@ -12,7 +13,11 @@ const NAV = [
   { slug: "logement", label: "Logement" },
   { slug: "conventions", label: "Conventions" },
   { slug: "sujets", label: "Tous les sujets" },
+  { slug: "tarifs", label: "Tarifs" },
 ];
+
+const navItem =
+  "relative block whitespace-nowrap border-2 border-transparent px-3 py-1.5 transition-[transform,box-shadow,background-color] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:border-fg hover:bg-surface hover:shadow-[3px_3px_0_0_var(--fg)] aria-[current=page]:border-fg aria-[current=page]:bg-fg aria-[current=page]:text-bg motion-reduce:transition-none motion-reduce:hover:translate-0";
 
 export function Logo({ className = "" }: { className?: string }) {
   return (
@@ -45,13 +50,13 @@ export default function Header() {
           <Logo />
         </Link>
 
-        <ul className="hidden items-center gap-1 font-mono text-[0.8125rem] font-bold tracking-wide uppercase md:flex">
+        <ul className="hidden items-center gap-1 font-mono text-[0.8125rem] font-bold tracking-wide uppercase lg:flex">
           {NAV.map((n) => (
             <li key={n.slug}>
               <Link
                 href={`/${n.slug}`}
                 aria-current={active(n.slug) ? "page" : undefined}
-                className="relative block border-2 border-transparent px-3 py-1.5 transition-[transform,box-shadow,background-color] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:border-fg hover:bg-surface hover:shadow-[3px_3px_0_0_var(--fg)] aria-[current=page]:border-fg aria-[current=page]:bg-fg aria-[current=page]:text-bg motion-reduce:transition-none motion-reduce:hover:translate-0"
+                className={navItem}
               >
                 {n.label}
               </Link>
@@ -60,6 +65,7 @@ export default function Header() {
         </ul>
 
         <div className="flex items-center gap-2">
+          <AccountMenu className={`${navItem} hidden font-mono text-[0.8125rem] font-bold tracking-wide uppercase lg:block`} />
           <Link
             href="/#question"
             className={`${btnPrimary} hidden! sm:inline-flex!`}
@@ -69,7 +75,7 @@ export default function Header() {
           </Link>
           <button
             type="button"
-            className="inline-flex size-10 items-center justify-center border-2 border-fg md:hidden"
+            className="inline-flex size-10 items-center justify-center border-2 border-fg lg:hidden"
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
@@ -81,7 +87,7 @@ export default function Header() {
       </nav>
 
       {open && (
-        <div id="mobile-menu" className="border-t border-rule bg-bg md:hidden">
+        <div id="mobile-menu" className="border-t border-rule bg-bg lg:hidden">
           <ul className="mx-auto max-w-6xl px-4 pt-2 pb-5">
             {NAV.map((n) => (
               <li key={n.slug} className="border-b border-rule">
@@ -95,6 +101,12 @@ export default function Header() {
                 </Link>
               </li>
             ))}
+            <li className="border-b border-rule">
+              <AccountMenu
+                onClick={close}
+                className="flex items-center gap-3 py-4 font-display text-2xl font-bold tracking-tight"
+              />
+            </li>
             <li className="pt-5">
               <Link
                 href="/#question"

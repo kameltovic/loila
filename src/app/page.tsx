@@ -7,6 +7,7 @@ import { THEMES } from "@/lib/themes";
 import { getTopic, getTopics } from "@/lib/topics";
 import { Empty, FaqIndex, SectionHead, block, container, display, label } from "@/components/ui";
 import { JsonLd, SITE_NAME, SITE_URL, pageMetadata } from "@/lib/seo";
+import { FREE_QUESTIONS, OFFERS, formatPrice } from "@/lib/plans";
 
 export const metadata = {
   ...pageMetadata({
@@ -48,7 +49,7 @@ const POPULAR_TOPICS = [
 ];
 
 const STEPS = [
-  { title: "Textes officiels", text: "Nous partons des articles en vigueur publiés sur Légifrance, mis à jour chaque jour." },
+  { title: "Textes officiels", text: "Nous partons des articles en vigueur publiés sur Légifrance, importés régulièrement." },
   { title: "Expliqués simplement", text: "Chaque règle est reformulée en français clair, sans jargon inutile." },
   { title: "Sources citées", text: "Chaque réponse renvoie aux articles de loi exacts, vérifiables en un clic." },
 ];
@@ -58,6 +59,7 @@ export default function Home() {
   // ponytail: first 6 by id, add a popularity column when there is traffic data
   const faqs = db.prepare("SELECT theme, topic, slug, emoji, question, short FROM faq ORDER BY id LIMIT 6").all() as Faq[];
   const { n } = db.prepare("SELECT COUNT(*) AS n FROM articles").get() as { n: number };
+  const { n: faqCount } = db.prepare("SELECT COUNT(*) AS n FROM faq").get() as { n: number };
   // Round down to a friendly figure: 35 812 -> "35 000+".
   const articles = n >= 1000 ? `${(Math.floor(n / 1000) * 1000).toLocaleString("fr-FR")}+` : n.toLocaleString("fr-FR");
 
@@ -181,6 +183,30 @@ export default function Home() {
               </li>
             ))}
           </ol>
+        </div>
+      </section>
+
+      {/* Pricing teaser */}
+      <section aria-labelledby="pricing-teaser-title" className="pb-20 sm:pb-28">
+        <div className={container}>
+          <div className="grid gap-8 border-2 border-fg bg-surface p-6 shadow-hard sm:p-10 md:grid-cols-[1.5fr_1fr] md:items-end">
+            <div>
+              <p className={`${label} flex items-center gap-3 text-fg-2`}>
+                <span aria-hidden className="h-0.5 w-8 bg-signal" />
+                Tarifs
+              </p>
+              <h2 id="pricing-teaser-title" className={`${display} mt-5 text-4xl leading-[0.95] text-balance sm:text-6xl`}>
+                {faqCount.toLocaleString("fr-FR")} réponses, <span className="font-serif font-normal italic">gratuites.</span>
+              </h2>
+              <p className="mt-4 max-w-xl text-fg-2">
+                Toutes les fiches et réponses existantes sont libres d’accès, sans limite. Une question inédite ? {FREE_QUESTIONS} offertes, puis dès{" "}
+                {formatPrice(OFFERS.single.priceCents)}.
+              </p>
+            </div>
+            <Link href="/tarifs" className="inline-flex items-center gap-1.5 justify-self-start font-semibold underline decoration-signal decoration-2 underline-offset-4 md:justify-self-end">
+              Voir les tarifs <ArrowRight aria-hidden strokeWidth={1.75} className="size-4" />
+            </Link>
+          </div>
         </div>
       </section>
 

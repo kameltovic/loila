@@ -9,7 +9,8 @@
     "lint": "eslint",
     "ingest": "tsx scripts/ingest.ts",
     "batch:faq": "tsx scripts/batch-faq.ts",
-    "check": "tsc --noEmit && tsx scripts/check-ask.ts"
+    "check": "tsc --noEmit && tsx scripts/check-ask.ts && tsx scripts/check-billing.ts",
+    "stripe:setup": "tsx --env-file=.env scripts/stripe-setup.ts"
   },
   "dependencies": {
     "better-sqlite3": "^13.0.3",
@@ -18,7 +19,8 @@
     "next": "16.3.5",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "react-markdown": "^10.1.0"
+    "react-markdown": "^10.1.0",
+    "stripe": "^22.6.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

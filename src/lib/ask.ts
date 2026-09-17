@@ -6,7 +6,7 @@ import { getArticleByNum, mentionedConventions, searchArticles } from "./search"
 
 export type AskArticle = { id: string; num: string; code: string; url: string };
 export type AskResult = {
-  source: "faq" | "cache" | "llm" | "none";
+  source: "faq" | "cache" | "llm" | "none" | "paywall";
   answer_md: string;
   faq?: { slug: string; theme: string; topic: string | null; question: string };
   articles: AskArticle[];
@@ -135,7 +135,11 @@ const realLlm: LlmCall = (m) => chat(m);
 
 const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-export async function ask(question: string, theme?: string, llm: LlmCall = realLlm, expand = llm === realLlm ? expandQuery : undefined): Promise<AskResult> {
+// beforeLlm: paywall hook, called only when the paid LLM step is about to run; false → { source: "paywall" }.
+export async function ask(
+  question: string, theme?: string, llm: LlmCall = realLlm, expand = llm === realLlm ? expandQuery : undefined,
+  beforeLlm?: () => boolean | Promise<boolean>,
+): Promise<AskResult> {
   const q = typeof question === "string" ? question.trim() : "";
   if (q.length < 3 || q.length > 500) throw new AskValidationError("La question doit faire entre 3 et 500 caractères.");
   const themeDef = theme ? THEMES.find((t) => t.slug === theme) : undefined;
@@ -163,7 +167,8 @@ export async function ask(question: string, theme?: string, llm: LlmCall = realL
     return { source: "cache", answer_md: cached.answer_md, articles: articlesByIds(parseIds(cached.article_ids)) };
   }
 
-  // 3. LLM over retrieved articles
+  // 3. LLM over retrieved articles (paid)
+  if (beforeLlm && !(await beforeLlm())) return { source: "paywall", answer_md: "", articles: [] };
   // Without a theme, conventions only join the scope when one is named: one random branch's "art. 4" misleads everyone else.
   let codes: string[] = themeDef ? [...themeDef.codes] : Object.keys(CODES).filter((c) => !c.startsWith("ccn-"));
   // A named convention ("Syntec", "IDCC 1486") narrows the scope, even outside the conventions theme.
