@@ -16,6 +16,10 @@ export const CODES = {
   "code-education": { name: "Code de l'éducation", legitext: "LEGITEXT000006071191" },
   "code-consommation": { name: "Code de la consommation", legitext: "LEGITEXT000006069565" },
   "code-action-sociale": { name: "Code de l'action sociale et des familles", legitext: "LEGITEXT000006074069" },
+  "code-assurances": { name: "Code des assurances", legitext: "LEGITEXT000006073984" },
+  "loi-75-1334": { name: "Loi n° 75-1334 du 31 décembre 1975 (sous-traitance)", legitext: "JORFTEXT000000889241" },
+  "loi-71-584": { name: "Loi n° 71-584 du 16 juillet 1971 (retenues de garantie)", legitext: "JORFTEXT000000687670" },
+  "code-commerce": { name: "Code de commerce", legitext: "LEGITEXT000005634379" },
   // Conventions collectives (KALI): legitext holds the KALICONT (IDCC container) id.
   "ccn-1486": { name: "Convention collective Syntec, bureaux d'études techniques (IDCC 1486)", legitext: "KALICONT000005635173", idcc: "1486" },
   "ccn-1979": { name: "Convention collective HCR, hôtels cafés restaurants (IDCC 1979)", legitext: "KALICONT000005635534", idcc: "1979" },
@@ -32,6 +36,9 @@ export const CODES = {
   "ccn-2596": { name: "Convention collective Coiffure (IDCC 2596)", legitext: "KALICONT000018563755", idcc: "2596" },
   "ccn-0016": { name: "Convention collective Transports routiers (IDCC 0016)", legitext: "KALICONT000005635624", idcc: "0016" },
   "ccn-1996": { name: "Convention collective Pharmacie d'officine (IDCC 1996)", legitext: "KALICONT000005635528", idcc: "1996" },
+  "ccn-2609": { name: "Convention collective Bâtiment ETAM (IDCC 2609)", legitext: "KALICONT000018773893", idcc: "2609" },
+  "ccn-2420": { name: "Convention collective Cadres du bâtiment (IDCC 2420)", legitext: "KALICONT000017941839", idcc: "2420" },
+  "ccn-1702": { name: "Convention collective Travaux publics ouvriers (IDCC 1702)", legitext: "KALICONT000005635467", idcc: "1702" },
 } as const;
 export type CodeSlug = keyof typeof CODES;
 
