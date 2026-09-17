@@ -1,0 +1,166 @@
+{
+ "logement|bonjour j'ai quitté mon appart le 20 juillet, l'état des lieux de sortie était nickel, le proprio me dit qu'il me rendra la caution \"quand il aura le temps\". j'avais versé 750€. il a le droit ???": {
+  "words": "restitution du dépôt de garantie, délai de restitution, état des lieux de sortie\narticle 22 loi 89-462",
+  "nums": [
+   "22"
+  ]
+ },
+ "logement|Studio meublé, je suis parti fin juin. La propriétaire garde 400 euros sur 900 pour « usure du canapé et peinture ». Sur l'état des lieux de sortie elle a noté des traces sur les murs. Elle peut faire ça ? j'ai habité là 6 ans": {
+  "words": " dépôt de garantie, retenue, état des lieux, dégradation, vétusté, location meublée\n",
+  "nums": []
+ },
+ "logement|Mon ancien bailleur a restitué le dépôt mais a gardé 20% en disant que c'est pour la régularisation des charges de copropriété qui n'est pas encore faite. On est en septembre, j'ai quitté en mai. C'est normal ?": {
+  "words": "dépôt de garantie, restitution, régularisation des charges, retenue, copropriété, délai\narticle 22, article 23",
+  "nums": [
+   "22",
+   "23"
+  ]
+ },
+ "logement|on me rend pas ma caution": {
+  "words": "restitution du dépôt de garantie, retenue injustifiée, état des lieux de sortie, délai de restitution, dégradation\narticle 22, article 22-1",
+  "nums": [
+   "22",
+   "22-1"
+  ]
+ },
+ "logement|Il n'y a jamais eu d'état des lieux d'entrée quand je suis arrivé en 2019 (le proprio était pressé). Maintenant je pars et il veut me facturer la moquette. Qu'est ce que je risque": {
+  "words": " état des lieux, restitution du dépôt de garantie, dégradations locatives, présomption de bon état, réparation locative\n",
+  "nums": []
+ },
+ "logement|Je vais signer un bail pour un T2 vide à 850€ hors charges et l'agence demande 2 mois de dépôt de garantie + 1 mois d'avance. c'est légal ?": {
+  "words": " dépôt de garantie, loyer d'avance, montant maximal, location vide, plafonnement\n",
+  "nums": []
+ },
+ "logement|Le bailleur refuse de rendre les 2400€ de dépôt et m'assigne en plus au tribunal pour 9000€ de travaux (dégât des eaux, il dit que c'est ma faute, mon assurance dit que non). J'ai reçu l'assignation hier, audience dans 3 semaines. Je fais quoi ?": {
+  "words": "restitution du dépôt de garantie, retenue sur dépôt, dégradations locatives, assignation en justice, tribunal judiciaire\nArticle 22 de la loi du 6 juillet 1989, 7 de la loi du 6 juillet 1989",
+  "nums": [
+   "22"
+  ]
+ },
+ "logement|je veux quitter mon appart à Bordeaux, c'est un vide, combien de temps de préavis ? mon bailleur dit 3 mois": {
+  "words": "résiliation du contrat de location, congé du locataire, délai de préavis, location vide, zone tendue\n15, 25-1",
+  "nums": []
+ },
+ "logement|Muté par mon employeur à Rennes à partir du 1er novembre, j'ai un bail d'habitation vide à Clermont-Ferrand. Est-ce que je peux partir avant les 3 mois ?": {
+  "words": "mutation professionnelle, congé du locataire, préavis réduit, zone tendue\narticle 15 loi 89-462",
+  "nums": [
+   "15"
+  ]
+ },
+ "logement|Bonjour, je suis étudiante en meublé et je voudrais rendre les clés fin octobre. Quel préavis ? Et est-ce que je dois payer le loyer jusqu'à la fin si une autre personne rentre avant ?": {
+  "words": "location meublée, délai de préavis, résiliation, congé, double paiement, relocation\narticle 25-8, article 15",
+  "nums": [
+   "25-8",
+   "15"
+  ]
+ },
+ "logement|le propriétaire m'a envoyé une lettre pour me dire qu'il vend l'appartement et que je dois partir à la fin du bail. j'ai 74 ans et pas beaucoup de revenus, je suis là depuis 15 ans. je suis obligée de partir ?": {
+  "words": "congé pour vente, droit de préemption, locataire protégé, ressources insuffisantes, âge\n15, 15 bis",
+  "nums": []
+ },
+ "logement|Je pars, combien je dois payer ?": {
+  "words": "congé, préavis, résiliation de bail, indemnité d'occupation, loyer, charges locatives\n15, 23, 24, L631-1",
+  "nums": [
+   "L631-1"
+  ]
+ },
+ "logement|Mon père est entré en EHPAD, il faut résilier son bail (logement vide, petite ville dans le Cantal). j'ai une procuration. c'est 3 mois de loyer à payer ??": {
+  "words": "résiliation de bail, congé, délai de préavis, EHPAD, réduction du préavis, zone tendue\narticle 15",
+  "nums": [
+   "15"
+  ]
+ },
+ "travail|On a signé une rupture conventionnelle avec mon employeur le 8 septembre. Je regrette un peu. Je peux encore changer d'avis ? et quand est-ce que je serai libre de partir ?": {
+  "words": " rupture conventionnelle, délai de rétractation, rétractation, date de rupture, homologation, convention\n",
+  "nums": [
+   "L1237-13",
+   "L1237-14"
+  ]
+ },
+ "travail|Mon patron m'a viré pour faute grave hier parce que je suis arrivé en retard 3 fois ce mois ci. j'ai jamais eu d'entretien. j'ai 8 ans d'ancienneté. je touche rien ?": {
+  "words": "licenciement pour faute grave, procédure disciplinaire, entretien préalable, indemnité de licenciement, ancienneté\nL1232-2, L1234-1, L1234-9, L1332-2",
+  "nums": [
+   "L1232-2",
+   "L1234-1",
+   "L1234-9",
+   "L1332-2"
+  ]
+ },
+ "travail|Licencié pour motif personnel (insuffisance professionnelle), j'ai reçu la lettre le 2 septembre. combien de préavis et combien d'indemnités ? ça fait 3 ans et demi que je suis dans la boite": {
+  "words": "licenciement pour motif personnel, insuffisance professionnelle, préavis de licenciement, indemnité légale de licenciement\nL1234-1, L1234-9, L1234-19, R1234-2",
+  "nums": [
+   "L1234-1",
+   "L1234-9",
+   "L1234-19",
+   "R1234-2"
+  ]
+ },
+ "travail|je veux partir de ma boite mais toucher le chômage. mon employeur refuse la rupture conventionnelle. il peut refuser ?? qu'est ce que je peux faire d'autre": {
+  "words": "rupture conventionnelle, refus de l'employeur, démission, privation involontaire d'emploi, allocation chômage\nL1237-11, L1237-12, L1237-14, L5421-1",
+  "nums": [
+   "L1237-11",
+   "L1237-12",
+   "L1237-14",
+   "L5421-1"
+  ]
+ },
+ "travail|Je suis délégué du personnel (CSE) et ma direction veut me faire signer une rupture conventionnelle en me mettant la pression depuis que j'ai dénoncé du harcèlement. Ils m'ont retiré mes dossiers. je suis en arrêt maladie depuis 2 semaines.": {
+  "words": " protection du salarié, CSE, rupture conventionnelle, harcèlement moral, arrêt de travail, discrimination\n",
+  "nums": [
+   "L1237-15",
+   "L2411-1",
+   "L1152-1",
+   "L1132-1",
+   "L4121-1"
+  ]
+ },
+ "logement|Combien de temps le propriétaire a-t-il pour rendre le dépôt de garantie ?": {
+  "words": "dépôt de garantie, restitution, délai, \narticle 22",
+  "nums": [
+   "22"
+  ]
+ },
+ "logement|Quel est le préavis pour quitter un logement meublé ?": {
+  "words": "logement meublé, préavis de congé, délai de préavis, location meublée, résiliation du bail\narticle 25-8",
+  "nums": [
+   "25-8"
+  ]
+ },
+ "logement|Mon père part en maison de retraite, quel préavis pour résilier son bail ?": {
+  "words": "congé, locataire, délai de préavis, réduction, maison de retraite\narticle 15",
+  "nums": [
+   "15"
+  ]
+ },
+ "logement|Je touche le RSA, ai-je droit à un préavis réduit pour quitter mon appartement ?": {
+  "words": " congé, préavis réduit, bénéficiaire du RSA, location vide, location meublée\n",
+  "nums": []
+ },
+ "logement|Mon propriétaire peut-il augmenter le loyer en cours de bail ?": {
+  "words": " révision de loyer, augmentation de loyer, cours du bail, indice de référence des loyers\n",
+  "nums": []
+ },
+ "travail|Combien de jours de congés payés par mois travaillé ?": {
+  "words": " congé payé, durée des congés, période de référence, acquisition, travail effectif\n",
+  "nums": [
+   "L3141-3",
+   "L3141-12"
+  ]
+ },
+ "travail|Quelle est la durée maximale de la période d'essai d'un cadre en CDI ?": {
+  "words": "période d'essai, contrat de travail à durée indéterminée, cadre, durée maximale, renouvellement\nL1221-19, L1221-20, L1221-21",
+  "nums": [
+   "L1221-19",
+   "L1221-20",
+   "L1221-21"
+  ]
+ },
+ "urbanisme|Faut-il un permis de construire pour une extension de 30 m2 ?": {
+  "words": " extension, surface de plancher, emprise au sol, permis de construire, dispense\n",
+  "nums": [
+   "L421-1",
+   "R421-14",
+   "R421-17"
+  ]
+ }
+}

@@ -111,29 +111,88 @@ export async function expandQuery(q: string, codes: string[], retry = 1): Promis
 // ponytail: phrase sniffing; upgrade path = ask the model for a JSON {answered: boolean}.
 const isNonAnswer = (md: string) => /ne (me )?(permettent|traitent|mentionnent|abordent|précisent) pas|ne permet pas de (répondre|conclure)/i.test(md.slice(0, 400));
 
-// Long articles: keep the first paragraph + the paragraphs sharing the most keywords, in original order.
+// Long articles: a short article head + the densest matching passages (distinct keyword stems / √length), in
+// original order, "[…]" for gaps. A paragraph ending with ":" and the enumerated items after it ("1°", "a)", "-")
+// form one passage ranked by its best paragraph, so when "Le délai de préavis est toutefois d'un mois :" matches,
+// the cases listed under it come along even if they share no word with the question.
+// ponytail: stem = 5-char prefix; upgrade path = embeddings per passage.
+const LIST_ITEM = /^(?:\d+°|[a-z]\)|[IVX]+\.|\d+\)|[-–•])/;
+const HEAD_CHARS = 400;
+const stem = (t: string) => t.slice(0, 5);
 export function excerpt(texte: string, keywords: Set<string>, max = ARTICLE_CHARS): string {
   if (texte.length <= max) return texte;
-  const paras = texte.split(/\n+/);
-  const score = (p: string) => [...tokens(p)].filter((t) => keywords.has(t) || [...keywords].some((k) => k.length > 4 && t.startsWith(k.slice(0, 5)))).length;
-  const ranked = paras.map((p, i) => ({ i, s: i === 0 ? Infinity : score(p) })).sort((a, b) => b.s - a.s);
+  const paras = texte.split(/\n+/).map((p) => p.trim()).filter(Boolean);
+  const stems = new Set([...keywords].filter((k) => k.length > 2).map(stem));
+  const density = paras.map((p) => new Set([...tokens(p)].map(stem).filter((t) => stems.has(t))).size / Math.sqrt(p.length));
+  const passages: number[][] = [];
+  paras.forEach((p, i) => {
+    const last = passages.at(-1);
+    if (last && LIST_ITEM.test(p) && paras[last[0]].endsWith(":")) last.push(i);
+    else passages.push([i]);
+  });
+  const head = paras[0].length > HEAD_CHARS ? `${paras[0].slice(0, paras[0].lastIndexOf(" ", HEAD_CHARS))} […]` : paras[0];
   const keep = new Set<number>();
-  let len = 0;
-  for (const { i, s } of ranked) {
-    if (!s || len + paras[i].length > max) continue;
+  let len = head.length;
+  const add = (i: number) => {
+    const extra = paras[i].length + 1 - (i === 0 ? head.length : 0);
+    if (keep.has(i) || len + extra > max) return keep.has(i);
     keep.add(i);
-    len += paras[i].length;
+    len += extra;
+    return true;
+  };
+  const ranked = passages.map((u) => ({ u, d: Math.max(...u.map((i) => density[i])) })).filter((x) => x.d > 0)
+    .sort((a, b) => b.d - a.d || a.u[0] - b.u[0]);
+  for (const { u } of ranked) {
+    const size = u.reduce((n, i) => n + (keep.has(i) ? 0 : paras[i].length + 1), 0);
+    if (len + size <= max) u.forEach(add);
+    // List too long for what is left: its intro, then its best items.
+    else if (u.length > 1 && add(u[0])) [...u.slice(1)].sort((a, b) => density[b] - density[a]).forEach(add);
   }
-  return paras.map((p, i) => (keep.has(i) ? p : null)).reduce<string[]>((out, p) => {
-    if (p !== null) out.push(p);
+  const out: string[] = [];
+  paras.forEach((p, i) => {
+    if (keep.has(i)) out.push(p);
+    else if (i === 0) out.push(head);
     else if (out.at(-1) !== "[…]") out.push("[…]");
-    return out;
-  }, []).join("\n");
+  });
+  return out.join("\n");
+}
+
+// Per-prompt excerpt budget, water-filled by rank: articles that fit their share go in whole, the leftover is
+// re-shared, and the top-ranked articles (exact number lookups, best coverage) get a bigger share than the tail.
+const PROMPT_CHARS = 15_000;
+const ARTICLE_MAX_CHARS = 5_000;
+const RANK_WEIGHTS = [3, 3, 2, 2];
+export function excerptBudgets(lengths: number[], total = PROMPT_CHARS): number[] {
+  const w = lengths.map((_, i) => RANK_WEIGHTS[i] ?? 1);
+  const out = lengths.map(() => 0);
+  let left = total;
+  const order = lengths.map((_, i) => i).sort((a, b) => lengths[a] / w[a] - lengths[b] / w[b]);
+  order.forEach((i, k) => {
+    const share = Math.floor((left * w[i]) / order.slice(k).reduce((sum, j) => sum + w[j], 0));
+    out[i] = Math.min(lengths[i], ARTICLE_MAX_CHARS, Math.max(ARTICLE_CHARS / 2, share));
+    left -= out[i];
+  });
+  return out;
+}
+
+// Prompt block sent to the answer model: one excerpted article per heading.
+export function buildContext(found: Article[], q: string, words: string): string {
+  const keywords = tokens(`${q} ${words}`);
+  const budgets = excerptBudgets(found.map((a) => a.texte.length));
+  return found
+    .map((a, i) => `### ${CODES[a.code as keyof typeof CODES]?.name ?? a.code} — article ${a.num || "sans numéro"}${a.section ? ` — ${a.section}` : ""}\n${excerpt(a.texte, keywords, budgets[i])}`)
+    .join("\n\n");
 }
 
 const realLlm: LlmCall = (m) => chat(m);
 
 const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+// Code annexes (model leases, convention templates, company statutes: "Annexe I à l'article D353-1", section "Annexes > …")
+// are huge, so they win keyword coverage and crowd out the law itself: they rank after every regular article.
+// Collective agreements are exempt: their annexes (salary grids, classifications) are the normative part.
+export const isAnnex = (a: Pick<Article, "code" | "num" | "section">) =>
+  !a.code.startsWith("ccn-") && (/\bannexe/i.test(a.num) || /^annexe/i.test(a.section ?? ""));
 
 // FTS5 retrieval: expansion words + likely article numbers → up to MAX_ARTICLES articles.
 // exp: an expander function, precomputed {words, nums} (e.g. from the wizard's analysis step), or none.
@@ -160,7 +219,7 @@ export async function retrieve(
     .flat()
     .filter((a): a is (typeof byQuestion)[number] => !!a)
     .map((a, i) => ({ a, i, c: coverage(a) }))
-    .sort((x, y) => y.c - x.c || x.i - y.i)
+    .sort((x, y) => +isAnnex(x.a) - +isAnnex(y.a) || y.c - x.c || x.i - y.i)
     .map((x) => x.a);
   const found: Article[] = [...byNum, ...mixed]
     .filter((a) => !seen.has(a.id) && !!seen.add(a.id))
@@ -218,10 +277,7 @@ export async function ask(
     };
   }
 
-  const keywords = tokens(`${q} ${words}`);
-  const context = found
-    .map((a) => `### ${CODES[a.code as keyof typeof CODES]?.name ?? a.code} — article ${a.num || "sans numéro"}${a.section ? ` — ${a.section}` : ""}\n${excerpt(a.texte, keywords)}`)
-    .join("\n\n");
+  const context = buildContext(found, q, words);
   const { content, model } = await llm([
     { role: "system", content: SYSTEM_PROMPT },
     { role: "user", content: `Articles :\n\n${context}\n\nQuestion : ${q}` },

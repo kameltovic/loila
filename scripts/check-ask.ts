@@ -51,6 +51,45 @@ async function main() {
   await assert.rejects(ask("  a ", undefined, fakeLlm), AskValidationError);
   await assert.rejects(ask("x".repeat(501), undefined, fakeLlm), AskValidationError);
 
+  // Annexes (model conventions, "Annexes > …" sections) rank after the law, even with better keyword coverage;
+  // collective-agreement annexes are normative and stay put. Rows shaped like the real DB ones.
+  const { retrieve, excerpt, excerptBudgets, isAnnex, normalize } = await import("../src/lib/ask");
+  const insert = db.prepare("INSERT INTO articles (id, code, num, section, texte, url) VALUES (?, ?, ?, ?, ?, 'u')");
+  insert.run("LEGIARTI2", "code-construction-habitation", "Annexe III à l'article D353-200",
+    "Annexes > Convention conclue en application des articles L. 353-1, L. 831-1 (3) et R. 353-200 du code de la construction et de l'habitation entre l'Etat et les bailleurs de logements.",
+    "Article 8. Le bailleur s'engage à ce que le locataire puisse donner congé du logement à tout moment, sous réserve d'un délai de préavis de trois mois.");
+  const { found } = await retrieve("délai de préavis du congé du locataire, logement du bailleur", ["loi-89-462", "code-construction-habitation"], { words: "", nums: [] });
+  assert.deepEqual(found.map((a) => a.id), ["LEGIARTI1", "LEGIARTI2"]);
+  assert.equal(isAnnex({ code: "code-securite-sociale", num: "Annexe", section: "ANNEXES > Tableau" }), true);
+  assert.equal(isAnnex({ code: "ccn-1486", num: "", section: "Annexe III. Grille des rémunérations minimales brutes" }), false);
+  assert.equal(isAnnex({ code: "loi-89-462", num: "15", section: "Titre Ier > Chapitre II" }), false);
+
+  // Long article (art. 15 loi 89-462 structure): the 1-month list under a matching intro survives the cut
+  // even though "état de santé" shares no word with the question; the long head is shortened; gaps are marked.
+  const art15 = [
+    "I. - Lorsque le bailleur donne congé à son locataire, ce congé doit être justifié soit par sa décision de reprendre ou de vendre le logement, soit par un motif légitime et sérieux. " + "Le congé donné par le bailleur doit indiquer le motif allégué et le bénéficiaire de la reprise. ".repeat(10),
+    ...Array.from({ length: 12 }, (_, i) => `Alinéa ${i} sur la vente du logement : le congé pour vente vaut offre de vente au profit du locataire pendant deux mois, à peine de nullité, au prix et aux conditions de la vente projetée.`),
+    "Lorsqu'il émane du locataire, le délai de préavis applicable au congé est de trois mois.",
+    "Le délai de préavis est toutefois d'un mois :",
+    "1° Sur les territoires mentionnés au premier alinéa du I de l'article 17 ;",
+    "2° En cas d'obtention d'un premier emploi, de mutation, de perte d'emploi ou de nouvel emploi consécutif à une perte d'emploi ;",
+    "3° Pour le locataire dont l'état de santé, constaté par un certificat médical, justifie un changement de domicile ;",
+    "4° Pour les bénéficiaires du revenu de solidarité active ou de l'allocation adulte handicapé ;",
+    ...Array.from({ length: 12 }, (_, i) => `III-${i}. Le bailleur ne peut s'opposer au renouvellement du contrat à l'égard de tout locataire âgé de plus de soixante-cinq ans dont les ressources annuelles sont inférieures à un plafond.`),
+  ].join("\n\n");
+  const kw = new Set(normalize("Mon père est entré en EHPAD, quel délai de préavis pour résilier son bail ? préavis réduit").split(" "));
+  const cut = excerpt(art15, kw, 1500);
+  assert.ok(cut.length <= 1500, `excerpt too long: ${cut.length}`);
+  assert.ok(cut.includes("3° Pour le locataire dont l'état de santé"), cut);
+  assert.ok(cut.includes("Le délai de préavis est toutefois d'un mois :"));
+  assert.ok(cut.startsWith("I. - Lorsque le bailleur donne congé") && cut.includes("[…]"));
+  assert.equal(excerpt("court", kw, 1500), "court");
+
+  // Prompt budget: short articles whole, long ones share the rest, the top-ranked one gets more than the tail.
+  const b = excerptBudgets([12_000, 800, 9_000, 9_000, 9_000, 9_000, 9_000, 9_000]);
+  assert.equal(b[1], 800);
+  assert.ok(b[0] > b[7] && b.reduce((x, y) => x + y) <= 16_000, String(b));
+
   console.log("check-ask: OK");
 }
 
