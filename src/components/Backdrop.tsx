@@ -9,6 +9,7 @@ const TEXT: Record<string, string> = {
   conventions: "text-conventions",
   copropriete: "text-copropriete",
   construction: "text-construction",
+  diagnostics: "text-diagnostics",
 };
 
 const WORDS: Record<string, string[]> = {
@@ -18,6 +19,7 @@ const WORDS: Record<string, string[]> = {
   conventions: ["IDCC", "Branche", "Salaire"],
   copropriete: ["Syndic", "AG", "Charges"],
   construction: ["Chantier", "Décennale", "Devis"],
+  diagnostics: ["DPE", "Amiante", "Plomb"],
 };
 
 /**

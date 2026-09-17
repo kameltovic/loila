@@ -31,6 +31,7 @@ const SEO: Record<string, { title: string; lead: string }> = {
   logement: { title: "Location : bail, dépôt de garantie, préavis expliqués (2026)", lead: "Bail, dépôt de garantie, préavis, hausse de loyer, état des lieux :" },
   conventions: { title: "Conventions collectives 2026 : salaires, primes, préavis", lead: "Syntec, HCR, métallurgie, BTP, services à la personne :" },
   copropriete: { title: "Copropriété : AG, syndic, charges, travaux expliqués", lead: "Assemblée générale, syndic bénévole, charges impayées, travaux :" },
+  diagnostics: { title: "DPE, amiante, plomb : diagnostics immobiliers expliqués", lead: "DPE et passoires thermiques, amiante, plomb, audit énergétique, vente et location :" },
   construction: { title: "BTP : garantie décennale, retenue de garantie, paiement", lead: "Assurance décennale, réception des travaux, sous-traitance, délais de paiement :" },
 };
 

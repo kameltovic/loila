@@ -11,6 +11,7 @@ const BLOCK: Record<string, string> = {
   conventions: "bg-conventions",
   copropriete: "bg-copropriete",
   construction: "bg-construction",
+  diagnostics: "bg-diagnostics",
 };
 export const block = (slug: string) => `${BLOCK[slug] ?? BLOCK.travail} text-ink`;
 
