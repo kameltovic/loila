@@ -51,6 +51,11 @@ export default async function Admin() {
         Admin
       </p>
       <h1 className={`${display} mt-4 text-[clamp(2.5rem,8vw,4.5rem)] leading-[0.92]`}>Tableau de bord</h1>
+      <p className="mt-4">
+        <Link href="/admin/questions" className="font-semibold underline decoration-signal decoration-2 underline-offset-4">
+          Questions posées →
+        </Link>
+      </p>
 
       <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
         <Kpi name="Comptes" value={accounts} sub={`+${accounts7} sur 7 jours`} />

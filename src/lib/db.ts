@@ -131,6 +131,16 @@ CREATE TABLE IF NOT EXISTS stripe_events (
   id          TEXT PRIMARY KEY,
   received_at INTEGER NOT NULL DEFAULT (unixepoch())
 );
+-- Every question sent to /api/ask, for stats (admin). ponytail: no retention/pseudonymisation yet (RGPD to frame later).
+CREATE TABLE IF NOT EXISTS question_log (
+  id         INTEGER PRIMARY KEY,
+  user_id    INTEGER REFERENCES users(id),  -- NULL: asked before signing up
+  question   TEXT NOT NULL,
+  theme      TEXT,
+  outcome    TEXT NOT NULL,                 -- faq | cache | llm | none | paywall | auth | error
+  created_at INTEGER NOT NULL DEFAULT (unixepoch())
+);
+CREATE INDEX IF NOT EXISTS question_log_created ON question_log(created_at);
 `;
 
 let db: Database.Database | undefined;
