@@ -1,0 +1,125 @@
+{
+  "slug": "bailleur",
+  "title": "Propriétaires bailleurs",
+  "theme": "logement",
+  "seo": {
+    "title": "Propriétaire bailleur : vos obligations, article par article",
+    "description": "Bail, dépôt de garantie, loyer, charges, congé, impayés : les règles de la loi de 1989 pour les bailleurs de plusieurs logements, avec les articles cités."
+  },
+  "h1": "Louer plusieurs logements,",
+  "h1Accent": "sans faux pas",
+  "intro": "Quand on loue plusieurs logements, les mêmes questions reviennent à chaque bail : dépôt de garantie, révision du loyer, charges, congé, impayés. Voici les règles qui s'appliquent aux locations vides et meublées, avec les articles de loi correspondants.",
+  "audience": [
+    "Propriétaire de plusieurs logements",
+    "SCI familiale",
+    "Bailleur en location meublée",
+    "Propriétaire en indivision",
+    "Bailleur gérant sans agence"
+  ],
+  "obligations": [
+    {
+      "title": "Louer un logement décent",
+      "detail": "Le logement ne doit pas présenter de risques pour la sécurité ou la santé, doit être exempt de nuisibles et atteindre un niveau minimal de performance énergétique.",
+      "refs": [
+        "loi-89-462:6"
+      ]
+    },
+    {
+      "title": "Annexer le dossier de diagnostic technique",
+      "detail": "Le bail est accompagné d'un dossier de diagnostic technique comprenant notamment le DPE, le constat de risque d'exposition au plomb, l'état amiante et l'état des installations d'électricité et de gaz.",
+      "refs": [
+        "loi-89-462:3-3"
+      ]
+    },
+    {
+      "title": "Plafonner et restituer le dépôt de garantie",
+      "detail": "Au plus un mois de loyer hors charges en location vide, deux mois en meublé. Il est rendu sous un mois si l'état des lieux de sortie est conforme, deux mois sinon, avec une majoration de 10 % du loyer mensuel par mois de retard.",
+      "refs": [
+        "loi-89-462:22",
+        "loi-89-462:25-6"
+      ]
+    },
+    {
+      "title": "Réviser le loyer dans les limites légales",
+      "detail": "La révision annuelle ne peut dépasser la variation de l'IRL et doit être demandée dans l'année. Elle est interdite pour les logements classés F ou G.",
+      "refs": [
+        "loi-89-462:17-1"
+      ]
+    },
+    {
+      "title": "Régulariser les charges chaque année",
+      "detail": "Les provisions pour charges font l'objet d'une régularisation annuelle. Le décompte est envoyé un mois avant et les justificatifs restent consultables pendant six mois.",
+      "refs": [
+        "loi-89-462:23"
+      ]
+    },
+    {
+      "title": "Délivrer une quittance gratuite",
+      "detail": "Le bailleur transmet gratuitement une quittance au locataire qui la demande, en distinguant loyer et charges, et un reçu en cas de paiement partiel.",
+      "refs": [
+        "loi-89-462:21"
+      ]
+    },
+    {
+      "title": "Donner congé dans les formes",
+      "detail": "Le congé est motivé (reprise, vente ou motif légitime et sérieux) et donné pour la fin du bail : six mois avant en location vide, trois mois en meublé.",
+      "refs": [
+        "loi-89-462:15",
+        "loi-89-462:25-8"
+      ]
+    },
+    {
+      "title": "Suivre la procédure en cas d'impayés",
+      "detail": "La clause résolutoire ne joue que six semaines après un commandement de payer resté sans effet. Le commandement est signifié à la caution dans les quinze jours. L'action se prescrit par trois ans.",
+      "refs": [
+        "loi-89-462:24",
+        "loi-89-462:7-1"
+      ]
+    },
+    {
+      "title": "Ne jamais expulser soi-même",
+      "detail": "L'expulsion exige une décision de justice, un commandement de quitter les lieux et un délai de deux mois. Elle est suspendue du 1er novembre au 31 mars. Forcer un occupant à partir est un délit.",
+      "refs": [
+        "code-procedures-civiles-execution:L411-1",
+        "code-procedures-civiles-execution:L412-1",
+        "code-procedures-civiles-execution:L412-6",
+        "code-penal:226-4-2"
+      ]
+    }
+  ],
+  "faqSlugs": [
+    "choix-bail-vide-ou-meuble-bailleur",
+    "diagnostics-obligatoires-location",
+    "bail-ecrit-mentions-obligatoires",
+    "montant-depot-garantie",
+    "depot-garantie-restitution",
+    "revision-annuelle-loyer-irl",
+    "encadrement-loyers",
+    "charges-forfait-ou-provisions",
+    "regularisation-charges",
+    "clause-resolutoire-impayes-bailleur",
+    "actionner-garant-loyers-impayes",
+    "expulsion-apres-jugement-etapes",
+    "treve-hivernale-dates",
+    "prescription-loyers-impayes",
+    "preavis-conge-bailleur",
+    "conge-bailleur-location-meublee",
+    "conge-motif-legitime-serieux",
+    "reprise-logement-sci-familiale",
+    "criteres-logement-decent",
+    "louer-passoire-thermique-interdit",
+    "reparations-qui-paie",
+    "travaux-amelioration-hausse-loyer",
+    "colocation-bail-individuel",
+    "quittance-loyer-obligation-bailleur",
+    "abandon-logement-locataire"
+  ],
+  "texts": [
+    "loi-89-462",
+    "code-construction-habitation",
+    "code-procedures-civiles-execution",
+    "code-civil",
+    "code-penal"
+  ],
+  "proPitch": "Avec plusieurs baux, Loilà Pro garde un historique de questions par logement, exporte des réponses sourcées à joindre à un courrier et vous alerte quand un article de la loi de 1989 que vous suivez est modifié."
+}
