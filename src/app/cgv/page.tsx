@@ -35,7 +35,7 @@ export default function Cgv() {
 
         <h2>1. Objet</h2>
         <p>
-          Les présentes conditions régissent la vente, par <TODO /> (l’« Éditeur »), de questions posées à l’assistant de
+          Les présentes conditions régissent la vente, par Kamel Laïmène EI, exerçant sous le nom commercial Coffee Beans, 4 rue de Cambo, 75019 Paris, SIRET 521 998 120 00021 (l’« Éditeur »), de questions posées à l’assistant de
           Loilà, regroupées en « dossiers ». Les fiches et réponses déjà publiées sur le site restent accessibles gratuitement
           et sans limite.
         </p>
@@ -92,17 +92,9 @@ export default function Cgv() {
 
         <h2>7. Données personnelles</h2>
         <p>
-          L’adresse email et l’historique d’achat sont traités pour la gestion du compte, de la facturation et de la
-          connexion par lien email. Les données de paiement sont traitées par Stripe. Vous disposez d’un droit d’accès, de
-          rectification et d’effacement : <a href="mailto:contact@loila.fr">contact@loila.fr</a>. <TODO /> (durées de
-          conservation, base légale, sous-traitants)
-        </p>
-        <p>
-          Les descriptions de situation saisies dans un dossier, ainsi que les réponses aux questions, sont transmises pour
-          analyse à OpenRouter et à des hébergeurs de modèles d’IA établis dans l’Union européenne ou aux États-Unis, avec
-          une option interdisant leur conservation et leur utilisation pour l’entraînement des modèles. Elles sont conservées
-          par l’Éditeur pour afficher l’historique de vos dossiers dans <Link href="/compte">Mon compte</Link>. Évitez d’y
-          indiquer des noms ou des coordonnées. <TODO /> (durée de conservation des dossiers, garanties des transferts hors UE)
+          Les données nécessaires au compte, aux achats, aux questions et aux dossiers sont traitées par l’Éditeur selon la{" "}
+          <Link href="/mentions-legales#donnees-personnelles">politique de protection des données personnelles</Link>{" "}
+          (finalités, durées de conservation, sous-traitants, transferts et droits).
         </p>
 
         <h2>8. Médiation et litiges</h2>

@@ -171,6 +171,17 @@ CREATE INDEX IF NOT EXISTS question_log_created ON question_log(created_at);
 
 let db: Database.Database | undefined;
 
+// Retention (see /mentions-legales#donnees-personnelles): question stats 12 months, used/expired login links 1 day.
+function purgeExpired(d: Database.Database) {
+  try {
+    d.exec(`DELETE FROM question_log WHERE created_at < unixepoch() - ${365 * 86400}`);
+    d.exec("DELETE FROM login_tokens WHERE expires_at < unixepoch() - 86400");
+    d.exec("DELETE FROM sessions WHERE expires_at < unixepoch()");
+  } catch (e) {
+    console.error("[db] purge", e instanceof Error ? e.message : e);
+  }
+}
+
 export function getDb() {
   if (!db) {
     fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
@@ -181,6 +192,9 @@ export function getDb() {
     const cols = db.prepare("PRAGMA table_info(faq)").all() as { name: string }[];
     if (!cols.some((c) => c.name === "topic")) db.exec("ALTER TABLE faq ADD COLUMN topic TEXT");
     db.exec("CREATE INDEX IF NOT EXISTS faq_topic ON faq(topic)");
+    purgeExpired(db);
+    // Daily, for the long-running server (retention periods published in /mentions-legales).
+    setInterval(() => purgeExpired(db!), 86_400_000).unref();
     // Migration for DBs created before credit batches existed.
     const usageCols = db.prepare("PRAGMA table_info(usage)").all() as { name: string }[];
     if (!usageCols.some((c) => c.name === "batch_id")) db.exec("ALTER TABLE usage ADD COLUMN batch_id INTEGER");

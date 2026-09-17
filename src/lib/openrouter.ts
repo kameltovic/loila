@@ -30,6 +30,7 @@ export async function chat(
       temperature,
       max_tokens: maxTokens,
       ...(json ? { response_format: { type: "json_object" } } : {}),
+      provider: { data_collection: "deny" }, // no prompt retention or training by default (privacy policy); `extra` may override
       ...extra,
     }),
     signal: AbortSignal.timeout(timeoutMs),
