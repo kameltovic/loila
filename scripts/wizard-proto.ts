@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, prefer-const -- throwaway evaluation script (docs/wizard-eval.md) */
+/* eslint-disable @typescript-eslint/no-explicit-any, prefer-const, @typescript-eslint/no-require-imports, @typescript-eslint/no-unused-vars -- throwaway evaluation script (docs/wizard-eval.md) */
 // Wizard prototype + evaluation. Not product code.
 //   npx tsx --env-file=.env scripts/wizard-proto.ts [caseId ...]
 // Reads a COPY of the DB (DATABASE_PATH=./data/loila.db). Writes docs/wizard-results.json.
