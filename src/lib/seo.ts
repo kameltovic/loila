@@ -8,6 +8,9 @@ export const SITE_NAME = "Loilà";
 
 export const abs = (path: string) => (path.startsWith("http") ? path : `${SITE_URL}${path.startsWith("/") ? "" : "/"}${path}`);
 
+const GENERIC_OG = ["/", "/tarifs", "/cgv", "/a-propos", "/mentions-legales", "/connexion", "/compte", "/merci"];
+export const ogImagePath = (path: string) => (GENERIC_OG.includes(path) ? "/og/index.png" : `/og${path.replace(/\/$/, "")}.png`);
+
 export function pageMetadata({
   title,
   description,
@@ -21,8 +24,8 @@ export function pageMetadata({
   image?: string;
   type?: "website" | "article";
 }): Metadata {
-  // When `image` is omitted, route-level opengraph-image files take over (Next merges them in).
-  const images = image ? [{ url: abs(image), width: 1200, height: 630, alt: title }] : undefined;
+  // Default share image: /og/<path>.png (rendered by src/app/og/[...slug]/route.ts); pages without their own design use the home image.
+  const images = [{ url: abs(image ?? ogImagePath(path)), width: 1200, height: 630, alt: title, type: "image/png" }];
   return {
     title,
     description,
@@ -34,13 +37,13 @@ export function pageMetadata({
       siteName: SITE_NAME,
       locale: "fr_FR",
       type,
-      ...(images && { images }),
+      images,
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      ...(images && { images: images.map((i) => i.url) }),
+      images: images.map((i) => i.url),
     },
   };
 }

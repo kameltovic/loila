@@ -8,6 +8,51 @@ function parseFrom(s: string) {
 
 const escapeHtml = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
+const SITE = (process.env.SITE_URL ?? "https://loila.fr").replace(/\/$/, "");
+
+// Email design mirrors the site: paper background, ink text, heavy display headline, brutalist button with hard shadow.
+// Table layout + inline styles for Outlook/Gmail. Web fonts load in Apple Mail/iOS; others fall back to Arial Black.
+const INK = "#0E0E0E", PAPER = "#F4F0E8", SURFACE = "#FFFDF8", MUTED = "#5A564E", SIGNAL = "#FF4A1C";
+const DISPLAY = "'Bricolage Grotesque','Arial Black','Helvetica Neue',Helvetica,Arial,sans-serif";
+const BODY = "Inter,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
+const MONO = "'SFMono-Regular',Menlo,Consolas,'Courier New',monospace";
+
+export function emailLayout(o: { preheader: string; label: string; title: string; intro: string; cta: { label: string; url: string }; note?: string }) {
+  const url = escapeHtml(o.cta.url);
+  // `title` may contain <em> for the serif-italic accent word; everything else is escaped.
+  const title = escapeHtml(o.title).replace(/&#60;em&#62;/g, `<em style="font-family:'Instrument Serif',Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;letter-spacing:-0.5px">`).replace(/&#60;\/em&#62;/g, "</em>");
+  return `<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light only"><meta name="supported-color-schemes" content="light">
+<title>${escapeHtml(o.label)} · Loilà</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@800&family=Instrument+Serif:ital@1&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>@media (max-width:620px){.card{padding:32px 24px!important}.title{font-size:40px!important;line-height:42px!important}}</style>
+</head>
+<body style="margin:0;padding:0;background:${PAPER};color:${INK};-webkit-text-size-adjust:100%">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0">${escapeHtml(o.preheader)}</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${PAPER}"><tr><td align="center" style="padding:40px 16px">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px">
+  <tr><td style="padding:0 0 28px"><a href="${SITE}" style="text-decoration:none"><img src="${SITE}/og/logo.png" width="150" height="60" alt="Loilà." style="display:block;border:0;width:150px;height:60px"></a></td></tr>
+  <tr><td style="background:${INK};padding:0 6px 6px 0">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${SURFACE};border:2px solid ${INK}"><tr><td class="card" style="padding:44px 40px">
+      <p style="margin:0 0 20px;font-family:${MONO};font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${INK}"><span style="color:${SIGNAL}">&#9679;</span>&nbsp; ${escapeHtml(o.label)}</p>
+      <h1 class="title" style="margin:0 0 20px;font-family:${DISPLAY};font-size:52px;line-height:52px;font-weight:800;letter-spacing:-2px;color:${INK}">${title}</h1>
+      <p style="margin:0 0 32px;font-family:${BODY};font-size:17px;line-height:26px;color:${MUTED}">${escapeHtml(o.intro)}</p>
+      <table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="background:${INK};padding:0 4px 4px 0">
+        <a href="${url}" style="display:block;background:#FFFFFF;border:2px solid ${INK};padding:15px 26px;font-family:${MONO};font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:${INK};text-decoration:none">${escapeHtml(o.cta.label)} &rarr;</a>
+      </td></tr></table>
+      ${o.note ? `<p style="margin:32px 0 0;padding-top:24px;border-top:1px solid #E4DFD4;font-family:${BODY};font-size:14px;line-height:22px;color:${MUTED}">${escapeHtml(o.note)}</p>` : ""}
+      <p style="margin:16px 0 0;font-family:${BODY};font-size:12px;line-height:18px;color:${MUTED};word-break:break-all">Le bouton ne marche pas ? Copiez ce lien : <a href="${url}" style="color:${INK}">${url}</a></p>
+    </td></tr></table>
+  </td></tr>
+  <tr><td style="padding:32px 4px 0;font-family:${BODY};font-size:12px;line-height:18px;color:${MUTED}">
+    <strong style="font-family:${DISPLAY};font-weight:800;color:${INK};font-size:14px">Loilà<span style="color:${SIGNAL}">.</span></strong> Le droit français, enfin lisible.<br>
+    Information juridique générale, pas un conseil juridique. <a href="${SITE}" style="color:${INK}">loila.fr</a>
+  </td></tr>
+</table>
+</td></tr></table>
+</body></html>`;
+}
+
 export async function sendMagicLink(to: string, link: string): Promise<boolean> {
   const key = process.env.SWEEGO_API_KEY;
   if (!key) {
@@ -15,16 +60,15 @@ export async function sendMagicLink(to: string, link: string): Promise<boolean> 
     return true;
   }
   const subject = "Votre lien de connexion à Loilà";
-  const text = `Bonjour,\n\nCliquez sur ce lien pour vous connecter à Loilà :\n${link}\n\nIl est valable 15 minutes et ne fonctionne qu'une fois.\nSi vous n'avez rien demandé, ignorez cet e-mail.\n\nLoilà — le droit du quotidien, expliqué simplement.`;
-  const url = escapeHtml(link);
-  const html = `<!doctype html><html lang="fr"><body style="margin:0;background:#f6f4ef;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#1f2937">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:32px 16px">
-<table role="presentation" width="100%" style="max-width:480px;background:#fff;border-radius:12px;padding:32px">
-<tr><td style="font-size:22px;font-weight:700;padding-bottom:16px">Loilà</td></tr>
-<tr><td style="font-size:16px;line-height:1.5;padding-bottom:24px">Bonjour,<br>Cliquez sur le bouton ci-dessous pour vous connecter.</td></tr>
-<tr><td style="padding-bottom:24px"><a href="${url}" style="display:inline-block;background:#1f2937;color:#fff;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:600">Me connecter</a></td></tr>
-<tr><td style="font-size:13px;line-height:1.5;color:#6b7280">Ce lien est valable 15 minutes et ne fonctionne qu'une fois. Si vous n'avez rien demandé, ignorez cet e-mail.<br><br>Lien direct : <a href="${url}" style="color:#6b7280">${url}</a></td></tr>
-</table></td></tr></table></body></html>`;
+  const text = `Connectez-vous à Loilà\n\nCliquez sur ce lien pour vous connecter :\n${link}\n\nIl est valable 15 minutes et ne fonctionne qu'une fois.\nSi vous n'avez rien demandé, ignorez cet e-mail.\n\nLoilà, le droit français enfin lisible. https://loila.fr`;
+  const html = emailLayout({
+    preheader: "Votre lien de connexion, valable 15 minutes.",
+    label: "Connexion",
+    title: "Votre lien de <em>connexion</em>.",
+    intro: "Pas de mot de passe chez Loilà : cliquez sur le bouton ci-dessous pour accéder à votre compte.",
+    cta: { label: "Me connecter", url: link },
+    note: "Ce lien est valable 15 minutes et ne fonctionne qu'une fois. Si vous n'avez rien demandé, ignorez simplement cet e-mail.",
+  });
 
   try {
     const res = await fetch("https://api.sweego.io/send", {

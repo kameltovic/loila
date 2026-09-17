@@ -1,6 +1,6 @@
 // Pre-renders Open Graph images to public/og/<path>.png with the same renderer as the routes (src/lib/og.tsx).
-// Pages keep using the route-based opengraph-image; this is for pushing images to a CDN/S3.
-// npx tsx scripts/og-batch.ts [--limit N] [--out public/og]
+// Pages use the live /og/<path>.png route; this pre-renders the same files for a CDN/S3. Never write into public/og (it would shadow the route).
+// npx tsx scripts/og-batch.ts [--limit N] [--out data/og]
 import fs from "node:fs";
 import path from "node:path";
 
@@ -14,7 +14,7 @@ async function main() {
   const argv = process.argv.slice(2);
   const opt = (name: string) => { const i = argv.indexOf(`--${name}`); return i >= 0 ? argv[i + 1] : undefined; };
   const limit = Number(opt("limit") ?? Infinity);
-  const out = path.resolve(opt("out") ?? "public/og");
+  const out = path.resolve(opt("out") ?? "data/og");
 
   type Job = [urlPath: string, render: () => Response | Promise<Response>];
   const jobs: Job[] = [["/", () => renderOg({ kind: "home" })]];

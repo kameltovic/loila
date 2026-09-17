@@ -238,6 +238,21 @@ export function renderOg(input: OgInput) {
   return new ImageResponse(<Template {...input} />, { ...OG_SIZE, fonts: loadFonts() });
 }
 
+/** Wordmark "Loilà." for emails (2x for retina; displayed at half size). */
+export function renderWordmark() {
+  const h = 120;
+  return new ImageResponse(
+    (
+      <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", background: PAPER }}>
+        <div style={{ display: "flex", alignItems: "baseline", fontFamily: "Bricolage", fontWeight: 800, fontSize: h * 0.8, lineHeight: 1, color: INK, letterSpacing: "-0.05em" }}>
+          Loilà<div style={{ display: "flex", width: h * 0.16, height: h * 0.16, borderRadius: h, background: SIGNAL, marginLeft: h * 0.03 }} />
+        </div>
+      </div>
+    ),
+    { width: 300, height: h, fonts: loadFonts().slice(0, 1) },
+  );
+}
+
 /** Brand mark: ink tile, paper "L", vermilion dot. */
 export function renderIcon(px: number, padded = false) {
   const r = padded ? 0 : px * 0.22;

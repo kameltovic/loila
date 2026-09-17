@@ -7,7 +7,7 @@ import FaqAnswer, { faqArticles } from "@/components/FaqAnswer";
 import { display, label } from "@/components/ui";
 import { getDb, type Faq } from "@/lib/db";
 import { CODES } from "@/lib/themes";
-import { JsonLd, SITE_NAME, SITE_URL, abs, breadcrumbJsonLd, clip, contentUpdatedAt, faqJsonLd, pageMetadata, plain } from "@/lib/seo";
+import { JsonLd, SITE_NAME, SITE_URL, abs, breadcrumbJsonLd, clip, contentUpdatedAt, faqJsonLd, ogImagePath, pageMetadata, plain } from "@/lib/seo";
 import { getTopic } from "@/lib/topics";
 
 export const dynamic = "force-dynamic";
@@ -44,7 +44,7 @@ export default async function TopicQuestionPage({ params }: PageProps<"/sujets/[
       description: plain(faq.short),
       inLanguage: "fr-FR",
       mainEntityOfPage: abs(path),
-      image: abs(`${path}/opengraph-image`),
+      image: abs(ogImagePath(path)),
       dateModified: updated.toISOString(),
       author: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
       publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL, logo: { "@type": "ImageObject", url: abs("/icon") } },

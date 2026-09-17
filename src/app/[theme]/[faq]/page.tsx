@@ -8,7 +8,7 @@ import ThemeIcon from "@/components/ThemeIcon";
 import { ArticleDrawerProvider } from "@/components/ArticleDrawer";
 import FaqAnswer, { faqArticles } from "@/components/FaqAnswer";
 import { display, label } from "@/components/ui";
-import { JsonLd, SITE_NAME, SITE_URL, abs, breadcrumbJsonLd, clip, contentUpdatedAt, faqJsonLd, pageMetadata, plain } from "@/lib/seo";
+import { JsonLd, SITE_NAME, SITE_URL, abs, breadcrumbJsonLd, clip, contentUpdatedAt, faqJsonLd, ogImagePath, pageMetadata, plain } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -45,7 +45,7 @@ export default async function FaqPage({ params }: PageProps<"/[theme]/[faq]">) {
       description: plain(faq.short),
       inLanguage: "fr-FR",
       mainEntityOfPage: abs(path),
-      image: abs(`${path}/opengraph-image`),
+      image: abs(ogImagePath(path)),
       dateModified: updated.toISOString(),
       author: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
       publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL, logo: { "@type": "ImageObject", url: abs("/icon") } },
