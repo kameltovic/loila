@@ -1,0 +1,628 @@
+[
+  {
+    "theme": "diagnostics",
+    "topic": "dpe-location-passoires-thermiques",
+    "slug": "calendrier-interdiction-location-dpe-g-f-e",
+    "emoji": null,
+    "question": "Logements classés G, F puis E : quel calendrier pour l'interdiction de louer ?",
+    "short": "Un logement classé G n'est plus décent depuis le 1er janvier 2025, un logement F ne le sera plus au 1er janvier 2028 et un logement E au 1er janvier 2034. En Guadeloupe, Martinique, Guyane, à La Réunion et à Mayotte, les échéances sont 2028 (G) et 2031 (F).",
+    "answer_md": "### Calendrier d'interdiction de louer selon la classe énergétique\n\nLa loi fixe un niveau de performance minimal pour qu'un logement soit considéré comme **décent**. En dessous de ce seuil, le logement est **non décent** : le bailleur ne peut plus le proposer à la location sans manquer à son obligation de délivrer un logement décent (art. 6, loi 89-462). Cette partie de l'article 6 est en vigueur depuis le 1er janvier 2025 (art. 160 de la loi n° 2021-1104).\n\nCe niveau est défini par rapport aux classes énergétiques (A à G) issues du diagnostic de performance énergétique (art. L173-1-1, CCH).\n\n#### En France métropolitaine\n\n- **A partir du 1er janvier 2025** : le logement doit être compris entre la classe A et la classe **F**.\n  → Les logements classés **G** sont donc déjà considérés comme non décents et ne peuvent plus être loués depuis cette date (art. 6, loi 89-462 ; art. 3 bis, décret 2002-120).\n\n- **A partir du 1er janvier 2028** : le logement doit être compris entre la classe A et la classe **E**.\n  → Les logements classés **F** deviennent non décents et ne pourront plus être loués à cette date (art. 6, loi 89-462 ; art. 3 bis, décret 2002-120).\n\n- **A partir du 1er janvier 2034** : le logement doit être compris entre la classe A et la classe **D**.\n  → Les logements classés **E** deviendront non décents à cette date (art. 6, loi 89-462 ; art. 3 bis, décret 2002-120).\n\n#### En Guadeloupe, Martinique, Guyane, La Réunion et Mayotte\n\nLe calendrier est différent :\n\n- **A partir du 1er janvier 2028** : seuil entre classe A et classe **F** (les logements classés G sont non décents à cette date).\n- **A partir du 1er janvier 2031** : seuil entre classe A et classe **E** (les logements classés F deviennent non décents).\n\n(art. 6, loi 89-462 ; art. 3 bis, décret 2002-120)\n\n### Ce qu'il faut retenir\n\n- Un logement qui ne respecte pas le seuil à la date fixée est considéré comme **non décent**, y compris pendant un bail en cours : le bail reste valable, mais le locataire peut demander la mise en conformité puis saisir le juge (art. 6 et 20-1, loi 89-462).\n- Ce calendrier est différent de l'obligation d'**audit énergétique** en cas de vente (art. L126-28-1, CCH) ou de l'obligation d'atteindre la classe E d'ici 2028 pour l'ensemble du parc bâti à usage d'habitation, qui concerne les propriétaires de bâtiments et non spécifiquement le fait de louer (art. L173-2, CCH). Ces deux logiques (décence du bail / obligation générale de rénovation) ne se confondent pas entièrement.\n\n### Conseil\n\nSi vous êtes locataire ou bailleur et que vous avez un doute sur la classe énergétique de votre logement ou sur la date exacte à laquelle il devient non louable, il est conseillé de consulter le diagnostic de performance énergétique (DPE) du logement et, en cas de litige, de vous rapprocher d'une **ADIL** ou d'un avocat spécialisé en droit du logement.",
+    "article_ids": [
+      "LEGIARTI000043977105",
+      "LEGIARTI000043966496",
+      "LEGIARTI000047983547",
+      "LEGIARTI000043977024",
+      "LEGIARTI000043957922",
+      "LEGIARTI000043977099"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "dpe-location-passoires-thermiques",
+    "slug": "gel-loyer-logement-classe-f-g",
+    "emoji": null,
+    "question": "Logement classé F ou G : le bailleur peut-il augmenter le loyer ?",
+    "short": "Non. Pour un logement classé F ou G, le bailleur ne peut ni réviser le loyer chaque année, ni le réévaluer au renouvellement, ni fixer un loyer plus élevé lors d'une nouvelle location par rapport au précédent locataire.",
+    "answer_md": "### Logement classé F ou G : quelles limites pour le loyer ?\n\nLes logements classés **F ou G** au diagnostic de performance énergétique (logements très énergivores, dits « passoires thermiques ») sont soumis à des règles particulières qui bloquent toute hausse de loyer.\n\n**1. Pas de révision annuelle du loyer**\n\nMême si le bail prévoit une clause de révision annuelle du loyer (indexée sur l'indice de référence des loyers), cette révision **ne peut pas être appliquée** si le logement est classé F ou G (art. 17-1).\n\n**2. Pas de majoration pour travaux d'amélioration**\n\nLa majoration de loyer que le bailleur peut normalement demander après des travaux d'amélioration **n'est pas non plus possible** pour ces logements (art. 17-1).\n\n**3. Pas de réévaluation au renouvellement du bail**\n\nEn temps normal, si le loyer est \"manifestement sous-évalué\", le bailleur peut proposer une hausse au renouvellement du bail. Ce mécanisme **est exclu** pour les logements F ou G (art. 17-2).\n\n**4. Encadrement en cas de nouvelle location**\n\nSi le bailleur relance ce logement F ou G à la location avec un nouveau locataire, le loyer du nouveau contrat **ne peut pas dépasser le dernier loyer payé par le précédent locataire** (art. 17).\n\n### En résumé\n\nPour un logement classé F ou G, le loyer est en pratique **gelé** : le bailleur ne peut ni le réviser annuellement, ni le majorer pour travaux, ni le réévaluer au renouvellement, ni l'augmenter pour un nouveau locataire par rapport au loyer précédent.\n\n### À noter\n\nCes règles viennent de la loi Climat et résilience du 22 août 2021. Elles s'appliquent aux contrats de location conclus, renouvelés ou tacitement reconduits un an après la publication de cette loi, soit à partir du 24 août 2022, et après le 1er juillet 2024 en Guadeloupe, Martinique, Guyane, à La Réunion et à Mayotte (art. 159 de la loi n° 2021-1104). Les logements meublés loués en résidence principale sont aussi concernés pour la révision du loyer (art. 25-9).\n\nEn cas de doute sur la date d'application à un contrat précis, ou sur le classement énergétique du logement, il est conseillé de se renseigner auprès de l'**ADIL** (Agence départementale d'information sur le logement) ou d'un avocat spécialisé en droit du logement.",
+    "article_ids": [
+      "LEGIARTI000043977087",
+      "LEGIARTI000043977085",
+      "LEGIARTI000043977083",
+      "LEGIARTI000043957920",
+      "LEGIARTI000043977076"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "dpe-location-passoires-thermiques",
+    "slug": "locataire-logement-passoire-thermique-recours",
+    "emoji": null,
+    "question": "Mon logement loué est classé G : que puis-je demander au propriétaire ?",
+    "short": "Un logement classé G est considéré comme non décent : vous pouvez demander au propriétaire de faire les travaux de mise en conformité, et si le bail est renouvelé, le loyer ne peut pas être augmenté.",
+    "answer_md": "### Votre logement classé G est un logement non décent\n\nLe propriétaire doit remettre et maintenir un logement qui respecte un niveau de performance énergétique minimal (art. 6). Ce niveau minimal évolue dans le temps :\n\n- Depuis le 1er janvier 2025 : le logement doit être entre la classe A et la classe F.\n- À partir du 1er janvier 2028 : il devra être entre la classe A et la classe E.\n- À partir du 1er janvier 2034 : il devra être entre la classe A et la classe D (art. 6).\n\nUn logement classé G est donc déjà considéré comme **non décent** depuis le 1er janvier 2025 (art. 6).\n\n### Ce que vous pouvez demander\n\n**1. La mise en conformité (travaux)**\n\nVous pouvez demander au propriétaire de mettre le logement aux normes, sans que cela remette en cause votre contrat de location en cours (art. 20-1).\n\n- Si le propriétaire ne répond pas dans un délai de deux mois, ou en cas de désaccord, vous pouvez saisir la commission départementale de conciliation (art. 20-1).\n- Vous pouvez aussi, ou ensuite, saisir le juge. Il pourra :\n  - fixer la nature des travaux à réaliser et le délai pour les faire ;\n  - réduire le montant du loyer ;\n  - suspendre le paiement du loyer (avec ou sans consignation) et la durée du bail, jusqu'à ce que les travaux soient faits (art. 20-1).\n\nÀ noter : dans certains cas particuliers (copropriété où le propriétaire démontre avoir fait toutes les démarches possibles sans succès, ou contraintes architecturales/patrimoniales), le juge ne peut pas ordonner les travaux de mise en conformité énergétique (art. 20-1). Pour les contraintes architecturales ou patrimoniales, le décret sur le logement décent précise les cas visés : risque de pathologie du bâti attesté par un homme de l'art, ou refus d'autorisation d'urbanisme ou patrimoniale (art. 3 ter du décret n° 2002-120).\n\n**2. Pas de hausse de loyer au renouvellement**\n\nSi votre logement est classé F ou G, le loyer ne peut pas être réévalué lors du renouvellement du contrat, même s'il est sous-évalué (art. 17-2, II).\n\n**3. Si vous touchez une allocation de logement**\n\nSi l'organisme payeur de votre allocation logement vous informe, ainsi que le propriétaire, de l'obligation de mise en conformité, cela vaut comme si vous aviez vous-même demandé la mise en conformité (art. 20-1, art. R843-3). Dans certains cas, l'allocation peut être maintenue et conservée par l'organisme le temps que les travaux soient faits, en échange d'un loyer réduit à votre charge (art. L843-3).\n\n### Ce qu'il faut savoir en plus\n\n- Les autres critères de décence (clos et couvert, chauffage, eau, surface minimale…) sont fixés par le décret du 30 janvier 2002, qui reprend le même calendrier énergétique (art. 2 à 4 et 3 bis du décret n° 2002-120).\n- La classe énergétique est celle du DPE en cours de validité ; un DPE contesté est une question de preuve que seul le juge tranche.\n\n### Conseil\n\nCommencez par écrire au propriétaire pour demander la mise en conformité. Si vous n'avez pas de réponse sous deux mois ou en cas de désaccord, vous pouvez saisir la commission départementale de conciliation, puis éventuellement le juge. Pour être accompagné dans ces démarches, vous pouvez contacter l'ADIL de votre département ou un avocat.",
+    "article_ids": [
+      "LEGIARTI000043977105",
+      "LEGIARTI000043977099",
+      "LEGIARTI000043977083",
+      "LEGIARTI000038878641",
+      "LEGIARTI000038814835",
+      "LEGIARTI000047983547",
+      "LEGIARTI000047983556"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "dpe-location-passoires-thermiques",
+    "slug": "bail-en-cours-logement-g-resiliation",
+    "emoji": null,
+    "question": "Le logement G que je loue déjà : le bail est-il annulé ou dois-je partir ?",
+    "short": "Non, si votre logement ne respecte pas le niveau de performance énergétique minimal (classe G notamment), votre bail reste valable. Vous ne devez pas partir : vous pouvez demander des travaux, et le juge peut réduire ou suspendre le loyer.",
+    "answer_md": "### Le contrat de bail n'est pas annulé\n\nSi votre logement est classé G au diagnostic de performance énergétique et ne respecte pas le niveau minimal de décence exigé, cela **ne remet pas en cause la validité de votre bail en cours** (art. 20-1). Vous n'avez donc pas à quitter le logement pour ce motif.\n\n### Ce que dit la loi sur la décence énergétique\n\nLe logement loué doit respecter un niveau de performance énergétique minimal, sous peine d'être considéré comme non décent (art. 6). Le calendrier prévu est le suivant :\n\n- À partir du 1er janvier 2025 : le logement doit être entre la classe A et la classe F (art. 6).\n- À partir du 1er janvier 2028 : entre la classe A et la classe E (art. 6).\n- À partir du 1er janvier 2034 : entre la classe A et la classe D (art. 6).\n\nUn logement classé G ne respecte donc plus le seuil minimal depuis le 1er janvier 2025.\n\n### Vos droits en tant que locataire\n\nVous pouvez :\n\n1. **Demander au propriétaire la mise en conformité** du logement (art. 20-1).\n2. En l'absence d'accord, ou si le propriétaire ne répond pas dans un délai de deux mois, **saisir la commission départementale de conciliation** (art. 20-1).\n3. Si cela ne suffit pas, **saisir le juge**. Celui-ci peut :\n   - fixer la nature des travaux à réaliser et le délai pour les faire (art. 20-1) ;\n   - **réduire le montant du loyer** (art. 20-1) ;\n   - **suspendre le paiement du loyer**, avec ou sans consignation, ainsi que la durée du bail, jusqu'à la réalisation des travaux (art. 20-1).\n\nDans tous les cas, la saisine de la commission ou du juge ne remet pas en cause votre contrat de location : vous restez locataire, sauf si vous décidez vous-même de partir dans les conditions normales de résiliation du bail.\n\n### Exceptions possibles pour le propriétaire\n\nLe juge ne peut pas obliger le propriétaire à réaliser des travaux de mise en conformité énergétique dans certains cas particuliers, notamment :\n\n- si le logement est en copropriété et que le propriétaire démontre avoir fait le nécessaire sans y parvenir (art. 20-1) ;\n- si le logement présente des contraintes architecturales ou patrimoniales empêchant d'atteindre ce niveau, malgré des travaux compatibles avec ces contraintes (art. 20-1).\n\nCela ne change rien pour vous en tant que locataire : vous restez dans les lieux, avec la possibilité malgré tout de demander une réduction de loyer si le juge l'estime justifié.\n\n### Que faire concrètement\n\n- Écrivez au propriétaire pour demander la mise en conformité du logement.\n- Sans réponse sous deux mois, ou en cas de désaccord, contactez l'**ADIL** (Agence départementale d'information sur le logement) pour vous accompagner, ou saisissez la **commission départementale de conciliation**.\n- Si besoin, un **avocat** peut vous aider à saisir le juge pour obtenir une réduction de loyer ou la suspension du paiement.\n\n**En résumé : vous n'êtes pas obligé de partir. Le bail continue, et vous avez des leviers pour faire respecter vos droits.**",
+    "article_ids": [
+      "LEGIARTI000043977105",
+      "LEGIARTI000043977099"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "dpe-location-passoires-thermiques",
+    "slug": "bailleur-travaux-impossibles-copropriete-passoire",
+    "emoji": null,
+    "question": "Bailleur en copropriété ou en secteur protégé : que se passe-t-il si les travaux énergétiques sont impossibles ?",
+    "short": "Si le logement ne peut pas atteindre le niveau de performance énergétique minimal à cause de contraintes de copropriété ou de règles patrimoniales, le juge ne peut pas obliger le bailleur à faire ces travaux précis, mais il peut prendre d'autres mesures (baisse de loyer, suspension du bail).",
+    "answer_md": "### Le principe\nSi le logement loué ne respecte pas les critères de décence énergétique, le locataire peut demander au propriétaire de mettre le logement aux normes (art. 20-1). Si ça n'aboutit pas, le juge peut être saisi. Il peut alors :\n- fixer les travaux à faire et leur délai,\n- baisser le loyer,\n- suspendre le paiement du loyer ou la durée du bail (art. 20-1).\n\n### Les deux exceptions qui protègent le bailleur\nLe juge **ne peut pas** obliger le bailleur à réaliser les travaux visant à atteindre le niveau de performance minimal dans deux cas :\n\n**1. Immeuble en copropriété**\nSi le logement est en copropriété et que le copropriétaire démontre qu'il a fait le nécessaire (proposé des résolutions sur les parties communes, réalisé des travaux dans les parties privatives adaptés au bâtiment) mais que ça n'a pas suffi, le juge ne peut pas imposer les travaux (art. 20-1).\n\n**2. Contraintes architecturales ou patrimoniales**\nSi le logement est soumis à des règles de protection du patrimoine qui empêchent d'atteindre le niveau minimal, même en faisant des travaux compatibles avec ces contraintes, le juge ne peut pas non plus imposer les travaux (art. 20-1).\n\n### Ce que ça veut dire concrètement\nPour le cas des contraintes architecturales ou patrimoniales, le décret sur le logement décent précise les situations d'impossibilité (art. 3 ter, décret 2002-120) :\n\n- Les travaux feraient courir un **risque pour le bâtiment** (structure, toiture...), attesté par un professionnel du bâtiment dans une note argumentée.\n- Les travaux nécessitent de modifier l'extérieur ou des éléments décoratifs, et l'administration a **refusé l'autorisation** pour ce motif (au titre du patrimoine, de l'environnement ou de l'urbanisme).\n\n**C'est au propriétaire de prouver cette impossibilité** en apportant les justificatifs devant le juge (art. 3 ter). Le juge peut aussi attendre la décision de l'administration avant de trancher.\n\n### Attention : ce n'est pas une exonération totale\nMême si le juge ne peut pas imposer ces travaux précis, il garde la possibilité de prendre d'autres mesures : réduction du loyer, suspension du paiement du loyer et de la durée du bail (art. 20-1). L'impossibilité de travaux ne dispense donc pas automatiquement de toute conséquence.\n\n### Autre point : classement DPE (attention, contexte différent)\nÀ partir de 2028, les logements devront être classés entre A et E (art. L173-2, code de la construction). Il existe aussi des exceptions pour contraintes techniques, architecturales ou patrimoniales, ou en cas de coût disproportionné par rapport à la valeur du bien (art. L173-2). Un décret en Conseil d'État doit encore préciser les critères de cette exonération : ce texte n'est pas encore fourni ici, donc je ne peux pas détailler les conditions exactes.\n\n### Notre conseil\nCette question touche à des situations complexes (preuve à apporter, articulation copropriété/patrimoine/DPE). Il est recommandé de :\n- se faire assister par un **avocat** en cas de litige avec un locataire,\n- consulter l'**ADIL** de son département pour des conseils gratuits sur le logement,\n- vérifier les règles d'urbanisme auprès du **service urbanisme de la mairie** si le bien est en secteur protégé.",
+    "article_ids": [
+      "LEGIARTI000043977099",
+      "LEGIARTI000043977024",
+      "LEGIARTI000047983556"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "dpe-location-passoires-thermiques",
+    "slug": "dpe-joint-au-bail-candidat-locataire",
+    "emoji": null,
+    "question": "Le DPE doit-il être remis au locataire et montré dès les visites ?",
+    "short": "Oui, le DPE doit être annexé au contrat de location, et le propriétaire doit le tenir à disposition de tout candidat locataire, donc dès la phase de recherche/visite.",
+    "answer_md": "### Le DPE et la location\n\n- Lors de la **conclusion du contrat de location**, le diagnostic de performance énergétique (DPE) doit être **joint au bail** (art. L126-29, art. 3-3).\n- Ce DPE fait partie du **dossier de diagnostic technique** que le bailleur doit fournir au locataire (art. 3-3).\n\n### Et avant la signature, pendant les visites ?\n\n- Le propriétaire doit **tenir le DPE à disposition de tout candidat locataire** (art. 3-3).\n- Cela veut dire que le DPE doit pouvoir être consulté **avant même la signature du bail**, notamment lors des visites, si un candidat locataire le demande.\n\n### Attention aux recommandations du DPE\n\n- Les recommandations qui accompagnent le DPE n'ont qu'une **valeur informative**. Le locataire ne peut pas s'en servir contre le bailleur devant un juge (art. L126-29, art. 3-3).\n\n### En résumé\n\n- **Avant la signature (visites)** : le DPE doit être tenu à disposition des candidats locataires.\n- **À la signature** : le DPE doit être annexé au bail.\n\nSi le bailleur ne respecte pas cette obligation, cela peut poser un problème juridique. En cas de litige, il est conseillé de se rapprocher d'une **ADIL** (Agence départementale d'information sur le logement) ou d'un **avocat spécialisé en droit du logement**.",
+    "article_ids": [
+      "LEGIARTI000043977041",
+      "LEGIARTI000043978254"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "dpe-location-passoires-thermiques",
+    "slug": "passoire-thermique-meuble-location-saisonniere",
+    "emoji": null,
+    "question": "Les règles sur les passoires thermiques s'appliquent-elles aux meublés et locations saisonnières ?",
+    "short": "Oui pour les meublés loués comme résidence principale : le critère de performance énergétique du logement décent s'applique à eux comme aux locations vides. Non pour les locations saisonnières, qui ne relèvent pas de la loi de 1989 et n'ont pas à joindre le DPE au contrat ; elles restent visées par l'obligation générale d'atteindre la classe E en 2028 (art. L173-2).",
+    "answer_md": "### Meublé loué comme résidence principale : mêmes règles que la location vide\n\nLa loi du 6 juillet 1989 s'applique aux logements meublés qui constituent la résidence principale du locataire, et l'article 6 (logement décent, y compris le niveau de performance énergétique) fait partie des articles expressément applicables aux meublés (art. 25-3). Le calendrier est donc le même (art. 6) :\n\n- depuis le 1er janvier 2025, le logement doit être entre A et F (un G n'est plus décent) ;\n- au 1er janvier 2028, entre A et E ;\n- au 1er janvier 2034, entre A et D.\n\nLe gel de la révision du loyer pour les classes F et G s'applique aussi aux meublés (art. 25-9, qui renvoie au III de l'art. 17-1). Le dossier de diagnostic technique, dont le DPE, est annexé au bail meublé (art. 25-3 et 3-3).\n\n### Location saisonnière : hors loi de 1989\n\nLa loi de 1989 ne vise que les logements loués en résidence principale, c'est-à-dire occupés au moins huit mois par an (art. 2). Une location saisonnière (touristique) n'est donc pas soumise au critère de décence énergétique de l'article 6. Le DPE n'a pas non plus à être joint au contrat de location saisonnière (art. L126-29).\n\nAttention à ne pas confondre avec les « travailleurs saisonniers » : les logements loués à des travailleurs saisonniers restent soumis au dossier de diagnostic technique et aux deux premiers alinéas de l'article 6 (art. 2, 3°).\n\n### L'obligation générale de 2028 vise tous les logements\n\nIndépendamment de la location, le code de la construction prévoit qu'à compter du 1er janvier 2028 les bâtiments à usage d'habitation doivent être classés entre A et E, sauf contraintes techniques, architecturales ou patrimoniales ou coût manifestement disproportionné (art. L173-2). Ce texte ne distingue pas selon le type de location, mais il ne prévoit pas en lui-même d'interdiction de louer : il impose des mentions dans les annonces, les actes de vente et les baux (art. L173-2, III). Les critères des exonérations relèvent d'un décret en Conseil d'État non repris ici.\n\n### À vérifier localement\n\nLes règles communales sur les meublés de tourisme (autorisation, enregistrement) ne sont pas traitées ici. Pour un cas précis, l'ADIL de votre département peut vous renseigner gratuitement.",
+    "article_ids": [
+      "LEGIARTI000043977041",
+      "LEGIARTI000043977024",
+      "LEGIARTI000043977079",
+      "LEGIARTI000043977076",
+      "LEGIARTI000047900014",
+      "LEGIARTI000043977105",
+      "LEGIARTI000043977085"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "dpe-vente-audit-energetique",
+    "slug": "duree-validite-dpe",
+    "emoji": null,
+    "question": "Combien de temps un DPE est-il valable ?",
+    "short": "Un diagnostic de performance énergétique (DPE) est valable 10 ans (art. D126-19). Des règles particulières s'appliquent aux DPE réalisés entre 2013 et 2021.",
+    "answer_md": "### Durée de validité du DPE\n\n- En principe, le DPE est valable **10 ans** (art. D126-19).\n\n### Cas particuliers pour les DPE réalisés entre 2013 et 2021\n\nDes règles transitoires réduisent cette durée pour les diagnostics plus anciens (art. D126-19) :\n\n- DPE réalisé entre le **1er janvier 2013 et le 31 décembre 2017** : valable jusqu'au **31 décembre 2022**.\n- DPE réalisé entre le **1er janvier 2018 et le 30 juin 2021** : valable jusqu'au **31 décembre 2024**.\n\n### Cas des immeubles collectifs anciens\n\nPour un bâtiment d'habitation collective dont le permis de construire a été déposé avant le 1er janvier 2013, le DPE doit être renouvelé ou mis à jour **tous les 10 ans**. Exception : si un DPE réalisé après le 1er juillet 2021 montre que le bâtiment est en classe A, B ou C, ce renouvellement automatique n'est pas nécessaire (art. L126-31).\n\n### En cas de vente\n\nSi le DPE (ou un autre document du dossier de diagnostic technique) n'est plus valide au moment de la signature de l'acte de vente définitif, alors qu'il l'était lors de la promesse de vente, il doit être remplacé par un document à jour, annexé à l'acte de vente (art. L271-5).\n\n📌 Si votre DPE approche de sa date limite, ou si vous êtes dans une situation particulière (vente en cours, immeuble ancien), vous pouvez vous renseigner auprès de l'ADIL de votre département pour vérifier votre situation précise.",
+    "article_ids": [
+      "LEGIARTI000043818603",
+      "LEGIARTI000054140304",
+      "LEGIARTI000043978261"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "dpe-vente-audit-energetique",
+    "slug": "audit-energetique-vente-calendrier-classes",
+    "emoji": null,
+    "question": "Audit énergétique à la vente : depuis quand pour les classes F, G, E et D ?",
+    "short": "L'audit énergétique est déjà exigé pour vendre une maison ou un immeuble hors copropriété classé F ou G, il l'est depuis le 1er janvier 2025 pour la classe E et le sera au 1er janvier 2034 pour la classe D. Outre-mer : F et G depuis le 1er juillet 2024, E au 1er janvier 2028.",
+    "answer_md": "### Qui est concerné ?\nL'audit énergétique est obligatoire lors de la vente de bâtiments ou parties de bâtiment à usage d'habitation comportant un seul logement, ou plusieurs logements hors copropriété, si le bien appartient aux classes D, E, F ou G (art. L126-28-1).\n\n### Calendrier d'entrée en vigueur (France métropolitaine)\n- **Classe F ou G** : déjà obligatoire ; le texte consolidé de la loi fixe l'entrée en vigueur au **1er janvier 2022** pour ces classes (art. 158), l'application pratique ayant dépendu du décret et de l'arrêté définissant l'auditeur et le contenu de l'audit, non repris ici.\n- **Classe E** : obligatoire depuis le **1er janvier 2025** (art. 158).\n- **Classe D** : obligatoire à partir du **1er janvier 2034** seulement (art. 158). Aujourd'hui, un logement classé D peut donc être vendu sans audit, même si l'article L126-28-1 cite déjà cette classe.\n\n### Calendrier spécifique outre-mer\nEn Guadeloupe, Martinique, Guyane, La Réunion et Mayotte, les dates sont différentes :\n- **Classe F ou G** : depuis le **1er juillet 2024**.\n- **Classe E** : à partir du **1er janvier 2028** (art. 158).\n\n### Bon à savoir\nLes lots de copropriété ne sont pas concernés (art. L126-28-1). Cet audit doit être remis à l'acquéreur potentiel dès la première visite du bien, et il fait partie du dossier de diagnostic technique annexé à la promesse de vente ou à l'acte de vente (art. L271-4).\n\n### Besoin d'aide ?\nSi vous vendez ou achetez un bien concerné, vous pouvez vous rapprocher d'un diagnostiqueur certifié ou de l'ADIL pour vérifier la classe énergétique de votre logement et vos obligations exactes.",
+    "article_ids": [
+      "LEGIARTI000043957918",
+      "LEGIARTI000043967365",
+      "LEGIARTI000049398848"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "dpe-vente-audit-energetique",
+    "slug": "annonce-immobiliere-mentions-dpe-obligatoires",
+    "emoji": null,
+    "question": "Quelles mentions du DPE doivent figurer dans une annonce de vente ou de location ?",
+    "short": "Une annonce de vente ou de location doit afficher la classe énergie et la classe climat du logement, ainsi qu'une estimation du montant annuel des dépenses d'énergie. Le format varie selon que l'annonce est dans la presse écrite, en vitrine ou sur internet.",
+    "answer_md": "### Les mentions obligatoires du DPE dans une annonce\n\nQuand un bien immobilier doit avoir un diagnostic de performance énergétique (DPE), l'annonce de vente ou de location doit obligatoirement indiquer :\n\n- **La classe énergie** du bien (lettre de A à G, échelle de consommation d'énergie) (art. L126-33, art. R126-16 e).\n- **La classe climat** du bien (lettre correspondant aux émissions de gaz à effet de serre) (art. L126-33, art. R126-16 f).\n- **Pour les logements uniquement** : une estimation du montant des dépenses annuelles d'énergie, à titre d'information (art. L126-33, art. R126-23).\n\n### Des règles de forme selon le support de l'annonce\n\n**Dans la presse écrite** :\n- Les lettres \"classe énergie\" et \"classe climat\" doivent être écrites en majuscules.\n- Leur taille doit être au moins égale à celle du texte de l'annonce (art. R126-21).\n\n**En vitrine d'agence ou sur internet** :\n- Les classements énergie et climat doivent apparaître de façon lisible et en couleur (art. R126-22).\n\n**Pour l'indication des dépenses d'énergie** (logements uniquement) :\n- Elle doit être précédée de la mention : *\"Montant estimé des dépenses annuelles d'énergie pour un usage standard :\"*\n- Elle doit préciser l'année de référence des prix de l'énergie utilisés.\n- Sa taille doit être au moins égale à celle du texte de l'annonce (art. R126-23).\n\n### Cas particulier : vente d'un lot en copropriété\n\nSi le bien est un lot de copropriété, l'annonce doit en plus mentionner :\n- Que le bien est soumis au statut de la copropriété.\n- Le nombre de lots.\n- Le montant moyen annuel de la quote-part de charges courantes à la charge du vendeur.\n- Pour les logements, l'indication des dépenses théoriques d'énergie, avec les mêmes règles de forme que ci-dessus (art. L721-1, art. R721-1).\n\n### Que risque-t-on en cas de manquement ?\n\nSi un professionnel ne respecte pas cette obligation d'information, il risque une amende administrative pouvant aller jusqu'à 3 000 € (personne physique) ou 15 000 € (personne morale) (art. L126-33).\n\nPour un non-professionnel, l'amende peut aller jusqu'à 3 000 €, mais seulement après une mise en demeure restée sans effet (art. L126-33).\n\n### Besoin d'aide ?\n\nSi vous constatez qu'une annonce ne respecte pas ces règles, vous pouvez vous rapprocher d'une association de consommateurs, de l'ADIL (Agence départementale d'information sur le logement) ou d'un avocat pour faire valoir vos droits.",
+    "article_ids": [
+      "LEGIARTI000043976944",
+      "LEGIARTI000043818597",
+      "LEGIARTI000043818609",
+      "LEGIARTI000043818611",
+      "LEGIARTI000043934809",
+      "LEGIARTI000039369572",
+      "LEGIARTI000043829468"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "dpe-vente-audit-energetique",
+    "slug": "logement-consommation-energetique-excessive-mention",
+    "emoji": null,
+    "question": "« Logement à consommation énergétique excessive » : quand cette mention est-elle obligatoire ?",
+    "short": "Les annonces de vente ou de location d'un logement qui n'atteint pas la classe E (logements F et G) doivent porter la mention « Logement à consommation énergétique excessive » (art. R126-24). Depuis 2022, annonces, actes de vente et baux signalent déjà l'obligation de 2028 ; à partir du 1er janvier 2028, ils mentionneront son non-respect (art. L173-2).",
+    "answer_md": "### La règle\n\nÀ partir du **1er janvier 2028**, les logements à usage d'habitation doivent avoir un niveau de performance énergétique compris entre les classes A et E (art. L173-2, I).\n\nCertains bâtiments peuvent être exonérés de cette obligation :\n- s'il existe des contraintes techniques, architecturales ou patrimoniales empêchant les travaux (art. L173-2, I, 1°) ;\n- si le coût des travaux est manifestement disproportionné par rapport à la valeur du bien (art. L173-2, I, 2°).\n\nLes critères précis de ces exceptions sont fixés par un décret en Conseil d'État, qui n'est pas fourni ici.\n\nDes délais différents s'appliquent à certaines copropriétés en difficulté (plan de sauvegarde, opération de requalification de copropriétés dégradées, administrateur provisoire, etc.) : pour elles, l'obligation ne s'applique qu'à partir du **1er janvier 2033** (art. L173-2, II).\n\n### La mention dans les annonces\n\nPour les logements qui ne respectent pas cette obligation (c'est-à-dire les logements classés en dessous du niveau E), les annonces de vente ou de location doivent mentionner la situation du bien (art. R126-24).\n\nCette mention :\n- est précédée des mots **« Logement à consommation énergétique excessive »** (art. R126-24) ;\n- doit avoir une taille au moins égale aux caractères du reste de l'annonce (art. R126-24) ;\n- ses termes précis sont fixés par un arrêté ministériel, non repris ici : c'est lui qui détermine en pratique le libellé et la date d'application de la mention.\n\n### En résumé, à partir de quand ?\n\n- Dès le **1er janvier 2022**, les annonces et les actes de vente ou baux doivent déjà mentionner que le logement est soumis à l'obligation de performance (sans forcément la formule « consommation énergétique excessive ») (art. L173-2, III, 1er alinéa). Cette date est reportée au **1er juillet 2024** en Guadeloupe, Martinique, Guyane, La Réunion et Mayotte.\n- À partir du **1er janvier 2028**, c'est le **non-respect** de l'obligation qui doit être mentionné dans les annonces et les actes (art. L173-2, III, 2e alinéa). C'est à ce moment que la mention précise « Logement à consommation énergétique excessive » entre en jeu pour les logements mal classés (art. R126-24).\n\n### À vérifier\n\nLes termes exacts de la mention et les critères d'exonération dépendent d'arrêtés et d'un décret non fournis dans les articles cités. Pour un cas concret (mise en vente ou location d'un bien précis), il est conseillé de se renseigner auprès d'un diagnostiqueur professionnel ou de l'ADIL.",
+    "article_ids": [
+      "LEGIARTI000043977024",
+      "LEGIARTI000043818615"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "dpe-vente-audit-energetique",
+    "slug": "classe-dpe-erronee-apres-achat-recours",
+    "emoji": null,
+    "question": "Après l'achat, la classe du DPE se révèle fausse : quels recours pour l'acquéreur ?",
+    "short": "Le texte ne réserve plus une valeur « indicative » qu'aux recommandations du DPE, pas à la classe énergétique elle-même. L'acquéreur qui découvre une classe fausse peut agir contre le diagnostiqueur, qui doit être assuré, et, selon les cas, contre le vendeur ; l'issue dépend de la jurisprudence et des preuves.",
+    "answer_md": "### Le DPE fait partie du dossier remis à l'acquéreur\n\nLe vendeur fournit un dossier de diagnostic technique qui comprend le DPE et, le cas échéant, l'audit énergétique (art. L271-4, 6°). Le classement énergétique doit aussi figurer dans les annonces (art. L126-33).\n\n### Ce qui n'a qu'une valeur indicative\n\nLa loi précise que l'acquéreur ne peut pas se prévaloir contre le vendeur **des recommandations** qui accompagnent le DPE (les travaux conseillés), qui n'ont qu'une valeur indicative (art. L271-4, II). Cette réserve ne vise pas le classement lui-même : le DPE est un document que l'acquéreur peut invoquer. La portée exacte d'une erreur de classe (préjudice indemnisable, perte de chance) est fixée par la jurisprudence, non reprise ici.\n\nEn revanche, l'absence de DPE ne fait pas partie des cas où le vendeur perd le bénéfice de sa clause d'exclusion des vices cachés : cette règle ne vise que plomb, amiante, termites, gaz, électricité et assainissement (art. L271-4, II).\n\n### Agir contre le diagnostiqueur\n\nLe DPE doit être établi par une personne présentant des garanties de compétence, indépendante et **assurée** pour les conséquences de sa responsabilité (art. L271-6), avec une garantie d'au moins 300 000 € par sinistre et 500 000 € par année d'assurance (art. R271-2). Si l'erreur vient d'une faute du diagnostiqueur, l'acquéreur peut engager sa responsabilité ; l'assurance obligatoire sert précisément à indemniser ce type de dommage.\n\n### Agir contre le vendeur\n\nSi le vendeur connaissait une information déterminante (par exemple des travaux ou une consommation réelle contredisant le DPE) et ne l'a pas donnée, il a pu manquer à son devoir d'information, ce qui peut engager sa responsabilité ou entraîner l'annulation du contrat (art. 1112-1 du code civil). Il faut en apporter la preuve.\n\n### En pratique\n\n- Faire établir un nouveau DPE par un autre diagnostiqueur certifié pour objectiver l'écart.\n- Réunir le rapport initial, le nouveau DPE, les factures d'énergie.\n- Écrire au diagnostiqueur et à son assureur, puis consulter un avocat en droit immobilier si aucun accord n'est trouvé. L'ADIL peut orienter gratuitement.\n\nLes délais pour agir et la juridiction compétente ne sont pas détaillés ici.",
+    "article_ids": [
+      "LEGIARTI000049398848",
+      "LEGIARTI000051830494",
+      "LEGIARTI000019984880",
+      "LEGIARTI000032007138",
+      "LEGIARTI000043976944"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "dpe-vente-audit-energetique",
+    "slug": "dpe-collectif-copropriete-obligatoire",
+    "emoji": null,
+    "question": "Copropriété : le DPE collectif de l'immeuble est-il obligatoire ?",
+    "short": "Oui, pour les immeubles d'habitation collective dont le permis de construire a été déposé avant le 1er janvier 2013, un diagnostic de performance énergétique (DPE) collectif est obligatoire (art. L126-31). Il doit être renouvelé ou mis à jour tous les dix ans, sauf exception.",
+    "answer_md": "### Le DPE collectif est-il obligatoire en copropriété ?\n\nOui, dans certains cas :\n\n- Tout **bâtiment d'habitation collective** dont le **permis de construire a été déposé avant le 1er janvier 2013** doit avoir un DPE réalisé pour l'ensemble du bâtiment (art. L126-31).\n- Ce diagnostic doit être **renouvelé ou mis à jour tous les dix ans**, sauf si un diagnostic réalisé après le 1er juillet 2021 montre que le bâtiment est déjà en classe A, B ou C (art. L126-31).\n\n### Comment cela se passe concrètement\n\n- C'est le **syndic** qui doit inscrire à l'ordre du jour de l'assemblée générale la décision de faire réaliser ce diagnostic (art. R126-20).\n- Une fois le diagnostic réalisé, le syndic doit aussi inscrire à l'ordre du jour suivant sa **présentation** par la personne qui l'a réalisé, avec explications, hypothèses de travail et éventuelles approximations (art. R126-20).\n- Ce DPE collectif permet ensuite d'établir un diagnostic individuel pour chaque logement ou lot (art. R126-20).\n\n### Exceptions\n\n- Si la copropriété a déjà un DPE valide et conforme, elle n'a pas besoin d'en refaire un nouveau (art. R126-20).\n- Si le DPE existant est valide mais pas conforme aux nouvelles exigences, il doit simplement être **complété** (art. R126-20).\n\n### Durée de validité\n\nEn général, un DPE est valable 10 ans (art. D126-19). Pour les DPE plus anciens :\n- Réalisés entre le 1er janvier 2013 et le 31 décembre 2017 : valables jusqu'au 31 décembre 2022 (art. D126-19).\n- Réalisés entre le 1er janvier 2018 et le 30 juin 2021 : valables jusqu'au 31 décembre 2024 (art. D126-19).\n\n### À noter\n\nLes articles fournis ne précisent pas les modalités de mise en œuvre pour les immeubles dont le permis de construire a été déposé **après** le 1er janvier 2013. Si votre situation est différente (immeuble récent, DPE déjà réalisé mais litige sur sa validité, etc.), il est conseillé de vous rapprocher du **syndic** ou d'une **ADIL** pour vérifier votre cas précis.",
+    "article_ids": [
+      "LEGIARTI000054140304",
+      "LEGIARTI000043818605",
+      "LEGIARTI000043818603"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "diagnostic-amiante",
+    "slug": "diagnostic-amiante-vente-quels-logements",
+    "emoji": null,
+    "question": "Diagnostic amiante à la vente : quels logements sont concernés ?",
+    "short": "Le diagnostic amiante concerne les immeubles dont le permis de construire date d'avant le 1er juillet 1997, que ce soit une maison individuelle ou un appartement en copropriété (art. R1334-14).",
+    "answer_md": "### Quels logements sont concernés par le diagnostic amiante ?\n\n**Condition principale : la date du permis de construire**\n\nLe diagnostic amiante est obligatoire pour les immeubles bâtis dont le **permis de construire a été délivré avant le 1er juillet 1997** (art. R1334-14). Peu importe qu'il s'agisse d'un bien privé ou public.\n\n**Selon le type de logement**\n\n- **Maison individuelle (immeuble à un seul logement)** : le propriétaire fait réaliser un repérage des matériaux contenant de l'amiante (listes A et B) pour constituer l'état obligatoire en cas de vente (art. R1334-15).\n\n- **Appartement en copropriété** : le propriétaire des parties privatives fait réaliser un repérage de la liste A, et aussi de la liste B en cas de vente (art. R1334-16).\n\n**Ce que contient le dossier remis à l'acheteur**\n\nSelon le type de bien vendu, l'état amiante correspond à :\n\n- Pour une maison individuelle : le rapport de repérage des listes A et B (art. R1334-29-7).\n- Pour un appartement vendu seul en copropriété : le rapport de repérage des parties privatives + la fiche récapitulative du \"dossier technique amiante\" pour les parties communes (art. R1334-29-7).\n- Pour d'autres types d'immeubles vendus : la fiche récapitulative du \"dossier technique amiante\" (art. R1334-29-7).\n\n**Où s'intègre ce diagnostic**\n\nCet état amiante doit être annexé à la promesse de vente ou, à défaut, à l'acte de vente, dans le cadre du dossier de diagnostic technique (art. L1334-13, art. L271-4).\n\n**Conséquence si le diagnostic est absent ou périmé**\n\nSi ce document n'est pas fourni ou n'est plus valable au moment de la signature de l'acte de vente, le vendeur ne peut pas s'exonérer de la garantie des vices cachés correspondante (art. L271-4).\n\n### À noter\n\n- Les immeubles dont le permis de construire a été délivré à partir du 1er juillet 1997 ne sont pas concernés par cette obligation (art. R1334-14).\n- Les modalités précises du repérage (listes de matériaux, méthodes) renvoient à une annexe technique (annexe 13-9) non fournie ici.\n- Pour un cas particulier (bien mixte, copropriété complexe, doute sur la date du permis), il est conseillé de consulter un diagnostiqueur professionnel certifié ou l'ADIL.",
+    "article_ids": [
+      "LEGIARTI000024140895",
+      "LEGIARTI000024140886",
+      "LEGIARTI000024140882",
+      "LEGIARTI000024117155",
+      "LEGIARTI000031928027",
+      "LEGIARTI000049398848"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "diagnostic-amiante",
+    "slug": "dossier-technique-amiante-copropriete",
+    "emoji": null,
+    "question": "Copropriété : qu'est-ce que le dossier technique amiante (DTA) et qui doit le tenir ?",
+    "short": "Le dossier technique amiante (DTA) regroupe les repérages et informations sur l'amiante dans les parties communes d'un immeuble. C'est le syndicat des copropriétaires, via le syndic, qui doit le constituer, le tenir à jour et le communiquer.",
+    "answer_md": "### Qu'est-ce que le DTA ?\n\nLe DTA est un dossier obligatoire pour les immeubles dont le permis de construire date d'avant le 1er juillet 1997 (art. R1334-14). Il concerne notamment les parties communes des immeubles collectifs d'habitation, où un repérage de l'amiante doit être réalisé (art. R1334-17).\n\nIl contient (art. R1334-29-5) :\n- Les rapports de repérage des matériaux et produits contenant de l'amiante ;\n- La date, la nature et les résultats des évaluations, mesures, travaux de retrait ou de confinement déjà réalisés ;\n- Les recommandations générales de sécurité (procédures d'intervention, gestion des déchets) ;\n- Une fiche récapitulative.\n\nLe dossier est mis à jour à chaque découverte d'amiante lors de travaux ou d'entretien (art. R1334-29-5).\n\n### Qui doit le tenir ?\n\nPour les parties communes d'un immeuble en copropriété, c'est **le syndicat des copropriétaires** qui est responsable (art. R1334-14, 3°). En pratique, c'est le syndic qui gère cette obligation pour le compte du syndicat.\n\n### À qui le dossier doit-il être communiqué ?\n\nLe DTA doit être :\n- Tenu à disposition des occupants de l'immeuble, et des employeurs/représentants du personnel/médecins du travail si l'immeuble comporte des locaux professionnels (art. R1334-29-5) ;\n- Communiqué sur demande à certaines autorités (inspection du travail, agents de santé, agents chargés de la construction, etc.) (art. R1334-29-5) ;\n- Communiqué à toute personne devant réaliser des travaux dans l'immeuble (art. R1334-29-5).\n\nLa fiche récapitulative doit être transmise aux occupants dans un délai d'un mois après sa constitution ou sa mise à jour (art. R1334-29-5).\n\n### En cas de vente\n\nSi vous vendez un lot en copropriété, la fiche récapitulative du DTA (parties communes) doit être jointe à l'état amiante, avec le rapport de repérage propre à votre partie privative (art. R1334-29-7).\n\n### Besoin d'aide ?\n\nPour vérifier si votre copropriété a bien constitué ce dossier, ou en cas de litige avec le syndic, vous pouvez vous rapprocher de l'ADIL ou d'un avocat spécialisé en copropriété.",
+    "article_ids": [
+      "LEGIARTI000024140895",
+      "LEGIARTI000024140879",
+      "LEGIARTI000043841389",
+      "LEGIARTI000024117155"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "diagnostic-amiante",
+    "slug": "reperage-amiante-avant-travaux",
+    "emoji": null,
+    "question": "Travaux dans un logement ancien : faut-il un repérage amiante avant de commencer ?",
+    "short": "Oui : avant des travaux qui risquent d'exposer des travailleurs à l'amiante, le donneur d'ordre, le maître d'ouvrage ou le propriétaire doit faire rechercher l'amiante. Le risque est notamment présumé pour les immeubles construits avant l'entrée en vigueur du décret du 24 décembre 1996 interdisant l'amiante.",
+    "answer_md": "### Le repérage amiante est-il obligatoire avant travaux dans un logement ancien ?\n\n**Oui, en principe.** Dès qu'une opération de travaux peut exposer des travailleurs à l'amiante, la personne qui commande les travaux ou le propriétaire doit faire rechercher la présence d'amiante avant de commencer (art. L4412-2).\n\n### Qui est concerné et pourquoi\n\n- Le risque d'exposition est notamment présumé pour les immeubles **construits avant l'entrée en vigueur du décret de 1996 interdisant l'amiante** (art. R4412-97).\n- C'est le donneur d'ordre, le maître d'ouvrage ou le propriétaire qui doit organiser cette recherche (art. R4412-97).\n\n### Comment se fait le repérage\n\n- Il s'agit d'un **repérage préalable**, adapté à la nature et à l'ampleur des travaux (art. R4412-97).\n- Il doit être réalisé par un **opérateur qualifié et indépendant**, selon les règles fixées par arrêté ministériel (art. R4412-97-1).\n- Un **rapport écrit** est produit, mentionnant la présence, la nature et la localisation de l'amiante s'il y en a (art. L4412-2). Ce rapport doit être transmis aux entreprises qui vont réaliser les travaux (art. L4412-2).\n\n### Un repérage déjà existant peut suffire\n\nSi un repérage a déjà été fait, il n'est pas nécessaire d'en refaire un nouveau pour des travaux ultérieurs dans le même logement, **sauf** si de nouveaux éléments apparaissent ou si une nouvelle réglementation l'impose (art. R4412-97).\n\nDe même, si un \"dossier amiante - parties privatives\" existe déjà (document que les propriétaires de logements en copropriété doivent tenir à jour), il peut être communiqué à l'entreprise qui va réaliser les travaux (art. R1334-29-4).\n\n### Ce qu'il faut faire concrètement\n\n1. Vérifier si un rapport de repérage amiante existe déjà pour le logement.\n2. S'il n'existe pas, faire appel à un **opérateur de repérage qualifié**, selon les arrêtés applicables avant de lancer les travaux.\n3. Transmettre le rapport à l'entreprise qui va intervenir (art. L4412-2).\n4. Après les travaux, un rapport de fin de travaux peut aussi être requis dans certains cas (art. R4412-139).\n\n### Sanction en cas de non-respect\n\nNe pas respecter cette obligation de repérage expose à une **amende administrative pouvant aller jusqu'à 9 000 €** (art. L4754-1).\n\n### À noter\n\nLes modalités techniques précises du repérage (méthodes, documents à fournir selon le type de logement) sont fixées par des **arrêtés ministériels** qui ne sont pas fournis ici. Pour connaître la procédure exacte applicable à votre logement (maison individuelle, appartement en copropriété, etc.), il est conseillé de consulter un **diagnostiqueur amiante certifié** ou de se renseigner auprès de l'**inspection du travail**.",
+    "article_ids": [
+      "LEGIARTI000033013763",
+      "LEGIARTI000038322515",
+      "LEGIARTI000038322522",
+      "LEGIARTI000043841402",
+      "LEGIARTI000025818876",
+      "LEGIARTI000033013789"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "diagnostic-amiante",
+    "slug": "reperage-amiante-avant-demolition",
+    "emoji": null,
+    "question": "Démolition d'un bâtiment : quel repérage amiante réaliser ?",
+    "short": "Avant toute démolition, le propriétaire doit faire réaliser un repérage amiante 'liste C' de l'immeuble, et ce rapport doit être transmis à toute personne qui organise ou réalise les travaux (art. R1334-19, R1334-29-6). Si des travailleurs sont exposés, un repérage avant travaux est aussi obligatoire au titre du code du travail (art. L4412-2).",
+    "answer_md": "### Repérage amiante avant démolition\n\nAvant de démolir un immeuble bâti, le propriétaire doit faire réaliser un **repérage des matériaux et produits de la liste C contenant de l'amiante** (art. R1334-19). C'est une obligation spécifique à la démolition, distincte du repérage classique (listes A et B) fait pour l'habitat.\n\n### En quoi consiste ce repérage\n\nLa personne qui réalise le repérage doit (art. R1334-22) :\n- rechercher la présence des matériaux et produits de la liste C ;\n- rechercher tout autre matériau susceptible de contenir de l'amiante ;\n- identifier et localiser les matériaux contenant de l'amiante.\n\nSi un doute persiste après cette recherche, des prélèvements sont effectués et analysés (art. R1334-22).\n\nÀ la fin de la mission, un **rapport de repérage** est remis au propriétaire contre accusé de réception (art. R1334-22).\n\n### Transmission du rapport\n\nCe rapport doit être communiqué à **toute personne, physique ou morale, qui organise ou effectue les travaux de démolition** (entreprise de démolition, maître d'œuvre, etc.) (art. R1334-29-6).\n\n### Attention : une seconde obligation peut s'ajouter\n\nSi les travaux de démolition exposent des travailleurs à un risque amiante, le code du travail impose une autre recherche amiante, dite \"repérage avant travaux\", à la charge du donneur d'ordre, du maître d'ouvrage ou du propriétaire (art. L4412-2). Le document produit doit être joint aux documents remis aux entreprises candidates aux travaux (art. L4412-2).\n\nCe repérage avant travaux est adapté à la nature et au périmètre de l'opération ; ses modalités techniques sont fixées par arrêtés (art. R4412-97), et l'opérateur doit être qualifié et indépendant (art. R4412-97-1).\n\n### En pratique\n\n- Faites établir le repérage \"liste C\" par un professionnel certifié avant toute démolition.\n- Conservez l'accusé de réception du rapport.\n- Transmettez ce rapport à l'entreprise qui réalisera la démolition.\n- Si des travailleurs interviennent sur le chantier, vérifiez auprès d'un professionnel (bureau de contrôle, inspection du travail) si le repérage avant travaux du code du travail s'applique aussi à votre situation.\n\nPour être sûr de respecter toutes les obligations (notamment le contenu exact du rapport, fixé par arrêté non fourni ici), il est conseillé de consulter un diagnostiqueur certifié ou l'inspection du travail.",
+    "article_ids": [
+      "LEGIARTI000024140871",
+      "LEGIARTI000024140938",
+      "LEGIARTI000024117153",
+      "LEGIARTI000033013763",
+      "LEGIARTI000038322515",
+      "LEGIARTI000038322522"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "diagnostic-amiante",
+    "slug": "amiante-degrade-obligations-proprietaire",
+    "emoji": null,
+    "question": "Amiante dégradé détecté : que doit faire le propriétaire et dans quels délais ?",
+    "short": "Selon le résultat du repérage, le propriétaire doit faire mesurer l'empoussièrement ou lancer des travaux de confinement/retrait, avec des délais précis (3 mois pour la mesure, 36 mois maximum pour les travaux), tout en protégeant les occupants entre-temps.",
+    "answer_md": "### Ce que prévoit le rapport de repérage\n\nQuand un diagnostiqueur repère de l'amiante dans un immeuble, il évalue l'état de conservation des matériaux. Selon le résultat, il préconise une des trois solutions suivantes (art. R1334-20) :\n\n- une simple surveillance périodique,\n- une mesure de la quantité de fibres dans l'air (« empoussièrement »),\n- des travaux de confinement ou de retrait de l'amiante.\n\nCes délais visent les matériaux de la liste A dans les parties privatives et communes des immeubles collectifs et dans les autres immeubles bâtis (art. R1334-26) ; ils ne s'appliquent pas en tant que tels à une maison individuelle, pour laquelle le repérage est surtout exigé à la vente (art. R1334-15).\n\n### Les délais à respecter\n\n**1. Si une mesure d'empoussièrement est demandée**\nLe propriétaire doit la faire réaliser **dans les 3 mois** suivant la remise du rapport de repérage (art. R1334-27).\n\n**2. Selon le résultat de cette mesure** (art. R1334-28) :\n- Si le taux est **inférieur ou égal à 5 fibres par litre** : une simple évaluation périodique de l'état de conservation suffit, à refaire dans les **3 ans**.\n- Si le taux est **supérieur à 5 fibres par litre** : des **travaux de confinement ou de retrait** sont obligatoires.\n\n**3. Si des travaux sont nécessaires** (art. R1334-29) :\n- Ils doivent être **achevés dans un délai de 36 mois** à compter de la remise du rapport de repérage (ou des résultats de la mesure d'empoussièrement, ou de la dernière évaluation de l'état de conservation).\n- En attendant les travaux, le propriétaire doit mettre en place des **mesures conservatoires** pour protéger les occupants et maintenir l'empoussièrement en dessous de 5 fibres par litre. Ces mesures ne doivent pas perturber les matériaux amiantés.\n- Le propriétaire doit **informer le préfet** :\n  - dans les **2 mois**, des mesures conservatoires mises en place,\n  - dans les **12 mois**, des travaux prévus et de leur calendrier.\n\n### À la fin des travaux\n\nAvant de rendre les locaux traités aux occupants, le propriétaire doit faire réaliser (art. R1334-29-3) :\n- un **examen visuel** des surfaces traitées,\n- une **nouvelle mesure d'empoussièrement**, qui doit être inférieure ou égale à 5 fibres par litre.\n\nSi tout l'amiante n'a pas été retiré, une nouvelle évaluation périodique de l'état de conservation doit être faite dans un délai maximal de **3 ans**.\n\n### En résumé\n\nLe propriétaire n'a pas le choix : il doit suivre les préconisations du rapport de repérage, dans les délais fixés par la loi. Ne pas agir expose à un risque pour la santé des occupants et peut engager sa responsabilité.\n\n**Conseil** : si vous êtes concerné par une telle situation, faites-vous accompagner par le diagnostiqueur ou un professionnel du bâtiment spécialisé en amiante pour respecter précisément ces délais. En cas de doute sur vos obligations, vous pouvez aussi contacter l'ADIL ou un avocat.",
+    "article_ids": [
+      "LEGIARTI000024140946",
+      "LEGIARTI000024140912",
+      "LEGIARTI000024140907",
+      "LEGIARTI000024140904",
+      "LEGIARTI000024117053",
+      "LEGIARTI000024140917"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "diagnostic-amiante",
+    "slug": "amiante-location-locataire-information",
+    "emoji": null,
+    "question": "Le bailleur doit-il informer le locataire de la présence d'amiante ?",
+    "short": "La loi prévoit qu'une copie de l'état amiante soit annexée au bail, mais renvoie ses modalités à un décret en Conseil d'État. En pratique, dans un appartement d'un immeuble collectif dont le permis date d'avant le 1er juillet 1997, le bailleur doit tenir le « dossier amiante – parties privatives » à la disposition du locataire et l'informer qu'il existe.",
+    "answer_md": "### Ce que prévoit la loi de 1989\n\nLe dossier de diagnostic technique annexé au bail doit comprendre « une copie d'un état mentionnant l'absence ou, le cas échéant, la présence de matériaux ou produits de la construction contenant de l'amiante » (art. 3-3, 3°). Le même texte précise qu'un décret en Conseil d'État définit les modalités d'application de ce 3°, notamment la liste des matériaux concernés. Ce décret n'est pas repris dans notre base : vérifiez auprès de l'ADIL si cette annexe est exigible à la date de votre bail.\n\n### Ce que le bailleur doit déjà faire (immeubles collectifs)\n\nPour les immeubles dont le permis de construire a été délivré avant le 1er juillet 1997 (art. R1334-14) :\n\n- le propriétaire d'un appartement fait réaliser un repérage des matériaux de la **liste A** dans ses parties privatives (art. R1334-16) ;\n- il constitue et tient à jour un **« dossier amiante – parties privatives »** (rapport de repérage, évaluations, travaux) (art. R1334-29-4) ;\n- ce dossier est **tenu à la disposition des occupants**, qui sont informés de son existence et de la façon de le consulter (art. R1334-29-4) ;\n- pour les parties communes, le syndicat des copropriétaires tient le dossier technique amiante, lui aussi à la disposition des occupants, qui reçoivent sa fiche récapitulative (art. R1334-29-5).\n\n### Pour le locataire\n\nVous pouvez demander à consulter le dossier amiante des parties privatives et, pour les parties communes, la fiche récapitulative du dossier technique amiante. Avant de percer ou de poncer des matériaux anciens, ces documents indiquent où se trouve l'amiante repéré.\n\nLes sanctions propres à l'absence de ces documents dans une location ne figurent pas dans les articles cités. En cas de difficulté, contactez l'ADIL ou un avocat en droit du logement.",
+    "article_ids": [
+      "LEGIARTI000043978254",
+      "LEGIARTI000024140882",
+      "LEGIARTI000043841402",
+      "LEGIARTI000043841389",
+      "LEGIARTI000024140895"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "plomb-electricite-gaz-termites-erp",
+    "slug": "constat-plomb-crep-vente-location",
+    "emoji": null,
+    "question": "Constat de risque d'exposition au plomb (CREP) : quand est-il obligatoire et combien de temps vaut-il ?",
+    "short": "Le CREP est obligatoire lors de la vente ou de la location d'un logement construit avant le 1er janvier 1949, ainsi qu'avant certains travaux. Sa durée de validité dépend de la situation : vente, location ou absence de plomb détecté.",
+    "answer_md": "### Quand le CREP est-il obligatoire ?\n\nLe constat de risque d'exposition au plomb (CREP) est exigé dans plusieurs situations, à condition que l'immeuble ait été **construit avant le 1er janvier 1949** :\n\n- **En cas de vente** : le CREP doit être annexé au dossier de diagnostic technique (art. L1334-6).\n- **En cas de location** : le CREP doit être annexé à tout nouveau contrat de location (art. L1334-7).\n- **Avant certains travaux** :\n  - Pour les travaux sur les parties communes d'un immeuble collectif, si ces travaux risquent d'altérer fortement les revêtements (art. L1334-8).\n  - Plus généralement, les travaux qui génèrent des poussières sont présumés « à risque » si les occupants ne sont pas suffisamment protégés (art. R1334-13).\n- **Sur demande du préfet** : dans le cadre d'opérations d'amélioration de l'habitat avec subventions pour sortie d'insalubrité (art. L1334-8-1).\n\n### Combien de temps le CREP est-il valable ?\n\nLa durée de validité dépend du contexte :\n\n**Pour une vente :**\n- Le CREP doit avoir été établi depuis **moins d'un an** par rapport à la date de la promesse de vente ou de l'acte authentique de vente (art. D271-5).\n- Si le CREP n'est plus valide entre la promesse et l'acte définitif, un nouveau document doit être établi (art. L271-5).\n\n**Pour une location :**\n- Le CREP doit avoir été établi depuis **moins de six ans** à la date de signature du contrat de location (art. R1334-11).\n\n**Cas particulier : absence de plomb ou concentration très faible**\n\nSi le constat établit qu'il n'y a **pas de plomb**, ou une concentration **inférieure aux seuils réglementaires**, alors :\n\n- **Sa validité n'est plus limitée dans le temps** (art. R1334-11).\n- Il n'est pas nécessaire de refaire un constat à chaque nouvelle vente ou location : le constat initial est simplement joint au dossier (art. L1334-7, art. L271-5, art. L1334-8).\n\n### Qui doit payer et qui peut réaliser le CREP ?\n\n- Le CREP est **à la charge du bailleur** en cas de location, même si le contrat de bail prévoit le contraire (art. L1334-7).\n- Il doit être réalisé par une **personne certifiée**, répondant aux conditions prévues par le code de la construction et de l'habitation (art. R1334-11).\n\n### Que se passe-t-il en cas d'absence de CREP ?\n\nL'absence du CREP dans un contrat de location constitue un manquement grave. Cela peut engager la **responsabilité pénale du bailleur** (art. L1334-7).\n\n### Notre conseil\n\nCes règles de validité et d'obligation sont assez techniques. Si vous êtes concerné par une vente, une location ou des travaux dans un immeuble ancien, nous vous conseillons de vérifier la date du dernier CREP et son contenu. En cas de doute, rapprochez-vous d'un diagnostiqueur certifié ou de l'ADIL (Agence départementale d'information sur le logement) pour être bien accompagné.",
+    "article_ids": [
+      "LEGIARTI000031928083",
+      "LEGIARTI000031928073",
+      "LEGIARTI000006910313",
+      "LEGIARTI000038967784",
+      "LEGIARTI000043978261",
+      "LEGIARTI000031928065",
+      "LEGIARTI000031928057",
+      "LEGIARTI000006910322"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "plomb-electricite-gaz-termites-erp",
+    "slug": "plomb-degrade-travaux-bailleur",
+    "emoji": null,
+    "question": "Plomb dégradé relevé par le constat : quelles obligations pour le propriétaire bailleur ?",
+    "short": "Si le constat révèle du plomb dégradé au-dessus des seuils autorisés, le propriétaire bailleur doit informer les occupants et faire les travaux nécessaires avant de louer, sous peine d'engager sa responsabilité pénale.",
+    "answer_md": "### Ce que dit la loi\n\nSi le constat de risque d'exposition au plomb (appelé CREP) montre des **revêtements dégradés contenant du plomb** à des concentrations supérieures aux seuils fixés par arrêté, le propriétaire bailleur a plusieurs obligations :\n\n- **Informer les occupants** et toute personne qui doit faire des travaux dans le logement (art. L1334-9).\n- Cette information se fait par la **remise d'une copie du constat** (art. R1334-12).\n- **Réaliser les travaux nécessaires** pour supprimer le risque d'exposition au plomb, tout en garantissant la sécurité des occupants (art. L1334-9).\n- Lorsque des travaux sont imposés par l'administration (police de la sécurité et de la salubrité), ils visent à la fois **les sources de plomb** et **la pérennité de la protection** (recouvrement des revêtements dégradés, remplacement de certains éléments) et ne doivent pas disperser de poussières de plomb (art. R1334-5).\n\n### Avant la location\n\n- Le constat doit être **annexé au contrat de location** pour un logement construit avant le 1er janvier 1949 (art. L1334-7).\n- Les travaux doivent être faits **avant la mise en location** du logement (art. L1334-9).\n- Le logement loué ne doit pas présenter de revêtements dégradés contenant du plomb au-dessus des seuils autorisés : c'est une condition de salubrité (art. R1331-24).\n\n### Sanction en cas de non-respect\n\n- Ne pas faire les travaux avant la location, ou ne pas joindre le constat au contrat, constitue un **manquement aux obligations de sécurité et de prudence**. Cela peut engager la **responsabilité pénale** du propriétaire bailleur (art. L1334-9, art. L1334-7).\n\n### Qui doit payer ?\n\n- Le constat est **à la charge du bailleur**, même si le contrat de location dit le contraire (art. L1334-7).\n- En cas de location, **les travaux incombent au propriétaire bailleur** (art. L1334-9).\n\n### Bon à savoir\n\nCes règles s'appliquent aux logements construits **avant le 1er janvier 1949** (art. L1334-7, art. R1334-3).\n\n### Conseil\n\nCette question touche à la sécurité et à la responsabilité pénale du bailleur. En cas de doute sur les travaux à réaliser, sur les seuils applicables, ou en cas de litige avec un locataire, il est conseillé de consulter :\n- l'**ADIL** (Agence départementale d'information sur le logement),\n- ou un **avocat** spécialisé en droit immobilier.",
+    "article_ids": [
+      "LEGIARTI000037671590",
+      "LEGIARTI000022053822",
+      "LEGIARTI000042878348",
+      "LEGIARTI000031928073",
+      "LEGIARTI000047945605"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "plomb-electricite-gaz-termites-erp",
+    "slug": "diagnostic-electricite-gaz-installation-15-ans",
+    "emoji": null,
+    "question": "Diagnostics électricité et gaz : quels logements et quelle durée de validité ?",
+    "short": "Les états de l'installation intérieure d'électricité et de gaz sont exigés, à la vente comme à la location, quand l'installation a plus de 15 ans. À la vente, ils doivent dater de moins de 3 ans ; la durée de validité pour la location est fixée par un décret non repris ici.",
+    "answer_md": "### Quels logements sont concernés ?\n\nLe diagnostic électricité et le diagnostic gaz sont obligatoires lorsque l'installation intérieure a été réalisée **depuis plus de 15 ans** (art. L134-7 pour l'électricité, art. L134-9 pour le gaz).\n\nCette règle s'applique dans deux situations :\n\n- **En cas de vente** de tout ou partie d'un logement (art. L134-7, art. L134-9) ;\n- **En cas de location** d'un logement (art. L134-7, art. L134-9). Dans ce cas, le diagnostic fait partie du dossier de diagnostic technique que le bailleur doit fournir au locataire, avec le DPE, le constat plomb et le diagnostic amiante (art. 3-3 de la loi du 6 juillet 1989).\n\n👉 Ce sont les mêmes règles générales qui listent tous les diagnostics à fournir lors d'une vente ou d'une location, y compris ceux sur l'électricité et le gaz (art. L126-23).\n\n### Que vérifie le diagnostic électricité ?\n\nIl porte sur les parties privatives du logement (et ses dépendances), depuis le tableau électrique jusqu'aux prises de courant. Il vérifie aussi que les équipements fixes sont adaptés au réseau et posés dans de bonnes conditions de sécurité (art. R126-35).\n\n### Quelle est la durée de validité ?\n\n**Pour une vente**, les diagnostics électricité et gaz doivent avoir été établis depuis **moins de 3 ans** par rapport à la date du compromis ou de l'acte de vente (art. D271-5).\n\n**Pour une location**, la durée de validité n'est pas fixée par les articles repris ici (elle relève des décrets d'application de l'article 3-3 de la loi de 1989, non ingérés). Vérifiez ce point auprès d'un diagnostiqueur certifié ou de l'ADIL.\n\n### Cas particulier : gaz\n\nSi l'installation de gaz a été modifiée ou complétée et a fait l'objet d'un certificat de conformité par un organisme agréé, ce certificat peut remplacer l'état de l'installation gaz, à condition d'avoir moins de 3 ans (art. R126-41).\n\n### En résumé\n\n- Logement concerné : installation électrique ou gaz de **plus de 15 ans**.\n- Situations concernées : **vente** et **location**.\n- Durée de validité en cas de **vente** : **moins de 3 ans**.\n- Durée de validité en cas de **location** : fixée par un décret non repris ici, à vérifier avec un diagnostiqueur ou l'ADIL.\n\nPour toute question sur un cas concret (logement ancien, mise en location, vente en cours), n'hésitez pas à contacter un diagnostiqueur immobilier certifié ou l'ADIL de votre département.",
+    "article_ids": [
+      "LEGIARTI000041588152",
+      "LEGIARTI000041566097",
+      "LEGIARTI000043978254",
+      "LEGIARTI000038967784",
+      "LEGIARTI000043977045",
+      "LEGIARTI000043818645",
+      "LEGIARTI000043818659"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "plomb-electricite-gaz-termites-erp",
+    "slug": "diagnostic-termites-vente-zone",
+    "emoji": null,
+    "question": "Diagnostic termites : quand le vendeur doit-il le fournir ?",
+    "short": "Le diagnostic termites est obligatoire seulement si le bien vendu se trouve dans une zone à risque délimitée par arrêté préfectoral. Il doit avoir été réalisé depuis moins de six mois au moment de la vente.",
+    "answer_md": "### Dans quels cas le diagnostic est-il obligatoire ?\n\nLe vendeur doit fournir un état relatif à la présence de termites uniquement si l'immeuble vendu (en tout ou partie) se situe dans une **zone délimitée par arrêté préfectoral** comme contaminée par les termites ou susceptible de l'être (art. L126-24, art. R131-4).\n\nCe document fait partie du **dossier de diagnostic technique** que le vendeur doit annexer :\n- à la promesse de vente,\n- ou, à défaut, à l'acte authentique de vente,\n- ou au cahier des charges en cas de vente publique (art. L271-4).\n\n### Délai de validité\n\nL'état termites doit avoir été établi depuis **moins de six mois** par rapport à la date de la promesse de vente ou de l'acte authentique (art. D271-5).\n\n### Que se passe-t-il si ce document manque ou est périmé ?\n\nSi le document n'est pas fourni ou n'est plus valide au moment de la signature de l'acte authentique, le vendeur **ne peut pas s'exonérer de la garantie des vices cachés** liée à ce sujet (art. L271-4).\n\n### Bon à savoir\n\n- Cette obligation ne s'applique que dans les zones à risque définies par arrêté préfectoral : si le bien n'est pas dans une telle zone, aucun diagnostic termites n'est requis.\n- Pour savoir si un bien se trouve dans une zone concernée, il est conseillé de se renseigner auprès du **service urbanisme de la mairie** ou de la **préfecture**, où l'arrêté est consultable (art. R131-4).\n- En cas de doute sur la validité du diagnostic ou sur les conséquences en cas d'absence, il peut être utile de consulter un **notaire** ou un **avocat**.",
+    "article_ids": [
+      "LEGIARTI000043977465",
+      "LEGIARTI000038967784",
+      "LEGIARTI000049398848",
+      "LEGIARTI000043818689"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "plomb-electricite-gaz-termites-erp",
+    "slug": "etat-des-risques-erp-vente-location",
+    "emoji": null,
+    "question": "État des risques (ERP) : qui doit le fournir, quand, et que risque-t-on sans lui ?",
+    "short": "Le vendeur ou le bailleur d'un bien situé en zone à risques remet l'état des risques dès la première visite, puis l'intègre au dossier de diagnostic ou l'annexe au bail. S'il manque, l'acquéreur ou le locataire peut demander la résolution du contrat ou une diminution du prix.",
+    "answer_md": "### Qui doit fournir l'état des risques ?\n\nC'est le **vendeur** (en cas de vente) ou le **bailleur** (en cas de location) qui doit informer l'acquéreur ou le locataire de l'existence de certains risques touchant le bien (art. L125-5). Cela concerne les biens situés dans une zone à risques : plan de prévention des risques technologiques, miniers ou naturels, zone de sismicité, zone à potentiel radon, zone de recul du trait de côte, ou zone soumise à des obligations de débroussaillement (art. L125-5, art. R125-23).\n\n### Quand doit-il être fourni ?\n\n**Pour une vente :**\n- Dès la **première visite** du bien, si une visite a lieu (art. L125-5).\n- Il doit ensuite être **intégré au dossier de diagnostic technique** ou annexé à la promesse de vente, ou à défaut à l'acte de vente (art. L125-5 ; art. L271-4).\n- Il doit être établi depuis **moins de six mois** au moment de la remise lors de la première visite, et être **actualisé** si les informations ne sont plus exactes au moment de la signature (art. R125-25).\n\n**Pour une location :**\n- Dès la **première visite** du logement, si une visite a lieu (art. L125-5 ; art. 3-3 de la loi du 6 juillet 1989).\n- Il doit être **annexé au contrat de bail** au moment de sa signature, et être mis à jour à **chaque changement de locataire** (art. L125-5 ; art. 3-3).\n\nToute annonce (vente ou location) doit aussi mentionner comment accéder à ces informations, avec un renvoi vers le site Géorisques (art. L125-5 ; art. R125-25).\n\n### Que contient ce document ?\n\nSelon la situation du bien, l'état des risques peut comprendre (art. R125-24) :\n- Un extrait du zonage réglementaire et du règlement applicable (plans de prévention des risques).\n- Une fiche d'information sur le risque sismique.\n- Une fiche d'information sur le radon.\n- Des informations sur le recul du trait de côte.\n- La liste des arrêtés de catastrophe naturelle ayant touché le bien et donné lieu à indemnisation.\n- Une fiche sur les obligations de débroussaillement.\n\nSi le bien a déjà subi un sinistre indemnisé, le vendeur ou bailleur doit aussi le signaler dans ce document (art. L125-5).\n\n### Que risque-t-on si ce document manque ?\n\nSi l'état des risques n'est pas fourni comme prévu, l'acheteur ou le locataire peut :\n- Demander la **résolution du contrat** (sa remise en cause devant le juge), ou\n- Demander au juge une **diminution du prix** (art. L125-5 ; art. 3-3 ; art. L271-4).\n\nPar ailleurs, si ce document n'est pas remis avant la signature de la promesse de vente ou du contrat préliminaire, le **délai de rétractation** de l'acquéreur ne commence à courir qu'à partir du lendemain de la remise du document (art. L125-5).\n\n### À noter\n\nCe sujet dépend de zonages fixés par l'État (plans de prévention, arrêtés préfectoraux) qui ne sont pas détaillés ici. En cas de doute sur la zone concernant un bien précis, il est conseillé de consulter le site Géorisques, le service urbanisme de la mairie, ou l'ADIL. En cas de litige, un avocat peut être utile pour évaluer les conséquences concrètes (résolution du contrat ou diminution du prix).",
+    "article_ids": [
+      "LEGIARTI000047810693",
+      "LEGIARTI000049492559",
+      "LEGIARTI000049492548",
+      "LEGIARTI000046364628",
+      "LEGIARTI000043978254",
+      "LEGIARTI000049398848"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "plomb-electricite-gaz-termites-erp",
+    "slug": "assainissement-non-collectif-vente-controle",
+    "emoji": null,
+    "question": "Vente d'une maison avec fosse septique : contrôle de l'assainissement et travaux sous un an",
+    "short": "Lors de la vente d'une maison équipée d'une fosse septique (assainissement non collectif), le vendeur doit fournir un diagnostic de moins de 3 ans dans le dossier de diagnostic technique. Si l'installation n'est pas conforme, l'acheteur doit faire les travaux de mise en conformité dans un délai d'un an après la vente.",
+    "answer_md": "### Le diagnostic assainissement non collectif est obligatoire\n\n- Si la maison n'est pas raccordée au réseau public d'égouts (cas d'une fosse septique), un contrôle de l'installation doit être fait par un service compétent (art. L1331-1-1).\n- Ce contrôle donne lieu à un document. Ce document doit être **daté de moins de 3 ans** au moment de la signature de l'acte de vente (art. L1331-11-1).\n- Ce document doit être joint au dossier de diagnostic technique (DDT) remis à l'acheteur (art. L1331-11-1 ; art. L271-4).\n\n### Qui paie le diagnostic s'il est manquant ou trop ancien ?\n\n- Si le contrôle date de plus de 3 ans, ou s'il n'existe pas du tout, c'est **au vendeur** de le faire réaliser, à ses frais (art. L1331-11-1).\n\n### Que se passe-t-il si l'installation n'est pas aux normes ?\n\n- Si, au moment de la vente, l'installation d'assainissement non collectif n'est **pas conforme**, c'est **l'acheteur** qui doit faire réaliser les travaux de mise en conformité.\n- Ce délai est d'**un an** après la signature de l'acte de vente (art. L271-4).\n\n### Et si le document est absent lors de la vente ?\n\n- Si ce document manque au moment de la signature de l'acte authentique, le vendeur **ne peut pas se protéger** contre la garantie des vices cachés liée à ce point (art. L271-4).\n\n### Entretien courant de la fosse septique\n\n- En dehors de la vente, le propriétaire d'une installation d'assainissement non collectif doit l'entretenir régulièrement et la faire vidanger périodiquement par une personne agréée par le préfet (art. L1331-1-1).\n- Si des travaux sont prescrits à la suite d'un contrôle, le propriétaire a **4 ans** après la notification du document de contrôle pour les réaliser (art. L1331-1-1). Attention : ce délai de 4 ans vaut pour les travaux prescrits après un contrôle hors vente ; en cas de vente avec une installation non conforme, l'acquéreur dispose d'un an (art. L271-4).\n\n### En résumé, dans une vente\n\n1. Le vendeur fournit le diagnostic (moins de 3 ans) dans le DDT (art. L1331-11-1 ; art. L271-4).\n2. Si le diagnostic manque ou est trop ancien, le vendeur doit le faire faire, à ses frais (art. L1331-11-1).\n3. Si l'installation est non conforme, l'acheteur a 1 an après la vente pour faire les travaux (art. L271-4).\n4. Si le document manque totalement lors de la signature, le vendeur reste responsable au titre de la garantie des vices cachés (art. L271-4).\n\n### Conseil\n\nCes règles ne remplacent pas un accompagnement personnalisé. Pour vérifier les démarches précises (qui contacter pour le contrôle, quel arrêté local s'applique), il est conseillé de s'adresser au service public d'assainissement non collectif (SPANC) de la mairie, ou à un notaire pour les aspects contractuels de la vente.",
+    "article_ids": [
+      "LEGIARTI000043975559",
+      "LEGIARTI000049398848",
+      "LEGIARTI000022495931"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "plomb-electricite-gaz-termites-erp",
+    "slug": "surface-habitable-bail-inferieure-baisse-loyer",
+    "emoji": null,
+    "question": "Surface habitable du bail surévaluée (loi Boutin) : le locataire peut-il obtenir une baisse de loyer ?",
+    "short": "Oui : si la surface réelle du logement est inférieure de plus d'un vingtième (5%) à celle indiquée dans le bail, le locataire peut demander une baisse de loyer proportionnelle à l'écart constaté.",
+    "answer_md": "### La règle\nSi la surface habitable réellement mesurée est **inférieure de plus d'un vingtième (soit plus de 5 %)** à celle écrite dans le contrat de location, le locataire peut demander une diminution du loyer. Cette diminution doit être **proportionnelle à l'écart constaté** entre la surface annoncée et la surface réelle (art. 3-1).\n\n### Comment faire la demande\n1. **Le locataire doit faire une demande** de diminution de loyer au bailleur.\n2. **Le bailleur a deux mois** pour répondre à cette demande.\n3. **En l'absence d'accord ou de réponse** dans ce délai, le locataire peut saisir le juge, mais seulement dans un **délai de quatre mois** à compter de sa demande initiale (art. 3-1).\n\n### À partir de quand la baisse s'applique-t-elle ?\n- En principe, la diminution de loyer accordée (par le bailleur ou par le juge) **prend effet à la date de signature du bail** (art. 3-1).\n- **Attention** : si le locataire fait sa demande **plus de six mois après le début du bail**, la diminution ne prend effet qu'**à la date de la demande**, et non de manière rétroactive à la signature du bail (art. 3-1).\n\n### Bon à savoir\nLe contrat de location doit obligatoirement mentionner la surface habitable du logement (art. 3). Si cette information manque dans le bail, le locataire dispose d'un délai d'un mois après la prise d'effet du contrat pour mettre en demeure le bailleur de la faire figurer. À défaut de réponse du bailleur sous un mois, ou en cas de refus, le locataire peut saisir la justice dans les trois mois suivant cette mise en demeure, pour obtenir, le cas échéant, une diminution de loyer (art. 3).\n\n### Conseil\nPour être efficace, il est recommandé de faire réaliser un mesurage précis de la surface habitable par un professionnel (métreur, diagnostiqueur) avant d'engager la démarche. En cas de désaccord persistant avec le bailleur, il est conseillé de se rapprocher d'une **ADIL (Agence départementale d'information sur le logement)** ou d'un avocat spécialisé en droit du logement pour être accompagné dans la procédure, notamment pour la saisine du juge dans les délais impartis.",
+    "article_ids": [
+      "LEGIARTI000028806589",
+      "LEGIARTI000039369598"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "diagnostic-manquant-ou-errone",
+    "slug": "vente-sans-diagnostic-consequences-vendeur",
+    "emoji": null,
+    "question": "Vendre sans diagnostic : quelles conséquences pour le vendeur ?",
+    "short": "Selon le document manquant, le vendeur ne peut plus invoquer sa clause d'exclusion de la garantie des vices cachés (plomb, amiante, termites, gaz, électricité, assainissement), ou l'acquéreur peut demander la résolution de la vente ou une baisse du prix (état des risques, arrêtés de police).",
+    "answer_md": "### Le principe : un dossier de diagnostic technique est obligatoire\n\nLors de la vente d'un bien immobilier bâti, le vendeur doit fournir un dossier de diagnostic technique. Ce dossier est joint à la promesse de vente, ou à défaut, à l'acte de vente final (art. L271-4).\n\nCe dossier peut contenir plusieurs diagnostics selon le bien concerné : plomb, amiante, termites, gaz, électricité, état des risques naturels et technologiques, performance énergétique, assainissement, mérule, bruit des aérodromes, etc. (art. L271-4).\n\n### Que se passe-t-il si un diagnostic manque ?\n\nLes conséquences varient selon le document manquant :\n\n**1. Pour le plomb, l'amiante, les termites, le gaz, l'électricité et l'assainissement**\n\nSi l'un de ces documents manque ou n'est plus valide au moment de la signature de l'acte de vente, le vendeur ne peut pas se protéger contre la garantie des vices cachés (art. L271-4). \n\nCela veut dire concrètement que si un défaut caché lié à ce sujet est découvert après la vente, l'acheteur peut se retourner contre le vendeur, même si le contrat prévoyait une clause excluant cette garantie.\n\n**2. Pour l'état des risques naturels et technologiques, ou les arrêtés de police**\n\nSi ce document manque au moment de la signature, l'acheteur peut demander en justice soit la résolution de la vente, soit une réduction du prix (art. L271-4).\n\n**3. Pour l'assainissement non conforme**\n\nSi l'installation d'assainissement n'est pas conforme, l'acheteur doit faire réaliser les travaux de mise en conformité dans un délai d'un an après la vente (art. L271-4).\n\n### Le lien avec la garantie des vices cachés\n\nDe manière générale, le vendeur doit garantir l'acheteur contre les défauts cachés qui rendent le bien impropre à son usage, ou qui diminuent tellement cet usage que l'acheteur ne l'aurait pas acheté, ou l'aurait acheté moins cher (art. 1641).\n\nCette garantie s'applique même si le vendeur ignorait le vice, sauf s'il a prévu par écrit qu'il ne serait tenu à aucune garantie (art. 1643). Mais justement, l'absence de certains diagnostics (plomb, amiante, termites, gaz, électricité, assainissement) empêche le vendeur d'invoquer une telle clause d'exclusion (art. L271-4).\n\nSi un vice cache est reconnu, l'acheteur a le choix : rendre le bien et se faire rembourser, ou garder le bien et obtenir une réduction du prix (art. 1644).\n\n**Attention, cas aggravé :** si le vendeur connaissait le vice, il doit rembourser le prix, mais aussi payer des dommages et intérêts à l'acheteur (art. 1645). C'est le cas typique du vendeur qui savait qu'il y avait de l'amiante ou des termites et ne l'a pas signalé.\n\n### Ce qu'il faut retenir\n\n- Vendre sans diagnostic n'annule pas forcément la vente automatiquement.\n- Mais cela prive le vendeur de sa clause d'exclusion de la garantie des vices cachés pour les défauts couverts par les diagnostics plomb, amiante, termites, gaz, électricité et assainissement.\n- Pour d'autres diagnostics (risques naturels, arrêtés de police), l'acheteur peut aller jusqu'à demander la résolution de la vente ou une baisse de prix.\n- Si un défaut caché est découvert après la vente et que le vendeur le connaissait, il risque de payer des dommages et intérêts en plus du remboursement.\n\n### Notre conseil\n\nCette question est complexe et les conséquences varient selon le type de diagnostic manquant et les circonstances de la vente. Nous vous conseillons de consulter un notaire ou un avocat spécialisé en droit immobilier pour évaluer votre situation précise, surtout si un litige est déjà engagé ou si vous envisagez une vente sans certains diagnostics.",
+    "article_ids": [
+      "LEGIARTI000049398848",
+      "LEGIARTI000006441924",
+      "LEGIARTI000006441953",
+      "LEGIARTI000030254091",
+      "LEGIARTI000006441972"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "diagnostic-manquant-ou-errone",
+    "slug": "diagnostic-perime-entre-compromis-et-acte",
+    "emoji": null,
+    "question": "Un diagnostic expire entre le compromis et l'acte de vente : que faire ?",
+    "short": "Si un diagnostic n'est plus valide au moment de la signature de l'acte définitif, il doit être refait et le nouveau document doit être joint à l'acte de vente. Une exception existe pour le diagnostic plomb dans certains cas.",
+    "answer_md": "### Ce qui se passe si un diagnostic expire entre le compromis et l'acte final\n\nLes diagnostics du dossier technique (plomb, amiante, termites, gaz, électricité, DPE, etc.) ont chacun une durée de validité fixée par la loi ou un décret.\n\n- Le **constat plomb** est valable moins d'un an (art. D271-5).\n- L'**état termites** est valable moins de six mois (art. D271-5).\n- L'**état gaz** et l'**état électricité** sont valables moins de trois ans chacun (art. D271-5).\n- Le **DPE** (diagnostic de performance énergétique) est valable dix ans (art. D126-19).\n\n### La règle principale\n\nSi un de ces documents, remis lors de la signature du compromis de vente (la promesse de vente), n'est plus valide à la date de la signature de l'acte authentique (l'acte définitif chez le notaire), **il doit être remplacé par un document à jour**. Ce nouveau document est alors annexé à l'acte de vente (art. L271-5).\n\nC'est donc au vendeur de faire réaliser un nouveau diagnostic si l'ancien a expiré entre les deux signatures.\n\n### Une exception pour le plomb\n\nSi le premier constat plomb montre qu'il n'y a pas de plomb, ou une quantité de plomb inférieure à un seuil fixé par arrêté, il n'est pas nécessaire de refaire un nouveau constat à chaque vente. Le même constat initial peut être conservé dans le dossier (art. L271-5).\n\n### Attention à l'état des risques (zones à risques naturels ou technologiques)\n\nSi, après la signature du compromis, le bien se trouve nouvellement inclus dans une zone à risques (inondation, sismique, etc.), ou si les documents officiels utilisés pour établir ce zonage ont été mis à jour, l'état des risques doit aussi être complété ou mis à jour au moment de l'acte définitif (art. L271-5).\n\n### Que se passe-t-il si le document n'est pas renouvelé ?\n\n- Pour les diagnostics plomb, amiante, termites, gaz, électricité et assainissement non collectif : si le document valide manque au moment de l'acte authentique, **le vendeur ne peut pas s'exonérer de la garantie des vices cachés** correspondante (art. L271-4, II).\n- Pour l'état des risques ou les arrêtés de police (sécurité/salubrité) : si le document manque, **l'acheteur peut demander la résolution de la vente ou une baisse du prix** devant le juge (art. L271-4, II).\n\n### Conseil pratique\n\nEn général, c'est le notaire qui vérifie la validité des diagnostics avant la signature de l'acte définitif et qui demande au vendeur de faire réaliser les documents manquants ou expirés. Si un désaccord survient sur qui doit payer le nouveau diagnostic, ou si le vendeur refuse de le faire réaliser, il est conseillé de consulter le notaire en charge de la vente ou un avocat spécialisé en droit immobilier.",
+    "article_ids": [
+      "LEGIARTI000043978261",
+      "LEGIARTI000038967784",
+      "LEGIARTI000043818603",
+      "LEGIARTI000049398848"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "diagnostic-manquant-ou-errone",
+    "slug": "location-sans-diagnostics-consequences-bailleur",
+    "emoji": null,
+    "question": "Bail signé sans les diagnostics obligatoires : quels risques pour le bailleur ?",
+    "short": "Selon la situation, l'absence de diagnostics dans le bail peut permettre au locataire de demander la résolution du contrat ou une baisse du loyer, et peut même engager la responsabilité pénale du bailleur pour le plomb. Les conséquences varient selon le diagnostic manquant.",
+    "answer_md": "### Quels diagnostics doivent être annexés au bail ?\n\nLe bailleur doit fournir un dossier de diagnostic technique comprenant, selon les cas :\n- le diagnostic de performance énergétique (DPE) (art. 3-3, art. L126-29)\n- le constat de risque d'exposition au plomb (CREP), pour les logements construits avant le 1er janvier 1949 (art. 3-3, art. L1334-7)\n- l'état amiante (art. 3-3)\n- l'état de l'installation intérieure d'électricité et de gaz (art. 3-3)\n- l'état des risques naturels et technologiques, si le logement est situé dans une zone concernée (art. 3-3, art. L125-5)\n\n### Que se passe-t-il si un diagnostic manque ?\n\n**Concernant l'état des risques (zones à risques naturels, technologiques, sismiques, etc.) :**\nSi ce document manque, le locataire peut demander en justice soit la résolution du bail, soit une diminution du loyer (art. 3-3, art. L125-5).\n\n**Concernant le diagnostic plomb (CREP) :**\n- L'absence de ce constat dans le bail est considérée comme un manquement grave du bailleur à ses obligations de sécurité. Cela peut engager sa **responsabilité pénale** (art. L1334-7).\n- Si le diagnostic révèle la présence de plomb dangereux, le bailleur doit faire les travaux nécessaires avant de louer. Ne pas le faire est aussi un manquement pouvant engager sa responsabilité pénale (art. L1334-9).\n\n**Concernant le DPE :**\nLe locataire ne peut pas se retourner contre le bailleur sur la base des simples recommandations du DPE, qui n'ont qu'une valeur informative (art. L126-29). Les textes fournis ne précisent pas de sanction spécifique en cas d'absence totale du DPE dans le bail.\n\n**Concernant les autres diagnostics (amiante, électricité, gaz) :**\nLes articles fournis n'indiquent pas de sanction précise en cas d'absence de ces diagnostics dans le bail signé. Il n'est donc pas possible de répondre avec certitude sur ce point avec les seuls textes disponibles.\n\n### Ce qu'il faut retenir\n\n- Le locataire dispose de recours concrets (résolution du bail, diminution du loyer) surtout pour l'état des risques.\n- Le bailleur s'expose à des poursuites pénales en cas d'absence de constat plomb ou de non-réalisation des travaux nécessaires.\n- Pour les autres diagnostics, les textes fournis ne précisent pas toutes les conséquences possibles.\n\n### Conseil\n\nSi vous êtes locataire et qu'un diagnostic manque à votre bail, vous pouvez contacter l'**ADIL** (Agence Départementale d'Information sur le Logement) pour connaître vos droits, ou consulter un avocat en droit du logement pour engager une action en justice si nécessaire.",
+    "article_ids": [
+      "LEGIARTI000043978254",
+      "LEGIARTI000031928073",
+      "LEGIARTI000043977041",
+      "LEGIARTI000037671590",
+      "LEGIARTI000047810693"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "diagnostic-manquant-ou-errone",
+    "slug": "clause-exoneration-vices-caches-diagnostics",
+    "emoji": null,
+    "question": "La clause « vendu sans garantie des vices cachés » protège-t-elle le vendeur en cas de diagnostic ?",
+    "short": "Non : si le vendeur n'a pas fourni un diagnostic obligatoire (plomb, amiante, termites, gaz, électricité, assainissement) en cours de validité, il ne peut pas invoquer la clause d'exclusion de garantie des vices cachés pour ce défaut précis. Pour les autres vices, la clause reste efficace sauf s'il connaissait le vice.",
+    "answer_md": "### Le principe : la clause peut exonérer le vendeur\nEn droit commun, le vendeur peut prévoir qu'il ne garantit aucun vice caché (art. 1643). Cette clause est valable **sauf s'il connaissait le vice** : dans ce cas, il reste responsable et doit indemniser l'acheteur (art. 1645).\n\n### L'exception liée aux diagnostics obligatoires\nLa loi limite cette clause quand un **diagnostic technique obligatoire** fait défaut ou n'est pas valide au moment de la signature de l'acte de vente.\n\nSi, lors de la signature de l'acte authentique, l'un de ces diagnostics est absent ou expiré :\n- constat de risque d'exposition au plomb,\n- état amiante,\n- état termites,\n- état de l'installation de gaz,\n- état de l'installation d'électricité,\n- document sur l'assainissement non collectif,\n\nalors **le vendeur ne peut pas s'exonérer de la garantie des vices cachés correspondante** (art. L271-4, II). Autrement dit, la clause « vendu sans garantie des vices cachés » ne le protège pas pour ce défaut précis.\n\n### Cas particulier : risques naturels/technologiques et arrêtés de police\nSi c'est l'état des risques (zones à risques) ou les arrêtés de police de sécurité/salubrité qui manquent, la conséquence n'est pas la même : l'acheteur peut demander la résolution de la vente ou une baisse du prix, mais ce n'est pas une question de garantie des vices cachés (art. L271-4, II).\n\n### Ce qui ne change rien à la clause\nPour les diagnostic de performance énergétique (DPE) et l'état concernant le bruit des aérodromes : leurs recommandations n'ont qu'une valeur indicative, l'acheteur ne peut rien en tirer contre le vendeur (art. L271-4, II).\n\n### Rappel sur les règles générales des vices cachés\n- Le vendeur garantit les défauts cachés qui rendent le bien impropre à l'usage prévu, ou qui diminuent fortement son usage (art. 1641).\n- Il n'est pas tenu des vices apparents que l'acheteur pouvait déceler lui-même (art. 1642).\n- Si le vendeur ignorait le vice, il ne doit que rembourser le prix et les frais de vente (art. 1646).\n- Si le vendeur connaissait le vice, il doit en plus des dommages et intérêts (art. 1645).\n- L'acheteur doit agir dans les deux ans à partir de la découverte du vice (art. 1648).\n\n### En résumé\nLa clause d'exclusion de garantie ne protège **pas** le vendeur si un diagnostic obligatoire manque ou est expiré au moment de la vente, pour le défaut concerné par ce diagnostic. Pour tout autre vice non couvert par un diagnostic obligatoire, la clause reste valable, sauf mauvaise foi du vendeur (vice qu'il connaissait).\n\n⚠️ Ce sujet peut être complexe selon les circonstances (copropriété, bien ancien, connaissance du vice). Il est conseillé de consulter un **notaire** ou un **avocat** pour une analyse précise de votre situation.",
+    "article_ids": [
+      "LEGIARTI000006441953",
+      "LEGIARTI000006441972",
+      "LEGIARTI000049398848",
+      "LEGIARTI000006441924",
+      "LEGIARTI000006441932",
+      "LEGIARTI000006441982",
+      "LEGIARTI000020466328"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "diagnostic-manquant-ou-errone",
+    "slug": "diagnostic-errone-responsabilite-diagnostiqueur",
+    "emoji": null,
+    "question": "Diagnostic erroné : le diagnostiqueur est-il responsable et doit-il être assuré ?",
+    "short": "Oui : le diagnostiqueur doit obligatoirement être assuré, et il peut être tenu responsable si son diagnostic erroné cause un dommage.",
+    "answer_md": "### L'obligation d'assurance du diagnostiqueur\n\nLa personne qui réalise un diagnostic immobilier (par exemple pour un DPE, un diagnostic amiante, plomb, etc., listés dans le dossier de diagnostic technique) doit :\n\n- présenter des garanties de compétence, avoir une organisation et des moyens adaptés (art. L271-6) ;\n- être indépendante : elle ne doit avoir aucun lien avec le propriétaire, son mandataire, ou une entreprise susceptible de faire les travaux (art. L271-6) ;\n- souscrire une **assurance obligatoire** couvrant sa responsabilité (art. L271-6).\n\nLe montant minimum de cette assurance est précisé par la réglementation :\n\n- pour les diagnostics classiques du dossier de diagnostic technique : au moins **300 000 € par sinistre** et **500 000 € par année d'assurance** (art. R271-2) ;\n- pour le diagnostic structurel des immeubles d'habitation collectifs : au moins **1 000 000 € par sinistre** et **1 500 000 € par année d'assurance** (art. R126-43-6) ;\n- pour le diagnostic déchets issus de rénovation/démolition : au moins **300 000 € par sinistre** et **500 000 € par année d'assurance** (art. D126-12).\n\n### La responsabilité en cas de diagnostic erroné\n\nSi le diagnostic est faux ou mal réalisé et que cela cause un dommage (par exemple, vous achetez un bien en vous fiant à un diagnostic erroné et découvrez ensuite un problème caché) :\n\n- Si vous avez un contrat avec le diagnostiqueur (ce qui est généralement le cas), sa responsabilité peut être engagée pour **inexécution de son obligation** : il doit alors réparer le préjudice, sauf s'il prouve un cas de force majeure (art. 1231-1).\n- De façon plus générale, toute personne qui cause un dommage à autrui par sa faute doit le réparer (art. 1240). Cela peut s'appliquer si le diagnostiqueur a commis une erreur ou une négligence.\n\nC'est justement pour couvrir ce risque que l'assurance est obligatoire (art. L271-6) : elle doit permettre d'indemniser les victimes d'un diagnostic fautif.\n\n### En pratique\n\nSi vous pensez avoir subi un préjudice à cause d'un diagnostic erroné :\n\n- Rassemblez tous les documents (rapport de diagnostic, contrat, preuves du dommage) ;\n- Contactez d'abord le diagnostiqueur ou son assureur pour une demande d'indemnisation ;\n- En cas de litige ou de refus, il est conseillé de consulter un **avocat** ou de vous rapprocher d'une **ADIL** (Agence départementale d'information sur le logement) pour évaluer vos droits et la procédure à suivre.\n\n⚠️ Attention : les articles fournis ne donnent pas le détail des délais de prescription pour agir contre un diagnostiqueur, ni les conditions précises de mise en cause de sa responsabilité pénale. Un professionnel du droit pourra préciser ces points selon votre situation.",
+    "article_ids": [
+      "LEGIARTI000051830494",
+      "LEGIARTI000019984880",
+      "LEGIARTI000052098095",
+      "LEGIARTI000043827913",
+      "LEGIARTI000032010123",
+      "LEGIARTI000032041571"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "diagnostic-manquant-ou-errone",
+    "slug": "decouverte-amiante-termites-apres-achat",
+    "emoji": null,
+    "question": "Amiante ou termites découverts après l'achat alors que le diagnostic n'en mentionnait pas : que faire ?",
+    "short": "Si l'état amiante ou termites manquait ou était périmé à l'acte, le vendeur ne peut pas opposer sa clause d'exclusion des vices cachés. S'il était fourni et valable mais erroné, la clause peut jouer sauf mauvaise foi du vendeur, et le recours vise surtout le diagnostiqueur, qui doit être assuré. L'action en garantie des vices cachés se prescrit par 2 ans à compter de la découverte.",
+    "answer_md": "### Premier point : le diagnostic existait-il et était-il valable ?\n\nLe dossier de diagnostic technique comprend l'état amiante et, dans les zones délimitées par arrêté préfectoral, l'état termites (art. L271-4, 2° et 3°). L'état termites doit dater de moins de six mois (art. D271-5).\n\n**Diagnostic absent ou périmé à la signature de l'acte** : le vendeur ne peut pas s'exonérer de la garantie des vices cachés correspondante (art. L271-4, II). La règle vaut pour l'amiante comme pour les termites. Une clause « sans garantie des vices cachés » ne le protège donc pas pour ce défaut.\n\n**Diagnostic fourni et valable, mais qui ne signalait rien** : la clause d'exclusion peut en principe jouer si le vendeur ignorait le vice (art. 1643). Elle ne le protège pas s'il connaissait l'amiante ou les termites : il doit alors restituer le prix et verser des dommages et intérêts (art. 1645).\n\n### La garantie des vices cachés\n\nLe défaut doit être caché et rendre le bien impropre à son usage, ou en diminuer tellement l'usage que vous ne l'auriez pas acheté, ou à un moindre prix (art. 1641). Vous pouvez rendre le bien et récupérer le prix, ou le garder et obtenir une partie du prix (art. 1644). L'action doit être engagée dans les **2 ans à compter de la découverte** du vice (art. 1648).\n\n### Le recours contre le diagnostiqueur\n\nLe diagnostiqueur doit présenter des garanties de compétence et être assuré pour les conséquences de ses interventions (art. L271-6), avec une garantie d'au moins 300 000 € par sinistre (art. R271-2). Un repérage qui a manqué de l'amiante accessible ou des termites visibles peut engager sa responsabilité ; l'étendue de sa mission (matériaux accessibles sans travaux destructifs pour l'amiante, art. R1334-20 et R1334-21) et l'appréciation de sa faute relèvent de la jurisprudence, non reprise ici.\n\n### Que faire concrètement\n\n1. Faire constater la présence d'amiante ou de termites par un professionnel, avec un rapport daté.\n2. Vérifier la date et le contenu du diagnostic annexé à la promesse et à l'acte.\n3. Écrire en recommandé au vendeur et au diagnostiqueur (et à son assureur).\n4. Consulter un avocat en droit immobilier sans attendre, compte tenu du délai de 2 ans. L'ADIL peut donner un premier avis gratuit.",
+    "article_ids": [
+      "LEGIARTI000006441924",
+      "LEGIARTI000006441953",
+      "LEGIARTI000020466328",
+      "LEGIARTI000049398848",
+      "LEGIARTI000051830494",
+      "LEGIARTI000019984880",
+      "LEGIARTI000030254091",
+      "LEGIARTI000006441972",
+      "LEGIARTI000038967784",
+      "LEGIARTI000024140946",
+      "LEGIARTI000024140942"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "metier-diagnostiqueur-immobilier",
+    "slug": "certification-diagnostiqueur-immobilier",
+    "emoji": null,
+    "question": "Comment devenir diagnostiqueur immobilier : quelle certification est exigée ?",
+    "short": "Pour être diagnostiqueur immobilier (DPE, amiante, etc.), il faut être certifié par un organisme accrédité, être assuré et être indépendant des vendeurs/agences et des entreprises de travaux (art. L271-6, art. R271-1).",
+    "answer_md": "### Qui peut établir les diagnostics immobiliers ?\n\nPour établir les documents du dossier de diagnostic technique (par exemple amiante, plomb, ou d'autres diagnostics visés par la loi), il faut être une personne qui présente des garanties de compétence, avec une organisation et des moyens appropriés (art. L271-6).\n\n### La certification exigée\n\nDeux possibilités (art. R271-1) :\n\n- **Être une personne physique** dont les compétences sont certifiées par un organisme accrédité dans le domaine de la construction.\n- **Être une personne morale** (entreprise) qui emploie des salariés certifiés dans les mêmes conditions, ou qui est constituée de personnes physiques elles-mêmes certifiées.\n\nCette certification est délivrée en fonction :\n- des connaissances techniques dans le domaine du bâtiment,\n- et de l'aptitude à établir les différents éléments du dossier de diagnostic technique (art. R271-1).\n\nL'organisme qui délivre la certification doit lui-même être accrédité par un organisme reconnu au niveau européen (art. R271-1). Un organisme certificateur ne peut pas, lui, réaliser les diagnostics (art. R271-1).\n\nDes arrêtés ministériels précisent les modalités pratiques de cette certification (art. R271-1), notamment les référentiels de compétences par type de diagnostic. Ces arrêtés ne sont pas fournis ici : pour connaître le contenu exact des examens et les diagnostics concernés, il faut s'y référer directement.\n\n### Autres obligations à respecter\n\nEn plus de la certification, le diagnostiqueur doit :\n\n- **Souscrire une assurance** couvrant sa responsabilité professionnelle (art. L271-6).\n- **Être indépendant et impartial** : aucun lien ne doit exister avec le propriétaire/mandataire qui fait appel à lui, ni avec une entreprise susceptible de réaliser des travaux sur le bien diagnostiqué (art. L271-6).\n- **Remettre à son client une attestation sur l'honneur** confirmant qu'il est en situation régulière et qu'il dispose des moyens matériels et humains nécessaires (art. R271-3).\n- **Ne recevoir aucun avantage** de la part d'une agence immobilière ou d'une entreprise de travaux liée au bien diagnostiqué (art. R271-3).\n- **Mentionner sur ses rapports** le nom et l'adresse de l'organisme certificateur (art. R271-3).\n\n### Cas particulier de l'amiante\n\nPour les repérages amiante, l'évaluation de l'état de conservation et les examens visuels, les mêmes règles de certification prévues à l'article L271-6 du code de la construction s'appliquent (art. R1334-23).\n\n### Sanctions en cas de non-respect\n\nÉtablir ou accepter d'établir un diagnostic sans respecter les conditions de compétence, d'organisation, d'assurance, d'impartialité ou d'indépendance est puni d'une amende pour contravention de 5ème classe (art. R271-4). Cette sanction vise aussi l'organisme certificateur qui établit lui-même un diagnostic, et la personne qui fait appel à un diagnostiqueur ne remplissant pas ces conditions (art. R271-4).\n\n### En pratique\n\nPour devenir diagnostiqueur, il faut donc :\n1. Passer une certification auprès d'un organisme accrédité (le choix de l'organisme et les modalités précises des examens dépendent d'arrêtés non fournis ici).\n2. Souscrire une assurance professionnelle.\n3. S'organiser pour respecter l'indépendance exigée par la loi.\n\n**Conseil** : pour connaître la liste des organismes certificateurs accrédités et le contenu exact des formations/examens par type de diagnostic (amiante, plomb, DPE, etc.), il est recommandé de consulter le site du ministère chargé du Logement ou de contacter directement un organisme accrédité (accrédité par un organisme signataire de l'accord européen multilatéral, art. R271-1). Un annuaire public des diagnostiqueurs en activité existe également (art. L271-6).",
+    "article_ids": [
+      "LEGIARTI000051830494",
+      "LEGIARTI000022914846",
+      "LEGIARTI000022914849",
+      "LEGIARTI000024322904",
+      "LEGIARTI000038946872"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "metier-diagnostiqueur-immobilier",
+    "slug": "assurance-diagnostiqueur-montant-minimum",
+    "emoji": null,
+    "question": "Quelle assurance un diagnostiqueur immobilier doit-il souscrire ?",
+    "short": "Le diagnostiqueur immobilier doit souscrire une assurance responsabilité civile professionnelle, avec une garantie d'au moins 300 000 € par sinistre et 500 000 € par année d'assurance (montant plus élevé pour le diagnostic structurel des immeubles collectifs).",
+    "answer_md": "### Obligation d'assurance du diagnostiqueur\n\nLa personne qui réalise les diagnostics immobiliers (ceux visés à l'article L. 271-4, comme le diagnostic de performance énergétique, l'état amiante, etc.) doit :\n\n- Présenter des garanties de compétence et disposer de moyens appropriés (art. L271-6).\n- Souscrire une **assurance responsabilité civile professionnelle** pour couvrir les conséquences de ses interventions (art. L271-6).\n- Être indépendante : elle ne doit avoir aucun lien avec le propriétaire, son mandataire, ou une entreprise pouvant réaliser des travaux sur le bien diagnostiqué (art. L271-6).\n\n### Montant minimal de la garantie\n\nPour la plupart des diagnostics du dossier de diagnostic technique, le montant de la garantie ne peut être inférieur à :\n\n- **300 000 € par sinistre**\n- **500 000 € par année d'assurance**\n\n(art. R271-2)\n\n### Cas particulier : diagnostic structurel des immeubles collectifs\n\nPour le diagnostic structurel des bâtiments d'habitation collectifs, les montants minimaux sont plus élevés :\n\n- **1 000 000 € par sinistre**\n- **1 500 000 € par année d'assurance**\n\n(art. R126-43-6)\n\n### Cas particulier : diagnostic déchets (rénovation/démolition)\n\nPour le diagnostic portant sur les déchets issus de rénovations et de démolitions, la personne qui le réalise doit aussi justifier d'une assurance couvrant sa responsabilité, avec un montant minimal de :\n\n- **300 000 € par sinistre**\n- **500 000 € par année d'assurance**\n\n(art. D126-12)\n\n### Autres obligations liées\n\n- Le diagnostiqueur doit remettre à son client, avant sa prestation, une attestation sur l'honneur confirmant qu'il est en situation régulière et qu'il dispose des moyens nécessaires (art. R271-3).\n- Il ne peut recevoir aucun avantage ou rétribution, ni de l'agence immobilière qui intervient sur la vente ou la location, ni d'une entreprise susceptible de réaliser des travaux sur le bien (art. R271-3).\n\n### Conseil\n\nSi vous êtes propriétaire ou acquéreur et que vous avez un doute sur les compétences ou l'assurance d'un diagnostiqueur, vous pouvez demander à voir son attestation d'assurance et vérifier son inscription dans l'annuaire public prévu par la loi. En cas de litige, un avocat ou l'ADIL (Agence départementale d'information sur le logement) peut vous aider.",
+    "article_ids": [
+      "LEGIARTI000051830494",
+      "LEGIARTI000019984880",
+      "LEGIARTI000022914849",
+      "LEGIARTI000052098095",
+      "LEGIARTI000043827913"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "metier-diagnostiqueur-immobilier",
+    "slug": "independance-diagnostiqueur-agent-immobilier",
+    "emoji": null,
+    "question": "Un diagnostiqueur peut-il verser une commission à l'agent immobilier ou travailler avec une entreprise de travaux ?",
+    "short": "Non. Un diagnostiqueur ne peut ni verser d'avantage ou de commission à l'agent immobilier, ni recevoir d'avantage d'une entreprise de travaux. Il doit rester indépendant et impartial vis-à-vis de ces deux parties.",
+    "answer_md": "### Ce que dit la règle\n\nLe diagnostiqueur qui établit les documents du dossier de diagnostic technique (DPE, diagnostics amiante, plomb, etc.) doit respecter des règles strictes d'indépendance :\n\n- Il ne doit avoir **aucun lien** de nature à porter atteinte à son impartialité et à son indépendance, ni avec le propriétaire ou son mandataire (par exemple l'agent immobilier), ni avec une entreprise pouvant réaliser des travaux sur le bien diagnostiqué (art. L271-6).\n\n### Interdiction de verser une commission à l'agent immobilier\n\n- Ni le diagnostiqueur ni son employé ne peut accorder, **directement ou indirectement**, un avantage ou une rétribution, sous quelque forme que ce soit, à l'agence ou au professionnel qui intervient pour la vente ou la location (art. R271-3).\n\n### Interdiction de recevoir un avantage d'une entreprise de travaux\n\n- Symétriquement, ni le diagnostiqueur ni son employé ne peut recevoir, directement ou indirectement, un avantage ou une rétribution de la part d'une entreprise susceptible de réaliser des travaux sur les ouvrages, installations ou équipements concernés par le diagnostic (art. R271-3).\n\n### En résumé\n\n- **Verser une commission à un agent immobilier : interdit.**\n- **Recevoir un avantage d'une entreprise de travaux : interdit.**\n- Le diagnostiqueur doit aussi remettre une attestation sur l'honneur confirmant qu'il respecte ces règles et qu'il dispose des moyens nécessaires pour sa mission (art. R271-3).\n\nCes règles visent à garantir que le diagnostic reste objectif, sans influence commerciale.\n\n### Sanction\n\nÉtablir un document sans respecter les conditions d'impartialité et d'indépendance de l'article L271-6 est puni de l'amende des contraventions de 5e classe ; la même peine vise celui qui fait appel à une personne ne remplissant pas ces conditions (art. R271-4), soit 1 500 € au plus, 3 000 € en récidive lorsque le règlement le prévoit (art. 131-13 du code pénal).\n\nLes avantages indirects (partenariats, apports d'affaires) s'apprécient au cas par cas : en cas de doute sur un montage commercial, faites-le valider par un avocat.",
+    "article_ids": [
+      "LEGIARTI000051830494",
+      "LEGIARTI000022914849",
+      "LEGIARTI000024322904",
+      "LEGIARTI000006417259"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "metier-diagnostiqueur-immobilier",
+    "slug": "sanctions-diagnostiqueur-non-certifie",
+    "emoji": null,
+    "question": "Diagnostiqueur non certifié ou non assuré : quelles sanctions, aussi pour celui qui le missionne ?",
+    "short": "Établir un diagnostic sans certification, assurance ou indépendance conformes est une contravention de 5e classe (1 500 € au plus, 3 000 € en récidive). La même amende vise l'organisme certificateur qui établit lui-même un diagnostic et la personne qui fait appel à un diagnostiqueur non conforme (art. R271-4).",
+    "answer_md": "### Ce que disent les textes\n\nLe diagnostiqueur doit remplir certaines conditions pour établir les documents du dossier de diagnostic technique (DPE, amiante, termites, etc.) :\n\n- Être certifié par un organisme accrédité, ou faire partie d'une structure employant des personnes certifiées (art. R271-1).\n- Souscrire une assurance dont la garantie ne peut être inférieure à 300 000 € par sinistre et 500 000 € par an (art. R271-2).\n- Être assuré et n'avoir aucun lien portant atteinte à son impartialité et à son indépendance avec le propriétaire, son mandataire ou une entreprise de travaux (art. L271-6).\n\n### Les sanctions prévues\n\nTrois situations sont punies de l'amende prévue pour les **contraventions de 5e classe** (art. R271-4) :\n\n1. **Le diagnostiqueur lui-même** : établir ou accepter d'établir un diagnostic sans respecter les conditions de compétence, d'organisation, d'assurance ou d'impartialité (art. R271-4, a).\n2. **L'organisme certificateur** : s'il établit lui-même un diagnostic, alors qu'il ne doit que certifier les compétences des diagnostiqueurs, sans les réaliser (art. R271-4, b).\n3. **La personne qui fait appel à un diagnostiqueur non conforme** (par exemple un vendeur ou une agence immobilière qui missionne un diagnostiqueur non certifié ou non assuré) : elle est également punissable (art. R271-4, c).\n\n### En cas de récidive\n\nSi la même personne recommence, la sanction est aggravée conformément aux règles générales du code pénal sur la récidive (art. R271-4, qui renvoie aux articles 132-11 et 132-15 du code pénal — non fournis ici en détail).\n\n### Montant et limites\n\n- L'amende d'une contravention de 5e classe est de 1 500 € au plus, portée à 3 000 € en cas de récidive lorsque le règlement le prévoit (art. 131-13 du code pénal).\n- Les conséquences civiles (responsabilité envers le client, validité du document) relèvent de la jurisprudence, non reprise ici.\n\n### Conseil\n\nSi vous avez un doute sur la validité d'un diagnostic (certification, assurance du diagnostiqueur), vous pouvez :\n- Demander au diagnostiqueur son certificat de compétence et son attestation d'assurance.\n- Vérifier auprès de l'organisme certificateur.\n- Vous rapprocher d'un avocat ou de l'ADIL en cas de litige (par exemple si un vice caché est découvert après la vente).",
+    "article_ids": [
+      "LEGIARTI000024322904",
+      "LEGIARTI000022914846",
+      "LEGIARTI000019984880",
+      "LEGIARTI000051830494",
+      "LEGIARTI000006417259"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "metier-diagnostiqueur-immobilier",
+    "slug": "transmission-dpe-audit-ademe",
+    "emoji": null,
+    "question": "Le diagnostiqueur doit-il transmettre le DPE et l'audit énergétique à l'ADEME ?",
+    "short": "Oui. Le diagnostiqueur doit transmettre le DPE et l'audit énergétique à l'ADEME, et en donner aussi une copie au propriétaire.",
+    "answer_md": "### Ce que disent les textes\n- Les personnes qui établissent un diagnostic de performance énergétique (DPE) ou un audit énergétique doivent les transmettre à l'Agence de l'environnement et de la maîtrise de l'énergie (ADEME) (art. L126-32).\n- Cette transmission se fait via un traitement automatique de données mis en place par l'ADEME (art. R126-26 pour le DPE, art. R126-30 pour l'audit énergétique).\n\n### Comment ça se passe concrètement\n- Le diagnostiqueur transmet le DPE ou l'audit à l'ADEME, dans un format standardisé, via une application dédiée. En retour, il reçoit un numéro d'identifiant du document (art. R126-27 pour le DPE, art. R126-31 pour l'audit).\n- Il doit aussi transmettre ces mêmes données, dans le même format, **au propriétaire** du bâtiment concerné (art. R126-27 et art. R126-31).\n\n### Pourquoi cette transmission\nCes informations servent à :\n- l'information, le contrôle, les études statistiques et l'évaluation des politiques publiques liées au logement et à l'énergie (art. L126-32) ;\n- être mises à disposition de plusieurs acteurs (collectivités territoriales, Agence nationale de l'habitat, associations de lutte contre la précarité énergétique, etc.) dans le cadre de leurs missions (art. L126-32).\n\nÀ noter : ces données ne peuvent pas être utilisées à des fins commerciales (art. L126-32).\n\n### En résumé\nOui, la transmission à l'ADEME est une obligation légale pour le diagnostiqueur, aussi bien pour le DPE que pour l'audit énergétique. Il doit également en remettre une copie au propriétaire du bien.\n\nSi vous avez un doute sur la bonne exécution de cette transmission dans votre cas (par exemple absence de numéro d'identifiant), vous pouvez vous rapprocher d'une ADIL ou d'un professionnel du droit immobilier.",
+    "article_ids": [
+      "LEGIARTI000051830450",
+      "LEGIARTI000043818621",
+      "LEGIARTI000043818623",
+      "LEGIARTI000045543584",
+      "LEGIARTI000045543575"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "metier-diagnostiqueur-immobilier",
+    "slug": "qui-peut-realiser-audit-energetique",
+    "emoji": null,
+    "question": "Qui peut réaliser l'audit énergétique obligatoire à la vente ?",
+    "short": "L'audit énergétique doit être réalisé par un professionnel qualifié, indépendant et impartial vis-à-vis du vendeur (art. L126-28-1). Il doit aussi présenter des garanties de compétence, une assurance et une indépendance vis-à-vis du propriétaire et des entreprises de travaux (art. L271-6).",
+    "answer_md": "### Qui peut réaliser l'audit énergétique à la vente ?\n\nL'audit énergétique obligatoire (dans certains cas de vente de logements très énergivores) doit être réalisé par une personne remplissant plusieurs conditions cumulatives.\n\n**1. Un professionnel qualifié**\nL'audit est fait par un professionnel qui répond à des conditions de qualification fixées par décret (art. L126-28-1).\n\n**2. Indépendance et impartialité**\nCe professionnel ne doit avoir **aucun lien** de nature à porter atteinte à son impartialité ou à son indépendance vis-à-vis :\n- du propriétaire ou de son mandataire qui fait appel à lui (art. L126-28-1, art. L271-6) ;\n- d'une entreprise susceptible de réaliser des travaux sur le bien (art. L271-6).\n\n**3. Garanties de compétence et assurance**\nDe façon plus générale, les personnes qui établissent les diagnostics du dossier de diagnostic technique (dont l'audit énergétique) doivent :\n- présenter des garanties de compétence et disposer d'une organisation et de moyens appropriés (art. L271-6) ;\n- avoir souscrit une **assurance professionnelle** couvrant leur responsabilité (art. L271-6).\n\nUn **annuaire public** recense les personnes autorisées à réaliser ces diagnostics (art. L271-6).\n\n**4. Sanctions en cas de non-respect**\nSi le professionnel ne respecte pas ces conditions de compétence, d'organisation, d'assurance, d'impartialité ou d'indépendance, il encourt une amende pour contravention de 5e classe. La même sanction s'applique à la personne qui fait appel à un professionnel ne remplissant pas ces conditions (art. R271-4).\n\n**Remise à l'acquéreur**\nL'audit doit être remis par le vendeur (ou son représentant) à l'acquéreur potentiel dès la première visite du bien concerné, par tout moyen y compris électronique (art. L271-4).\n\n---\n\n⚠️ Le contenu précis des qualifications exigées de l'auditeur (qui peut ne pas être uniquement un diagnostiqueur) est renvoyé à un décret, et le contenu de l'audit à un arrêté, non repris ici (art. L126-28-1). Pour vérifier qu'un professionnel remplit bien ces conditions, il est conseillé de consulter l'annuaire officiel des diagnostiqueurs ou de se renseigner auprès de l'ADIL ou d'un notaire.",
+    "article_ids": [
+      "LEGIARTI000043967365",
+      "LEGIARTI000049398848",
+      "LEGIARTI000051830494",
+      "LEGIARTI000024322904"
+    ]
+  },
+  {
+    "theme": "diagnostics",
+    "topic": "metier-diagnostiqueur-immobilier",
+    "slug": "diagnostiqueur-reperage-amiante-avant-travaux-independance",
+    "emoji": null,
+    "question": "Repérage amiante avant travaux : quelles exigences pour l'opérateur de repérage ?",
+    "short": "Avant des travaux à risque d'amiante, le propriétaire doit faire réaliser un repérage par un opérateur qualifié et indépendant. Cet opérateur doit avoir les qualifications requises et ne doit avoir aucun lien d'intérêt avec les autres intervenants du chantier.",
+    "answer_md": "### Qui doit faire réaliser le repérage ?\n\nLe donneur d'ordre, le maître d'ouvrage ou le propriétaire du bien doit faire rechercher la présence d'amiante avant toute opération de travaux qui présente un risque d'exposition pour les travailleurs (art. L4412-2, art. R4412-97).\n\nCe risque existe notamment si le bâtiment, l'équipement ou le matériel a été construit ou fabriqué avant l'entrée en vigueur du décret du 24 décembre 1996 interdisant l'amiante (art. R4412-97).\n\n### Les exigences pour l'opérateur de repérage\n\nL'opérateur qui réalise le repérage doit répondre à plusieurs conditions :\n\n- **Qualifications et moyens** : il doit disposer des qualifications et des moyens nécessaires, précisés par arrêté selon le type de bien concerné (immeuble bâti, matériel roulant, navire, aéronef, etc.) (art. R4412-97-1).\n- **Indépendance et impartialité** : il exerce sa mission en toute indépendance. Il ne doit avoir **aucun lien d'intérêt** susceptible de nuire à son impartialité, en particulier avec une autre personne (physique ou morale) qui intervient sur le même chantier (art. R4412-97-1).\n- Cette indépendance doit être respectée même s'il s'agit d'un salarié du donneur d'ordre : celui-ci doit respecter l'indépendance de l'opérateur et lui communiquer toute information utile à sa mission (art. R4412-97-2).\n\n### Et pour l'analyse des matériaux ?\n\nSi un doute persiste après le repérage visuel, des prélèvements sont faits et analysés. L'organisme qui réalise ces analyses doit être **accrédité** et disposer d'un personnel compétent, selon des règles précisées par arrêté (art. R4412-97-1, art. R1334-24).\n\n### Cas particulier : repérage au fil des travaux\n\nSi le repérage ne peut pas être fait avant le démarrage du chantier pour des raisons techniques, il peut être réalisé au fur et à mesure de l'avancement des travaux, dans des conditions précisées par arrêté (art. R4412-97-4).\n\n### Pour aller plus loin\n\nLes conditions techniques précises (méthodes, compétences détaillées) sont fixées par des **arrêtés ministériels** qui ne sont pas fournis ici. Pour un projet concret, il est conseillé de se renseigner auprès de l'inspection du travail ou de consulter un opérateur de repérage qualifié selon les arrêtés applicables.\n\n### Rappel pour les logements (hors chantier)\n\nDes règles voisines existent pour les logements, avec des repérages de matériaux \"liste A\" et \"liste B\", qui donnent lieu à un rapport remis au propriétaire (art. R1334-20, art. R1334-21). Ce sujet est différent de l'amiante avant travaux visée par le code du travail, mais peut concerner le même bien.",
+    "article_ids": [
+      "LEGIARTI000033013763",
+      "LEGIARTI000038322515",
+      "LEGIARTI000038322522",
+      "LEGIARTI000034665663",
+      "LEGIARTI000034665667",
+      "LEGIARTI000038946884",
+      "LEGIARTI000024140946",
+      "LEGIARTI000024140942"
+    ]
+  }
+]

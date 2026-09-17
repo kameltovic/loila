@@ -9514,6 +9514,688 @@
         "batiment-indemnite-trajet",
         "periode-essai"
       ]
+    },
+    {
+      "slug": "dpe-location-passoires-thermiques",
+      "title": "DPE et location : passoires thermiques",
+      "h1": "Louer un logement classé E, F ou G : calendrier, gel des loyers, recours du locataire",
+      "category": "diagnostics",
+      "intro": "Depuis 2025, la performance énergétique fait partie des critères du logement décent. Les logements les moins bien classés au DPE sortent progressivement du marché locatif, et leur loyer ne peut plus être augmenté. Bailleurs et locataires y trouvent les règles, article par article.",
+      "keywords": [
+        "passoire thermique location",
+        "DPE G interdiction de louer",
+        "gel des loyers F G",
+        "logement décent DPE",
+        "calendrier DPE 2025 2028 2034"
+      ],
+      "codes": [
+        "code-sante-publique",
+        "loi-89-462",
+        "code-construction-habitation",
+        "decret-2002-120",
+        "loi-2021-1104"
+      ],
+      "relatedFaqs": [
+        "dpe-passoire-thermique",
+        "criteres-logement-decent",
+        "arreter-payer-loyer-logement-indecent",
+        "diagnostics-obligatoires-location"
+      ],
+      "questions": [
+        {
+          "slug": "calendrier-interdiction-location-dpe-g-f-e",
+          "question": "Logements classés G, F puis E : quel calendrier pour l'interdiction de louer ?",
+          "hints": [
+            "niveau de performance minimal",
+            "logement décent",
+            "classe F",
+            "classe E",
+            "classe D",
+            "1er janvier 2025",
+            "1er janvier 2028",
+            "1er janvier 2034",
+            "loi-89-462:6",
+            "code-construction-habitation:L173-1-1",
+            "loi-2021-1104:160"
+          ]
+        },
+        {
+          "slug": "gel-loyer-logement-classe-f-g",
+          "question": "Logement classé F ou G : le bailleur peut-il augmenter le loyer ?",
+          "hints": [
+            "révision du loyer",
+            "indice de référence des loyers",
+            "renouvellement",
+            "classe F",
+            "classe G",
+            "loi-89-462:17-1",
+            "loi-89-462:17-2",
+            "loi-89-462:17",
+            "loi-2021-1104:159"
+          ]
+        },
+        {
+          "slug": "locataire-logement-passoire-thermique-recours",
+          "question": "Mon logement loué est classé G : que puis-je demander au propriétaire ?",
+          "hints": [
+            "mise en conformité",
+            "commission départementale de conciliation",
+            "juge",
+            "réduire le montant du loyer",
+            "niveau de performance minimal",
+            "loi-89-462:20-1",
+            "loi-89-462:6"
+          ]
+        },
+        {
+          "slug": "bail-en-cours-logement-g-resiliation",
+          "question": "Le logement G que je loue déjà : le bail est-il annulé ou dois-je partir ?",
+          "hints": [
+            "validité du contrat en cours",
+            "mise en conformité",
+            "logement non décent",
+            "loi-89-462:20-1",
+            "loi-89-462:6",
+            "loi-2021-1104:160"
+          ]
+        },
+        {
+          "slug": "bailleur-travaux-impossibles-copropriete-passoire",
+          "question": "Bailleur en copropriété ou en secteur protégé : que se passe-t-il si les travaux énergétiques sont impossibles ?",
+          "hints": [
+            "copropriété",
+            "diligences",
+            "contraintes architecturales ou patrimoniales",
+            "pathologie du bâti",
+            "refus d'autorisation",
+            "loi-89-462:20-1",
+            "décret du 30 janvier 2002"
+          ]
+        },
+        {
+          "slug": "dpe-joint-au-bail-candidat-locataire",
+          "question": "Le DPE doit-il être remis au locataire et montré dès les visites ?",
+          "hints": [
+            "joint au contrat de location",
+            "dossier de diagnostic technique",
+            "candidat locataire",
+            "location saisonnière",
+            "valeur informative",
+            "code-construction-habitation:L126-29",
+            "loi-89-462:3-3"
+          ]
+        },
+        {
+          "slug": "passoire-thermique-meuble-location-saisonniere",
+          "question": "Les règles sur les passoires thermiques s'appliquent-elles aux meublés et locations saisonnières ?",
+          "hints": [
+            "logement meublé",
+            "résidence principale",
+            "location saisonnière",
+            "à compter du 1er janvier 2028",
+            "loi-89-462:25-3",
+            "loi-89-462:25-9",
+            "loi-89-462:2",
+            "code-construction-habitation:L126-29",
+            "code-construction-habitation:L173-2"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "dpe-vente-audit-energetique",
+      "title": "DPE et vente : validité, audit, annonces",
+      "h1": "Vendre ou acheter un logement : DPE, audit énergétique et mentions dans l'annonce",
+      "category": "diagnostics",
+      "intro": "Le DPE accompagne toute vente et doit apparaître dès l'annonce. Pour les maisons et immeubles hors copropriété mal classés, un audit énergétique s'ajoute. Validité, calendrier, mentions obligatoires et amendes : les règles pour le vendeur, l'acquéreur et l'agent immobilier.",
+      "keywords": [
+        "durée de validité DPE",
+        "audit énergétique vente",
+        "annonce immobilière DPE",
+        "consommation énergétique excessive",
+        "DPE copropriété"
+      ],
+      "codes": [
+        "code-sante-publique",
+        "code-construction-habitation",
+        "loi-2021-1104",
+        "loi-89-462"
+      ],
+      "relatedFaqs": [
+        "audit-energetique-vente-maison",
+        "dpe-valeur-juridique",
+        "diagnostics-obligatoires-vente"
+      ],
+      "questions": [
+        {
+          "slug": "duree-validite-dpe",
+          "question": "Combien de temps un DPE est-il valable ?",
+          "hints": [
+            "durée de validité",
+            "dix ans",
+            "réalisés entre le 1er janvier 2013 et le 1er juillet 2021",
+            "code-construction-habitation:D126-19",
+            "code-construction-habitation:L271-5"
+          ]
+        },
+        {
+          "slug": "audit-energetique-vente-calendrier-classes",
+          "question": "Audit énergétique à la vente : depuis quand pour les classes F, G, E et D ?",
+          "hints": [
+            "audit énergétique",
+            "classe E",
+            "classe D",
+            "1er janvier 2025",
+            "1er janvier 2034",
+            "maison individuelle",
+            "copropriété",
+            "première visite",
+            "loi-2021-1104:158",
+            "code-construction-habitation:L126-28-1",
+            "code-construction-habitation:L271-4"
+          ]
+        },
+        {
+          "slug": "annonce-immobiliere-mentions-dpe-obligatoires",
+          "question": "Quelles mentions du DPE doivent figurer dans une annonce de vente ou de location ?",
+          "hints": [
+            "annonce",
+            "classement",
+            "montant estimé des dépenses annuelles d'énergie",
+            "amende administrative",
+            "code-construction-habitation:L126-33",
+            "code-construction-habitation:R126-21",
+            "code-construction-habitation:R126-22",
+            "code-construction-habitation:R126-23"
+          ]
+        },
+        {
+          "slug": "logement-consommation-energetique-excessive-mention",
+          "question": "« Logement à consommation énergétique excessive » : quand cette mention est-elle obligatoire ?",
+          "hints": [
+            "consommation énergétique excessive",
+            "publicités",
+            "actes de vente",
+            "baux",
+            "code-construction-habitation:L173-2",
+            "code-construction-habitation:R126-24"
+          ]
+        },
+        {
+          "slug": "classe-dpe-erronee-apres-achat-recours",
+          "question": "Après l'achat, la classe du DPE se révèle fausse : quels recours pour l'acquéreur ?",
+          "hints": [
+            "valeur indicative",
+            "recommandations",
+            "assurance du diagnostiqueur",
+            "vices cachés",
+            "code-construction-habitation:L271-4",
+            "code-construction-habitation:L271-6",
+            "code-construction-habitation:R271-2",
+            "code-civil:1112-1"
+          ]
+        },
+        {
+          "slug": "dpe-collectif-copropriete-obligatoire",
+          "question": "Copropriété : le DPE collectif de l'immeuble est-il obligatoire ?",
+          "hints": [
+            "habitation collective",
+            "permis de construire déposé avant le 1er janvier 2013",
+            "renouvelé tous les dix ans",
+            "classe A, B ou C",
+            "code-construction-habitation:L126-31",
+            "loi-2021-1104:158",
+            "code-construction-habitation:R126-20"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "diagnostic-amiante",
+      "title": "Amiante : vente, travaux, copropriété",
+      "h1": "Amiante dans un logement : repérage avant vente, avant travaux et DTA en copropriété",
+      "category": "diagnostics",
+      "intro": "Les immeubles dont le permis de construire date d'avant le 1er juillet 1997 sont concernés par la recherche d'amiante. Le vendeur, le syndicat des copropriétaires et le maître d'ouvrage de travaux ont chacun leurs obligations : repérage, dossier technique, surveillance, retrait.",
+      "keywords": [
+        "diagnostic amiante vente",
+        "dossier technique amiante",
+        "DTA copropriété",
+        "repérage amiante avant travaux",
+        "amiante avant démolition"
+      ],
+      "codes": [
+        "code-sante-publique",
+        "code-construction-habitation",
+        "code-du-travail",
+        "code-civil",
+        "loi-89-462"
+      ],
+      "questions": [
+        {
+          "slug": "diagnostic-amiante-vente-quels-logements",
+          "question": "Diagnostic amiante à la vente : quels logements sont concernés ?",
+          "hints": [
+            "permis de construire délivré avant le 1er juillet 1997",
+            "liste A",
+            "liste B",
+            "état mentionnant la présence ou l'absence",
+            "code-sante-publique:R1334-14",
+            "code-sante-publique:R1334-15",
+            "code-sante-publique:R1334-16",
+            "code-sante-publique:R1334-29-7",
+            "code-sante-publique:L1334-13",
+            "code-construction-habitation:L271-4"
+          ]
+        },
+        {
+          "slug": "dossier-technique-amiante-copropriete",
+          "question": "Copropriété : qu'est-ce que le dossier technique amiante (DTA) et qui doit le tenir ?",
+          "hints": [
+            "dossier technique amiante",
+            "parties communes",
+            "syndicat des copropriétaires",
+            "fiche récapitulative",
+            "code-sante-publique:R1334-17",
+            "code-sante-publique:R1334-14",
+            "code-sante-publique:R1334-29-5"
+          ]
+        },
+        {
+          "slug": "reperage-amiante-avant-travaux",
+          "question": "Travaux dans un logement ancien : faut-il un repérage amiante avant de commencer ?",
+          "hints": [
+            "recherche d'amiante préalablement à toute opération",
+            "donneur d'ordre",
+            "maître d'ouvrage",
+            "risques d'exposition des travailleurs",
+            "code-du-travail:L4412-2",
+            "code-du-travail:R4412-97",
+            "code-du-travail:R4412-97-1",
+            "code-sante-publique:R1334-29-4"
+          ]
+        },
+        {
+          "slug": "reperage-amiante-avant-demolition",
+          "question": "Démolition d'un bâtiment : quel repérage amiante réaliser ?",
+          "hints": [
+            "démolition",
+            "liste C",
+            "rapport de repérage",
+            "code-sante-publique:R1334-19",
+            "code-sante-publique:R1334-22",
+            "code-sante-publique:R1334-29-6",
+            "code-du-travail:L4412-2"
+          ]
+        },
+        {
+          "slug": "amiante-degrade-obligations-proprietaire",
+          "question": "Amiante dégradé détecté : que doit faire le propriétaire et dans quels délais ?",
+          "hints": [
+            "évaluation périodique",
+            "trois ans",
+            "mesure d'empoussièrement",
+            "cinq fibres par litre",
+            "trente-six mois",
+            "confinement ou retrait",
+            "code-sante-publique:R1334-20",
+            "code-sante-publique:R1334-27",
+            "code-sante-publique:R1334-28",
+            "code-sante-publique:R1334-29"
+          ]
+        },
+        {
+          "slug": "amiante-location-locataire-information",
+          "question": "Le bailleur doit-il informer le locataire de la présence d'amiante ?",
+          "hints": [
+            "dossier amiante parties privatives",
+            "occupants",
+            "dossier de diagnostic technique",
+            "décret en Conseil d'Etat",
+            "loi-89-462:3-3",
+            "code-sante-publique:R1334-29-4",
+            "code-sante-publique:R1334-29-5"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "plomb-electricite-gaz-termites-erp",
+      "title": "Plomb, électricité, gaz, termites, risques",
+      "h1": "Plomb, électricité, gaz, termites, état des risques, assainissement : les autres diagnostics",
+      "category": "diagnostics",
+      "intro": "Selon l'âge du bien, ses installations et sa localisation, le dossier de diagnostic technique comprend aussi le constat plomb, les états de l'électricité et du gaz, l'état termites, l'état des risques et le contrôle de l'assainissement non collectif. Qui est concerné, et pour combien de temps ?",
+      "keywords": [
+        "CREP plomb",
+        "diagnostic électricité gaz 15 ans",
+        "diagnostic termites",
+        "état des risques ERP",
+        "assainissement non collectif vente",
+        "surface habitable bail"
+      ],
+      "codes": [
+        "code-sante-publique",
+        "code-construction-habitation",
+        "loi-89-462",
+        "code-environnement",
+        "loi-65-557"
+      ],
+      "relatedFaqs": [
+        "surface-carrez-erreur"
+      ],
+      "questions": [
+        {
+          "slug": "constat-plomb-crep-vente-location",
+          "question": "Constat de risque d'exposition au plomb (CREP) : quand est-il obligatoire et combien de temps vaut-il ?",
+          "hints": [
+            "construit avant le 1er janvier 1949",
+            "moins d'un an",
+            "moins de six ans",
+            "absence de revêtements contenant du plomb",
+            "à la charge du bailleur",
+            "code-sante-publique:L1334-6",
+            "code-sante-publique:L1334-7",
+            "code-sante-publique:R1334-11",
+            "code-construction-habitation:D271-5",
+            "code-construction-habitation:L271-5"
+          ]
+        },
+        {
+          "slug": "plomb-degrade-travaux-bailleur",
+          "question": "Plomb dégradé relevé par le constat : quelles obligations pour le propriétaire bailleur ?",
+          "hints": [
+            "revêtements dégradés",
+            "informer les occupants",
+            "travaux appropriés",
+            "responsabilité pénale",
+            "code-sante-publique:L1334-9",
+            "code-sante-publique:L1334-10",
+            "code-sante-publique:R1334-12"
+          ]
+        },
+        {
+          "slug": "diagnostic-electricite-gaz-installation-15-ans",
+          "question": "Diagnostics électricité et gaz : quels logements et quelle durée de validité ?",
+          "hints": [
+            "installation réalisée depuis plus de quinze ans",
+            "moins de trois ans",
+            "vente",
+            "location",
+            "code-construction-habitation:L134-7",
+            "code-construction-habitation:L134-9",
+            "code-construction-habitation:D271-5",
+            "loi-89-462:3-3"
+          ]
+        },
+        {
+          "slug": "diagnostic-termites-vente-zone",
+          "question": "Diagnostic termites : quand le vendeur doit-il le fournir ?",
+          "hints": [
+            "zone délimitée",
+            "termites",
+            "moins de six mois",
+            "déclaration en mairie",
+            "code-construction-habitation:L126-24",
+            "code-construction-habitation:D271-5",
+            "code-construction-habitation:L126-4",
+            "code-construction-habitation:L271-4"
+          ]
+        },
+        {
+          "slug": "etat-des-risques-erp-vente-location",
+          "question": "État des risques (ERP) : qui doit le fournir, quand, et que risque-t-on sans lui ?",
+          "hints": [
+            "état des risques",
+            "première visite",
+            "annonce",
+            "résolution du contrat",
+            "diminution du prix",
+            "code-environnement:L125-5",
+            "code-environnement:R125-23",
+            "code-environnement:R125-24",
+            "code-environnement:R125-25",
+            "loi-89-462:3-3",
+            "code-construction-habitation:L271-4"
+          ]
+        },
+        {
+          "slug": "assainissement-non-collectif-vente-controle",
+          "question": "Vente d'une maison avec fosse septique : contrôle de l'assainissement et travaux sous un an",
+          "hints": [
+            "assainissement non collectif",
+            "daté de moins de trois ans",
+            "à la charge du vendeur",
+            "mise en conformité dans un délai d'un an",
+            "code-sante-publique:L1331-11-1",
+            "code-construction-habitation:L271-4"
+          ]
+        },
+        {
+          "slug": "surface-habitable-bail-inferieure-baisse-loyer",
+          "question": "Surface habitable du bail surévaluée (loi Boutin) : le locataire peut-il obtenir une baisse de loyer ?",
+          "hints": [
+            "surface habitable",
+            "plus d'un vingtième",
+            "diminution du loyer",
+            "quatre mois",
+            "loi-89-462:3-1"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "diagnostic-manquant-ou-errone",
+      "title": "Diagnostic manquant, périmé ou erroné",
+      "h1": "Diagnostic immobilier absent, périmé ou faux : conséquences et recours",
+      "category": "diagnostics",
+      "intro": "Un diagnostic absent ou périmé le jour de l'acte ne produit pas les mêmes effets selon le document : vendeur privé de sa clause d'exonération des vices cachés, résolution ou baisse du prix, responsabilité pénale du bailleur. Et quand le diagnostic est faux, le diagnostiqueur doit être assuré.",
+      "keywords": [
+        "vente sans diagnostic",
+        "diagnostic périmé",
+        "diagnostic erroné recours",
+        "responsabilité diagnostiqueur",
+        "clause vices cachés diagnostic"
+      ],
+      "codes": [
+        "code-sante-publique",
+        "code-construction-habitation",
+        "code-civil",
+        "loi-89-462",
+        "code-environnement"
+      ],
+      "questions": [
+        {
+          "slug": "vente-sans-diagnostic-consequences-vendeur",
+          "question": "Vendre sans diagnostic : quelles conséquences pour le vendeur ?",
+          "hints": [
+            "en cours de validité",
+            "garantie des vices cachés",
+            "résolution du contrat",
+            "diminution du prix",
+            "code-construction-habitation:L271-4",
+            "code-civil:1641",
+            "code-civil:1643",
+            "code-civil:1644"
+          ]
+        },
+        {
+          "slug": "diagnostic-perime-entre-compromis-et-acte",
+          "question": "Un diagnostic expire entre le compromis et l'acte de vente : que faire ?",
+          "hints": [
+            "plus en cours de validité",
+            "remplacé par un nouveau document",
+            "état des risques mis à jour",
+            "code-construction-habitation:L271-5",
+            "code-construction-habitation:D271-5",
+            "code-construction-habitation:D126-19"
+          ]
+        },
+        {
+          "slug": "location-sans-diagnostics-consequences-bailleur",
+          "question": "Bail signé sans les diagnostics obligatoires : quels risques pour le bailleur ?",
+          "hints": [
+            "dossier de diagnostic technique",
+            "état des risques",
+            "résolution du contrat",
+            "diminution du prix",
+            "constat plomb",
+            "responsabilité pénale",
+            "loi-89-462:3-3",
+            "code-sante-publique:L1334-7",
+            "code-construction-habitation:L126-29"
+          ]
+        },
+        {
+          "slug": "clause-exoneration-vices-caches-diagnostics",
+          "question": "La clause « vendu sans garantie des vices cachés » protège-t-elle le vendeur en cas de diagnostic ?",
+          "hints": [
+            "clause",
+            "vices cachés",
+            "vendeur de bonne foi",
+            "document en cours de validité",
+            "code-civil:1643",
+            "code-civil:1645",
+            "code-construction-habitation:L271-4"
+          ]
+        },
+        {
+          "slug": "diagnostic-errone-responsabilite-diagnostiqueur",
+          "question": "Diagnostic erroné : le diagnostiqueur est-il responsable et doit-il être assuré ?",
+          "hints": [
+            "assurance",
+            "300 000 euros par sinistre",
+            "garanties de compétence",
+            "responsabilité",
+            "code-construction-habitation:L271-6",
+            "code-construction-habitation:R271-2",
+            "code-civil:1240",
+            "code-civil:1231-1"
+          ]
+        },
+        {
+          "slug": "decouverte-amiante-termites-apres-achat",
+          "question": "Amiante ou termites découverts après l'achat alors que le diagnostic n'en mentionnait pas : que faire ?",
+          "hints": [
+            "vices cachés",
+            "deux ans à compter de la découverte",
+            "diagnostiqueur",
+            "code-civil:1641",
+            "code-civil:1648",
+            "code-construction-habitation:L271-4",
+            "code-construction-habitation:L271-6"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "metier-diagnostiqueur-immobilier",
+      "title": "Le métier de diagnostiqueur immobilier",
+      "h1": "Diagnostiqueur immobilier : certification, assurance, indépendance et sanctions",
+      "category": "diagnostics",
+      "intro": "Le diagnostiqueur immobilier exerce une activité réglementée : compétences certifiées, assurance minimale, indépendance vis-à-vis du vendeur, de l'agent immobilier et des entreprises de travaux, transmission des DPE à l'ADEME. Les règles du métier, article par article.",
+      "keywords": [
+        "certification diagnostiqueur",
+        "assurance diagnostiqueur",
+        "indépendance diagnostiqueur agent immobilier",
+        "sanction diagnostiqueur",
+        "transmission DPE ADEME"
+      ],
+      "codes": [
+        "code-sante-publique",
+        "code-construction-habitation",
+        "code-du-travail"
+      ],
+      "questions": [
+        {
+          "slug": "certification-diagnostiqueur-immobilier",
+          "question": "Comment devenir diagnostiqueur immobilier : quelle certification est exigée ?",
+          "hints": [
+            "compétences certifiées",
+            "organisme accrédité",
+            "personne morale",
+            "garanties de compétence",
+            "code-construction-habitation:R271-1",
+            "code-construction-habitation:L271-6",
+            "code-sante-publique:R1334-23"
+          ]
+        },
+        {
+          "slug": "assurance-diagnostiqueur-montant-minimum",
+          "question": "Quelle assurance un diagnostiqueur immobilier doit-il souscrire ?",
+          "hints": [
+            "assurance",
+            "300 000 euros par sinistre",
+            "500 000 euros par année d'assurance",
+            "attestation sur l'honneur",
+            "code-construction-habitation:R271-2",
+            "code-construction-habitation:L271-6",
+            "code-construction-habitation:R271-3"
+          ]
+        },
+        {
+          "slug": "independance-diagnostiqueur-agent-immobilier",
+          "question": "Un diagnostiqueur peut-il verser une commission à l'agent immobilier ou travailler avec une entreprise de travaux ?",
+          "hints": [
+            "impartialité",
+            "indépendance",
+            "avantage ni rétribution",
+            "loi n° 70-9 du 2 janvier 1970",
+            "entreprise pouvant réaliser des travaux",
+            "code-construction-habitation:L271-6",
+            "code-construction-habitation:R271-3"
+          ]
+        },
+        {
+          "slug": "sanctions-diagnostiqueur-non-certifie",
+          "question": "Diagnostiqueur non certifié ou non assuré : quelles sanctions, aussi pour celui qui le missionne ?",
+          "hints": [
+            "contraventions de la cinquième classe",
+            "récidive",
+            "faire appel",
+            "code-construction-habitation:R271-4",
+            "code-construction-habitation:R271-1",
+            "code-construction-habitation:R271-2"
+          ]
+        },
+        {
+          "slug": "transmission-dpe-audit-ademe",
+          "question": "Le diagnostiqueur doit-il transmettre le DPE et l'audit énergétique à l'ADEME ?",
+          "hints": [
+            "Agence de l'environnement et de la maîtrise de l'énergie",
+            "numéro d'identifiant",
+            "format standardisé",
+            "code-construction-habitation:L126-32",
+            "code-construction-habitation:R126-26",
+            "code-construction-habitation:R126-27",
+            "code-construction-habitation:R126-30",
+            "code-construction-habitation:R126-31"
+          ]
+        },
+        {
+          "slug": "qui-peut-realiser-audit-energetique",
+          "question": "Qui peut réaliser l'audit énergétique obligatoire à la vente ?",
+          "hints": [
+            "professionnel",
+            "conditions de qualification définies par décret",
+            "impartialité",
+            "indépendance",
+            "code-construction-habitation:L126-28-1",
+            "code-construction-habitation:L271-4"
+          ]
+        },
+        {
+          "slug": "diagnostiqueur-reperage-amiante-avant-travaux-independance",
+          "question": "Repérage amiante avant travaux : quelles exigences pour l'opérateur de repérage ?",
+          "hints": [
+            "opérateur de repérage",
+            "qualifications",
+            "indépendance",
+            "lien d'intérêts",
+            "code-du-travail:R4412-97-1",
+            "code-du-travail:R4412-97",
+            "code-du-travail:L4412-2"
+          ]
+        }
+      ]
     }
   ]
 }

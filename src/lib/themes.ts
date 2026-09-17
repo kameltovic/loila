@@ -22,6 +22,9 @@ export const CODES = {
   "code-assurances": { name: "Code des assurances", legitext: "LEGITEXT000006073984" },
   "loi-75-1334": { name: "Loi n° 75-1334 du 31 décembre 1975 (sous-traitance)", legitext: "JORFTEXT000000889241" },
   "loi-71-584": { name: "Loi n° 71-584 du 16 juillet 1971 (retenues de garantie)", legitext: "JORFTEXT000000687670" },
+  "code-sante-publique": { name: "Code de la santé publique", legitext: "LEGITEXT000006072665" },
+  "decret-2002-120": { name: "Décret n° 2002-120 du 30 janvier 2002 (logement décent)", legitext: "JORFTEXT000000217471" },
+  "loi-2021-1104": { name: "Loi n° 2021-1104 du 22 août 2021 (Climat et résilience)", legitext: "JORFTEXT000043956924" },
   "code-commerce": { name: "Code de commerce", legitext: "LEGITEXT000005634379" },
   // Conventions collectives (KALI): legitext holds the KALICONT (IDCC container) id.
   "ccn-1486": { name: "Convention collective Syntec, bureaux d'études techniques (IDCC 1486)", legitext: "KALICONT000005635173", idcc: "1486" },

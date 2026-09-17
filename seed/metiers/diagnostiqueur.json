@@ -1,0 +1,104 @@
+{
+  "slug": "diagnostiqueur",
+  "title": "Diagnostiqueurs immobiliers",
+  "theme": "diagnostics",
+  "seo": {
+    "title": "Diagnostiqueurs immobiliers : vos obligations légales",
+    "description": "Certification, assurance, indépendance, DPE, audit, amiante, plomb, validité des diagnostics et sanctions : les règles du métier, article par article."
+  },
+  "h1": "Les règles du diagnostic immobilier, expliquées aux",
+  "h1Accent": "diagnostiqueurs",
+  "intro": "Certification, assurance minimale, indépendance vis-à-vis de l'agent immobilier et des entreprises de travaux, transmission des DPE à l'ADEME, durées de validité, repérage amiante : le diagnostiqueur exerce une activité strictement encadrée. Loilà explique ces règles en français simple, avec l'article du code de la construction ou de la santé publique à l'appui.",
+  "audience": [
+    "Diagnostiqueur immobilier certifié",
+    "Cabinet de diagnostic immobilier",
+    "Auditeur énergétique",
+    "Opérateur de repérage amiante",
+    "Agent immobilier",
+    "Clerc ou collaborateur de notaire"
+  ],
+  "obligations": [
+    {
+      "title": "Faire certifier ses compétences",
+      "detail": "Les diagnostics du dossier de diagnostic technique et le DPE sont établis par une personne dont les compétences sont certifiées par un organisme accrédité, ou par une société qui emploie de telles personnes. Les repérages amiante relèvent des mêmes conditions.",
+      "refs": ["code-construction-habitation:L271-6", "code-construction-habitation:R271-1", "code-sante-publique:R1334-23"]
+    },
+    {
+      "title": "Être assuré : 300 000 € par sinistre, 500 000 € par an",
+      "detail": "Le diagnostiqueur souscrit une assurance couvrant les conséquences de sa responsabilité, dont la garantie ne peut être inférieure à 300 000 € par sinistre et 500 000 € par année d'assurance.",
+      "refs": ["code-construction-habitation:L271-6", "code-construction-habitation:R271-2"]
+    },
+    {
+      "title": "Remettre une attestation sur l'honneur avant la mission",
+      "detail": "Avant d'intervenir, il remet au client une attestation sur l'honneur de sa situation régulière et de ses moyens, et chaque rapport mentionne l'organisme qui a certifié ses compétences.",
+      "refs": ["code-construction-habitation:R271-3"]
+    },
+    {
+      "title": "Rester indépendant du vendeur, de l'agence et des entreprises de travaux",
+      "detail": "Aucun lien portant atteinte à son impartialité avec le propriétaire, son mandataire ou une entreprise de travaux ; aucun avantage versé à l'agent immobilier ni reçu d'une entreprise de travaux.",
+      "refs": ["code-construction-habitation:L271-6", "code-construction-habitation:R271-3"]
+    },
+    {
+      "title": "Transmettre chaque DPE et audit énergétique à l'ADEME",
+      "detail": "Le DPE et l'audit sont transmis à l'ADEME dans un format standardisé ; le numéro d'identifiant reçu en retour et les données sont aussi remis au propriétaire.",
+      "refs": ["code-construction-habitation:L126-32", "code-construction-habitation:R126-27", "code-construction-habitation:R126-31"]
+    },
+    {
+      "title": "Respecter les durées de validité",
+      "detail": "À la vente : plomb moins d'un an, termites moins de six mois, gaz et électricité moins de trois ans ; DPE dix ans. En location, le constat plomb doit dater de moins de six ans. Un document périmé à l'acte est remplacé.",
+      "refs": ["code-construction-habitation:D271-5", "code-construction-habitation:D126-19", "code-sante-publique:R1334-11", "code-construction-habitation:L271-5"]
+    },
+    {
+      "title": "Amiante : repérer selon les listes A, B et C",
+      "detail": "Pour les immeubles dont le permis date d'avant le 1er juillet 1997 : listes A et B pour l'état amiante de vente, liste C avant démolition, rapport remis contre accusé de réception et, selon l'état de conservation, préconisation de surveillance, mesure d'empoussièrement ou travaux.",
+      "refs": ["code-sante-publique:R1334-14", "code-sante-publique:R1334-20", "code-sante-publique:R1334-22", "code-sante-publique:R1334-29-7"]
+    },
+    {
+      "title": "Signaler le plomb dégradé à l'ARS",
+      "detail": "Si le constat de risque d'exposition au plomb relève des facteurs de dégradation du bâti fixés par arrêté, son auteur en transmet immédiatement une copie au directeur général de l'agence régionale de santé et en informe le propriétaire.",
+      "refs": ["code-sante-publique:L1334-10", "code-sante-publique:R1334-10"]
+    },
+    {
+      "title": "Sanctions : contravention de 5e classe",
+      "detail": "Intervenir sans certification, assurance ou indépendance conformes est puni de l'amende des contraventions de 5e classe (1 500 € au plus, 3 000 € en récidive), comme le fait de faire appel à un diagnostiqueur non conforme.",
+      "refs": ["code-construction-habitation:R271-4", "code-penal:131-13"]
+    }
+  ],
+  "faqSlugs": [
+    "certification-diagnostiqueur-immobilier",
+    "assurance-diagnostiqueur-montant-minimum",
+    "independance-diagnostiqueur-agent-immobilier",
+    "sanctions-diagnostiqueur-non-certifie",
+    "transmission-dpe-audit-ademe",
+    "qui-peut-realiser-audit-energetique",
+    "diagnostiqueur-reperage-amiante-avant-travaux-independance",
+    "diagnostic-errone-responsabilite-diagnostiqueur",
+    "duree-validite-dpe",
+    "audit-energetique-vente-calendrier-classes",
+    "annonce-immobiliere-mentions-dpe-obligatoires",
+    "diagnostic-amiante-vente-quels-logements",
+    "dossier-technique-amiante-copropriete",
+    "constat-plomb-crep-vente-location",
+    "diagnostic-electricite-gaz-installation-15-ans",
+    "diagnostic-termites-vente-zone",
+    "etat-des-risques-erp-vente-location",
+    "diagnostic-perime-entre-compromis-et-acte",
+    "vente-sans-diagnostic-consequences-vendeur",
+    "calendrier-interdiction-location-dpe-g-f-e",
+    "diagnostics-obligatoires-vente",
+    "diagnostics-obligatoires-location",
+    "dpe-valeur-juridique"
+  ],
+  "texts": [
+    "code-construction-habitation",
+    "code-sante-publique",
+    "loi-89-462",
+    "decret-2002-120",
+    "loi-2021-1104",
+    "code-environnement",
+    "code-du-travail",
+    "code-civil",
+    "code-penal"
+  ],
+  "proPitch": "Avec Pro, exportez des réponses sourcées à joindre à un rapport ou à un courrier client, recevez une alerte quand un article sur le DPE, l'amiante, le plomb ou la certification change, et gardez l'historique de vos questions par dossier."
+}
