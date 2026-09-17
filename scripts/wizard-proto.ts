@@ -289,7 +289,7 @@ function recheck() {
   const byRef = getDb().prepare("SELECT num, texte FROM articles WHERE code = ? AND num = ?");
   for (const r of d.results) {
     if (r.error) continue;
-    const found = r.finalArticles.map((ref: string) => byRef.get(...ref.split(/:(.*)/s).slice(0, 2)));
+    const found = r.finalArticles.map((ref: string) => byRef.get(...ref.split(/:([^]*)/).slice(0, 2)));
     for (const k of Object.keys(r.synth)) Object.assign(r.synth[k], citationCheck(r.synth[k].md, found));
   }
   fs.writeFileSync("docs/wizard-results.json", JSON.stringify(d, null, 1));
