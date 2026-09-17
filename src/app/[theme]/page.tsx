@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ArrowRight } from "lucide-react";
 import Chat from "@/components/Chat";
 import ThemeIcon from "@/components/ThemeIcon";
 import { getDb, type Faq } from "@/lib/db";
-import { CODES, THEMES, faqUrl } from "@/lib/themes";
+import { THEMES, faqUrl } from "@/lib/themes";
+import { conventionUrl, getConventions } from "@/lib/conventions";
 import { Empty, FaqIndex, SectionHead, block, container, display, label } from "@/components/ui";
 import { JsonLd, breadcrumbJsonLd, clip, faqJsonLd, pageMetadata } from "@/lib/seo";
 
@@ -45,9 +47,7 @@ export default async function ThemePage({ params }: PageProps<"/[theme]">) {
     (getDb().prepare("SELECT code, COUNT(*) AS n FROM articles GROUP BY code").all() as { code: string; n: number }[]).map((r) => [r.code, r.n]),
   );
   const total = theme.codes.reduce((s, c) => s + (counts.get(c) ?? 0), 0);
-  const conventions = theme.slug === "conventions"
-    ? theme.codes.map((slug) => ({ slug, ...CODES[slug], n: counts.get(slug) ?? 0 }))
-    : [];
+  const conventions = theme.slug === "conventions" ? getConventions().map((c) => ({ ...c, n: counts.get(c.code) ?? 0 })) : [];
   let n = 0;
   const num = () => String(++n).padStart(2, "0");
 
@@ -88,16 +88,19 @@ export default async function ThemePage({ params }: PageProps<"/[theme]">) {
             <SectionHead num={num()} kicker="Branches" id="branches-title" title="Les conventions couvertes" />
             <ul className="mt-12 grid border-t-2 border-l-2 border-fg sm:grid-cols-2 lg:grid-cols-3">
               {conventions.map((c) => (
-                <li key={c.slug} className="flex flex-col justify-between gap-6 border-r-2 border-b-2 border-fg p-5 sm:p-6">
-                  <p className="font-display text-xl leading-tight font-bold tracking-[-0.02em]">
-                    {c.name.replace(/^Convention collective /, "").replace(/ \(IDCC \d+\)$/, "")}
-                  </p>
-                  <p className="flex items-center justify-between gap-3 text-sm text-fg-2">
-                    <span className="rounded-full border-[1.5px] border-ink bg-conventions px-2.5 py-0.5 font-mono text-xs font-semibold tracking-wider text-ink uppercase">
-                      IDCC {c.idcc}
-                    </span>
-                    {c.n.toLocaleString("fr-FR")} articles
-                  </p>
+                <li key={c.slug} className="border-r-2 border-b-2 border-fg">
+                  <Link href={conventionUrl(c)} className="group flex h-full flex-col justify-between gap-6 p-5 transition-colors hover:bg-surface sm:p-6">
+                    <p className="font-display text-xl leading-tight font-bold tracking-[-0.02em]">{c.short}</p>
+                    <p className="flex items-center justify-between gap-3 text-sm text-fg-2">
+                      <span className="rounded-full border-[1.5px] border-ink bg-conventions px-2.5 py-0.5 font-mono text-xs font-semibold tracking-wider text-ink uppercase">
+                        IDCC {c.idcc}
+                      </span>
+                      <span className="inline-flex items-center gap-1.5">
+                        {c.n.toLocaleString("fr-FR")} articles
+                        <ArrowRight aria-hidden strokeWidth={1.75} className="size-4 transition group-hover:translate-x-1 motion-reduce:transition-none" />
+                      </span>
+                    </p>
+                  </Link>
                 </li>
               ))}
             </ul>

@@ -3,10 +3,11 @@ import { getDb } from "@/lib/db";
 import { SITE_URL, contentUpdatedAt } from "@/lib/seo";
 import { THEMES, faqUrl } from "@/lib/themes";
 import { getTopics } from "@/lib/topics";
+import { conventionUrl, getConventions } from "@/lib/conventions";
 
 export const revalidate = 3600;
 
-// ponytail: single file (~500 URLs today); switch to generateSitemaps once it nears 45k URLs.
+// ponytail: single file (a few thousand URLs today); switch to generateSitemaps once it nears 45k URLs.
 export default function sitemap(): MetadataRoute.Sitemap {
   const db = getDb();
   const lastModified = contentUpdatedAt();
@@ -24,10 +25,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...THEMES.map((t) => url(`/${t.slug}`, 0.9, "daily")),
     url("/sujets", 0.9, "daily"),
     ...getTopics().map((t) => url(`/sujets/${t.slug}`, 0.8)),
+    ...getConventions().map((c) => url(conventionUrl(c), 0.8)),
     ...faqs.map((f) => url(faqUrl(f), 0.7)),
     ...articles.map((a) => ({ ...url(`/article/${a.id}`, 0.4, "monthly"), ...(a.date_debut && { lastModified: new Date(a.date_debut) }) })),
     url("/a-propos", 0.3, "monthly"),
     url("/tarifs", 0.6, "monthly"),
     url("/cgv", 0.2, "monthly"),
+    url("/mentions-legales", 0.2, "monthly"),
   ];
 }

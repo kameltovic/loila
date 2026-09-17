@@ -2,6 +2,7 @@ import { getDb } from "@/lib/db";
 import { SITE_URL, clip, plain } from "@/lib/seo";
 import { CODES, THEMES, faqUrl } from "@/lib/themes";
 import { getTopics } from "@/lib/topics";
+import { conventionUrl, getConventions } from "@/lib/conventions";
 
 type Row = { theme: string; slug: string; topic: string | null; question: string; short: string; article_ids: string };
 
@@ -48,6 +49,11 @@ export function llmsTxt() {
   if (topics.length) {
     out.push("\n## Sujets\n");
     for (const t of topics) out.push(`- [${t.h1}](${SITE_URL}/sujets/${t.slug}) : ${clip(plain(t.intro), 140)}`);
+  }
+  const conventions = getConventions();
+  if (conventions.length) {
+    out.push("\n## Conventions collectives (par branche)\n");
+    for (const c of conventions) out.push(`- [${c.name}](${SITE_URL}${conventionUrl(c)}) : IDCC ${c.idcc}, articles officiels et réponses clés.`);
   }
   return out.join("\n") + "\n";
 }

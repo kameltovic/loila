@@ -2,6 +2,7 @@ import { getDb, type Article, type Faq } from "@/lib/db";
 import { renderOg, renderWordmark, topicOg } from "@/lib/og";
 import { CODES, THEMES } from "@/lib/themes";
 import { getTopic } from "@/lib/topics";
+import { conventionHeading, getConvention } from "@/lib/conventions";
 
 // Share images live at /og/<page path>.png (home: /og/index.png). A real .png extension:
 // some link-preview crawlers skip image URLs without one (Next's opengraph-image files have none).
@@ -28,6 +29,10 @@ function image(parts: string[]) {
       code: CODES[art.code as keyof typeof CODES]?.name ?? art.code,
       theme: THEMES.find((t) => (t.codes as readonly string[]).includes(art.code))?.slug,
     });
+  }
+  if (a === "conventions" && b === "branche" && parts.length === 3) {
+    const conv = getConvention(c);
+    if (conv) return renderOg({ kind: "topic", title: conventionHeading(conv), label: `Convention collective · IDCC ${conv.idcc}`, theme: "conventions" });
   }
   if (theme && parts.length === 1) return renderOg({ kind: "theme", theme: theme.slug, title: theme.title, tagline: theme.tagline });
   if (theme && parts.length === 2) {
