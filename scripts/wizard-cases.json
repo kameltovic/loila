@@ -1,0 +1,142 @@
+[
+  {
+    "id": "dg-01-classique",
+    "topic": "depot-garantie",
+    "story": "bonjour j'ai quitté mon appart le 20 juillet, l'état des lieux de sortie était nickel, le proprio me dit qu'il me rendra la caution \"quand il aura le temps\". j'avais versé 750€. il a le droit ???",
+    "hidden_facts": ["Logement loué vide (non meublé), bail de 2021", "Dépôt de garantie de 750 € (1 mois de loyer hors charges)", "État des lieux de sortie conforme à l'état des lieux d'entrée, signé par les deux parties le 20 juillet 2026", "Clés rendues le 20 juillet 2026 en main propre", "Aucune somme due au bailleur, loyers à jour", "Le logement n'est pas en copropriété"],
+    "expect": { "key_articles": ["22"], "notes": "Délai 1 mois (EDL conforme) → restitution au plus tard le 20 août 2026 ; majoration 10 % du loyer mensuel par mois de retard commencé." }
+  },
+  {
+    "id": "dg-02-retenues-meuble",
+    "topic": "depot-garantie",
+    "story": "Studio meublé, je suis parti fin juin. La propriétaire garde 400 euros sur 900 pour « usure du canapé et peinture ». Sur l'état des lieux de sortie elle a noté des traces sur les murs. Elle peut faire ça ? j'ai habité là 6 ans",
+    "hidden_facts": ["Logement meublé, résidence principale", "Dépôt de garantie 900 € (le loyer hors charges est de 600 €)", "État des lieux de sortie le 30 juin 2026 mentionnant des traces sur les murs du séjour ; état des lieux d'entrée indiquait peinture neuve", "Aucun devis ni facture fourni par la bailleresse", "Durée d'occupation 6 ans", "Clés rendues le 30 juin 2026"],
+    "expect": { "key_articles": ["22", "25-6", "7"], "notes": "Meublé : DG max 2 mois (25-6) → 900 € OK si loyer 600. Retenues doivent être justifiées (22) ; usure normale / vétusté non imputable (7 c). Délai 2 mois si EDL non conforme." }
+  },
+  {
+    "id": "dg-03-copro",
+    "topic": "depot-garantie",
+    "story": "Mon ancien bailleur a restitué le dépôt mais a gardé 20% en disant que c'est pour la régularisation des charges de copropriété qui n'est pas encore faite. On est en septembre, j'ai quitté en mai. C'est normal ?",
+    "hidden_facts": ["Location vide dans un immeuble en copropriété", "Départ et état des lieux de sortie conforme le 15 mai 2026", "Dépôt de garantie 1 100 €, 880 € restitués le 10 juin 2026, 220 € conservés", "Pas de dégradations", "L'assemblée générale de la copropriété approuve les comptes en général en mars"],
+    "expect": { "key_articles": ["22"], "notes": "Copropriété : provision max 20 % conservée jusqu'à l'arrêté annuel des comptes de l'immeuble ; régularisation définitive et restitution du solde dans le mois suivant l'approbation des comptes." }
+  },
+  {
+    "id": "dg-04-pas-dinfo",
+    "topic": "depot-garantie",
+    "story": "on me rend pas ma caution",
+    "hidden_facts": ["Location vide", "Départ le 31 mai 2026", "État des lieux de sortie : le bailleur a noté un trou dans la porte de la cuisine", "Dépôt de garantie 1 200 €", "Aucune somme restituée ni aucun justificatif reçu à ce jour (17 septembre 2026)"],
+    "expect": { "key_articles": ["22"], "notes": "Infos manquantes : le wizard doit demander date de départ, conformité EDL, type de logement. EDL non conforme → 2 mois → échéance 31 juillet 2026, dépassée ; retenue doit être justifiée." }
+  },
+  {
+    "id": "dg-05-pas-edl",
+    "topic": "depot-garantie",
+    "story": "Il n'y a jamais eu d'état des lieux d'entrée quand je suis arrivé en 2019 (le proprio était pressé). Maintenant je pars et il veut me facturer la moquette. Qu'est ce que je risque",
+    "hidden_facts": ["Location vide à Lyon, bail de 2019", "Pas d'état des lieux d'entrée établi, ni par les parties ni par huissier", "Départ prévu le 31 octobre 2026", "La moquette avait déjà 10 ans à l'entrée selon le locataire", "Dépôt de garantie 800 €"],
+    "expect": { "key_articles": ["3-2", "7", "22"], "notes": "Code civil 1731 (présomption de bon état) n'est probablement pas dans le scope logement ; 3-2 : partie qui a fait obstacle à l'EDL ne peut invoquer la présomption. Vétusté." }
+  },
+  {
+    "id": "dg-06-montant-trop-eleve",
+    "topic": "depot-garantie",
+    "story": "Je vais signer un bail pour un T2 vide à 850€ hors charges et l'agence demande 2 mois de dépôt de garantie + 1 mois d'avance. c'est légal ?",
+    "hidden_facts": ["Logement vide, résidence principale", "Loyer 850 € hors charges", "L'agence demande 1 700 € de dépôt de garantie", "Le loyer est payable mensuellement à terme échu (en fin de mois)", "Le bail n'est pas encore signé"],
+    "expect": { "key_articles": ["22"], "notes": "Vide : DG max 1 mois hors charges ; avance interdite sauf paiement trimestriel à échoir... (art. 22 : pas de somme en plus si paiement mensuel d'avance / plus d'un mois)." }
+  },
+  {
+    "id": "dg-07-avocat-litige-complexe",
+    "topic": "depot-garantie",
+    "story": "Le bailleur refuse de rendre les 2400€ de dépôt et m'assigne en plus au tribunal pour 9000€ de travaux (dégât des eaux, il dit que c'est ma faute, mon assurance dit que non). J'ai reçu l'assignation hier, audience dans 3 semaines. Je fais quoi ?",
+    "hidden_facts": ["Location meublée de standing, loyer 1 200 €", "Dégât des eaux en mars 2026, cause contestée (fuite de canalisation encastrée selon l'assureur du locataire)", "Assignation devant le tribunal judiciaire reçue le 16 septembre 2026", "Expertise d'assurance contradictoire en cours", "Départ du logement le 30 avril 2026"],
+    "expect": { "key_articles": ["22", "7"], "lawyer": true, "notes": "Contentieux engagé avec assignation, expertise, montant élevé : réponse honnête = voir un avocat rapidement (et son assureur protection juridique)." }
+  },
+  {
+    "id": "pr-01-zone-tendue",
+    "topic": "preavis-locataire",
+    "story": "je veux quitter mon appart à Bordeaux, c'est un vide, combien de temps de préavis ? mon bailleur dit 3 mois",
+    "hidden_facts": ["Logement vide, résidence principale, à Bordeaux (commune en zone tendue)", "Bail signé en 2023", "Aucune raison particulière de départ (pas de mutation, pas de perte d'emploi)", "Le locataire veut envoyer son congé le 20 septembre 2026 par lettre recommandée"],
+    "expect": { "key_articles": ["15"], "notes": "Zone tendue → préavis 1 mois (art. 15 I). Délai court à compter de la réception de la lettre." }
+  },
+  {
+    "id": "pr-02-mutation",
+    "topic": "preavis-locataire",
+    "story": "Muté par mon employeur à Rennes à partir du 1er novembre, j'ai un bail d'habitation vide à Clermont-Ferrand. Est-ce que je peux partir avant les 3 mois ?",
+    "hidden_facts": ["Logement vide, Clermont-Ferrand (pas en zone tendue)", "Mutation professionnelle décidée par l'employeur, prise de poste le 1er novembre 2026", "Attestation de mutation disponible", "Congé envoyé par lettre recommandée avec accusé de réception reçue par le bailleur le 18 septembre 2026"],
+    "expect": { "key_articles": ["15"], "notes": "Mutation → préavis réduit à 1 mois, justificatif à joindre ; fin du préavis 18 octobre 2026." }
+  },
+  {
+    "id": "pr-03-meuble",
+    "topic": "preavis-locataire",
+    "story": "Bonjour, je suis étudiante en meublé et je voudrais rendre les clés fin octobre. Quel préavis ? Et est-ce que je dois payer le loyer jusqu'à la fin si une autre personne rentre avant ?",
+    "hidden_facts": ["Logement meublé, résidence principale, bail d'un an", "Lettre de congé envoyée par email uniquement le 15 septembre 2026, pas de courrier recommandé", "Le bailleur a trouvé un nouveau locataire qui entre le 20 octobre 2026"],
+    "expect": { "key_articles": ["25-8", "15"], "notes": "Meublé : préavis 1 mois (25-8), notification par LRAR, acte de commissaire de justice ou remise en main propre contre émargement — email non valable ; loyer dû pendant le préavis sauf si logement occupé avant la fin par un autre locataire en accord avec le bailleur (15 I applicable via renvoi ? à vérifier)." }
+  },
+  {
+    "id": "pr-04-conge-bailleur-vente",
+    "topic": "preavis-locataire",
+    "story": "le propriétaire m'a envoyé une lettre pour me dire qu'il vend l'appartement et que je dois partir à la fin du bail. j'ai 74 ans et pas beaucoup de revenus, je suis là depuis 15 ans. je suis obligée de partir ?",
+    "hidden_facts": ["Logement vide, résidence principale", "Bail renouvelé, échéance le 31 mars 2027", "Congé pour vente reçu par lettre recommandée le 10 septembre 2026, contenant le prix et les conditions de vente", "Locataire âgée de 74 ans, ressources inférieures au plafond de ressources du logement social", "Bailleur personne physique âgé de 58 ans"],
+    "expect": { "key_articles": ["15"], "notes": "Congé délivré moins de 6 mois avant l'échéance → vérifier délai (10/09/2026 vs 31/03/2027 : > 6 mois OK). Locataire > 65 ans et ressources < plafond : bailleur doit proposer relogement (art. 15 III) sauf si bailleur lui-même > 65 ans ou ressources faibles. Droit de préemption." }
+  },
+  {
+    "id": "pr-05-flou",
+    "topic": "preavis-locataire",
+    "story": "Je pars, combien je dois payer ?",
+    "hidden_facts": ["Logement vide à Lille (zone tendue)", "Congé envoyé le 5 septembre 2026, reçu le 8 septembre 2026 en recommandé", "Loyer 700 € charges comprises", "Le locataire a trouvé un emploi après une période de chômage (premier emploi après perte d'emploi)"],
+    "expect": { "key_articles": ["15"], "notes": "Très vague : le wizard doit clarifier qu'il s'agit de préavis locataire, puis type de logement, zone tendue. Préavis 1 mois (zone tendue ou nouvel emploi après perte d'emploi) ; loyer dû jusqu'au 8 octobre 2026." }
+  },
+  {
+    "id": "pr-06-sante",
+    "topic": "preavis-locataire",
+    "story": "Mon père est entré en EHPAD, il faut résilier son bail (logement vide, petite ville dans le Cantal). j'ai une procuration. c'est 3 mois de loyer à payer ??",
+    "hidden_facts": ["Logement vide, commune hors zone tendue", "Le père (82 ans) est entré en EHPAD le 1er septembre 2026 pour raison de santé, certificat médical disponible", "Le fils dispose d'une procuration générale", "Congé pas encore envoyé"],
+    "expect": { "key_articles": ["15"], "notes": "Préavis 1 mois pour locataire dont l'état de santé, constaté par certificat médical, justifie un changement de domicile (art. 15 I). Justificatif à joindre." }
+  },
+  {
+    "id": "tr-01-rupture-conv-delais",
+    "topic": "rupture-licenciement",
+    "story": "On a signé une rupture conventionnelle avec mon employeur le 8 septembre. Je regrette un peu. Je peux encore changer d'avis ? et quand est-ce que je serai libre de partir ?",
+    "hidden_facts": ["CDI dans une entreprise privée de 40 salariés", "Convention de rupture signée par les deux parties le 8 septembre 2026, un exemplaire remis au salarié", "Date de rupture envisagée dans la convention : 15 octobre 2026", "Le salarié n'est pas salarié protégé", "Aucune demande d'homologation envoyée encore"],
+    "expect": { "key_articles": ["L1237-13", "L1237-14"], "notes": "Rétractation 15 jours calendaires à compter du lendemain de la signature → jusqu'au 23 septembre 2026 inclus ; homologation : DREETS 15 jours ouvrables ; rupture au plus tôt le lendemain de l'homologation." }
+  },
+  {
+    "id": "tr-02-licenciement-faute-grave",
+    "topic": "rupture-licenciement",
+    "story": "Mon patron m'a viré pour faute grave hier parce que je suis arrivé en retard 3 fois ce mois ci. j'ai jamais eu d'entretien. j'ai 8 ans d'ancienneté. je touche rien ?",
+    "hidden_facts": ["CDI, 8 ans d'ancienneté, salaire brut 2 300 €", "Lettre de licenciement pour faute grave reçue le 16 septembre 2026", "Aucune convocation à entretien préalable reçue", "Trois retards de 10 à 20 minutes en septembre 2026, aucun avertissement antérieur", "Entreprise de 15 salariés, convention collective inconnue"],
+    "expect": { "key_articles": ["L1232-2", "L1234-1", "L1234-9", "L1235-2"], "notes": "Faute grave → pas de préavis ni indemnité légale ; absence d'entretien préalable = irrégularité de procédure ; contestation de la qualification devant prud'hommes (délai 12 mois L1471-1) ; conseiller de voir avocat/défenseur syndical." }
+  },
+  {
+    "id": "tr-03-preavis-licenciement",
+    "topic": "rupture-licenciement",
+    "story": "Licencié pour motif personnel (insuffisance professionnelle), j'ai reçu la lettre le 2 septembre. combien de préavis et combien d'indemnités ? ça fait 3 ans et demi que je suis dans la boite",
+    "hidden_facts": ["CDI depuis mars 2023, ancienneté 3 ans et 6 mois à la date de notification", "Salaire brut mensuel moyen 2 800 € sur les 12 derniers mois", "Pas de faute grave invoquée", "Lettre de licenciement présentée le 2 septembre 2026", "Convention collective Syntec (IDCC 1486), statut ETAM"],
+    "expect": { "key_articles": ["L1234-1", "L1234-9", "R1234-2"], "notes": "Préavis légal 2 mois (≥ 2 ans), mais convention Syntec peut prévoir plus ; indemnité légale 1/4 mois par année → pas de montant verdict ; point de départ du préavis = présentation de la lettre." }
+  },
+  {
+    "id": "tr-04-rupture-refus",
+    "topic": "rupture-licenciement",
+    "story": "je veux partir de ma boite mais toucher le chômage. mon employeur refuse la rupture conventionnelle. il peut refuser ?? qu'est ce que je peux faire d'autre",
+    "hidden_facts": ["CDI depuis 5 ans", "L'employeur refuse la rupture conventionnelle par oral", "Pas de manquement grave de l'employeur", "Le salarié n'a pas de projet de reconversion"],
+    "expect": { "key_articles": ["L1237-11"], "notes": "Rupture conventionnelle = accord des deux parties, ne peut être imposée ; alternatives : démission (droits chômage limités hors code du travail), prise d'acte (risque), résiliation judiciaire. Pas de verdict sur chômage (hors DB)." }
+  },
+  {
+    "id": "tr-05-salarie-protege-harcelement",
+    "topic": "rupture-licenciement",
+    "story": "Je suis délégué du personnel (CSE) et ma direction veut me faire signer une rupture conventionnelle en me mettant la pression depuis que j'ai dénoncé du harcèlement. Ils m'ont retiré mes dossiers. je suis en arrêt maladie depuis 2 semaines.",
+    "hidden_facts": ["Membre titulaire élu du CSE", "Signalement écrit de harcèlement moral en juin 2026", "Retrait de responsabilités depuis juillet 2026", "Arrêt maladie depuis le 3 septembre 2026", "Entreprise de 120 salariés"],
+    "expect": { "key_articles": ["L1237-15", "L1152-1", "L1152-2"], "lawyer": true, "notes": "Salarié protégé : rupture conventionnelle soumise à autorisation de l'inspection du travail (L1237-15) ; vice du consentement possible ; harcèlement ; → avocat / syndicat / inspection du travail." }
+  },
+  {
+    "id": "hs-01-hors-sujet",
+    "topic": "hors-sujet",
+    "story": "Mon voisin a garé sa voiture devant mon garage depuis 3 jours, je peux la faire enlever ?",
+    "hidden_facts": ["Le garage est une propriété privée donnant sur une voie publique", "Le véhicule bloque l'accès au garage", "Le voisin ne répond pas"],
+    "expect": { "key_articles": [], "off_topic": true, "notes": "Hors des 3 thèmes du wizard (code de la route / police municipale). Le wizard doit le détecter et ne pas inventer." }
+  },
+  {
+    "id": "hs-02-ambigu",
+    "topic": "hors-sujet",
+    "story": "j'ai un problème avec mon contrat, ils veulent me faire partir",
+    "hidden_facts": ["Il s'agit d'un contrat de travail CDI (et non d'un bail)", "L'employeur propose oralement une rupture conventionnelle avec une indemnité de 3 000 €", "Ancienneté 4 ans, salaire brut 2 500 €", "Aucun document signé"],
+    "expect": { "key_articles": ["L1237-11", "L1237-13"], "ambiguous": true, "notes": "Ambigu (bail ou travail ?) : le wizard doit lever l'ambiguïté avant de répondre." }
+  }
+]

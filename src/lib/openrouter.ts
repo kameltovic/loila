@@ -8,9 +8,10 @@ export class MissingApiKeyError extends Error {
 
 export async function chat(
   messages: ChatMessage[],
-  { model = process.env.OPENROUTER_CHAT_MODEL, maxTokens = 700, json = false, temperature = 0.2, timeoutMs = 30_000 }:
-    { model?: string; maxTokens?: number; json?: boolean; temperature?: number; timeoutMs?: number } = {},
-): Promise<{ content: string; model: string }> {
+  { model = process.env.OPENROUTER_CHAT_MODEL, maxTokens = 700, json = false, temperature = 0.2, timeoutMs = 30_000, extra }:
+    // extra: raw OpenRouter body fields, e.g. { provider: { data_collection: "deny" }, reasoning: {...} }
+    { model?: string; maxTokens?: number; json?: boolean; temperature?: number; timeoutMs?: number; extra?: Record<string, unknown> } = {},
+): Promise<{ content: string; model: string; provider?: string; usage?: { prompt_tokens: number; completion_tokens: number; cost?: number } }> {
   const key = process.env.OPENROUTER_API_KEY;
   if (!key) throw new MissingApiKeyError();
   if (!model) throw new Error("No model: set OPENROUTER_CHAT_MODEL");
@@ -29,6 +30,7 @@ export async function chat(
       temperature,
       max_tokens: maxTokens,
       ...(json ? { response_format: { type: "json_object" } } : {}),
+      ...extra,
     }),
     signal: AbortSignal.timeout(timeoutMs),
   });
@@ -36,5 +38,5 @@ export async function chat(
   const data = await res.json();
   const content = data?.choices?.[0]?.message?.content;
   if (typeof content !== "string" || !content.trim()) throw new Error("OpenRouter: empty response");
-  return { content, model: data.model ?? model };
+  return { content, model: data.model ?? model, provider: data.provider, usage: data.usage };
 }

@@ -135,6 +135,39 @@ const realLlm: LlmCall = (m) => chat(m);
 
 const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
+// FTS5 retrieval: expansion words + likely article numbers → up to MAX_ARTICLES articles.
+// exp: an expander function, precomputed {words, nums} (e.g. from the wizard's analysis step), or none.
+type Expansion = { words: string; nums: string[] };
+export async function retrieve(
+  q: string, codes: string[], exp?: Expansion | ((q: string, codes: string[]) => Promise<Expansion>), limit = MAX_ARTICLES,
+): Promise<{ words: string; found: Article[] }> {
+  const { words, nums } = exp ? (typeof exp === "function" ? await exp(q, codes) : exp) : { words: "", nums: [] };
+  // Convention article numbers repeat across avenants ("article 9" x25), so exact lookup only for codes and laws.
+  const byNum = nums.flatMap((n) => codes.filter((c) => !c.startsWith("ccn-")).map((c) => getArticleByNum(c, n)).filter((a): a is Article => !!a));
+  const scope = { codes, limit };
+  const seen = new Set<string>();
+  const wide = { codes, limit: 20 };
+  const byWords = words ? searchArticles(words, wide) : [];
+  const byQuestion = searchArticles(q, wide);
+  // Interleave both searches, then rerank by distinct keyword coverage: bm25 buries long articles
+  // that cover the topic in depth. ponytail: stem = 5-char prefix; upgrade path = embeddings rerank.
+  const stems = [...tokens(`${q} ${words}`)].filter((t) => t.length > 3).map((t) => t.slice(0, 5));
+  const coverage = (a: Article) => {
+    const seen = new Set(tokens(a.texte).values().map((t) => t.slice(0, 5)));
+    return stems.filter((st) => seen.has(st)).length;
+  };
+  const mixed = Array.from({ length: 20 }, (_, i) => [byWords[i], byQuestion[i]])
+    .flat()
+    .filter((a): a is (typeof byQuestion)[number] => !!a)
+    .map((a, i) => ({ a, i, c: coverage(a) }))
+    .sort((x, y) => y.c - x.c || x.i - y.i)
+    .map((x) => x.a);
+  const found: Article[] = [...byNum, ...mixed]
+    .filter((a) => !seen.has(a.id) && !!seen.add(a.id))
+    .slice(0, limit);
+  return { words, found };
+}
+
 // beforeLlm: paywall hook, called only when the paid LLM step is about to run; false → { source: "paywall" }.
 export async function ask(
   question: string, theme?: string, llm: LlmCall = realLlm, expand = llm === realLlm ? expandQuery : undefined,
@@ -175,30 +208,7 @@ export async function ask(
   const named = mentionedConventions(q).filter((c) => !themeDef || codes.includes(c));
   if (named.length) codes = named;
   // Query expansion defaults on only with the real LLM, so tests with a fake stay offline.
-  const { words, nums } = expand ? await expand(q, codes) : { words: "", nums: [] };
-  // Convention article numbers repeat across avenants ("article 9" x25), so exact lookup only for codes and laws.
-  const byNum = nums.flatMap((n) => codes.filter((c) => !c.startsWith("ccn-")).map((c) => getArticleByNum(c, n)).filter((a): a is Article => !!a));
-  const scope = { codes, limit: MAX_ARTICLES };
-  const seen = new Set<string>();
-  const wide = { codes, limit: 20 };
-  const byWords = words ? searchArticles(words, wide) : [];
-  const byQuestion = searchArticles(q, wide);
-  // Interleave both searches, then rerank by distinct keyword coverage: bm25 buries long articles
-  // that cover the topic in depth. ponytail: stem = 5-char prefix; upgrade path = embeddings rerank.
-  const stems = [...tokens(`${q} ${words}`)].filter((t) => t.length > 3).map((t) => t.slice(0, 5));
-  const coverage = (a: Article) => {
-    const seen = new Set(tokens(a.texte).values().map((t) => t.slice(0, 5)));
-    return stems.filter((st) => seen.has(st)).length;
-  };
-  const mixed = Array.from({ length: 20 }, (_, i) => [byWords[i], byQuestion[i]])
-    .flat()
-    .filter((a): a is (typeof byQuestion)[number] => !!a)
-    .map((a, i) => ({ a, i, c: coverage(a) }))
-    .sort((x, y) => y.c - x.c || x.i - y.i)
-    .map((x) => x.a);
-  const found: Article[] = [...byNum, ...mixed]
-    .filter((a) => !seen.has(a.id) && !!seen.add(a.id))
-    .slice(0, MAX_ARTICLES);
+  const { words, found } = await retrieve(q, codes, expand);
   if (!found.length) {
     return {
       source: "none",
