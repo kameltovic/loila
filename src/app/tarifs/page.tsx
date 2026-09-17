@@ -5,9 +5,12 @@ import { SectionHead, container, display, label } from "@/components/ui";
 import { JsonLd, SITE_NAME, abs, faqJsonLd, pageMetadata } from "@/lib/seo";
 import { FREE_QUESTIONS, OFFERS, formatPrice } from "@/lib/plans";
 
+const D = OFFERS.dossier;
+const P = OFFERS.pro;
+
 export const metadata = pageMetadata({
-  title: "Tarifs : réponses gratuites, questions IA dès 0,99 €",
-  description: `Toutes les fiches et réponses existantes sont gratuites et illimitées. Posez une nouvelle question à l’IA : ${FREE_QUESTIONS} offertes, puis 0,99 € l’unité ou dès 7,99 €/mois.`,
+  title: `Tarifs : réponses gratuites, un dossier complet pour ${formatPrice(D.priceCents)}`,
+  description: `Toutes les fiches et réponses existantes sont gratuites et illimitées. Un problème à régler ? ${FREE_QUESTIONS} questions à l’IA offertes, puis ${D.credits} questions pour ${formatPrice(D.priceCents)}, valables ${D.validityDays} jours, sans abonnement.`,
   path: "/tarifs",
 });
 
@@ -17,18 +20,20 @@ const FAQ = [
     answer: `Seule une nouvelle question à laquelle l’IA rédige une réponse est décomptée. Les fiches pratiques et les réponses instantanées (questions déjà traitées) sont gratuites et illimitées. Poser une question nécessite un compte, créé automatiquement par le lien de connexion envoyé par email : les ${FREE_QUESTIONS} premières réponses générées sont alors offertes.`,
   },
   {
-    question: "Les questions non utilisées sont-elles reportées ?",
-    answer:
-      "Les questions achetées à l’unité n’expirent jamais. Le quota mensuel d’un abonnement est remis à zéro à chaque période et n’est pas reporté.",
+    question: "Pourquoi 10 questions et pas une seule ?",
+    answer: `Un problème juridique se règle rarement en une question : la première réponse en appelle d’autres (délais, preuves, recours, cas particuliers). Un dossier vous laisse ${D.credits} questions pour faire le tour de votre situation, à votre rythme.`,
   },
   {
-    question: "Puis-je résilier à tout moment ?",
-    answer:
-      "Oui. Les abonnements sont sans engagement : résiliez en un clic depuis « Mon compte », l’accès reste actif jusqu’à la fin de la période payée.",
+    question: "Que se passe-t-il au bout de 30 jours ?",
+    answer: `Les questions d’un dossier sont valables ${D.validityDays} jours à compter de l’achat. Celles qui n’ont pas été utilisées expirent et ne sont pas remboursées. Si vous ouvrez un nouveau dossier, il a ses propres ${D.validityDays} jours ; les questions du dossier qui expire le plus tôt sont utilisées en premier.`,
   },
   {
-    question: "Que veut dire « usage raisonnable » ?",
-    answer: `L’offre Illimité couvre un usage personnel ou professionnel normal, jusqu’à ${OFFERS.illimite.monthlyQuota} questions par mois, pour éviter les usages automatisés.`,
+    question: "Est-ce un abonnement ?",
+    answer: "Non. Le dossier est un paiement unique : rien n’est prélevé ensuite. Vous en rachetez un seulement si un nouveau problème se présente.",
+  },
+  {
+    question: "Et l’offre Pro ?",
+    answer: `Elle s’adresse à ceux qui posent des questions de droit toute l’année : syndics bénévoles, bailleurs de plusieurs logements, TPE sans service RH, agences immobilières, artisans. ${formatPrice(P.priceCents)} ${P.taxLabel} par mois pour ${P.monthlyQuota} questions, avec l’export des réponses sourcées, un historique par dossier, des alertes quand un article cité change et une facture au nom de la société. Elle n’est pas encore ouverte : inscrivez-vous sur la liste d’attente pour être prévenu.`,
   },
   {
     question: "Est-ce un conseil juridique ?",
@@ -37,34 +42,41 @@ const FAQ = [
   },
   {
     question: "Le paiement est-il sécurisé ?",
-    answer: "Oui, le paiement est traité par Stripe. Loilà ne voit ni ne stocke vos coordonnées bancaires. Les prix sont indiqués TTC.",
+    answer: "Oui, le paiement est traité par Stripe. Loilà ne voit ni ne stocke vos coordonnées bancaires.",
   },
 ];
 
 const ROWS: { k: string; v: (string | boolean)[] }[] = [
-  { k: "Fiches et réponses existantes", v: ["Illimitées", "Illimitées", "Illimitées", "Illimitées"] },
-  { k: "Nouvelles questions à l’IA", v: [`${FREE_QUESTIONS} offertes à l’inscription`, "1 par achat", "100 / mois", "Illimitées*"] },
-  { k: "Articles de loi cités", v: [true, true, true, true] },
-  { k: "Expiration", v: ["—", "Jamais", "Chaque mois", "Chaque mois"] },
-  { k: "Engagement", v: ["Aucun", "Aucun", "Aucun", "Aucun"] },
-  { k: "Compte requis", v: [true, true, true, true] },
+  { k: "Fiches et réponses existantes", v: ["Illimitées", "Illimitées", "Illimitées"] },
+  { k: "Nouvelles questions à l’IA", v: [`${FREE_QUESTIONS} offertes à l’inscription`, `${D.credits} par dossier`, `${P.monthlyQuota} / mois*`] },
+  { k: "Articles de loi cités", v: [true, true, true] },
+  { k: "Validité", v: ["—", `${D.validityDays} jours après l’achat`, "Chaque mois"] },
+  { k: "Export, historique, alertes", v: [false, false, "Bientôt"] },
+  { k: "Engagement", v: ["Aucun", "Paiement unique", "Sans engagement"] },
 ];
-const COLS = ["Gratuit", OFFERS.single.name, OFFERS.essentiel.name, OFFERS.illimite.name];
+const COLS = [
+  { name: "Gratuit", price: null },
+  { name: D.name, price: `${formatPrice(D.priceCents)} ${D.taxLabel}` },
+  { name: `${P.name} · bientôt`, price: `${formatPrice(P.priceCents)} ${P.taxLabel} /mois` },
+];
 
+// Only purchasable offers are advertised to search engines.
 const productJsonLd = {
   "@context": "https://schema.org",
   "@type": "Product",
   name: `${SITE_NAME} · questions juridiques à l’IA`,
   description: "Réponses sourcées par les articles de loi officiels à vos questions de droit français.",
   brand: { "@type": "Brand", name: SITE_NAME },
-  offers: Object.values(OFFERS).map((o) => ({
-    "@type": "Offer",
-    name: o.name,
-    price: (o.priceCents / 100).toFixed(2),
-    priceCurrency: "EUR",
-    url: abs("/tarifs"),
-    availability: "https://schema.org/InStock",
-  })),
+  offers: Object.values(OFFERS)
+    .filter((o) => o.available)
+    .map((o) => ({
+      "@type": "Offer",
+      name: o.name,
+      price: (o.priceCents / 100).toFixed(2),
+      priceCurrency: "EUR",
+      url: abs("/tarifs"),
+      availability: "https://schema.org/InStock",
+    })),
 };
 
 export default async function Pricing({ searchParams }: { searchParams: Promise<{ annule?: string }> }) {
@@ -84,11 +96,12 @@ export default async function Pricing({ searchParams }: { searchParams: Promise<
             Tarifs
           </p>
           <h1 className={`${display} mt-6 max-w-5xl text-[clamp(3rem,9vw,6.5rem)] leading-[0.92] text-balance`}>
-            Lire est gratuit. <span className="font-serif font-normal tracking-[-0.02em] italic">Demander</span> coûte peu.
+            Lire est gratuit. <span className="font-serif font-normal tracking-[-0.02em] italic">Régler</span> votre problème coûte peu.
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-pretty text-fg-2 sm:text-xl">
-            Toutes les fiches et réponses déjà publiées restent gratuites, sans limite et sans compte. Pour poser une question,
-            créez votre compte en quelques secondes : {FREE_QUESTIONS} réponses générées sont offertes.
+            Toutes les fiches et réponses déjà publiées restent gratuites, sans limite et sans compte. Un litige, un préavis, un
+            chantier ? Créez votre compte : {FREE_QUESTIONS} questions à l’IA sont offertes, puis un dossier de {D.credits} questions
+            pour {formatPrice(D.priceCents)}, sans abonnement.
           </p>
         </div>
       </section>
@@ -124,12 +137,12 @@ export default async function Pricing({ searchParams }: { searchParams: Promise<
 
       <section aria-labelledby="offers-title" className="pb-16 sm:pb-24">
         <div className={container}>
-          <SectionHead num="01" kicker="Formules" id="offers-title" title={<>Pour aller <span className="font-serif font-normal italic">plus loin</span></>} />
+          <SectionHead num="01" kicker="Formules" id="offers-title" title={<>Un problème, <span className="font-serif font-normal italic">un dossier</span></>} />
           <div className="mt-12">
             <PricingCards />
           </div>
           <p className="mt-6 text-sm text-fg-2">
-            Prix TTC · Paiement sécurisé par Stripe · Sans engagement, résiliable en 1 clic · Voir les{" "}
+            Dossier : prix {D.taxLabel}, paiement unique sécurisé par Stripe · Pro : prix {P.taxLabel}, offre pas encore ouverte · Voir les{" "}
             <Link href="/cgv" className="underline decoration-signal decoration-2 underline-offset-4">
               conditions générales de vente
             </Link>
@@ -148,14 +161,9 @@ export default async function Pricing({ searchParams }: { searchParams: Promise<
                     <span className="sr-only">Critère</span>
                   </th>
                   {COLS.map((c, i) => (
-                    <th key={c} scope="col" className={`${label} px-3 py-4 ${i === 2 ? "bg-fg text-bg" : ""}`}>
-                      {c}
-                      {i > 0 && (
-                        <span className="mt-1 block font-display text-xl font-extrabold tracking-[-0.03em] normal-case">
-                          {formatPrice(Object.values(OFFERS)[i - 1].priceCents)}
-                          {i > 1 && <span className={`text-sm font-normal ${i === 2 ? "" : "text-fg-2"}`}> /mois</span>}
-                        </span>
-                      )}
+                    <th key={c.name} scope="col" className={`${label} px-3 py-4 ${i === 1 ? "bg-fg text-bg" : ""}`}>
+                      {c.name}
+                      {c.price && <span className="mt-1 block font-display text-xl font-extrabold tracking-[-0.03em] normal-case">{c.price}</span>}
                     </th>
                   ))}
                 </tr>
@@ -167,7 +175,7 @@ export default async function Pricing({ searchParams }: { searchParams: Promise<
                       {r.k}
                     </th>
                     {r.v.map((v, i) => (
-                      <td key={i} className={`px-3 py-4 ${i === 2 ? "bg-surface" : ""}`}>
+                      <td key={i} className={`px-3 py-4 ${i === 1 ? "bg-surface" : ""}`}>
                         {v === true ? (
                           <Check aria-label="Oui" strokeWidth={2.5} className="size-5 text-focus" />
                         ) : v === false ? (
@@ -182,7 +190,7 @@ export default async function Pricing({ searchParams }: { searchParams: Promise<
               </tbody>
             </table>
           </div>
-          <p className="mt-4 text-xs text-fg-2">* Usage raisonnable : {OFFERS.illimite.monthlyQuota} questions par mois.</p>
+          <p className="mt-4 text-xs text-fg-2">* Usage raisonnable.</p>
         </div>
       </section>
 

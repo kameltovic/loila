@@ -9,13 +9,21 @@ export async function POST(request: Request) {
     return Response.json({ error: "Trop de tentatives, réessayez dans quelques minutes." }, { status: 429 });
   }
   let offer: unknown;
+  let waiver: unknown;
   try {
-    offer = (await request.json())?.offer;
+    ({ offer, waiver } = (await request.json()) ?? {});
   } catch {
     return Response.json({ error: "Requête invalide." }, { status: 400 });
   }
-  if (typeof offer !== "string" || !Object.hasOwn(OFFERS, offer)) return Response.json({ error: "Offre inconnue." }, { status: 400 });
+  if (typeof offer !== "string" || !Object.hasOwn(OFFERS, offer) || !OFFERS[offer as OfferId].available) {
+    return Response.json({ error: "Offre indisponible." }, { status: 400 });
+  }
   const offerId = offer as OfferId;
+  // Digital content supplied immediately: the withdrawal right is lost only with prior express consent + waiver
+  // (art. L221-28 13° Code de la consommation), collected by a checkbox before redirecting to Stripe.
+  if (OFFERS[offerId].kind === "one_time" && waiver !== true) {
+    return Response.json({ error: "Cochez la case pour demander l’accès immédiat à vos questions." }, { status: 400 });
+  }
 
   try {
     const id = await getIdentity(request);
@@ -32,7 +40,14 @@ export async function POST(request: Request) {
       ...(!subscription && !customer ? { customer_creation: "always" as const } : {}),
       allow_promotion_codes: true,
       locale: "fr",
-      metadata: { offer: offerId, ...(id.userId ? { user_id: String(id.userId) } : {}) },
+      metadata: {
+        offer: offerId,
+        ...(id.userId ? { user_id: String(id.userId) } : {}),
+        ...(waiver === true ? { withdrawal_waiver_at: new Date().toISOString() } : {}), // proof of consent
+      },
+      ...(!subscription
+        ? { custom_text: { submit: { message: "Accès immédiat à vos questions : vous avez renoncé à votre droit de rétractation de 14 jours." } } }
+        : {}),
       success_url: `${base}/api/checkout/return?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${base}/tarifs?annule=1`,
     });

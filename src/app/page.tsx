@@ -200,7 +200,7 @@ export default function Home() {
               </h2>
               <p className="mt-4 max-w-xl text-fg-2">
                 Toutes les fiches et réponses existantes sont libres d’accès, sans limite. Une question inédite ? Créez votre compte :{" "}
-                {FREE_QUESTIONS} offertes, puis dès {formatPrice(OFFERS.single.priceCents)}.
+                {FREE_QUESTIONS} offertes, puis {formatPrice(OFFERS.dossier.priceCents)} les {OFFERS.dossier.credits} questions pour régler votre situation.
               </p>
             </div>
             <Link href="/tarifs" className="inline-flex items-center gap-1.5 justify-self-start font-semibold underline decoration-signal decoration-2 underline-offset-4 md:justify-self-end">

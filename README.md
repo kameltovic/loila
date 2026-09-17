@@ -71,7 +71,16 @@ Les questions sont dans `seed/questions.json` (`theme`, `slug`, `emoji`, `questi
 
 ## Paiements
 
-Seules les réponses **générées par le LLM** sont payantes : FAQ et cache restent gratuits et illimités. Chaque visiteur a 3 questions gratuites (cookie signé `loila_anon` + IP), puis offres de `src/lib/plans.ts` : à l'unité (crédit sans expiration), Essentiel, Illimité. Un crédit n'est débité qu'après une réponse LLM réussie ; au-delà, `/api/ask` répond `402 { code: "paywall", me }`. Ordre de débit : quota d'abonnement → crédits → questions gratuites.
+Seules les réponses **générées par le LLM** sont payantes : FAQ et cache restent gratuits et illimités. Poser une question nécessite un compte ; chaque compte a 3 questions gratuites à vie. Offres (`src/lib/plans.ts`) :
+
+- **Dossier** : 4,90 € TTC, paiement unique, 10 questions **valables 30 jours après l'achat** (date de la session Stripe, pas de l'arrivée du webhook). Chaque achat crée un lot distinct dans `credit_batches`, avec sa propre expiration ; un nouvel achat ne prolonge pas les précédents. Les questions non utilisées expirent sans remboursement.
+- **Pro** : 49 € HT/mois, 500 questions/mois (usage raisonnable). **Pas encore en vente** (`available: false`) : la carte ouvre une liste d'attente (`pro_waitlist`), `/api/checkout` refuse l'offre et aucun prix Stripe n'est créé. Pour l'ouvrir : construire les fonctionnalités annoncées, régler la question de la TVA, passer `available` à `true`, lancer `stripe-setup`.
+
+Ordre de débit : quota d'abonnement → lot de crédits non expiré dont l'expiration est la plus proche → questions gratuites. Les lots expirés sont ignorés mais jamais supprimés, et chaque question payée par un lot garde son `batch_id` dans `usage` (historique en cas de litige). Un crédit n'est débité qu'après une réponse LLM réussie ; au-delà, `/api/ask` répond `402 { code: "paywall", me }`. `Me` expose `credits` (lots valides) et `creditsExpireAt` (lot valide qui expire en premier), affichés dans `/compte` et le paywall.
+
+Rétractation : le Dossier est un contenu numérique fourni immédiatement. Avant la redirection vers Stripe, l'acheteur coche une case de renonciation au délai de 14 jours ; `/api/checkout` refuse la commande sans `waiver: true` et enregistre `withdrawal_waiver_at` dans les métadonnées de la session Stripe (preuve).
+
+Anciennes offres (`loila_single_v1`, `loila_essentiel_monthly_v1`, `loila_illimite_monthly_v1`) : retirées sans aucun achat en production, prix désactivés par `stripe-setup`. La table `credit_ledger` (crédits sans expiration) n'est plus lue.
 
 Connexion sans mot de passe par lien magique (15 min, usage unique), session de 90 jours (cookie `loila_session`). Paiement via Stripe Checkout ; les montants viennent toujours des prix Stripe (`lookup_key`).
 
@@ -81,7 +90,8 @@ Connexion sans mot de passe par lien magique (15 min, usage unique), session de 
 | `POST /api/auth/request` `{email, next?}` | envoie le lien magique |
 | `GET /api/auth/verify?token=` | ouvre la session, redirige vers `/compte` ou `next` |
 | `POST /api/auth/logout` | ferme la session |
-| `POST /api/checkout` `{offer}` | crée la session Checkout → `{url}` |
+| `POST /api/checkout` `{offer, waiver}` | crée la session Checkout → `{url}` (offres `available` seulement ; `waiver: true` requis pour le Dossier) |
+| `POST /api/pro-waitlist` `{email, metier?}` | inscription à la liste d'attente Pro |
 | `GET /api/checkout/return?session_id=` | retour de Stripe : crédite (idempotent), connecte, redirige vers `/merci?ok=1` |
 | `POST /api/portal` | portail de facturation Stripe → `{url}` |
 | `POST /api/stripe/webhook` | webhooks Stripe (signature vérifiée, idempotent) |
@@ -99,7 +109,7 @@ Variables :
 
 Mise en production :
 
-1. `STRIPE_SECRET_KEY=sk_live_… npx tsx scripts/stripe-setup.ts --live` crée le produit « Loilà » et les 3 prix (idempotent).
+1. `STRIPE_SECRET_KEY=sk_live_… npx tsx scripts/stripe-setup.ts --live` crée le produit « Loilà » et les prix des offres disponibles, et désactive les anciens prix (idempotent).
 2. Dans le dashboard Stripe, ajouter l'endpoint `https://loila.fr/api/stripe/webhook` avec les événements `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.paid`, puis copier son secret dans `STRIPE_WEBHOOK_SECRET`.
 3. Activer le portail client (Paramètres → Billing → Customer portal) : annulation et moyens de paiement.
 4. Dans Sweego, vérifier le domaine d'envoi `loila.fr` (enregistrements DNS SPF et DKIM à ajouter sur la zone de loila.fr), puis créer la clé API.
@@ -109,7 +119,7 @@ En local (mode test) :
 ```bash
 npm run stripe:setup                                                  # produit + prix de test
 stripe listen --forward-to localhost:3000/api/stripe/webhook          # copier le whsec_ dans .env
-stripe trigger checkout.session.completed --override checkout_session:metadata.offer=single
+stripe trigger checkout.session.completed --override checkout_session:metadata.offer=dossier
 ```
 
 Carte de test : `4242 4242 4242 4242`, date future, CVC quelconque.

@@ -1,6 +1,6 @@
 import Stripe from "stripe";
 import { upsertUser } from "./auth";
-import { grantCredits, upsertSubscription } from "./billing";
+import { grantBatch, upsertSubscription } from "./billing";
 import { getDb } from "./db";
 import { OFFERS, type OfferId } from "./plans";
 
@@ -72,7 +72,9 @@ export async function fulfillCheckout(session: Stripe.Checkout.Session, stripe?:
   if (!userId) return null;
   linkCustomer(userId, idOf(session.customer));
   const offer = session.metadata?.offer as OfferId | undefined;
-  if (session.mode === "payment" && offer === "single") grantCredits(userId, OFFERS.single.credits, session.id);
+  if (session.mode === "payment" && offer === "dossier") {
+    grantBatch(userId, OFFERS.dossier.credits, session.created, OFFERS.dossier.validityDays, session.id);
+  }
   const subId = idOf(session.subscription);
   if (session.mode === "subscription" && subId && stripe) {
     await syncSubscription(typeof session.subscription === "object" && session.subscription ? session.subscription : await stripe.subscriptions.retrieve(subId), stripe);

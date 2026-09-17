@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { Lock, UserRound, X } from "lucide-react";
-import { FREE_QUESTIONS, type Me } from "@/lib/plans";
+import { FREE_QUESTIONS, OFFERS, formatDate, type Me } from "@/lib/plans";
 import { display, label } from "@/components/ui";
 import PricingCards from "@/components/PricingCards";
 import { LoginForm } from "@/components/AccountMenu";
@@ -67,6 +67,7 @@ export default function Paywall({ me, reason = "quota", onClose }: { me: Me | nu
                 <>Un compte est <span className="font-serif font-normal italic">nécessaire.</span></>
               ) : subscriber ? (
                 <>Quota du mois <span className="font-serif font-normal italic">atteint.</span></>
+
               ) : (
                 <>Vos {FREE_QUESTIONS} questions offertes sont <span className="font-serif font-normal italic">utilisées.</span></>
               )}
@@ -78,7 +79,11 @@ export default function Paywall({ me, reason = "quota", onClose }: { me: Me | nu
                   questions générées sont offertes, et votre question est conservée pour être renvoyée après connexion.
                 </>
               ) : (
-                <>Continuez avec une question à l’unité ou un abonnement. Votre question est conservée : renvoyez-la après l’achat.</>
+                <>
+                  Un litige, un préavis, un chantier ? Ouvrez un dossier : {OFFERS.dossier.credits} questions pour creuser votre
+                  situation pendant {OFFERS.dossier.validityDays} jours, sans abonnement. Votre question est conservée : renvoyez-la
+                  après l’achat.
+                </>
               )}
             </p>
           </div>
@@ -105,6 +110,12 @@ export default function Paywall({ me, reason = "quota", onClose }: { me: Me | nu
           </div>
         ) : (
           <div className="space-y-6 px-5 py-7 sm:px-8">
+            {me && me.credits > 0 && me.creditsExpireAt && (
+              <p role="status" className="border-2 border-fg bg-surface px-4 py-3">
+                Il vous reste <strong>{me.credits} question{me.credits > 1 ? "s" : ""}</strong> sur votre dossier, valables
+                jusqu’au <strong>{formatDate(me.creditsExpireAt)}</strong>.
+              </p>
+            )}
             <PricingCards compact />
 
             <p className="border-l-4 border-signal pl-4 text-[0.9375rem]">
@@ -113,7 +124,11 @@ export default function Paywall({ me, reason = "quota", onClose }: { me: Me | nu
             </p>
 
             <p className="text-sm text-fg-2">
-              Paiement sécurisé par Stripe · Sans engagement · Résiliable en 1 clic ·{" "}
+              Paiement unique sécurisé par Stripe · Sans abonnement ·{" "}
+              <Link href="/tarifs#pro" className="underline decoration-signal decoration-2 underline-offset-4" onClick={onClose}>
+                Vous êtes pro ?
+              </Link>{" "}
+              ·{" "}
               <Link href="/tarifs" className="underline decoration-signal decoration-2 underline-offset-4" onClick={onClose}>
                 Détail des tarifs
               </Link>

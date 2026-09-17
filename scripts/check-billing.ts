@@ -57,50 +57,106 @@ async function main() {
   assert.equal(await askAs(free, "préavis locataire"), "cache"); // cache stays free
   assert.equal(await askAs(free, "xylophone zébulon"), "paywall"); // hook runs before retrieval
 
-  // --- credits via webhook, idempotent
-  const userId = auth.upsertUser("Buyer@Example.com");
-  const buyer = { userId, email: "buyer@example.com", anonId: "anon1", ipHash: "ip1" };
-  for (let i = 0; i < 3; i++) assert.equal(consume(buyer), "free"); // spend the account's free questions first
-  assert.equal(getMe(buyer).freeLeft, 0);
-  const checkout = (id: string, sessionId: string) =>
+  // --- Dossier via webhook: idempotent, expiry counted from the Stripe purchase time (not webhook arrival)
+  const DAY = 86400;
+  const checkout = (id: string, sessionId: string, customer: string, email: string, created: number, offer = "dossier") =>
     ({
       id, type: "checkout.session.completed",
-      data: { object: { id: sessionId, object: "checkout.session", status: "complete", payment_status: "paid", mode: "payment",
-        customer: "cus_1", customer_details: { email: "buyer@example.com" }, metadata: { offer: "single" }, subscription: null } },
+      data: { object: { id: sessionId, object: "checkout.session", created, status: "complete", payment_status: "paid", mode: "payment",
+        customer, customer_details: { email }, metadata: { offer }, subscription: null } },
     }) as unknown as Stripe.Event;
-  assert.equal(await handleStripeEvent(checkout("evt_1", "cs_1")), "handled");
-  assert.equal(await handleStripeEvent(checkout("evt_1", "cs_1")), "duplicate");
-  assert.equal(await handleStripeEvent(checkout("evt_2", "cs_1")), "handled"); // same session, other event id
-  assert.equal(getMe(buyer).credits, 1);
-  assert.equal((db.prepare("SELECT stripe_customer_id c FROM users WHERE id = ?").get(userId) as { c: string }).c, "cus_1");
-  assert.equal(getMe(buyer).canAsk, true);
-  assert.equal(consume(buyer), "credit");
-  assert.equal(getMe(buyer).credits, 0);
-  assert.equal(consume(buyer), null);
-  assert.equal(getMe(buyer).canAsk, false);
+  const batches = (uid: number) =>
+    db.prepare("SELECT id, credits_left, expires_at FROM credit_batches WHERE user_id = ? ORDER BY id").all(uid) as { id: number; credits_left: number; expires_at: number }[];
+  const iso = (t: number) => new Date(t * 1000).toISOString();
 
-  // --- subscription quota and period reset
+  const userId = auth.upsertUser("Buyer@Example.com");
+  const buyer = { userId, email: "buyer@example.com", anonId: "anon1", ipHash: "ip1" };
+  for (let i = 0; i < 3; i++) assert.equal(consume(buyer, T), "free"); // spend the account's free questions first
+  assert.equal(await handleStripeEvent(checkout("evt_1", "cs_1", "cus_1", "buyer@example.com", T)), "handled");
+  assert.equal(await handleStripeEvent(checkout("evt_1", "cs_1", "cus_1", "buyer@example.com", T)), "duplicate");
+  assert.equal(await handleStripeEvent(checkout("evt_2", "cs_1", "cus_1", "buyer@example.com", T)), "handled"); // same session, other event id
+  assert.equal(await handleStripeEvent(checkout("evt_x", "cs_x", "cus_1", "buyer@example.com", T, "single")), "handled"); // retired offer: ignored
+  assert.equal(batches(userId).length, 1);
+  let me = getMe(buyer, T + 2 * DAY); // webhook processed late: expiry still from purchase
+  assert.equal(me.credits, 10);
+  assert.equal(me.creditsExpireAt, iso(T + 30 * DAY));
+  assert.equal((db.prepare("SELECT stripe_customer_id c FROM users WHERE id = ?").get(userId) as { c: string }).c, "cus_1");
+
+  // --- several batches, only one valid: the soonest-expiring valid batch pays, expired ones are skipped but kept
+  await handleStripeEvent(checkout("evt_3", "cs_2", "cus_1", "buyer@example.com", T + 20 * DAY)); // expires T+50d
+  const [b1, b2] = batches(userId);
+  me = getMe(buyer, T + 21 * DAY);
+  assert.equal(me.credits, 20);
+  assert.equal(me.creditsExpireAt, iso(T + 30 * DAY)); // soonest first
+  assert.equal(consume(buyer, T + 21 * DAY), "credit");
+  assert.deepEqual(batches(userId).map((b) => b.credits_left), [9, 10]);
+  assert.equal((db.prepare("SELECT batch_id FROM usage WHERE subject = ? AND kind = 'credit' ORDER BY id DESC").get(`user:${userId}`) as { batch_id: number }).batch_id, b1.id);
+
+  me = getMe(buyer, T + 31 * DAY); // b1 expired with 9 left
+  assert.equal(me.credits, 10);
+  assert.equal(me.creditsExpireAt, iso(T + 50 * DAY));
+  assert.equal(consume(buyer, T + 31 * DAY), "credit");
+  assert.deepEqual(batches(userId).map((b) => b.credits_left), [9, 9]); // expired batch untouched
+  for (let i = 0; i < 9; i++) assert.equal(consume(buyer, T + 31 * DAY), "credit");
+  me = getMe(buyer, T + 31 * DAY);
+  assert.equal(me.credits, 0);
+  assert.equal(me.creditsExpireAt, null);
+  assert.equal(me.canAsk, false);
+  assert.equal(consume(buyer, T + 31 * DAY), null);
+  assert.equal(batches(userId).length, 2); // never deleted
+  assert.equal(batches(userId)[1].id, b2.id);
+
+  // --- debit order: subscription quota → credit batch → free questions
+  const proId = auth.upsertUser("Pro@Example.com");
+  const pro = { userId: proId, email: "pro@example.com", anonId: "anon2", ipHash: "ip2" };
+  await handleStripeEvent(checkout("evt_p0", "cs_p0", "cus_2", "pro@example.com", T)); // links cus_2, 10 credits
   const sub = (id: string, status: string, start: number, end: number) =>
     ({
       id, type: "customer.subscription.updated",
-      data: { object: { id: "sub_1", object: "subscription", customer: "cus_1", status,
-        items: { data: [{ price: { lookup_key: "loila_essentiel_monthly_v1" }, current_period_start: start, current_period_end: end }] } } },
+      data: { object: { id: "sub_1", object: "subscription", customer: "cus_2", status,
+        items: { data: [{ price: { lookup_key: "loila_pro_monthly_v1" }, current_period_start: start, current_period_end: end }] } } },
     }) as unknown as Stripe.Event;
-  await handleStripeEvent(sub("evt_s1", "active", T, T + 30 * 86400));
-  let me = getMe(buyer, T + 10);
-  assert.equal(me.plan, "essentiel");
-  assert.equal(me.monthlyLimit, 100);
-  for (let i = 0; i < 100; i++) assert.equal(consume(buyer, T + 10), "sub");
-  me = getMe(buyer, T + 10);
-  assert.equal(me.monthlyUsed, 100);
+  await handleStripeEvent(sub("evt_s1", "active", T, T + 30 * DAY));
+  me = getMe(pro, T + 10);
+  assert.equal(me.plan, "pro");
+  assert.equal(me.monthlyLimit, 500);
+  for (let i = 0; i < 500; i++) assert.equal(consume(pro, T + 10), "sub");
+  assert.equal(getMe(pro, T + 10).credits, 10); // quota spent before credits
+  for (let i = 0; i < 10; i++) assert.equal(consume(pro, T + 10), "credit");
+  for (let i = 0; i < 3; i++) assert.equal(consume(pro, T + 10), "free");
+  me = getMe(pro, T + 10);
+  assert.equal(me.monthlyUsed, 500);
   assert.equal(me.canAsk, false);
-  assert.equal(consume(buyer, T + 10), null);
-  await handleStripeEvent(sub("evt_s2", "active", T + 30 * 86400, T + 60 * 86400));
-  me = getMe(buyer, T + 30 * 86400 + 5);
+  assert.equal(consume(pro, T + 10), null);
+
+  // --- subscription period reset and cancellation
+  await handleStripeEvent(sub("evt_s2", "active", T + 30 * DAY, T + 60 * DAY));
+  me = getMe(pro, T + 30 * DAY + 5);
   assert.equal(me.monthlyUsed, 0);
   assert.equal(me.canAsk, true);
-  await handleStripeEvent(sub("evt_s3", "canceled", T + 30 * 86400, T + 60 * 86400));
-  assert.equal(getMe(buyer, T + 30 * 86400 + 5).plan, "free");
+  await handleStripeEvent(sub("evt_s3", "canceled", T + 30 * DAY, T + 60 * DAY));
+  assert.equal(getMe(pro, T + 30 * DAY + 5).plan, "free");
+
+  // --- checkout guard (rejected before any Stripe call): Pro not for sale, Dossier needs the withdrawal waiver
+  const { POST: checkoutPost } = await import("../src/app/api/checkout/route");
+  const post = (body: object) =>
+    checkoutPost(new Request("http://localhost:3000/api/checkout", {
+      method: "POST", headers: { origin: "http://localhost:3000", host: "localhost:3000", "content-type": "application/json" }, body: JSON.stringify(body),
+    }));
+  assert.equal((await post({ offer: "pro" })).status, 400);
+  assert.equal((await post({ offer: "single", waiver: true })).status, 400);
+  assert.equal((await post({ offer: "dossier" })).status, 400);
+
+  // --- Pro waitlist: upsert on email
+  const { POST: waitlistPost } = await import("../src/app/api/pro-waitlist/route");
+  const join = (body: object) =>
+    waitlistPost(new Request("http://localhost:3000/api/pro-waitlist", {
+      method: "POST", headers: { origin: "http://localhost:3000", host: "localhost:3000", "x-forwarded-for": "9.9.9.9" }, body: JSON.stringify(body),
+    }));
+  assert.equal((await join({ email: "nope" })).status, 400);
+  assert.equal((await join({ email: "Syndic@Example.com", metier: "Syndic bénévole" })).status, 200);
+  assert.equal((await join({ email: "syndic@example.com" })).status, 200);
+  assert.deepEqual(db.prepare("SELECT email, metier FROM pro_waitlist").all(), [{ email: "syndic@example.com", metier: "Syndic bénévole" }]);
 
   // --- magic link tokens: single use + expiry
   const tok = auth.createLoginToken("Someone@Example.com", T);

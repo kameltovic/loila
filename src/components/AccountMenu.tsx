@@ -3,7 +3,7 @@
 import { useEffect, useId, useState } from "react";
 import Link from "next/link";
 import { AlertTriangle, ArrowRight, Check, Loader2 } from "lucide-react";
-import { OFFERS, type Me } from "@/lib/plans";
+import { OFFERS, formatDate, type Me } from "@/lib/plans";
 import { btnPrimary, label } from "@/components/ui";
 
 /** POST JSON, resolve parsed body; reject with the server message on non-2xx or network failure. */
@@ -97,7 +97,7 @@ export function LoginForm({ autoFocus = false }: { autoFocus?: boolean }) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="vous@exemple.fr"
-          className="min-h-12 min-w-0 flex-1 border-2 border-fg bg-surface px-4 text-base text-fg placeholder:text-fg-2 focus:outline-3 focus:outline-offset-2 focus:outline-focus"
+          className="min-h-12 min-w-0 flex-1 border-2 border-fg bg-surface px-4 text-base text-fg placeholder:text-fg-2 focus:outline-2 focus:outline-offset-2 focus:outline-fg"
         />
         <button type="submit" disabled={state === "loading"} className={`${btnPrimary} disabled:opacity-60`}>
           {state === "loading" ? <Loader2 aria-hidden className="size-4 animate-spin" /> : <ArrowRight aria-hidden className="size-4" />}
@@ -122,10 +122,11 @@ export function MeSummary({ me }: { me: Me }) {
     { k: "Formule", v: planName(me.plan) },
     ...(me.email ? [{ k: "Email", v: me.email }] : []),
     { k: "Questions offertes restantes", v: String(me.freeLeft) },
-    { k: "Questions à l'unité (sans expiration)", v: String(me.credits) },
-    ...(sub && me.periodEnd
-      ? [{ k: "Renouvellement", v: new Date(me.periodEnd).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }) }]
-      : []),
+    {
+      k: "Questions du Dossier",
+      v: me.credits > 0 && me.creditsExpireAt ? `${me.credits}, valables jusqu’au ${formatDate(me.creditsExpireAt)}` : "Aucune en cours",
+    },
+    ...(sub && me.periodEnd ? [{ k: "Renouvellement", v: formatDate(me.periodEnd) }] : []),
   ];
   return (
     <div className="border-2 border-fg bg-surface shadow-hard">
@@ -142,7 +143,7 @@ export function MeSummary({ me }: { me: Me }) {
           <div className="flex items-baseline justify-between gap-4">
             <p className={label}>Ce mois-ci</p>
             <p className="font-mono text-sm font-bold tabular-nums">
-              {me.monthlyUsed} / {me.plan === "illimite" ? "∞" : me.monthlyLimit}
+              {me.monthlyUsed} / {me.monthlyLimit}
             </p>
           </div>
           <div
@@ -155,7 +156,6 @@ export function MeSummary({ me }: { me: Me }) {
           >
             <div className="h-full bg-signal" style={{ width: `${pct}%` }} />
           </div>
-          {me.plan === "illimite" && <p className="mt-2 text-xs text-fg-2">Usage raisonnable : {me.monthlyLimit} questions par mois.</p>}
         </div>
       )}
     </div>
@@ -210,7 +210,7 @@ export function AccountPanel() {
           </button>
         )}
         <Link href="/tarifs" className={btnPrimary}>
-          Acheter des questions
+          Ouvrir un dossier
         </Link>
         <button
           type="button"

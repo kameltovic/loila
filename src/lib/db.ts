@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS login_tokens (
 CREATE TABLE IF NOT EXISTS subscriptions (
   user_id                INTEGER PRIMARY KEY REFERENCES users(id),
   stripe_subscription_id TEXT NOT NULL,
-  plan                   TEXT NOT NULL,     -- 'essentiel' | 'illimite'
+  plan                   TEXT NOT NULL,     -- OfferId of a subscription offer ('pro')
   status                 TEXT NOT NULL,     -- Stripe status
   current_period_start   INTEGER NOT NULL,
   current_period_end     INTEGER NOT NULL
@@ -102,11 +102,28 @@ CREATE TABLE IF NOT EXISTS credit_ledger (
   stripe_ref TEXT UNIQUE,                   -- checkout session id: a purchase is granted once
   created_at INTEGER NOT NULL DEFAULT (unixepoch())
 );
-CREATE INDEX IF NOT EXISTS credit_ledger_user ON credit_ledger(user_id);
+CREATE INDEX IF NOT EXISTS credit_ledger_user ON credit_ledger(user_id); -- legacy (never-expiring credits), no longer read
+-- One row per Dossier purchase. Expired batches are ignored, never deleted (dispute history).
+CREATE TABLE IF NOT EXISTS credit_batches (
+  id              INTEGER PRIMARY KEY,
+  user_id         INTEGER NOT NULL REFERENCES users(id),
+  credits_granted INTEGER NOT NULL,
+  credits_left    INTEGER NOT NULL CHECK (credits_left >= 0),
+  expires_at      INTEGER NOT NULL,
+  stripe_ref      TEXT UNIQUE,              -- checkout session id: a purchase is granted once
+  created_at      INTEGER NOT NULL DEFAULT (unixepoch())
+);
+CREATE INDEX IF NOT EXISTS credit_batches_user ON credit_batches(user_id, expires_at);
+CREATE TABLE IF NOT EXISTS pro_waitlist (
+  email      TEXT PRIMARY KEY,
+  metier     TEXT,
+  created_at INTEGER NOT NULL DEFAULT (unixepoch())
+);
 CREATE TABLE IF NOT EXISTS usage (
   id         INTEGER PRIMARY KEY,
   subject    TEXT NOT NULL,                 -- 'user:<id>' (asking requires an account)
   kind       TEXT NOT NULL,                 -- 'free' | 'credit' | 'sub'
+  batch_id   INTEGER,                       -- credit_batches.id when kind = 'credit'
   created_at INTEGER NOT NULL DEFAULT (unixepoch())
 );
 CREATE INDEX IF NOT EXISTS usage_subject ON usage(subject, kind, created_at);
@@ -128,6 +145,9 @@ export function getDb() {
     const cols = db.prepare("PRAGMA table_info(faq)").all() as { name: string }[];
     if (!cols.some((c) => c.name === "topic")) db.exec("ALTER TABLE faq ADD COLUMN topic TEXT");
     db.exec("CREATE INDEX IF NOT EXISTS faq_topic ON faq(topic)");
+    // Migration for DBs created before credit batches existed.
+    const usageCols = db.prepare("PRAGMA table_info(usage)").all() as { name: string }[];
+    if (!usageCols.some((c) => c.name === "batch_id")) db.exec("ALTER TABLE usage ADD COLUMN batch_id INTEGER");
   }
   return db;
 }

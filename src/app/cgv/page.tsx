@@ -4,9 +4,11 @@ import { pageMetadata } from "@/lib/seo";
 import { container, display, label } from "@/components/ui";
 import { FREE_QUESTIONS, OFFERS, formatPrice } from "@/lib/plans";
 
+const D = OFFERS.dossier;
+
 export const metadata: Metadata = pageMetadata({
   title: "Conditions générales de vente",
-  description: "Conditions générales de vente des questions à l’unité et abonnements Loilà : prix, rétractation, résiliation, données.",
+  description: "Conditions générales de vente des dossiers de questions Loilà : prix, validité de 30 jours, rétractation, données.",
   path: "/cgv",
 });
 
@@ -34,47 +36,52 @@ export default function Cgv() {
         <h2>1. Objet</h2>
         <p>
           Les présentes conditions régissent la vente, par <TODO /> (l’« Éditeur »), de questions posées à l’assistant de
-          Loilà, à l’unité ou par abonnement. Les fiches et réponses déjà publiées sur le site restent accessibles
-          gratuitement et sans limite.
+          Loilà, regroupées en « dossiers ». Les fiches et réponses déjà publiées sur le site restent accessibles gratuitement
+          et sans limite.
         </p>
 
         <h2>2. Offres et prix</h2>
-        <p>Les prix sont indiqués en euros, toutes taxes comprises (TTC) :</p>
         <ul>
           <li>{FREE_QUESTIONS} questions offertes par compte, sans achat ;</li>
           <li>
-            {OFFERS.single.name} : {formatPrice(OFFERS.single.priceCents)} la question, sans date d’expiration ;
-          </li>
-          <li>
-            {OFFERS.essentiel.name} : {formatPrice(OFFERS.essentiel.priceCents)} par mois, {OFFERS.essentiel.monthlyQuota}{" "}
-            questions par période, non reportables ;
-          </li>
-          <li>
-            {OFFERS.illimite.name} : {formatPrice(OFFERS.illimite.priceCents)} par mois, questions illimitées dans la limite
-            d’un usage raisonnable ({OFFERS.illimite.monthlyQuota} questions par période).
+            <strong>{D.name}</strong> : {formatPrice(D.priceCents)} {D.taxLabel}, paiement unique, donnant droit à {D.credits}{" "}
+            questions.
           </li>
         </ul>
+        <p>
+          L’offre {OFFERS.pro.name} ({formatPrice(OFFERS.pro.priceCents)} {OFFERS.pro.taxLabel} par mois) n’est pas encore
+          commercialisée : l’inscription sur sa liste d’attente est gratuite et n’engage à rien. Ses conditions seront ajoutées
+          aux présentes avant son ouverture.
+        </p>
         <p>Seules les nouvelles questions donnant lieu à une réponse rédigée par l’IA sont décomptées.</p>
 
-        <h2>3. Commande et paiement</h2>
+        <h2 id="validite">3. Durée de validité des questions</h2>
         <p>
-          Le paiement est effectué par carte bancaire via Stripe. L’Éditeur n’a pas accès aux coordonnées bancaires. Les
-          abonnements sont prélevés à la souscription puis à chaque date anniversaire mensuelle.
+          Les questions d’un dossier sont <strong>valables {D.validityDays} jours à compter de la date d’achat</strong>. À
+          l’issue de ce délai, les questions non utilisées expirent : elles ne sont ni reportées, ni remboursées, ni
+          échangées. Chaque achat constitue un dossier distinct avec sa propre date d’expiration, qui n’est pas prolongée par
+          un achat ultérieur. Lorsque plusieurs dossiers sont en cours, les questions du dossier qui expire le plus tôt sont
+          utilisées en premier. Le nombre de questions restantes et leur date d’expiration sont affichés dans{" "}
+          <Link href="/compte">Mon compte</Link>.
         </p>
 
-        <h2>4. Droit de rétractation</h2>
+        <h2>4. Commande et paiement</h2>
         <p>
-          Conformément à l’article L221-28 13° du Code de la consommation, le droit de rétractation ne peut être exercé
-          pour la fourniture d’un contenu numérique non fourni sur un support matériel dont l’exécution a commencé avec
-          l’accord préalable exprès du consommateur et sa renonciation expresse à ce droit. Ce consentement et cette
-          renonciation sont recueillis lors du paiement. <TODO /> (modalités exactes et case à cocher au checkout)
+          Le paiement est effectué par carte bancaire via Stripe, en une seule fois. L’Éditeur n’a pas accès aux coordonnées
+          bancaires. Les questions sont disponibles sur le compte dès la confirmation du paiement.
         </p>
 
-        <h2>5. Durée et résiliation</h2>
+        <h2 id="retractation">5. Droit de rétractation</h2>
         <p>
-          Les abonnements sont sans engagement. Ils peuvent être résiliés à tout moment depuis{" "}
-          <Link href="/compte">Mon compte</Link> ; la résiliation prend effet à la fin de la période en cours, déjà payée.
-          Aucun remboursement au prorata n’est dû, sauf disposition légale contraire.
+          Les questions d’un dossier constituent un contenu numérique non fourni sur un support matériel, mis à disposition
+          immédiatement après le paiement. Conformément à l’article L221-28 13° du Code de la consommation, le droit de
+          rétractation de 14 jours ne peut être exercé lorsque l’exécution a commencé avec l’accord préalable exprès du
+          consommateur et sa renonciation expresse à ce droit.
+        </p>
+        <p>
+          Avant tout paiement, le client coche une case par laquelle il demande l’accès immédiat à ses questions et reconnaît
+          renoncer à son droit de rétractation. Sans cette case cochée, la commande ne peut pas être passée. La date de ce
+          consentement est conservée avec la commande. <TODO /> (confirmation sur support durable, voir L221-13)
         </p>
 
         <h2>6. Nature du service</h2>
