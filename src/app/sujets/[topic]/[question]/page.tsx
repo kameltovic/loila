@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Chat from "@/components/Chat";
+import RelatedFaqs from "@/components/RelatedFaqs";
 import { ArticleDrawerProvider } from "@/components/ArticleDrawer";
 import FaqAnswer, { faqArticles } from "@/components/FaqAnswer";
 import { display, label } from "@/components/ui";
@@ -68,6 +69,8 @@ export default async function TopicQuestionPage({ params }: PageProps<"/sujets/[
         <h1 className={`${display} mt-8 text-[clamp(2.5rem,7vw,5rem)] leading-[0.95] text-balance`}>{faq.question}</h1>
         <FaqAnswer faq={faq} articles={articles} updated={updated} />
       </ArticleDrawerProvider>
+
+      <RelatedFaqs faq={faq} />
 
       <div className="mt-20">
         <Chat title="Poser une autre question" />

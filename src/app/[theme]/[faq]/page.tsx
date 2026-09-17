@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getDb, type Faq } from "@/lib/db";
 import { CODES, THEMES } from "@/lib/themes";
 import Chat from "@/components/Chat";
+import RelatedFaqs from "@/components/RelatedFaqs";
 import ThemeIcon from "@/components/ThemeIcon";
 import { ArticleDrawerProvider } from "@/components/ArticleDrawer";
 import FaqAnswer, { faqArticles } from "@/components/FaqAnswer";
@@ -75,6 +76,8 @@ export default async function FaqPage({ params }: PageProps<"/[theme]/[faq]">) {
 
         <FaqAnswer faq={faq} articles={articles} updated={updated} />
       </ArticleDrawerProvider>
+
+      <RelatedFaqs faq={faq} />
 
       <div className="mt-20">
         <Chat theme={theme.slug} title="Poser une autre question" />
