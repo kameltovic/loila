@@ -2,7 +2,8 @@ import Stripe from "stripe";
 import { upsertUser } from "./auth";
 import { grantBatch, upsertSubscription } from "./billing";
 import { getDb } from "./db";
-import { OFFERS, type OfferId } from "./plans";
+import { notifyAdmins } from "./email";
+import { OFFERS, formatDate, formatPrice, type OfferId } from "./plans";
 
 let client: Stripe | undefined;
 export function getStripe() {
@@ -52,12 +53,26 @@ export async function syncSubscription(sub: Stripe.Subscription, stripe?: Stripe
     console.warn("[stripe] subscription not synced", sub.id);
     return;
   }
+  const db = getDb();
+  const status = () => (db.prepare("SELECT status FROM subscriptions WHERE user_id = ?").get(userId) as { status: string } | undefined)?.status;
+  const active = (s?: string) => s === "active" || s === "trialing";
+  const before = status();
   upsertSubscription({
     userId, stripeSubscriptionId: sub.id, plan, status: sub.status,
     // Pre-2025-03-31 API versions (older webhook endpoints) carry the period on the subscription itself.
     periodStart: item.current_period_start ?? legacy(sub).current_period_start,
     periodEnd: item.current_period_end ?? legacy(sub).current_period_end,
   });
+  const after = status();
+  if (active(before) !== active(after)) {
+    const email = (db.prepare("SELECT email FROM users WHERE id = ?").get(userId) as { email: string }).email;
+    const on = active(after);
+    notifyAdmins({
+      subject: `Abonnement Pro ${on ? "activé" : "terminé"} : ${email}`, label: "Abonnement Pro",
+      title: on ? "Abonnement Pro <em>activé</em>." : "Abonnement Pro <em>terminé</em>.",
+      intro: `Statut Stripe : ${before ?? "aucun"} → ${after}.`, rows: [["E-mail", email], ["Abonnement", sub.id]], path: `/admin/users/${userId}`,
+    });
+  }
 }
 
 // Shared by the webhook and /api/checkout/return (whichever comes first). Returns the buyer's user id.
@@ -73,7 +88,16 @@ export async function fulfillCheckout(session: Stripe.Checkout.Session, stripe?:
   linkCustomer(userId, idOf(session.customer));
   const offer = session.metadata?.offer as OfferId | undefined;
   if (session.mode === "payment" && offer === "dossier") {
-    grantBatch(userId, OFFERS.dossier.credits, session.created, OFFERS.dossier.validityDays, session.id);
+    if (grantBatch(userId, OFFERS.dossier.credits, session.created, OFFERS.dossier.validityDays, session.id)) {
+      const buyer = (getDb().prepare("SELECT email FROM users WHERE id = ?").get(userId) as { email: string }).email;
+      const expires = formatDate(new Date((session.created + OFFERS.dossier.validityDays * 86400) * 1000).toISOString());
+      notifyAdmins({
+        subject: `Dossier acheté : ${buyer}`, label: "Vente", title: "Un Dossier <em>vendu</em>.",
+        intro: `${OFFERS.dossier.credits} questions créditées, valables ${OFFERS.dossier.validityDays} jours.`,
+        rows: [["E-mail", buyer], ["Montant", formatPrice(session.amount_total ?? OFFERS.dossier.priceCents)], ["Expire le", expires], ["Session", session.id]],
+        path: `/admin/users/${userId}`,
+      });
+    }
   }
   const subId = idOf(session.subscription);
   if (session.mode === "subscription" && subId && stripe) {

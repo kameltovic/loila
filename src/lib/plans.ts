@@ -41,6 +41,7 @@ export type Me = {
   monthlyLimit: number; // 0 without subscription
   periodEnd: string | null; // ISO, subscription renewal
   canAsk: boolean;
+  admin?: boolean; // set by /api/me for ADMIN_EMAILS
 };
 
 export const formatPrice = (cents: number) =>

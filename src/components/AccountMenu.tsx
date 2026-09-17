@@ -220,6 +220,11 @@ export function AccountPanel() {
         >
           Se déconnecter
         </button>
+        {me.admin && (
+          <Link href="/admin" className="px-3 py-2.5 font-mono text-sm font-bold uppercase text-fg-2 underline underline-offset-4">
+            Admin
+          </Link>
+        )}
       </div>
       {error && (
         <p role="alert" className="flex items-start gap-2 border-2 border-signal bg-danger-bg px-4 py-3">

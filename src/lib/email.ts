@@ -17,7 +17,9 @@ const DISPLAY = "'Bricolage Grotesque','Arial Black','Helvetica Neue',Helvetica,
 const BODY = "Inter,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
 const MONO = "'SFMono-Regular',Menlo,Consolas,'Courier New',monospace";
 
-export function emailLayout(o: { preheader: string; label: string; title: string; intro: string; cta: { label: string; url: string }; note?: string }) {
+export function emailLayout(o: {
+  preheader: string; label: string; title: string; intro: string; cta: { label: string; url: string }; note?: string; rows?: [string, string][];
+}) {
   const url = escapeHtml(o.cta.url);
   // `title` may contain <em> for the serif-italic accent word; everything else is escaped.
   const title = escapeHtml(o.title).replace(/&#60;em&#62;/g, `<em style="font-family:'Instrument Serif',Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;letter-spacing:-0.5px">`).replace(/&#60;\/em&#62;/g, "</em>");
@@ -37,6 +39,7 @@ export function emailLayout(o: { preheader: string; label: string; title: string
       <p style="margin:0 0 20px;font-family:${MONO};font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${INK}"><span style="color:${SIGNAL}">&#9679;</span>&nbsp; ${escapeHtml(o.label)}</p>
       <h1 class="title" style="margin:0 0 20px;font-family:${DISPLAY};font-size:52px;line-height:52px;font-weight:800;letter-spacing:-2px;color:${INK}">${title}</h1>
       <p style="margin:0 0 32px;font-family:${BODY};font-size:17px;line-height:26px;color:${MUTED}">${escapeHtml(o.intro)}</p>
+      ${o.rows?.length ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 32px;border-top:2px solid ${INK}">${o.rows.map(([k, v]) => `<tr><td style="padding:10px 12px 10px 0;border-bottom:1px solid #E4DFD4;font-family:${MONO};font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:${MUTED};white-space:nowrap;vertical-align:top">${escapeHtml(k)}</td><td style="padding:10px 0;border-bottom:1px solid #E4DFD4;font-family:${MONO};font-size:14px;color:${INK};word-break:break-all">${escapeHtml(v)}</td></tr>`).join("")}</table>` : ""}
       <table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="background:${INK};padding:0 4px 4px 0">
         <a href="${url}" style="display:block;background:#FFFFFF;border:2px solid ${INK};padding:15px 26px;font-family:${MONO};font-size:15px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:${INK};text-decoration:none">${escapeHtml(o.cta.label)} &rarr;</a>
       </td></tr></table>
@@ -70,14 +73,18 @@ export async function sendMagicLink(to: string, link: string): Promise<boolean> 
     note: "Ce lien est valable 15 minutes et ne fonctionne qu'une fois. Si vous n'avez rien demandé, ignorez simplement cet e-mail.",
   });
 
+  return sweego([to], subject, html, text);
+}
+
+async function sweego(to: string[], subject: string, html: string, text: string): Promise<boolean> {
   try {
     const res = await fetch("https://api.sweego.io/send", {
       method: "POST",
-      headers: { "Api-Key": key, "Content-Type": "application/json" },
+      headers: { "Api-Key": process.env.SWEEGO_API_KEY ?? "", "Content-Type": "application/json" },
       body: JSON.stringify({
         channel: "email",
         provider: "sweego",
-        recipients: [{ email: to }],
+        recipients: to.map((email) => ({ email })),
         from: parseFrom(FROM),
         subject,
         "message-html": html,
@@ -90,5 +97,38 @@ export async function sendMagicLink(to: string, link: string): Promise<boolean> 
   } catch (e) {
     console.error("[email] sweego request failed", e instanceof Error ? e.message : e);
     return false;
+  }
+}
+
+// Owner notifications. ADMIN_EMAILS also gates /admin (see isAdmin in auth.ts).
+export const adminEmails = () => (process.env.ADMIN_EMAILS ?? "").split(",").map((s) => s.trim().toLowerCase()).filter(Boolean);
+
+export type AdminNotice = { subject: string; label: string; title: string; intro: string; rows: [string, string][]; path: string };
+
+// Mutable so tests can observe dispatch without network.
+export const adminMailer = {
+  async send(to: string[], n: AdminNotice) {
+    const url = `${SITE}${n.path}`;
+    if (!process.env.SWEEGO_API_KEY) {
+      console.log(`[email] SWEEGO_API_KEY missing, admin notice for ${to.join(", ")}: ${n.subject} ${url}`);
+      return;
+    }
+    const html = emailLayout({ preheader: n.intro, label: n.label, title: n.title, intro: n.intro, rows: n.rows, cta: { label: "Voir dans l'admin", url } });
+    const text = `${n.subject}\n\n${n.intro}\n\n${n.rows.map(([k, v]) => `${k} : ${v}`).join("\n")}\n\n${url}`;
+    await sweego(to, `[Loilà] ${n.subject}`, html, text);
+  },
+};
+
+// Fire-and-forget: never throws, never blocks the caller (signup, webhook, checkout).
+export function notifyAdmins(n: AdminNotice) {
+  const to = adminEmails();
+  if (!to.length) {
+    console.log(`[email] ADMIN_EMAILS unset, skipped admin notice: ${n.subject}`);
+    return;
+  }
+  try {
+    adminMailer.send(to, n).catch((e) => console.error("[email] admin notice failed", e instanceof Error ? e.message : e));
+  } catch (e) {
+    console.error("[email] admin notice failed", e instanceof Error ? e.message : e);
   }
 }

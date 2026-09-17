@@ -106,6 +106,13 @@ Variables :
 | `SWEEGO_API_KEY` | clé API [Sweego](https://www.sweego.io) pour les e-mails ; absente en dev, le lien est affiché dans la console du serveur |
 | `EMAIL_FROM` | expéditeur (défaut `Loilà <connexion@loila.fr>`) |
 | `SITE_URL` | URL publique (défaut `https://loila.fr`), utilisée pour les liens et redirections en production |
+| `ADMIN_EMAILS` | e-mails des propriétaires, séparés par des virgules : accès à `/admin` et destinataires des notifications ; absente, notifications ignorées (log) et `/admin` inaccessible |
+
+Admin et notifications :
+
+`/admin` (lecture seule) : indicateurs (comptes, Dossiers vendus, CA estimé TTC avant frais Stripe et remboursements, questions IA par type, crédits actifs, liste d'attente Pro), derniers comptes, achats et inscrits Pro (export `/admin/waitlist.csv`), fiche `/admin/users/[id]` (lots, historique d'usage, abonnement). Réservé aux comptes dont l'e-mail (forme canonique) figure dans `ADMIN_EMAILS` ; pour tous les autres, y compris anonymes, la page répond 404. `noindex`, hors sitemap.
+
+Les propriétaires reçoivent un e-mail (même gabarit que le lien magique) à chaque création réelle de compte, nouvelle inscription à la liste d'attente Pro, achat de Dossier (une seule fois par session Stripe, même si le webhook est rejoué) et passage d'un abonnement Pro à actif ou inactif. Envoi sans attente ni exception : un échec est journalisé et ne bloque jamais l'inscription, le webhook ou le paiement. Sans `SWEEGO_API_KEY`, la notification est affichée dans la console.
 
 Mise en production :
 

@@ -8,6 +8,7 @@ import type Stripe from "stripe";
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), "loila-billing-"));
 process.env.DATABASE_PATH = path.join(dir, "test.db");
 process.env.AUTH_SECRET = "test-secret";
+process.env.ADMIN_EMAILS = " Boss+ops@Example.com , other@example.com";
 
 async function main() {
   const { getDb } = await import("../src/lib/db");
@@ -15,6 +16,10 @@ async function main() {
   const auth = await import("../src/lib/auth");
   const { consume, getMe } = await import("../src/lib/billing");
   const { handleStripeEvent } = await import("../src/lib/stripe");
+  const email = await import("../src/lib/email");
+  const notices: string[] = [];
+  email.adminMailer.send = async (_to, n) => void notices.push(n.subject);
+  const sent = (prefix: string) => notices.filter((x) => x.startsWith(prefix)).length;
   const db = getDb();
   const T = 1_800_000_000;
 
@@ -32,6 +37,28 @@ async function main() {
   assert.equal(auth.canonicalEmail("Jean@Example.com"), "jean@example.com");
   assert.equal(auth.canonicalEmail("+tag@example.com"), "+tag@example.com"); // nothing before "+": keep as-is
   assert.equal(auth.upsertUser("alias+one@example.com"), auth.upsertUser("ALIAS+two@Example.com"));
+  assert.equal(sent("Nouveau compte : alias@example.com"), 1); // notified on real creation only
+
+  // --- admin notifications never break the caller
+  email.adminMailer.send = () => { throw new Error("boom"); };
+  assert.ok(auth.upsertUser("sync-fail@example.com"));
+  email.adminMailer.send = async () => { throw new Error("boom"); };
+  assert.ok(auth.upsertUser("async-fail@example.com"));
+  await new Promise((r) => setTimeout(r, 0)); // a rejection would surface as unhandled here
+  email.adminMailer.send = async (_to, n) => void notices.push(n.subject);
+
+  // --- /admin guard: ADMIN_EMAILS compared canonically; anonymous and non-admins get nothing
+  const session = (uid: number) => {
+    const raw = `tok-${uid}`;
+    db.prepare("INSERT INTO sessions (token_hash, user_id, expires_at) VALUES (?, ?, ?)").run(auth.sha256(raw), uid, 4_000_000_000);
+    return raw;
+  };
+  assert.equal(auth.adminBySessionToken(session(auth.upsertUser("BOSS@example.com")))?.email, "boss@example.com");
+  assert.equal(auth.adminBySessionToken(session(auth.upsertUser("visitor@example.com"))), null);
+  assert.equal(auth.adminBySessionToken(undefined), null);
+  assert.equal(auth.adminBySessionToken("forged"), null);
+  assert.equal(auth.isAdmin("Other@Example.com"), true);
+  assert.equal(auth.isAdmin(null), false);
 
   // --- asking requires an account: anonymous visitors cannot ask, free questions are account-scoped
   db.prepare("INSERT INTO articles (id, code, num, texte, url) VALUES ('A1', 'loi-89-462', '15', 'Le délai de préavis du locataire est de trois mois.', 'u')").run();
@@ -77,6 +104,8 @@ async function main() {
   assert.equal(await handleStripeEvent(checkout("evt_2", "cs_1", "cus_1", "buyer@example.com", T)), "handled"); // same session, other event id
   assert.equal(await handleStripeEvent(checkout("evt_x", "cs_x", "cus_1", "buyer@example.com", T, "single")), "handled"); // retired offer: ignored
   assert.equal(batches(userId).length, 1);
+  assert.equal(sent("Dossier acheté : buyer@example.com"), 1); // replays never re-notify
+  assert.equal(sent("Nouveau compte : buyer@example.com"), 1);
   let me = getMe(buyer, T + 2 * DAY); // webhook processed late: expiry still from purchase
   assert.equal(me.credits, 10);
   assert.equal(me.creditsExpireAt, iso(T + 30 * DAY));
@@ -117,6 +146,7 @@ async function main() {
         items: { data: [{ price: { lookup_key: "loila_pro_monthly_v1" }, current_period_start: start, current_period_end: end }] } } },
     }) as unknown as Stripe.Event;
   await handleStripeEvent(sub("evt_s1", "active", T, T + 30 * DAY));
+  assert.equal(sent("Abonnement Pro activé"), 1);
   me = getMe(pro, T + 10);
   assert.equal(me.plan, "pro");
   assert.equal(me.monthlyLimit, 500);
@@ -136,6 +166,7 @@ async function main() {
   assert.equal(me.canAsk, true);
   await handleStripeEvent(sub("evt_s3", "canceled", T + 30 * DAY, T + 60 * DAY));
   assert.equal(getMe(pro, T + 30 * DAY + 5).plan, "free");
+  assert.deepEqual([sent("Abonnement Pro activé"), sent("Abonnement Pro terminé")], [1, 1]); // s2 renewal: no notice
 
   // --- checkout guard (rejected before any Stripe call): Pro not for sale, Dossier needs the withdrawal waiver
   const { POST: checkoutPost } = await import("../src/app/api/checkout/route");
@@ -156,6 +187,7 @@ async function main() {
   assert.equal((await join({ email: "nope" })).status, 400);
   assert.equal((await join({ email: "Syndic@Example.com", metier: "Syndic bénévole" })).status, 200);
   assert.equal((await join({ email: "syndic@example.com" })).status, 200);
+  assert.equal(sent("Liste d'attente Pro : syndic@example.com"), 1);
   assert.deepEqual(db.prepare("SELECT email, metier FROM pro_waitlist").all(), [{ email: "syndic@example.com", metier: "Syndic bénévole" }]);
 
   // --- magic link tokens: single use + expiry

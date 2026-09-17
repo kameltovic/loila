@@ -1,6 +1,8 @@
 import { createHash, createHmac, randomBytes, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
+import { notFound } from "next/navigation";
 import { getDb } from "./db";
+import { adminEmails, notifyAdmins } from "./email";
 import { SITE_URL } from "./seo";
 
 const PROD = process.env.NODE_ENV === "production";
@@ -117,8 +119,30 @@ export async function getIdentity(req: Request): Promise<Identity> {
 export function upsertUser(email: string): number {
   const db = getDb();
   const e = canonicalEmail(email);
-  db.prepare("INSERT INTO users (email) VALUES (?) ON CONFLICT(email) DO NOTHING").run(e);
-  return (db.prepare("SELECT id FROM users WHERE email = ?").get(e) as { id: number }).id;
+  const created = db.prepare("INSERT INTO users (email) VALUES (?) ON CONFLICT(email) DO NOTHING").run(e).changes > 0;
+  const id = (db.prepare("SELECT id FROM users WHERE email = ?").get(e) as { id: number }).id;
+  if (created) {
+    notifyAdmins({
+      subject: `Nouveau compte : ${e}`, label: "Nouveau compte", title: "Un nouveau <em>compte</em>.",
+      intro: "Un compte vient d'être créé sur Loilà.", rows: [["E-mail", e], ["Compte", `#${id}`]], path: `/admin/users/${id}`,
+    });
+  }
+  return id;
+}
+
+export const isAdmin = (email: string | null | undefined) =>
+  !!email && adminEmails().map(canonicalEmail).includes(canonicalEmail(email));
+
+export function adminBySessionToken(raw: string | undefined) {
+  const user = userBySessionToken(raw);
+  return user && isAdmin(user.email) ? user : null;
+}
+
+// Server components: 404 for anonymous visitors and non-admins, so the page's existence isn't revealed.
+export async function requireAdmin() {
+  const user = adminBySessionToken((await cookies()).get(SESSION_COOKIE)?.value);
+  if (!user) notFound();
+  return user;
 }
 
 export function createLoginToken(email: string, at = now()) {
