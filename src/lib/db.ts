@@ -412,6 +412,7 @@ export function getDb() {
 export function importContent(d: Database.Database, dir = path.join(process.cwd(), "seed", "content")) {
   if (!fs.existsSync(dir)) return;
   d.exec("CREATE TABLE IF NOT EXISTS content_imports (name TEXT PRIMARY KEY, sha TEXT NOT NULL, imported_at INTEGER NOT NULL DEFAULT (unixepoch()))");
+  let graphDirty = false;
   for (const file of fs.readdirSync(dir).filter((f) => f.endsWith(".json.gz")).sort()) {
     try {
       const buf = fs.readFileSync(path.join(dir, file));
@@ -465,12 +466,18 @@ export function importContent(d: Database.Database, dir = path.join(process.cwd(
         for (const f of faq) q.run({ ...f, topic: f.topic ?? null, emoji: f.emoji ?? null, article_ids: typeof f.article_ids === "string" ? f.article_ids : JSON.stringify(f.article_ids) });
         d.prepare("INSERT INTO content_imports (name, sha) VALUES (?, ?) ON CONFLICT(name) DO UPDATE SET sha = excluded.sha, imported_at = unixepoch()").run(file, sha);
       })();
-      // Derived graph layers (citations, relations, co-citations, stats) are recomputed, never shipped.
-      if (decisions.length || articles.length || deleteArticleIds.length) rebuildGraph(d, { reextract: decisions.length > 0 || articles.length > 0 });
+      // Derived graph layers are recomputed once all bundles are in (never shipped): see below.
+      if (decisions.length || articles.length || deleteArticleIds.length) graphDirty = true;
       console.log(`[db] content ${file}: ${articles.length} articles, ${faq.length} faq, ${summaries.length} summaries, ${decisions.length} decisions, ${deleteArticleIds.length} deleted`);
     } catch (e) {
       console.error(`[db] content ${file} failed`, e instanceof Error ? e.message : e);
     }
+  }
+  // Citations, relations, co-citations and stats from the imported raw decisions, once for all bundles.
+  if (graphDirty) {
+    const t = Date.now();
+    rebuildGraph(d);
+    console.log(`[db] legal graph rebuilt in ${((Date.now() - t) / 1000).toFixed(0)} s`);
   }
 }
 

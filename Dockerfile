@@ -27,7 +27,8 @@ VOLUME /data
 CMD ["npm", "run", "batch:faq"]
 
 # --- runner: minimal runtime image (default target, keep last)
-# start-period covers the one-off content bundle import (seed/content) on the first request after a deploy.
+# start-period covers the one-off content bundle import (seed/content) on the first request after a deploy:
+# the case-law bundles (≈31k decisions) take ~1.5 min locally plus the legal-graph rebuild, and ~1.1 GB of RAM at peak.
 FROM node:24-bookworm-slim AS runner
 WORKDIR /app
 ENV NODE_ENV=production \
@@ -42,6 +43,6 @@ RUN mkdir -p /data && chown node:node /data
 USER node
 VOLUME /data
 EXPOSE 3000
-HEALTHCHECK --interval=30s --timeout=15s --start-period=90s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=15s --start-period=300s --retries=3 \
   CMD node -e "fetch('http://127.0.0.1:3000/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
 CMD ["node", "server.js"]
