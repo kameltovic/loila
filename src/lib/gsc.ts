@@ -10,18 +10,28 @@ const SA = process.env.GSC_SERVICE_ACCOUNT ?? "loila-gsc@loila-seo.iam.gservicea
 
 export type GscRow = { keys: string[]; clicks: number; impressions: number; ctr: number; position: number };
 
-export const gscConfigured = () => !!process.env.GSC_REFRESH_TOKEN || process.env.NODE_ENV !== "production";
+export const gscConfigured = () => !!process.env.GSC_REFRESH_TOKEN?.trim() || process.env.NODE_ENV !== "production";
+
+// Hosting panels and env files sometimes keep quotes or a trailing space/newline around pasted values.
+const env = (k: string) => process.env[k]?.trim().replace(/^(["'])(.*)\1$/, "$2").trim() || undefined;
+/** Safe fingerprint of a secret for error messages: length and first 4 characters, never the value. */
+const shape = (k: string) => `${k}: ${env(k) ? `${env(k)!.length} car., commence par « ${env(k)!.slice(0, 4)} »` : "absent"}`;
 
 let cached: { token: string; until: number } | undefined;
 async function token(): Promise<string> {
   if (cached && cached.until > Date.now()) return cached.token;
-  const { GSC_CLIENT_ID, GSC_CLIENT_SECRET, GSC_REFRESH_TOKEN } = process.env;
+  const [GSC_CLIENT_ID, GSC_CLIENT_SECRET, GSC_REFRESH_TOKEN] = [env("GSC_CLIENT_ID"), env("GSC_CLIENT_SECRET"), env("GSC_REFRESH_TOKEN")];
   if (GSC_REFRESH_TOKEN && GSC_CLIENT_ID && GSC_CLIENT_SECRET) {
     const res = await fetch("https://oauth2.googleapis.com/token", {
       method: "POST",
       body: new URLSearchParams({ client_id: GSC_CLIENT_ID, client_secret: GSC_CLIENT_SECRET, refresh_token: GSC_REFRESH_TOKEN, grant_type: "refresh_token" }),
     });
-    if (!res.ok) throw new Error(`Google OAuth ${res.status}: ${(await res.text()).slice(0, 200)}`);
+    if (!res.ok) {
+      throw new Error(
+        `Google OAuth ${res.status}: ${(await res.text()).replace(/\s+/g, " ").slice(0, 200)} · ` +
+          ["GSC_CLIENT_ID", "GSC_CLIENT_SECRET", "GSC_REFRESH_TOKEN"].map(shape).join(" · "),
+      );
+    }
     const j = (await res.json()) as { access_token: string; expires_in: number };
     cached = { token: j.access_token, until: Date.now() + (j.expires_in - 60) * 1000 };
   } else {
