@@ -3,6 +3,7 @@ import { SITE_URL, clip, plain } from "@/lib/seo";
 import { CODES, THEMES, faqUrl } from "@/lib/themes";
 import { getTopics } from "@/lib/topics";
 import { conventionUrl, getConventions } from "@/lib/conventions";
+import { getLettres, lettreUrl } from "@/lib/lettres";
 
 type Row = { theme: string; slug: string; topic: string | null; question: string; short: string; article_ids: string };
 
@@ -49,6 +50,11 @@ export function llmsTxt() {
   if (topics.length) {
     out.push("\n## Sujets\n");
     for (const t of topics) out.push(`- [${t.h1}](${SITE_URL}/sujets/${t.slug}) : ${clip(plain(t.intro), 140)}`);
+  }
+  const lettres = getLettres();
+  if (lettres.length) {
+    out.push("\n## Modèles de lettres\n");
+    for (const l of lettres) out.push(`- [${l.title}](${SITE_URL}${lettreUrl(l)}) : ${l.seo.description}`);
   }
   const conventions = getConventions();
   if (conventions.length) {

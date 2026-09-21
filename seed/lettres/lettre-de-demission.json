@@ -1,0 +1,71 @@
+{
+  "slug": "lettre-de-demission",
+  "title": "Lettre de démission",
+  "theme": "travail",
+  "seo": {
+    "title": "Lettre de démission : modèle gratuit à compléter | Loilà",
+    "description": "Modèle de lettre de démission gratuit, à remplir en ligne et à copier : préavis, demande de dispense, envoi en recommandé. Avec les articles du Code du travail."
+  },
+  "h1": "Lettre de démission :",
+  "h1Accent": "le modèle à compléter",
+  "intro": "Remplissez les champs, la lettre se met à jour en direct. Copiez-la, téléchargez-la ou imprimez-la : aucune inscription, rien n’est envoyé à nos serveurs.",
+  "when": [
+    "Vous êtes en CDI et voulez quitter votre emploi",
+    "Vous voulez fixer clairement la date de départ de votre préavis",
+    "Vous souhaitez demander à être dispensé(e) de préavis"
+  ],
+  "fields": [
+    { "name": "nom", "label": "Vos prénom et nom", "type": "text", "placeholder": "Camille Martin" },
+    { "name": "adresse", "label": "Votre adresse", "type": "textarea", "placeholder": "12 rue des Lilas\n69003 Lyon" },
+    { "name": "employeur", "label": "Employeur (société ou nom)", "type": "text", "placeholder": "Société Exemple SAS" },
+    { "name": "adresse_employeur", "label": "Adresse de l’employeur", "type": "textarea", "placeholder": "Service RH\n1 avenue de la République\n69002 Lyon" },
+    { "name": "poste", "label": "Votre poste", "type": "text", "placeholder": "assistante commerciale" },
+    { "name": "date_embauche", "label": "Date d’embauche", "type": "date" },
+    {
+      "name": "preavis",
+      "label": "Préavis",
+      "type": "select",
+      "options": [
+        { "label": "J’effectue mon préavis", "text": "J’effectuerai mon préavis d’une durée de {{duree_preavis}}, conformément à mon contrat de travail et à la convention collective applicable. Il commence à courir à la date de réception de la présente lettre." },
+        { "label": "Je demande une dispense de préavis", "text": "Mon préavis est d’une durée de {{duree_preavis}}. Je souhaiterais toutefois, si vous en êtes d’accord, en être dispensé(e) et quitter l’entreprise le {{date_depart}}. Je vous remercie de bien vouloir me confirmer votre accord par écrit." }
+      ]
+    },
+    { "name": "duree_preavis", "label": "Durée du préavis", "type": "text", "placeholder": "un mois" },
+    { "name": "date_depart", "label": "Date de départ souhaitée (si dispense)", "type": "date" },
+    { "name": "ville", "label": "Ville", "type": "text", "placeholder": "Lyon" },
+    { "name": "date", "label": "Date de la lettre", "type": "date" }
+  ],
+  "body": "{{nom}}\n{{adresse}}\n\n{{employeur}}\n{{adresse_employeur}}\n\nÀ {{ville}}, le {{date}}\n\nLettre recommandée avec demande d’avis de réception\n(ou remise en main propre contre décharge)\n\nObjet : démission\n\nMadame, Monsieur,\n\nJe vous informe par la présente de ma décision de démissionner du poste de {{poste}} que j’occupe au sein de votre entreprise depuis le {{date_embauche}}.\n\n{{preavis}}\n\nÀ l’issue de mon contrat, je vous remercie de bien vouloir me remettre mon certificat de travail, mon reçu pour solde de tout compte et mon attestation destinée à France Travail.\n\nJe vous prie d’agréer, Madame, Monsieur, l’expression de mes salutations distinguées.\n\n{{nom}}",
+  "tips": [
+    {
+      "title": "Une lettre n’est pas imposée par la loi, mais elle vous protège",
+      "detail": "Le Code du travail ne fixe aucune forme pour démissionner. L’écrit (recommandé avec accusé de réception, ou remise en main propre contre décharge datée et signée) prouve votre volonté et fixe le point de départ du préavis. Vérifiez aussi votre contrat : il peut prévoir une forme particulière.",
+      "refs": ["code-du-travail:L1237-1"],
+      "link": { "href": "/sujets/demissionner/lettre-demission-obligatoire", "label": "Faut-il obligatoirement une lettre ?" }
+    },
+    {
+      "title": "La durée du préavis dépend de votre convention collective",
+      "detail": "La loi renvoie à la convention ou à l’accord collectif, puis aux usages de la profession. Elle varie souvent selon le statut (employé, cadre) et l’ancienneté : vérifiez-la avant d’indiquer une durée.",
+      "refs": ["code-du-travail:L1237-1"],
+      "link": { "href": "/conventions", "label": "Les conventions collectives couvertes" }
+    },
+    {
+      "title": "La dispense de préavis se négocie",
+      "detail": "Si c’est vous qui la demandez, l’employeur peut refuser. S’il accepte, faites-le confirmer par écrit : le préavis non effectué à votre demande n’est en principe pas payé.",
+      "refs": [],
+      "link": { "href": "/sujets/demissionner/dispense-preavis-demission", "label": "Peut-on ne pas faire son préavis ?" }
+    },
+    {
+      "title": "Pensez au chômage avant d’envoyer",
+      "detail": "Une démission n’ouvre en principe pas droit à l’allocation chômage, sauf cas de démission considérée comme légitime ou projet de reconversion validé. Renseignez-vous avant d’envoyer la lettre : une démission claire est difficile à reprendre.",
+      "refs": [],
+      "link": { "href": "/sujets/demissionner/chomage-apres-demission", "label": "A-t-on droit au chômage après une démission ?" }
+    },
+    {
+      "title": "Les documents de fin de contrat",
+      "detail": "À la fin du contrat, l’employeur vous remet un certificat de travail et un solde de tout compte. Le reçu pour solde de tout compte peut être dénoncé dans les six mois qui suivent sa signature.",
+      "refs": ["code-du-travail:L1234-19", "code-du-travail:L1234-20"]
+    }
+  ],
+  "faqSlugs": ["preavis-demission", "lettre-demission-obligatoire", "dispense-preavis-demission", "chomage-apres-demission", "revenir-sur-demission", "demission-cdd", "syntec-preavis-demission", "solde-tout-compte"]
+}

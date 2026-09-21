@@ -13,6 +13,7 @@ export default function Footer() {
       title: "Ressources",
       links: [
         { href: "/#comment-ca-marche", label: "Comment ça marche" },
+        { href: "/modeles-lettres", label: "Modèles de lettres" },
         { href: "https://www.legifrance.gouv.fr", label: "Sources officielles (Légifrance)" },
         { href: "https://echanges.dila.gouv.fr/OPENDATA/", label: "Données ouvertes DILA" },
       ],

@@ -1,0 +1,62 @@
+{
+  "slug": "mise-en-demeure-depot-de-garantie",
+  "title": "Mise en demeure : restitution du dépôt de garantie",
+  "theme": "logement",
+  "seo": {
+    "title": "Mise en demeure dépôt de garantie : modèle gratuit",
+    "description": "Caution non rendue ? Modèle gratuit de mise en demeure de restituer le dépôt de garantie, avec la pénalité de 10 % par mois de retard (art. 22, loi de 1989)."
+  },
+  "h1": "Dépôt de garantie non rendu :",
+  "h1Accent": "la mise en demeure",
+  "intro": "Le délai légal est dépassé et votre ancien propriétaire ne vous a pas rendu votre dépôt de garantie ? Cette lettre le met en demeure de payer, pénalités de retard comprises. Aucune inscription, rien n’est envoyé à nos serveurs.",
+  "when": [
+    "Vous avez rendu les clés il y a plus d’un mois (état des lieux conforme) ou de deux mois",
+    "Le bailleur retient une somme sans justificatif",
+    "Vous voulez une trace écrite avant de saisir la commission de conciliation ou le juge"
+  ],
+  "fields": [
+    { "name": "nom", "label": "Vos prénom et nom", "type": "text", "placeholder": "Camille Martin" },
+    { "name": "adresse", "label": "Votre nouvelle adresse", "type": "textarea", "placeholder": "8 rue Nationale\n59000 Lille" },
+    { "name": "bailleur", "label": "Ancien propriétaire ou agence", "type": "text", "placeholder": "M. Dupont" },
+    { "name": "adresse_bailleur", "label": "Adresse du propriétaire ou de l’agence", "type": "textarea", "placeholder": "3 place Bellecour\n69002 Lyon" },
+    { "name": "adresse_logement", "label": "Adresse du logement quitté", "type": "text", "placeholder": "12 rue des Lilas, 69003 Lyon" },
+    { "name": "date_cles", "label": "Date de remise des clés", "type": "date" },
+    { "name": "montant", "label": "Montant du dépôt de garantie (€)", "type": "text", "placeholder": "850" },
+    {
+      "name": "etat",
+      "label": "État des lieux de sortie",
+      "type": "select",
+      "options": [
+        { "label": "Conforme à l’état des lieux d’entrée : délai d’un mois", "text": "L’état des lieux de sortie étant conforme à l’état des lieux d’entrée, vous disposiez d’un délai d’un mois à compter de la remise des clés pour me restituer ce dépôt." },
+        { "label": "Avec des différences : délai de deux mois", "text": "Vous disposiez d’un délai maximal de deux mois à compter de la remise des clés pour me restituer ce dépôt, déduction faite des seules sommes dûment justifiées." }
+      ]
+    },
+    { "name": "ville", "label": "Ville", "type": "text", "placeholder": "Lille" },
+    { "name": "date", "label": "Date de la lettre", "type": "date" }
+  ],
+  "body": "{{nom}}\n{{adresse}}\n\n{{bailleur}}\n{{adresse_bailleur}}\n\nÀ {{ville}}, le {{date}}\n\nLettre recommandée avec demande d’avis de réception\n\nObjet : mise en demeure de restituer le dépôt de garantie\n\nMadame, Monsieur,\n\nJ’ai quitté le logement situé {{adresse_logement}} et vous en ai remis les clés le {{date_cles}}. À la signature du bail, je vous avais versé un dépôt de garantie de {{montant}} euros.\n\n{{etat}} Ce délai est aujourd’hui expiré et je n’ai reçu ni la restitution de cette somme, ni de justificatif des retenues éventuelles.\n\nJe vous rappelle qu’aux termes de l’article 22 de la loi n° 89-462 du 6 juillet 1989, à défaut de restitution dans les délais, le dépôt de garantie restant dû est majoré d’une somme égale à 10 % du loyer mensuel en principal, pour chaque période mensuelle commencée en retard.\n\nEn conséquence, je vous mets en demeure de me restituer la somme de {{montant}} euros, majorée des pénalités de retard, dans un délai de quinze jours à compter de la réception de ce courrier.\n\nÀ défaut, je saisirai la commission départementale de conciliation, puis, si nécessaire, le juge compétent.\n\nJe vous prie d’agréer, Madame, Monsieur, l’expression de mes salutations distinguées.\n\n{{nom}}",
+  "tips": [
+    {
+      "title": "Un ou deux mois selon l’état des lieux",
+      "detail": "Le délai court à partir de la remise des clés : un mois si l’état des lieux de sortie est conforme à celui d’entrée, deux mois dans le cas contraire. Les retenues doivent être dûment justifiées (devis, factures).",
+      "refs": ["loi-89-462:22"],
+      "link": { "href": "/logement/depot-garantie-restitution", "label": "Sous quel délai le dépôt doit être rendu ?" }
+    },
+    {
+      "title": "10 % du loyer par mois de retard commencé",
+      "detail": "La pénalité est automatique : 10 % du loyer mensuel hors charges pour chaque mois de retard commencé. Exemple : loyer de 700 € hors charges, trois mois de retard commencés : 3 × 70 € = 210 € en plus du dépôt.",
+      "refs": ["loi-89-462:22"]
+    },
+    {
+      "title": "Copropriété : une provision de 20 % peut être gardée",
+      "detail": "Dans un immeuble collectif, le bailleur peut conserver au plus 20 % du dépôt, s’il le justifie, jusqu’à l’approbation des comptes annuels de l’immeuble. Le solde doit alors être versé dans le mois qui suit.",
+      "refs": ["loi-89-462:22"]
+    },
+    {
+      "title": "Sans réponse : la commission de conciliation",
+      "detail": "La commission départementale de conciliation traite gratuitement les litiges sur le dépôt de garantie et l’état des lieux. Elle rend un avis dans les deux mois. Vous pouvez ensuite saisir le juge.",
+      "refs": ["loi-89-462:20"]
+    }
+  ],
+  "faqSlugs": ["depot-garantie-restitution", "montant-depot-garantie", "depot-garantie-colocataire-sortant", "reparations-qui-paie"]
+}

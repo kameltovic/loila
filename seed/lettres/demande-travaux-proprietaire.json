@@ -1,0 +1,62 @@
+{
+  "slug": "demande-travaux-proprietaire",
+  "title": "Demande de travaux au propriétaire",
+  "theme": "logement",
+  "seo": {
+    "title": "Demande de travaux au propriétaire : lettre gratuite",
+    "description": "Fuite, chauffage en panne, humidité, logement indécent : modèle de lettre gratuit pour exiger des réparations, avec l’article 6 de la loi du 6 juillet 1989."
+  },
+  "h1": "Réparations à faire :",
+  "h1Accent": "écrire à son propriétaire",
+  "intro": "Une panne ou un désordre qui relève du propriétaire ? Cette lettre décrit le problème, rappelle ses obligations et lui demande d’intervenir. Aucune inscription, rien n’est envoyé à nos serveurs.",
+  "when": [
+    "Une réparation qui n’est pas à votre charge traîne (chaudière, toiture, fenêtres, installation électrique…)",
+    "Le logement ne vous semble pas décent (humidité, chauffage insuffisant, risques pour la santé)",
+    "Vos demandes orales sont restées sans suite"
+  ],
+  "fields": [
+    { "name": "nom", "label": "Vos prénom et nom", "type": "text", "placeholder": "Camille Martin" },
+    { "name": "adresse_logement", "label": "Adresse du logement loué", "type": "textarea", "placeholder": "12 rue des Lilas, appartement 4B\n69003 Lyon" },
+    { "name": "bailleur", "label": "Propriétaire ou agence", "type": "text", "placeholder": "M. Dupont" },
+    { "name": "adresse_bailleur", "label": "Adresse du propriétaire ou de l’agence", "type": "textarea", "placeholder": "3 place Bellecour\n69002 Lyon" },
+    { "name": "date_constat", "label": "Date à laquelle le problème est apparu", "type": "date" },
+    { "name": "probleme", "label": "Description du problème", "type": "textarea", "placeholder": "la chaudière est en panne et le logement n’a plus d’eau chaude ni de chauffage" },
+    {
+      "name": "fondement",
+      "label": "Nature du problème",
+      "type": "select",
+      "options": [
+        { "label": "Réparation à la charge du propriétaire", "text": "Conformément à l’article 6 de la loi n° 89-462 du 6 juillet 1989, il vous appartient d’entretenir les locaux en état de servir à l’usage prévu et d’y faire toutes les réparations, autres que locatives, nécessaires à leur maintien en état." },
+        { "label": "Logement non décent", "text": "Cette situation rend le logement non conforme aux caractéristiques du logement décent prévues à l’article 6 de la loi n° 89-462 du 6 juillet 1989. En application de l’article 20-1 de la même loi, je vous demande sa mise en conformité." }
+      ]
+    },
+    { "name": "ville", "label": "Ville", "type": "text", "placeholder": "Lyon" },
+    { "name": "date", "label": "Date de la lettre", "type": "date" }
+  ],
+  "body": "{{nom}}\n{{adresse_logement}}\n\n{{bailleur}}\n{{adresse_bailleur}}\n\nÀ {{ville}}, le {{date}}\n\nLettre recommandée avec demande d’avis de réception\n\nObjet : demande de travaux dans le logement situé {{adresse_logement}}\n\nMadame, Monsieur,\n\nLocataire du logement situé {{adresse_logement}}, je vous informe que depuis le {{date_constat}}, {{probleme}}.\n\n{{fondement}}\n\nJe vous remercie donc de bien vouloir faire procéder aux travaux nécessaires dans les meilleurs délais, et de me tenir informé(e) de la date d’intervention. Je reste disponible pour permettre l’accès au logement.\n\nÀ défaut de réponse de votre part, je me réserve la possibilité de saisir la commission départementale de conciliation, puis le juge compétent.\n\nJe vous prie d’agréer, Madame, Monsieur, l’expression de mes salutations distinguées.\n\n{{nom}}",
+  "tips": [
+    {
+      "title": "Réparations locatives ou non ?",
+      "detail": "Le menu entretien et les petites réparations restent à la charge du locataire. Le reste (gros équipements, vétusté, vice, force majeure) relève du propriétaire, qui doit entretenir le logement.",
+      "refs": ["loi-89-462:6"],
+      "link": { "href": "/logement/reparations-qui-paie", "label": "Qui paie les réparations ?" }
+    },
+    {
+      "title": "Ne suspendez pas le loyer de vous-même",
+      "detail": "Même si le logement est en mauvais état, arrêter de payer vous expose à une procédure d’expulsion. Seul le juge peut réduire ou suspendre le loyer jusqu’à l’exécution des travaux.",
+      "refs": ["loi-89-462:20-1"],
+      "link": { "href": "/sujets/logement-indecent-insalubre/arreter-payer-loyer-logement-indecent", "label": "Peut-on arrêter de payer son loyer ?" }
+    },
+    {
+      "title": "Deux mois sans réponse : la commission de conciliation",
+      "detail": "Pour un logement non décent, sans accord ou sans réponse du propriétaire dans les deux mois, vous pouvez saisir la commission départementale de conciliation. Ce n’est pas obligatoire avant d’aller devant le juge.",
+      "refs": ["loi-89-462:20-1", "loi-89-462:20"]
+    },
+    {
+      "title": "Gardez des preuves",
+      "detail": "Photos datées, échanges de mails, constats d’un artisan : joignez-les si possible à votre lettre et conservez une copie de tout.",
+      "refs": []
+    }
+  ],
+  "faqSlugs": ["reparations-qui-paie", "proprietaire-refuse-reparations", "logement-decent", "criteres-logement-decent", "arreter-payer-loyer-logement-indecent", "signaler-logement-insalubre"]
+}

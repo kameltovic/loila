@@ -8,6 +8,8 @@ import { getDb, type Faq } from "@/lib/db";
 import { THEMES, faqUrl } from "@/lib/themes";
 import { getCategories } from "@/lib/topics";
 import { getMetiers } from "@/lib/metiers";
+import { getLettres } from "@/lib/lettres";
+import { LettreCards } from "@/components/Lettres";
 import diagnosticsHub from "../../../seed/generated/diagnostics-hub.json";
 
 // Existing questions filed under other topics that also belong on a theme page.
@@ -62,6 +64,7 @@ export default async function ThemePage({ params }: PageProps<"/[theme]">) {
 
   const faqs = themeFaqs(theme.slug);
   const metiers = getMetiers().filter((m) => m.theme === theme.slug);
+  const lettres = getLettres().filter((l) => l.theme === theme.slug);
 
   const counts = new Map(
     (getDb().prepare("SELECT code, COUNT(*) AS n FROM articles GROUP BY code").all() as { code: string; n: number }[]).map((r) => [r.code, r.n]),
@@ -145,6 +148,15 @@ export default async function ThemePage({ params }: PageProps<"/[theme]">) {
                 </li>
               ))}
             </ul>
+          </div>
+        </section>
+      )}
+
+      {lettres.length > 0 && (
+        <section aria-labelledby="lettres-title" className="pt-16 sm:pt-24">
+          <div className={container}>
+            <SectionHead num={num()} kicker="Modèles de lettres" id="lettres-title" title="Passer à l’action" />
+            <div className="mt-12"><LettreCards lettres={lettres} from={`/${theme.slug}`} /></div>
           </div>
         </section>
       )}

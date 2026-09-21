@@ -1,0 +1,53 @@
+{
+  "slug": "demande-rupture-conventionnelle",
+  "title": "Demande de rupture conventionnelle",
+  "theme": "travail",
+  "seo": {
+    "title": "Demande de rupture conventionnelle : lettre gratuite",
+    "description": "Modèle gratuit pour proposer une rupture conventionnelle : entretien, indemnité minimale, rétractation, homologation. Avec les articles du Code du travail."
+  },
+  "h1": "Proposer une rupture",
+  "h1Accent": "conventionnelle",
+  "intro": "Une rupture conventionnelle ne s’impose pas : elle se négocie. Cette lettre propose à votre employeur d’en discuter lors d’un entretien. Aucune inscription, rien n’est envoyé à nos serveurs.",
+  "when": [
+    "Vous êtes en CDI et voulez partir d’un commun accord avec votre employeur",
+    "Vous voulez formaliser votre demande après en avoir parlé à l’oral",
+    "Vous voulez fixer une date pour un premier entretien"
+  ],
+  "fields": [
+    { "name": "nom", "label": "Vos prénom et nom", "type": "text", "placeholder": "Camille Martin" },
+    { "name": "adresse", "label": "Votre adresse", "type": "textarea", "placeholder": "12 rue des Lilas\n69003 Lyon" },
+    { "name": "employeur", "label": "Employeur (société ou nom)", "type": "text", "placeholder": "Société Exemple SAS" },
+    { "name": "adresse_employeur", "label": "Adresse de l’employeur", "type": "textarea", "placeholder": "Service RH\n1 avenue de la République\n69002 Lyon" },
+    { "name": "poste", "label": "Votre poste", "type": "text", "placeholder": "chef de projet" },
+    { "name": "date_embauche", "label": "Date d’embauche", "type": "date" },
+    { "name": "ville", "label": "Ville", "type": "text", "placeholder": "Lyon" },
+    { "name": "date", "label": "Date de la lettre", "type": "date" }
+  ],
+  "body": "{{nom}}\n{{adresse}}\n\n{{employeur}}\n{{adresse_employeur}}\n\nÀ {{ville}}, le {{date}}\n\nLettre recommandée avec demande d’avis de réception\n(ou remise en main propre contre décharge)\n\nObjet : demande de rupture conventionnelle\n\nMadame, Monsieur,\n\nSalarié(e) de votre entreprise depuis le {{date_embauche}}, où j’occupe le poste de {{poste}}, je souhaite vous proposer d’envisager la rupture de mon contrat de travail dans le cadre d’une rupture conventionnelle, prévue aux articles L. 1237-11 et suivants du Code du travail.\n\nJe souhaiterais que nous puissions en discuter lors d’un entretien, afin d’examiner ensemble les conditions de cette rupture, notamment sa date et le montant de l’indemnité spécifique de rupture conventionnelle.\n\nJe me tiens à votre disposition pour convenir d’une date d’entretien et vous remercie par avance de l’attention que vous porterez à ma demande.\n\nJe vous prie d’agréer, Madame, Monsieur, l’expression de mes salutations distinguées.\n\n{{nom}}",
+  "tips": [
+    {
+      "title": "Une proposition, pas une obligation",
+      "detail": "La rupture conventionnelle ne peut être imposée ni par vous, ni par l’employeur. Il peut refuser sans avoir à se justifier : votre lettre ouvre simplement la discussion.",
+      "refs": ["code-du-travail:L1237-11"],
+      "link": { "href": "/travail/rupture-conventionnelle", "label": "Comment se passe une rupture conventionnelle ?" }
+    },
+    {
+      "title": "Vous pouvez vous faire assister à l’entretien",
+      "detail": "Par un collègue ou un représentant du personnel, ou, s’il n’y en a pas dans l’entreprise, par un conseiller du salarié inscrit sur la liste de l’administration.",
+      "refs": ["code-du-travail:L1237-12"]
+    },
+    {
+      "title": "Une indemnité au moins égale à l’indemnité légale",
+      "detail": "L’indemnité spécifique ne peut pas être inférieure à l’indemnité légale de licenciement (ou à l’indemnité conventionnelle si elle est plus favorable).",
+      "refs": ["code-du-travail:L1237-13", "code-du-travail:L1234-9"],
+      "link": { "href": "/travail/indemnite-rupture-conventionnelle", "label": "Combien touche-t-on ?" }
+    },
+    {
+      "title": "15 jours pour se rétracter, 15 jours ouvrables d’homologation",
+      "detail": "Après la signature, chaque partie a quinze jours calendaires pour se rétracter. La demande d’homologation est ensuite envoyée à l’administration, qui a quinze jours ouvrables pour répondre : sans réponse, l’homologation est acquise.",
+      "refs": ["code-du-travail:L1237-13", "code-du-travail:L1237-14"]
+    }
+  ],
+  "faqSlugs": ["rupture-conventionnelle", "indemnite-rupture-conventionnelle", "chomage-apres-demission", "solde-tout-compte"]
+}

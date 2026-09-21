@@ -1,0 +1,61 @@
+{
+  "slug": "demande-quittance-de-loyer",
+  "title": "Demande de quittance de loyer",
+  "theme": "logement",
+  "seo": {
+    "title": "Demande de quittance de loyer : modèle gratuit | Loilà",
+    "description": "Votre propriétaire ne vous envoie pas vos quittances ? Modèle de lettre gratuit : la quittance est gratuite et obligatoire (art. 21, loi du 6 juillet 1989)."
+  },
+  "h1": "Demander ses quittances",
+  "h1Accent": "de loyer",
+  "intro": "La quittance prouve que vous avez payé votre loyer : utile pour un dossier de location, une aide au logement ou un litige. Le bailleur doit vous la remettre gratuitement si vous la demandez. Aucune inscription, rien n’est envoyé à nos serveurs.",
+  "when": [
+    "Vous avez besoin de justificatifs de paiement de loyer",
+    "Votre propriétaire ou votre agence ne répond pas à vos demandes orales",
+    "On vous facture des frais pour vous envoyer une quittance"
+  ],
+  "fields": [
+    { "name": "nom", "label": "Vos prénom et nom", "type": "text", "placeholder": "Camille Martin" },
+    { "name": "adresse_logement", "label": "Adresse du logement loué", "type": "textarea", "placeholder": "12 rue des Lilas, appartement 4B\n69003 Lyon" },
+    { "name": "bailleur", "label": "Propriétaire ou agence", "type": "text", "placeholder": "M. Dupont" },
+    { "name": "adresse_bailleur", "label": "Adresse du propriétaire ou de l’agence", "type": "textarea", "placeholder": "3 place Bellecour\n69002 Lyon" },
+    { "name": "periode", "label": "Période concernée", "type": "text", "placeholder": "janvier à juin 2026" },
+    {
+      "name": "envoi",
+      "label": "Format souhaité",
+      "type": "select",
+      "options": [
+        { "label": "Par courrier", "text": "Je vous remercie de me les adresser par courrier à l’adresse ci-dessus." },
+        { "label": "Par e-mail", "text": "J’accepte expressément que ces quittances me soient transmises par voie électronique, à l’adresse {{email}}." }
+      ]
+    },
+    { "name": "email", "label": "Votre e-mail (si envoi par e-mail)", "type": "text", "placeholder": "camille.martin@exemple.fr" },
+    { "name": "ville", "label": "Ville", "type": "text", "placeholder": "Lyon" },
+    { "name": "date", "label": "Date de la lettre", "type": "date" }
+  ],
+  "body": "{{nom}}\n{{adresse_logement}}\n\n{{bailleur}}\n{{adresse_bailleur}}\n\nÀ {{ville}}, le {{date}}\n\nObjet : demande de quittances de loyer\n\nMadame, Monsieur,\n\nLocataire du logement situé {{adresse_logement}}, je vous prie de bien vouloir me transmettre les quittances de loyer correspondant à la période suivante : {{periode}}.\n\nConformément à l’article 21 de la loi n° 89-462 du 6 juillet 1989, le bailleur est tenu de transmettre gratuitement une quittance au locataire qui en fait la demande, en distinguant le loyer et les charges. Aucuns frais ne peuvent m’être facturés à ce titre.\n\n{{envoi}}\n\nJe vous en remercie par avance et vous prie d’agréer, Madame, Monsieur, l’expression de mes salutations distinguées.\n\n{{nom}}",
+  "tips": [
+    {
+      "title": "Gratuite et détaillée",
+      "detail": "La quittance est due dès que vous la demandez, sans frais. Elle distingue le loyer et les charges. Aucuns frais de gestion de l’avis d’échéance ou de la quittance ne peuvent vous être facturés.",
+      "refs": ["loi-89-462:21"],
+      "link": { "href": "/sujets/gerer-ses-locations-bailleur/quittance-loyer-obligation-bailleur", "label": "Le bailleur doit-il remettre une quittance ?" }
+    },
+    {
+      "title": "Par e-mail, seulement avec votre accord",
+      "detail": "Le bailleur ne peut vous envoyer les quittances de façon dématérialisée qu’avec votre accord exprès. Le modèle le formule pour vous si vous choisissez l’e-mail.",
+      "refs": ["loi-89-462:21"]
+    },
+    {
+      "title": "Paiement partiel : un reçu",
+      "detail": "Si vous n’avez payé qu’une partie du loyer, le bailleur ne vous doit pas une quittance mais un reçu pour la somme versée.",
+      "refs": ["loi-89-462:21"]
+    },
+    {
+      "title": "Un envoi simple suffit, le recommandé prouve",
+      "detail": "Aucune forme n’est imposée pour cette demande. Un courrier simple ou un e-mail peut suffire ; passez au recommandé si le bailleur ne répond pas, pour garder une preuve.",
+      "refs": []
+    }
+  ],
+  "faqSlugs": ["quittance-loyer-obligation-bailleur"]
+}

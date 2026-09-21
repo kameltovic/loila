@@ -40,12 +40,14 @@ export function refArticles(refs: string[]): Article[] {
     .filter((a): a is Article => !!a);
 }
 
-/** FAQs in the métier's order; slugs not in the DB (not generated yet) are skipped. */
-export function metierFaqs(m: Metier): Faq[] {
-  if (!m.faqSlugs.length) return [];
+/** FAQs in the given order; slugs not in the DB (not generated yet) are skipped. */
+export function faqsBySlugs(slugs: string[]): Faq[] {
+  if (!slugs.length) return [];
   const rows = getDb()
-    .prepare(`SELECT * FROM faq WHERE slug IN (${m.faqSlugs.map(() => "?").join(",")})`)
-    .all(...m.faqSlugs) as Faq[];
+    .prepare(`SELECT * FROM faq WHERE slug IN (${slugs.map(() => "?").join(",")})`)
+    .all(...slugs) as Faq[];
   const bySlug = new Map(rows.map((f) => [f.slug, f]));
-  return m.faqSlugs.map((s) => bySlug.get(s)).filter((f): f is Faq => !!f);
+  return slugs.map((s) => bySlug.get(s)).filter((f): f is Faq => !!f);
 }
+
+export const metierFaqs = (m: Metier) => faqsBySlugs(m.faqSlugs);

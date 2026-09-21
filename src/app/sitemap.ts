@@ -4,6 +4,7 @@ import { SITE_URL, contentUpdatedAt } from "@/lib/seo";
 import { THEMES, faqUrl } from "@/lib/themes";
 import { getTopics } from "@/lib/topics";
 import { getMetiers } from "@/lib/metiers";
+import { getLettres, lettreUrl } from "@/lib/lettres";
 import { conventionUrl, getConventions } from "@/lib/conventions";
 
 export const revalidate = 3600;
@@ -27,6 +28,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url("/sujets", 0.9, "daily"),
     url("/pour", 0.8),
     ...getMetiers().map((m) => url(`/pour/${m.slug}`, 0.9)),
+    url("/modeles-lettres", 0.8),
+    ...getLettres().map((l) => url(lettreUrl(l), 0.9)),
     ...getTopics().map((t) => url(`/sujets/${t.slug}`, 0.8)),
     ...getConventions().map((c) => url(conventionUrl(c), 0.8)),
     ...faqs.map((f) => url(faqUrl(f), 0.7)),

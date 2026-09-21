@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Chat from "@/components/Chat";
 import RelatedFaqs from "@/components/RelatedFaqs";
+import { FaqLettres } from "@/components/Lettres";
 import Backdrop from "@/components/Backdrop";
 import { ArticleDrawerProvider } from "@/components/ArticleDrawer";
 import FaqAnswer, { faqArticles } from "@/components/FaqAnswer";
@@ -72,6 +73,8 @@ export default async function TopicQuestionPage({ params }: PageProps<"/sujets/[
         <h1 className={`${display} mt-8 text-[clamp(2.5rem,7vw,5rem)] leading-[0.95] text-balance`}>{faq.question}</h1>
         <FaqAnswer faq={faq} articles={articles} updated={updated} />
       </ArticleDrawerProvider>
+
+      <FaqLettres slug={faq.slug} from={path} />
 
       <RelatedFaqs faq={faq} />
 

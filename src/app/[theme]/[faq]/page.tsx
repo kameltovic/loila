@@ -5,6 +5,7 @@ import { getDb, type Faq } from "@/lib/db";
 import { CODES, THEMES } from "@/lib/themes";
 import Chat from "@/components/Chat";
 import RelatedFaqs from "@/components/RelatedFaqs";
+import { FaqLettres } from "@/components/Lettres";
 import Backdrop from "@/components/Backdrop";
 import ThemeIcon from "@/components/ThemeIcon";
 import { ArticleDrawerProvider } from "@/components/ArticleDrawer";
@@ -79,6 +80,8 @@ export default async function FaqPage({ params }: PageProps<"/[theme]/[faq]">) {
 
         <FaqAnswer faq={faq} articles={articles} updated={updated} />
       </ArticleDrawerProvider>
+
+      <FaqLettres slug={faq.slug} from={path} />
 
       <RelatedFaqs faq={faq} />
 

@@ -1,0 +1,71 @@
+{
+  "slug": "lettre-preavis-locataire",
+  "title": "Lettre de préavis du locataire",
+  "theme": "logement",
+  "seo": {
+    "title": "Lettre de préavis locataire : modèle gratuit 1 ou 3 mois",
+    "description": "Modèle gratuit de lettre de congé du locataire : 3 mois, ou 1 mois en zone tendue, en meublé, pour mutation ou perte d’emploi. Avec la loi du 6 juillet 1989."
+  },
+  "h1": "Lettre de préavis du locataire :",
+  "h1Accent": "le modèle à compléter",
+  "intro": "Choisissez votre cas (logement vide, meublé, zone tendue, motif de préavis réduit) : la lettre cite le bon article et se met à jour en direct. Aucune inscription, rien n’est envoyé à nos serveurs.",
+  "when": [
+    "Vous êtes locataire de votre résidence principale et voulez partir",
+    "Vous pensez avoir droit à un préavis réduit à un mois",
+    "Vous voulez que la date de fin de bail soit incontestable"
+  ],
+  "fields": [
+    { "name": "nom", "label": "Vos prénom et nom (tous les locataires signataires)", "type": "text", "placeholder": "Camille et Alex Martin" },
+    { "name": "adresse_logement", "label": "Adresse du logement loué", "type": "textarea", "placeholder": "12 rue des Lilas, appartement 4B\n69003 Lyon" },
+    { "name": "bailleur", "label": "Propriétaire ou agence", "type": "text", "placeholder": "M. Dupont" },
+    { "name": "adresse_bailleur", "label": "Adresse du propriétaire ou de l’agence", "type": "textarea", "placeholder": "3 place Bellecour\n69002 Lyon" },
+    { "name": "date_bail", "label": "Date de début du bail", "type": "date" },
+    {
+      "name": "preavis",
+      "label": "Votre situation",
+      "type": "select",
+      "options": [
+        { "label": "Logement vide, cas général : 3 mois", "text": "Conformément à l’article 15 de la loi n° 89-462 du 6 juillet 1989, mon préavis est de trois mois." },
+        { "label": "Logement vide en zone tendue : 1 mois", "text": "Le logement étant situé dans une zone mentionnée au I de l’article 17 de la loi n° 89-462 du 6 juillet 1989 (zone tendue), mon préavis est réduit à un mois, conformément à l’article 15 de la même loi." },
+        { "label": "Logement vide, motif de préavis réduit : 1 mois", "text": "Je bénéficie d’un préavis réduit à un mois en application de l’article 15 de la loi n° 89-462 du 6 juillet 1989, pour le motif suivant : {{motif}}. Vous trouverez le justificatif correspondant joint à ce courrier." },
+        { "label": "Logement meublé : 1 mois", "text": "Le logement étant loué meublé, mon préavis est d’un mois, conformément à l’article 25-8 de la loi n° 89-462 du 6 juillet 1989." }
+      ]
+    },
+    { "name": "motif", "label": "Motif du préavis réduit (si concerné)", "type": "text", "placeholder": "mutation professionnelle" },
+    { "name": "ville", "label": "Ville", "type": "text", "placeholder": "Lyon" },
+    { "name": "date", "label": "Date de la lettre", "type": "date" }
+  ],
+  "body": "{{nom}}\n{{adresse_logement}}\n\n{{bailleur}}\n{{adresse_bailleur}}\n\nÀ {{ville}}, le {{date}}\n\nLettre recommandée avec demande d’avis de réception\n\nObjet : congé du logement situé {{adresse_logement}}\n\nMadame, Monsieur,\n\nPar la présente, je vous informe de ma décision de mettre fin au bail du logement situé {{adresse_logement}}, que je loue depuis le {{date_bail}}.\n\n{{preavis}}\n\nCe délai court à compter de la réception de la présente lettre.\n\nJe vous propose de convenir ensemble d’une date pour l’état des lieux de sortie et la remise des clés. Je vous indiquerai à cette occasion l’adresse de mon nouveau domicile, pour la restitution du dépôt de garantie dans les délais prévus par l’article 22 de la même loi.\n\nJe vous prie d’agréer, Madame, Monsieur, l’expression de mes salutations distinguées.\n\n{{nom}}",
+  "tips": [
+    {
+      "title": "Le mode d’envoi est imposé",
+      "detail": "Le congé se notifie par lettre recommandée avec accusé de réception, par acte de commissaire de justice, ou par remise en main propre contre récépissé ou émargement. Le préavis court à partir du jour de la réception, pas de l’envoi.",
+      "refs": ["loi-89-462:15"],
+      "link": { "href": "/sujets/quitter-son-logement/envoyer-conge-locataire", "label": "Comment envoyer sa lettre de congé ?" }
+    },
+    {
+      "title": "Préavis réduit : justifiez dès l’envoi",
+      "detail": "Zone tendue, premier emploi, mutation, perte d’emploi, nouvel emploi après une perte d’emploi, état de santé, RSA ou AAH, violences conjugales, logement social attribué : le préavis passe à un mois. Mais vous devez préciser le motif et joindre le justificatif avec la lettre, sinon c’est trois mois.",
+      "refs": ["loi-89-462:15"],
+      "link": { "href": "/logement/preavis-un-mois-zone-tendue", "label": "Dans quels cas le préavis est réduit à 1 mois ?" }
+    },
+    {
+      "title": "En meublé, un mois dans tous les cas",
+      "detail": "Pour une location meublée à usage de résidence principale, le locataire peut partir à tout moment avec un préavis d’un mois, sans avoir à se justifier.",
+      "refs": ["loi-89-462:25-8"]
+    },
+    {
+      "title": "Le loyer reste dû pendant tout le préavis",
+      "detail": "Quand c’est vous qui donnez congé, vous payez loyer et charges jusqu’à la fin du préavis, même si vous partez avant, sauf si un nouveau locataire occupe le logement plus tôt avec l’accord du bailleur.",
+      "refs": ["loi-89-462:15"],
+      "link": { "href": "/sujets/quitter-son-logement/payer-loyer-pendant-preavis", "label": "Faut-il payer le loyer si on part avant ?" }
+    },
+    {
+      "title": "Préparez la restitution du dépôt de garantie",
+      "detail": "Le bailleur a un mois après la remise des clés si l’état des lieux de sortie est conforme à celui d’entrée, deux mois sinon. Donnez votre nouvelle adresse lors de la remise des clés.",
+      "refs": ["loi-89-462:22"],
+      "link": { "href": "/modeles-lettres/mise-en-demeure-depot-de-garantie", "label": "Modèle : réclamer son dépôt de garantie" }
+    }
+  ],
+  "faqSlugs": ["preavis-locataire", "preavis-un-mois-zone-tendue", "preavis-reduit-motifs", "envoyer-conge-locataire", "payer-loyer-pendant-preavis", "preavis-logement-etudiant", "depot-garantie-restitution"]
+}
