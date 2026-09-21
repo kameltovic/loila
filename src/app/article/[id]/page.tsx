@@ -3,8 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { getDb, type Article, type Faq } from "@/lib/db";
-import { CODES } from "@/lib/themes";
-import { Empty, FaqIndex, btnPrimary, container, display, label } from "@/components/ui";
+import { CODES, THEMES } from "@/lib/themes";
+import { Empty, FaqIndex, block, btnPrimary, container, display, label } from "@/components/ui";
 import { LettreCards } from "@/components/Lettres";
 import { articleSummary, coCitedArticles, linkRefs } from "@/lib/articles";
 import { lettresForArticle } from "@/lib/lettres";
@@ -50,6 +50,8 @@ export default async function ArticlePage({ params }: PageProps<"/article/[id]">
   const topics = [...new Set(related.map((f) => f.topic).filter((t): t is string => !!t))].map(getTopic).filter((t) => !!t);
   const coCited = coCitedArticles(a.id);
   const code = CODES[a.code as keyof typeof CODES];
+  // Summary block colour: the theme owning this code (Code civil etc. fall back to the logement yellow).
+  const themeSlug = THEMES.find((t) => (t.codes as readonly string[]).includes(a.code))?.slug ?? "logement";
   const jsonLd = [
     breadcrumbJsonLd([{ name: "Accueil", path: "/" }, { name: codeName(a), path: `/article/${a.id}` }, { name: artLabel(a), path: `/article/${a.id}` }]),
     {
@@ -96,25 +98,30 @@ export default async function ArticlePage({ params }: PageProps<"/article/[id]">
       <article className={`${container} grid gap-10 py-12 sm:py-16 lg:grid-cols-[1fr_16rem]`}>
         <div className="min-w-0 space-y-8">
           {summary && (
-            <section aria-labelledby="en-clair-title" className="border-2 border-fg bg-surface p-6 shadow-[6px_6px_0_0_var(--signal)] sm:p-10">
-              <p className={`${label} flex items-center gap-3 text-fg-2`}>
+            <section aria-labelledby="en-clair-title" className={`${block(themeSlug)} border-2 border-ink p-6 shadow-[6px_6px_0_0_var(--fg)] sm:p-10`}>
+              <p className={`${label} inline-flex items-center gap-2 bg-ink px-3 py-1.5 text-paper`}>
                 <span aria-hidden className="size-2 rounded-full bg-signal" />
                 En clair
               </p>
               <h2 id="en-clair-title" className="sr-only">Ce que dit cet article, en clair</h2>
-              <p className="mt-4 max-w-[68ch] text-lg leading-relaxed sm:text-xl">{summary.summary}</p>
+              <p className="mt-6 max-w-[62ch] font-display text-xl leading-snug font-semibold tracking-[-0.015em] text-pretty sm:text-2xl">{summary.summary}</p>
               {summary.points.length > 0 && (
-                <ul className="mt-6 max-w-[68ch] space-y-3">
-                  {summary.points.map((pt) => (
-                    <li key={pt} className="flex gap-3"><span aria-hidden className="mt-2.5 size-2 shrink-0 bg-fg" />{pt}</li>
-                  ))}
-                </ul>
+                <>
+                  <h3 className={`${label} mt-8 border-t-2 border-ink pt-5`}>Points clés</h3>
+                  <ul className="mt-4 max-w-[68ch] space-y-3 text-[1.0625rem] leading-relaxed">
+                    {summary.points.map((pt) => (
+                      <li key={pt} className="flex gap-3"><span aria-hidden className="mt-2.5 size-2 shrink-0 bg-ink" />{pt}</li>
+                    ))}
+                  </ul>
+                </>
               )}
-              <p className="mt-6 text-sm text-fg-2">Résumé rédigé à partir du texte officiel ci-dessous, qui seul fait foi.</p>
+              <p className="mt-8 text-sm text-ink/70">Résumé rédigé par Loilà à partir du texte officiel ci-dessous, qui seul fait foi.</p>
             </section>
           )}
           <div className="rounded-2xl border-2 border-fg bg-surface p-6 sm:p-10">
-            {summary && <h2 className={`${label} mb-6 text-fg-2`}>Texte officiel</h2>}
+            {summary && (
+              <h2 className={`${label} mb-6 inline-flex items-center gap-2 border-2 border-fg px-3 py-1.5`}>Texte officiel · Légifrance</h2>
+            )}
             <div className="max-w-[68ch] space-y-5 text-[1.0625rem] leading-[1.8] sm:text-lg">
               {a.texte
                 .split(/\n+/)
