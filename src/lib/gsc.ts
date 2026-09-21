@@ -48,6 +48,16 @@ export async function gscSites(): Promise<{ siteUrl: string; permissionLevel: st
   return (await api("/sites")).siteEntry ?? [];
 }
 
+/** This site's property: GSC_SITE, else the one matching SITE_URL's domain (the OAuth account may own several sites). */
+export async function gscSite(): Promise<string> {
+  if (process.env.GSC_SITE) return process.env.GSC_SITE;
+  const host = new URL(process.env.SITE_URL ?? "https://loila.fr").hostname.replace(/^www\./, "");
+  const sites = await gscSites();
+  const site = sites.find((s) => s.siteUrl === `sc-domain:${host}`) ?? sites.find((s) => new RegExp(`^https?://(www\\.)?${host.replace(/\./g, "\\.")}/`).test(s.siteUrl));
+  if (!site) throw new Error(`No Search Console property for ${host} (visible: ${sites.map((s) => s.siteUrl).join(", ") || "none"}).`);
+  return site.siteUrl;
+}
+
 export const gscDay = (daysAgo: number) => new Date(Date.now() - daysAgo * 86_400_000).toISOString().slice(0, 10);
 
 // ponytail: in-memory 1 h cache per query (single instance, a few admin views a day); the data only updates daily.
@@ -55,8 +65,7 @@ const memo = new Map<string, { at: number; rows: GscRow[] }>();
 
 /** All rows (up to 25k) for the period, unsorted. `page`/`query`: "contains" filters. */
 export async function gscQuery({ days, dims, page, query }: { days: number; dims: string[]; page?: string; query?: string }): Promise<GscRow[]> {
-  const site = process.env.GSC_SITE ?? (await gscSites())[0]?.siteUrl;
-  if (!site) throw new Error(`No Search Console property: add ${SA} (or the OAuth account) as a user.`);
+  const site = await gscSite();
   const key = JSON.stringify([site, days, dims, page, query]);
   const hit = memo.get(key);
   if (hit && Date.now() - hit.at < 3600_000) return hit.rows;
