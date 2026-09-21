@@ -57,9 +57,12 @@ export default async function Admin() {
         Admin
       </p>
       <h1 className={`${display} mt-4 text-[clamp(2.5rem,8vw,4.5rem)] leading-[0.92]`}>Tableau de bord</h1>
-      <p className="mt-4">
+      <p className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
         <Link href="/admin/questions" className="font-semibold underline decoration-signal decoration-2 underline-offset-4">
           Questions posées →
+        </Link>
+        <Link href="/admin/seo" className="font-semibold underline decoration-signal decoration-2 underline-offset-4">
+          Google Search (SEO) →
         </Link>
       </p>
 

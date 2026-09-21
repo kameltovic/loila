@@ -1,0 +1,98 @@
+// Google Search Console, read-only (webmasters.readonly).
+// Production: an OAuth refresh token limited to that scope (GSC_CLIENT_ID / GSC_CLIENT_SECRET / GSC_REFRESH_TOKEN,
+// written by scripts/gsc-auth.ts). Local fallback: the logged-in gcloud user impersonates GSC_SERVICE_ACCOUNT
+// (the org blocks service-account keys).
+import { execFileSync } from "node:child_process";
+
+const API = "https://searchconsole.googleapis.com/webmasters/v3";
+const SCOPE = "https://www.googleapis.com/auth/webmasters.readonly";
+const SA = process.env.GSC_SERVICE_ACCOUNT ?? "loila-gsc@loila-seo.iam.gserviceaccount.com";
+
+export type GscRow = { keys: string[]; clicks: number; impressions: number; ctr: number; position: number };
+
+export const gscConfigured = () => !!process.env.GSC_REFRESH_TOKEN || process.env.NODE_ENV !== "production";
+
+let cached: { token: string; until: number } | undefined;
+async function token(): Promise<string> {
+  if (cached && cached.until > Date.now()) return cached.token;
+  const { GSC_CLIENT_ID, GSC_CLIENT_SECRET, GSC_REFRESH_TOKEN } = process.env;
+  if (GSC_REFRESH_TOKEN && GSC_CLIENT_ID && GSC_CLIENT_SECRET) {
+    const res = await fetch("https://oauth2.googleapis.com/token", {
+      method: "POST",
+      body: new URLSearchParams({ client_id: GSC_CLIENT_ID, client_secret: GSC_CLIENT_SECRET, refresh_token: GSC_REFRESH_TOKEN, grant_type: "refresh_token" }),
+    });
+    if (!res.ok) throw new Error(`Google OAuth ${res.status}: ${(await res.text()).slice(0, 200)}`);
+    const j = (await res.json()) as { access_token: string; expires_in: number };
+    cached = { token: j.access_token, until: Date.now() + (j.expires_in - 60) * 1000 };
+  } else {
+    const t = execFileSync("gcloud", ["auth", "print-access-token", `--impersonate-service-account=${SA}`, `--scopes=${SCOPE}`], {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"], // gcloud prints an impersonation warning on stderr
+    }).trim();
+    cached = { token: t, until: Date.now() + 50 * 60_000 };
+  }
+  return cached.token;
+}
+
+async function api(path: string, body?: object) {
+  const res = await fetch(`${API}${path}`, {
+    method: body ? "POST" : "GET",
+    headers: { Authorization: `Bearer ${await token()}`, "Content-Type": "application/json" },
+    body: body && JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(`Search Console ${res.status}: ${(await res.text()).slice(0, 300)}`);
+  return res.json();
+}
+
+export async function gscSites(): Promise<{ siteUrl: string; permissionLevel: string }[]> {
+  return (await api("/sites")).siteEntry ?? [];
+}
+
+export const gscDay = (daysAgo: number) => new Date(Date.now() - daysAgo * 86_400_000).toISOString().slice(0, 10);
+
+// ponytail: in-memory 1 h cache per query (single instance, a few admin views a day); the data only updates daily.
+const memo = new Map<string, { at: number; rows: GscRow[] }>();
+
+/** All rows (up to 25k) for the period, unsorted. `page`/`query`: "contains" filters. */
+export async function gscQuery({ days, dims, page, query }: { days: number; dims: string[]; page?: string; query?: string }): Promise<GscRow[]> {
+  const site = process.env.GSC_SITE ?? (await gscSites())[0]?.siteUrl;
+  if (!site) throw new Error(`No Search Console property: add ${SA} (or the OAuth account) as a user.`);
+  const key = JSON.stringify([site, days, dims, page, query]);
+  const hit = memo.get(key);
+  if (hit && Date.now() - hit.at < 3600_000) return hit.rows;
+  const filters = [
+    ...(page ? [{ dimension: "page", operator: "contains", expression: page }] : []),
+    ...(query ? [{ dimension: "query", operator: "contains", expression: query }] : []),
+  ];
+  const { rows = [] } = await api(`/sites/${encodeURIComponent(site)}/searchAnalytics/query`, {
+    startDate: gscDay(days),
+    endDate: gscDay(0),
+    dimensions: dims,
+    rowLimit: 25_000,
+    ...(filters.length ? { dimensionFilterGroups: [{ filters }] } : {}),
+  });
+  memo.set(key, { at: Date.now(), rows });
+  return rows as GscRow[];
+}
+
+/** "https://loila.fr/article/X" → "/article/X". */
+export const gscPath = (url: string) => url.replace(/^https?:\/\/[^/]+/, "") || "/";
+
+/** Totals and per-section rollup of page rows ("/article", "/sujets"…). */
+export function gscSections(rows: GscRow[]) {
+  const by = new Map<string, { section: string; pages: number; clicks: number; impressions: number }>();
+  for (const r of rows) {
+    const section = "/" + (gscPath(r.keys[0]).split("/")[1] ?? "");
+    const v = by.get(section) ?? { section, pages: 0, clicks: 0, impressions: 0 };
+    by.set(section, { section, pages: v.pages + 1, clicks: v.clicks + r.clicks, impressions: v.impressions + r.impressions });
+  }
+  return [...by.values()].sort((a, b) => b.impressions - a.impressions);
+}
+
+/** Impression-weighted average position (what Search Console shows as "position moyenne"). */
+export function gscTotals(rows: GscRow[]) {
+  const clicks = rows.reduce((n, r) => n + r.clicks, 0);
+  const impressions = rows.reduce((n, r) => n + r.impressions, 0);
+  const position = impressions ? rows.reduce((n, r) => n + r.position * r.impressions, 0) / impressions : 0;
+  return { clicks, impressions, ctr: impressions ? clicks / impressions : 0, position };
+}
