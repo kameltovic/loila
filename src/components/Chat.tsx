@@ -263,6 +263,7 @@ function quota(me: Me): string {
     ? `${plural(me.credits, "question")} du Dossier jusqu’au ${new Date(me.creditsExpireAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long" })}`
     : "";
   const extra = dossier ? ` + ${dossier}` : "";
+  if (me.plan === "pro" && me.monthlyLimit >= 1_000_000) return "Accès illimité (admin)";
   if (me.plan === "pro") return `${plural(Math.max(0, me.monthlyLimit - me.monthlyUsed), "question")} IA ce mois${extra}`;
   if (me.freeLeft > 0) return `${plural(me.freeLeft, "question")} IA ${me.freeLeft > 1 ? "offertes" : "offerte"}${extra}`;
   return dossier || "Questions IA offertes utilisées, voir les tarifs";

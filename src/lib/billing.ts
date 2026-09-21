@@ -1,4 +1,4 @@
-import type { Identity } from "./auth";
+import { isAdmin, type Identity } from "./auth";
 import { getDb } from "./db";
 import { FREE_QUESTIONS, OFFERS, type Me, type OfferId } from "./plans";
 
@@ -23,7 +23,13 @@ const nextBatch = (userId: number, at: number) =>
     .prepare("SELECT id, expires_at FROM credit_batches WHERE user_id = ? AND credits_left > 0 AND expires_at > ? ORDER BY expires_at, id LIMIT 1")
     .get(userId, at) as { id: number; expires_at: number } | undefined;
 
+// Admins (ADMIN_EMAILS) are unlimited Pro everywhere: nothing is counted against them.
+const ADMIN_LIMIT = 1_000_000;
+
 export function getMe(id: Identity, at = now()): Me {
+  if (id.userId && isAdmin(id.email)) {
+    return { email: id.email, plan: "pro", credits: 0, creditsExpireAt: null, freeLeft: FREE_QUESTIONS, monthlyUsed: 0, monthlyLimit: ADMIN_LIMIT, periodEnd: null, canAsk: true };
+  }
   const sub = id.userId ? activeSub(id.userId, at) : undefined;
   const subOffer = sub ? OFFERS[sub.plan] : undefined;
   const monthlyLimit = subOffer?.kind === "subscription" ? subOffer.monthlyQuota : 0;
@@ -52,6 +58,7 @@ export function getMe(id: Identity, at = now()): Me {
 export function consume(id: Identity, at = now()): "sub" | "credit" | "free" | null {
   const userId = id.userId;
   if (!userId) return null; // asking requires an account
+  if (isAdmin(id.email)) return "sub"; // unlimited, not recorded
   const db = getDb();
   const insert = db.prepare("INSERT INTO usage (subject, kind, created_at, batch_id) VALUES (?, ?, ?, ?)");
   return db.transaction(() => {
