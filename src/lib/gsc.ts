@@ -70,28 +70,34 @@ export async function gscSite(): Promise<string> {
 
 export const gscDay = (daysAgo: number) => new Date(Date.now() - daysAgo * 86_400_000).toISOString().slice(0, 10);
 
-// ponytail: in-memory 1 h cache per query (single instance, a few admin views a day); the data only updates daily.
-const memo = new Map<string, { at: number; rows: GscRow[] }>();
+// ponytail: in-memory 15 min cache per query (single instance, a few admin views a day).
+const memo = new Map<string, { at: number; rows: GscRow[]; incompleteFrom: string | null }>();
 
-/** All rows (up to 25k) for the period, unsorted. `page`/`query`: "contains" filters. */
-export async function gscQuery({ days, dims, page, query }: { days: number; dims: string[]; page?: string; query?: string }): Promise<GscRow[]> {
+/**
+ * All rows (up to 25k) for the period, unsorted. `page`/`query`: "contains" filters.
+ * dataState "all" = what the Search Console UI shows, including the last provisional days ("final" alone lags 2-3 days).
+ * incompleteFrom: first day still provisional (Google revises it for ~2-3 days, up or down); only sent for date queries.
+ */
+export async function gscQuery({ days, dims, page, query }: { days: number; dims: string[]; page?: string; query?: string }): Promise<{ rows: GscRow[]; incompleteFrom: string | null }> {
   const site = await gscSite();
   const key = JSON.stringify([site, days, dims, page, query]);
   const hit = memo.get(key);
-  if (hit && Date.now() - hit.at < 3600_000) return hit.rows;
+  if (hit && Date.now() - hit.at < 15 * 60_000) return hit;
   const filters = [
     ...(page ? [{ dimension: "page", operator: "contains", expression: page }] : []),
     ...(query ? [{ dimension: "query", operator: "contains", expression: query }] : []),
   ];
-  const { rows = [] } = await api(`/sites/${encodeURIComponent(site)}/searchAnalytics/query`, {
+  const { rows = [], metadata } = await api(`/sites/${encodeURIComponent(site)}/searchAnalytics/query`, {
     startDate: gscDay(days),
     endDate: gscDay(0),
     dimensions: dims,
     rowLimit: 25_000,
+    dataState: "all",
     ...(filters.length ? { dimensionFilterGroups: [{ filters }] } : {}),
   });
-  memo.set(key, { at: Date.now(), rows });
-  return rows as GscRow[];
+  const out = { at: Date.now(), rows: rows as GscRow[], incompleteFrom: (metadata?.firstIncompleteDate as string | undefined) ?? null };
+  memo.set(key, out);
+  return out;
 }
 
 /** "https://loila.fr/article/X" → "/article/X". */

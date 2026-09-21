@@ -17,7 +17,8 @@ async function main() {
   const days = Number(opt("days", "28"));
   const page = opt("page", "") || undefined;
   const query = opt("query", "") || undefined;
-  const all = (await gscQuery({ days, dims, page, query })).sort((a, b) =>
+  const { rows, incompleteFrom } = await gscQuery({ days, dims, page, query });
+  const all = rows.sort((a, b) =>
     dims[0] === "date" ? a.keys[0].localeCompare(b.keys[0]) : b.clicks - a.clicks || b.impressions - a.impressions,
   );
 
@@ -32,6 +33,7 @@ async function main() {
   }
   const sum = (k: "clicks" | "impressions") => all.reduce((n, x) => n + x[k], 0);
   console.log(`\nTotal : ${all.length} lignes, ${sum("clicks")} clics, ${sum("impressions")} impressions`);
+  if (incompleteFrom) console.log(`Chiffres provisoires depuis le ${incompleteFrom} (Google les recalcule pendant 2 à 3 jours).`);
 }
 
 main().catch((e) => {

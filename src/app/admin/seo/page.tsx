@@ -49,9 +49,9 @@ export default async function AdminSeo({ searchParams }: { searchParams: Promise
     );
   }
 
-  let daily: GscRow[], pages: GscRow[], queries: GscRow[];
+  let daily: GscRow[], pages: GscRow[], queries: GscRow[], incompleteFrom: string | null;
   try {
-    [daily, pages, queries] = await Promise.all([
+    [{ rows: daily, incompleteFrom }, { rows: pages }, { rows: queries }] = await Promise.all([
       gscQuery({ days, dims: ["date"], page }),
       gscQuery({ days, dims: ["page"], page }),
       gscQuery({ days, dims: ["query"], page }),
@@ -65,6 +65,7 @@ export default async function AdminSeo({ searchParams }: { searchParams: Promise
     );
   }
 
+  const provisional = (date: string) => !!incompleteFrom && date >= incompleteFrom;
   // Google omits days without impressions: fill them so gaps stay visible.
   const byDate = new Map(daily.map((d) => [d.keys[0], d]));
   daily = Array.from({ length: days + 1 }, (_, i) => gscDay(days - i)).map((k) => byDate.get(k) ?? { keys: [k], clicks: 0, impressions: 0, ctr: 0, position: 0 });
@@ -89,7 +90,8 @@ export default async function AdminSeo({ searchParams }: { searchParams: Promise
     <section className={`${container} pt-10 pb-20`}>
       {head}
       <p className="mt-3 text-fg-2">
-        Du {new Date(gscDay(days)).toLocaleDateString("fr-FR")} au {new Date(gscDay(0)).toLocaleDateString("fr-FR")} · données Google avec 2 à 3 jours de retard
+        Du {new Date(gscDay(days)).toLocaleDateString("fr-FR")} au {new Date(gscDay(0)).toLocaleDateString("fr-FR")}
+        {incompleteFrom && <> · chiffres provisoires depuis le {new Date(incompleteFrom).toLocaleDateString("fr-FR")} (Google les recalcule pendant 2 à 3 jours, ils peuvent baisser)</>}
         {page && <> · pages contenant <strong className="text-fg">{page}</strong></>}
       </p>
 
@@ -128,18 +130,18 @@ export default async function AdminSeo({ searchParams }: { searchParams: Promise
         {totals.impressions ? (
           <figure className="border-2 border-fg bg-surface p-4 sm:p-6">
             <div className="flex h-48 items-end gap-[2px]" role="img" aria-label={`Impressions par jour, maximum ${num(max)}`}>
-              {daily.map((d) => (
+              {daily.map((d, i) => (
                 <div key={d.keys[0]} tabIndex={0} className="group relative flex h-full flex-1 items-end outline-none">
-                  <div className="w-full rounded-t-[4px] bg-fg group-hover:bg-signal group-focus:bg-signal" style={{ height: d.impressions ? `${Math.max(2, (d.impressions / max) * 100)}%` : "0" }} />
-                  <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 hidden -translate-x-1/2 border-2 border-fg bg-bg px-2.5 py-1.5 font-mono text-xs whitespace-nowrap group-hover:block group-focus:block">
-                    <strong>{new Date(d.keys[0]).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}</strong> · {num(d.impressions)} impr. · {d.clicks} clic{d.clicks > 1 ? "s" : ""}{d.impressions > 0 && <> · pos. {d.position.toFixed(1)}</>}
+                  <div className={`w-full rounded-t-[4px] group-hover:bg-signal group-focus:bg-signal ${provisional(d.keys[0]) ? "bg-fg/40 bg-[repeating-linear-gradient(45deg,transparent_0_3px,var(--bg)_3px_5px)]" : "bg-fg"}`} style={{ height: d.impressions ? `${Math.max(2, (d.impressions / max) * 100)}%` : "0" }} />
+                  <div className={`pointer-events-none absolute bottom-full z-10 mb-2 hidden border-2 ${i < daily.length / 2 ? "left-0" : "right-0"} border-fg bg-bg px-2.5 py-1.5 font-mono text-xs whitespace-nowrap group-hover:block group-focus:block`}>
+                    <strong>{new Date(d.keys[0]).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}</strong> · {num(d.impressions)} impr. · {d.clicks} clic{d.clicks > 1 ? "s" : ""}{d.impressions > 0 && <> · pos. {d.position.toFixed(1)}</>}{provisional(d.keys[0]) && " · provisoire"}
                   </div>
                 </div>
               ))}
             </div>
             <figcaption className="mt-2 flex justify-between font-mono text-xs text-fg-2">
               <span>{new Date(daily[0].keys[0]).toLocaleDateString("fr-FR")}</span>
-              <span>max {num(max)} / jour</span>
+              <span>max {num(max)} / jour{incompleteFrom && " · hachuré = provisoire"}</span>
               <span>{new Date(daily.at(-1)!.keys[0]).toLocaleDateString("fr-FR")}</span>
             </figcaption>
           </figure>
