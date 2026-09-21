@@ -53,12 +53,16 @@ export function parseJudi(xml: string): DecisionRecord {
   };
 }
 
+/** One spelling per court: "Cour administrative d'appel de Lyon" / "COUR ADMINISTRATIVE D'APPEL DE LYON" → "CAA de LYON". */
+export const normalizeCourt = (j: string) =>
+  j.replace(/^cour administrative d['’]appel d(?:e\s+|['’])(.+)$/i, (_, city: string) => `CAA de ${city.toUpperCase()}`).replace(/^CAA d['’](.+)$/i, (_, c: string) => `CAA de ${c.toUpperCase()}`);
+
 /** Administrative format TEXTE_JURI_ADMIN (JADE: Conseil d'État, CAA, TA). */
 export function parseAdmin(xml: string): DecisionRecord {
   const recueil = tag(xml, "PUBLI_RECUEIL").trim().toUpperCase();
   return {
     id: tag(xml, "ID"),
-    juridiction: decode(tag(xml, "JURIDICTION")),
+    juridiction: normalizeCourt(decode(tag(xml, "JURIDICTION"))),
     formation: decode(tag(xml, "FORMATION")),
     date: tag(xml, "DATE_DEC"),
     numeros: [decode(tag(xml, "NUMERO"))].filter(Boolean),
@@ -223,13 +227,18 @@ async function main() {
     for (const c of cites) stats.byStatus[c.status] = (stats.byStatus[c.status] ?? 0) + 1;
     if (prev) stats.updated++;
     else stats.created++;
+    if (dryRun) continue; // nothing kept in memory: a dry run over JADE (550k files) must stay flat
     batch.push({ rec, rel, raw, sum, isNew: !prev });
-    if (!dryRun && batch.length >= 300) { flush(batch); batch = []; }
+    if (batch.length >= 300) { flush(batch); batch = []; }
   }
   if (!dryRun && batch.length) flush(batch);
 
   // Relations needing the whole set (explicit citations, same case), recomputed from the DB.
-  if (!dryRun) G.rebuildDecisionRelations(db);
+  if (!dryRun) {
+    const merged = G.mergeRepublished(db);
+    if (merged) console.log(`republished duplicates merged: ${merged}`);
+    G.rebuildDecisionRelations(db);
+  }
 
   // Upstream deletions are reported, never applied silently.
   // Only a global archive is complete: an increment says nothing about what disappeared.

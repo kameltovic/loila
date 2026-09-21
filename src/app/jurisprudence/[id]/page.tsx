@@ -73,7 +73,7 @@ export default async function DecisionPage({ params }: PageProps<"/jurisprudence
             <span className="border-2 border-fg px-2 py-1">{d.juridiction}</span>
             <span className="border-2 border-fg px-2 py-1">{formationLabel(d.formation)}</span>
             {d.solution && <span className="border-2 border-fg bg-fg px-2 py-1 text-bg">{d.solution}</span>}
-            {d.publie === 1 && <span className="border-2 border-fg px-2 py-1">Publié au Bulletin</span>}
+            {d.publie === 1 && <span className="border-2 border-fg px-2 py-1">{d.source === "jade" ? "Publié au Recueil" : d.source === "constit" ? "Publié au JO" : "Publié au Bulletin"}</span>}
           </p>
           <h1 className={`${display} mt-6 max-w-5xl text-[clamp(2.25rem,6vw,4.5rem)] leading-[0.95] text-balance`}>
             {formationLabel(d.formation)}, {frDate(d.date)}

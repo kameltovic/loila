@@ -64,6 +64,17 @@ async function fixture() {
   assert.equal(S.searchDecisions({ q: 'vices" OR * NEAR(' }).rows.length >= 0, true, "no FTS syntax error");
   assert.ok(S.decisionPassages("D4", "vendeur professionnel").some((p) => p.includes("professionnel")));
 
+  // Republished duplicates (same court, date, number, near-identical text) merge into the lowest id, provenance kept.
+  const addDec = db.prepare("INSERT INTO decisions (id, source, juridiction, date, titre, texte, url) VALUES (?, 'jade', 'CAA de LYON', '2021-05-04', 't', ?, '')");
+  addDec.run("CETATEXT1", "x".repeat(1000));
+  addDec.run("CETATEXT2", "x".repeat(1005)); // republication
+  addDec.run("CETATEXT3", "y".repeat(3000)); // same number and date, different decision
+  for (const id of ["CETATEXT1", "CETATEXT2", "CETATEXT3"]) db.prepare("INSERT INTO decision_numbers (decision_id, numero) VALUES (?, '21LY00001')").run(id);
+  db.prepare("INSERT INTO provenance (entity_type, entity_id, dataset, source, origin_url, origin_ref, extractor, extractor_version) VALUES ('decision', 'CETATEXT2', 'JADE', 'DILA', 'u', 'r2', 'x', '1')").run();
+  assert.equal(G.mergeRepublished(db), 1);
+  assert.deepEqual((db.prepare("SELECT id FROM decisions WHERE id LIKE 'CETATEXT%' ORDER BY id").all() as { id: string }[]).map((r) => r.id), ["CETATEXT1", "CETATEXT3"]);
+  assert.ok(db.prepare("SELECT 1 FROM provenance WHERE entity_id = 'CETATEXT1' AND origin_ref LIKE '%CETATEXT2%'").get(), "provenance of the merged copy kept");
+
   // Checksum change detection: a different raw text gives a different checksum.
   assert.notEqual(G.sha256("<xml>a</xml>"), G.sha256("<xml>b</xml>"));
   // Pourvoi numbers normalize to one form (stable relation keys).

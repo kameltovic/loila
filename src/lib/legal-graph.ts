@@ -307,6 +307,15 @@ export function graphMetrics(db: Database.Database) {
 
 // ---------- Rebuild from the DB alone (production import, extractor upgrades) ----------
 
+/** Visits every decision by chunks of ids: full texts of 50k+ decisions never sit in memory together. */
+function eachDecisionChunk<T>(db: Database.Database, cols: string, fn: (rows: T[]) => void, size = 500) {
+  const ids = (db.prepare("SELECT id FROM decisions ORDER BY id").all() as { id: string }[]).map((r) => r.id);
+  for (let i = 0; i < ids.length; i += size) {
+    const chunk = ids.slice(i, i + size);
+    fn(db.prepare(`SELECT ${cols} FROM decisions WHERE id IN (${chunk.map(() => "?").join(",")})`).all(...chunk) as T[]);
+  }
+}
+
 /** "cites" and "same_case" relations of every decision (needs the whole set), plus "appeal_from" from stored fields. */
 export function rebuildDecisionRelations(db: Database.Database) {
   const nums = db.prepare("SELECT decision_id FROM decision_numbers WHERE numero = ?");
@@ -316,14 +325,16 @@ export function rebuildDecisionRelations(db: Database.Database) {
     `INSERT OR REPLACE INTO decision_relations (from_id, kind, target_ref, to_id, method, confidence, extractor_version)
      VALUES (@from_id, @kind, @target_ref, @to_id, @method, @confidence, @extractor_version)`,
   );
-  const decs = db.prepare("SELECT id, texte, attaquee_juridiction, attaquee_date FROM decisions").all() as { id: string; texte: string; attaquee_juridiction: string | null; attaquee_date: string | null }[];
+  type D = { id: string; texte: string; attaquee_juridiction: string | null; attaquee_date: string | null };
   db.transaction(() => {
     db.prepare("DELETE FROM decision_relations WHERE kind IN ('cites', 'same_case', 'appeal_from')").run();
-    for (const d of decs) {
-      const numbers = (own.all(d.id) as { numero: string }[]).map((r) => r.numero);
-      const attaquee = d.attaquee_date ? { juridiction: d.attaquee_juridiction ?? undefined, date: d.attaquee_date } : undefined;
-      for (const r of extractDecisionRelations({ id: d.id, texte: d.texte, numbers, attaquee }, byNumber)) ins.run(r);
-    }
+    eachDecisionChunk<D>(db, "id, texte, attaquee_juridiction, attaquee_date", (decs) => {
+      for (const d of decs) {
+        const numbers = (own.all(d.id) as { numero: string }[]).map((r) => r.numero);
+        const attaquee = d.attaquee_date ? { juridiction: d.attaquee_juridiction ?? undefined, date: d.attaquee_date } : undefined;
+        for (const r of extractDecisionRelations({ id: d.id, texte: d.texte, numbers, attaquee }, byNumber)) ins.run(r);
+      }
+    });
   })();
 }
 
@@ -333,12 +344,57 @@ export function rebuildGraph(db: Database.Database, { reextract = true } = {}) {
   backfillArticles(db);
   if (reextract) {
     const resolve = articleResolver(db);
-    const decs = db.prepare("SELECT id, date, sommaire, texte, liens FROM decisions").all() as { id: string; date: string; sommaire: string | null; texte: string; liens: string | null }[];
+    type D = { id: string; date: string; sommaire: string | null; texte: string; liens: string | null };
     db.transaction(() => {
-      for (const d of decs) saveCitations(db, d.id, extractCitations({ ...d, liens: d.liens ?? "" }, resolve));
+      eachDecisionChunk<D>(db, "id, date, sommaire, texte, liens", (decs) => {
+        for (const d of decs) saveCitations(db, d.id, extractCitations({ ...d, liens: d.liens ?? "" }, resolve));
+      });
       db.prepare("UPDATE decisions SET extractor_version = ?").run(EXTRACTOR_VERSION);
     })();
     rebuildDecisionRelations(db);
   }
   return { pairs: buildCoCitations(db), stats: buildArticleStats(db) };
+}
+
+// ---------- Republished duplicates ----------
+
+/**
+ * The DILA sometimes republishes a decision under a new id (seen in JADE: same CAA, date and number, text identical
+ * to a few characters), and CAA decisions carry no ECLI. Same court + date + case number + text length within 2 %
+ * → one decision: the lowest id stays (stable URL), the other's origin is kept in its provenance, its rows go.
+ */
+export function mergeRepublished(db: Database.Database) {
+  const groups = db
+    .prepare(
+      `SELECT d.juridiction j, d.date, dn.numero, group_concat(d.id) ids FROM decision_numbers dn JOIN decisions d ON d.id = dn.decision_id
+       GROUP BY d.juridiction, d.date, dn.numero HAVING COUNT(DISTINCT d.id) > 1`,
+    )
+    .all() as { j: string; date: string; numero: string; ids: string }[];
+  const len = db.prepare("SELECT length(texte) n FROM decisions WHERE id = ?");
+  const moveProv = db.prepare(
+    `INSERT OR IGNORE INTO provenance (entity_type, entity_id, dataset, source, origin_url, origin_ref, mirror, raw_checksum, extractor, extractor_version, imported_at, verified_at)
+     SELECT 'decision', ?, dataset, source, origin_url, origin_ref || ' (republication ' || entity_id || ')', mirror, raw_checksum, extractor, extractor_version, imported_at, verified_at
+     FROM provenance WHERE entity_type = 'decision' AND entity_id = ?`,
+  );
+  const drops = [
+    "DELETE FROM citations WHERE decision_id = ?", "DELETE FROM decision_articles WHERE decision_id = ?", "DELETE FROM decision_numbers WHERE decision_id = ?",
+    "DELETE FROM decision_relations WHERE from_id = ?", "UPDATE decision_relations SET to_id = NULL WHERE to_id = ?", "DELETE FROM decision_summaries WHERE decision_id = ?",
+    "DELETE FROM provenance WHERE entity_type = 'decision' AND entity_id = ?", "DELETE FROM decisions WHERE id = ?",
+  ].map((sql) => db.prepare(sql));
+  let merged = 0;
+  db.transaction(() => {
+    for (const g of groups) {
+      const ids = [...new Set(g.ids.split(","))].sort();
+      const keep = ids[0];
+      const base = (len.get(keep) as { n: number }).n;
+      for (const other of ids.slice(1)) {
+        const n = (len.get(other) as { n: number } | undefined)?.n;
+        if (n === undefined || Math.abs(n - base) > base * 0.02) continue; // same number and date but a different text: two decisions
+        moveProv.run(keep, other);
+        for (const st of drops) st.run(other);
+        merged++;
+      }
+    }
+  })();
+  return merged;
 }

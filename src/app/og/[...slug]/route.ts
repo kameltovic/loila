@@ -43,7 +43,7 @@ function image(parts: string[]) {
     return m ? renderOg({ kind: "topic", title: `${m.h1} ${m.h1Accent}`, label: `Pour les pros · ${m.title}`, theme: m.theme }) : null;
   }
   if (a === "avocats" && parts.length === 1) return renderOg({ kind: "topic", title: "La jurisprudence, reliée à la loi", label: "Loilà pour les avocats et juristes" });
-  if (a === "jurisprudence" && parts.length === 1) return renderOg({ kind: "topic", title: "La loi, et ce qu’en disent les juges", label: "Jurisprudence · Cour de cassation" });
+  if (a === "jurisprudence" && parts.length === 1) return renderOg({ kind: "topic", title: "La loi, et ce qu’en disent les juges", label: "Jurisprudence · Cassation, Conseil d’État, Conseil constitutionnel" });
   if (a === "jurisprudence" && parts.length === 2) {
     const d = getDecision(b);
     return d ? renderOg({ kind: "topic", title: citation(d), label: `Jurisprudence · ${d.solution ?? d.juridiction}` }) : null;

@@ -8,8 +8,8 @@ import { JsonLd, breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = pageMetadata({
-  title: "Jurisprudence de la Cour de cassation expliquée",
-  description: "Les arrêts publiés de la Cour de cassation depuis 2017, reliés aux articles de loi qu’ils appliquent : droit du travail, bail, copropriété, consommation, construction.",
+  title: "Jurisprudence expliquée : Cour de cassation, Conseil d’État, Conseil constitutionnel",
+  description: "Les décisions de la Cour de cassation, du Conseil d’État, des cours administratives d’appel et du Conseil constitutionnel depuis 2017, reliées aux articles de loi qu’elles appliquent.",
   path: "/jurisprudence",
 });
 
@@ -28,6 +28,12 @@ export default function Jurisprudence() {
   const stats = db.prepare("SELECT COUNT(*) n, MIN(date) since FROM decisions").get() as { n: number; since: string | null };
   const linkedArticles = (db.prepare("SELECT COUNT(DISTINCT article_id) n FROM decision_articles").get() as { n: number }).n;
   const latest = db.prepare("SELECT id, juridiction, formation, date, numero, solution, sommaire FROM decisions WHERE formation = ? ORDER BY date DESC LIMIT 8");
+  // Other courts: grouped by court (published administrative decisions first).
+  const others = [
+    { key: "ce", title: "Conseil d’État", kicker: "Urbanisme, environnement, fonction publique", where: "juridiction LIKE 'Conseil d%tat'" },
+    { key: "caa", title: "Cours administratives d’appel", kicker: "Permis de construire, PLU, marchés publics", where: "juridiction LIKE 'CAA%'" },
+    { key: "cc", title: "Conseil constitutionnel", kicker: "Contrôle de la loi (DC) et QPC", where: "source = 'constit'" },
+  ].map((g) => ({ ...g, rows: db.prepare(`SELECT id, juridiction, formation, date, numero, solution, sommaire FROM decisions WHERE ${g.where} ORDER BY publie DESC, date DESC LIMIT 8`).all() as Pick<Decision, "id" | "juridiction" | "formation" | "date" | "numero" | "solution" | "sommaire">[] }));
 
   return (
     <>
@@ -42,7 +48,8 @@ export default function Jurisprudence() {
             La loi, <span className="font-serif font-normal tracking-[-0.02em] italic">et ce qu’en disent les juges.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-fg-2 sm:text-xl">
-            Les arrêts publiés de la Cour de cassation, reliés aux articles de loi qu’ils appliquent. Gratuit, sans inscription.
+            Les décisions de la Cour de cassation, du Conseil d’État, des cours administratives d’appel et du Conseil constitutionnel,
+            reliées aux articles de loi qu’elles appliquent. Gratuit, sans inscription.
           </p>
           <dl className="mt-10 grid max-w-xl grid-cols-2 border-t-2 border-fg">
             <div className="py-4 pr-4 sm:pr-8">
@@ -79,6 +86,25 @@ export default function Jurisprudence() {
           </section>
         );
       })}
+
+      {others.filter((g) => g.rows.length).map((g, i) => (
+        <section key={g.key} aria-labelledby={`ch-${g.key}`} className="pt-16 sm:pt-20">
+          <div className={container}>
+            <SectionHead num={String(CHAMBERS.length + i + 1).padStart(2, "0")} kicker={g.kicker} id={`ch-${g.key}`} title={g.title} />
+            <ul className="mt-8 border-t border-fg">
+              {g.rows.map((d) => (
+                <li key={d.id} className="border-b border-rule">
+                  <Link href={decisionUrl(d)} className="group grid gap-1 py-4 hover:bg-surface sm:grid-cols-[18rem_1fr_auto] sm:gap-6 sm:px-2">
+                    <span className="font-semibold">{citation(d)}</span>
+                    <span className="line-clamp-2 text-[0.9375rem] text-fg-2">{teaser(d.sommaire, 220) || d.solution || formationLabel(d.formation)}</span>
+                    <ArrowRight aria-hidden className="hidden size-5 transition group-hover:translate-x-1 sm:block motion-reduce:transition-none" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      ))}
 
       <section aria-labelledby="pro-title" className="py-16 sm:py-24">
         <div className={container}>

@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 
 const load = (id: string) => getDb().prepare("SELECT id, code, num FROM articles WHERE id = ?").get(id) as Pick<Article, "id" | "code" | "num"> | undefined;
 const codeName = (c: string) => (CODES[c as keyof typeof CODES]?.name ?? c).replace(/ \(.*\)$/, "");
-const CURSOR = /^\d{4}-\d{2}-\d{2}_JURITEXT\d+$/;
+const CURSOR = /^\d{4}-\d{2}-\d{2}_(?:JURI|CETA|CONS)TEXT\d+$/; // Cassation, administrative, constitutional ids
 
 export async function generateMetadata({ params, searchParams }: PageProps<"/article/[id]/jurisprudence">): Promise<Metadata> {
   const a = load((await params).id);
@@ -22,7 +22,7 @@ export async function generateMetadata({ params, searchParams }: PageProps<"/art
   const title = `Jurisprudence de l’article ${a.num} du ${codeName(a.code)}`;
   const meta = pageMetadata({
     title,
-    description: `${stats?.decisions ?? 0} décisions de la Cour de cassation appliquant l’article ${a.num} du ${codeName(a.code)}, des plus récentes aux plus anciennes, avec leur sommaire officiel.`,
+    description: `${stats?.decisions ?? 0} décisions de justice (Cour de cassation, Conseil d’État, cours administratives d’appel, Conseil constitutionnel) appliquant l’article ${a.num} du ${codeName(a.code)}, des plus récentes aux plus anciennes, avec leur sommaire officiel.`,
     path: `/article/${a.id}/jurisprudence`,
   });
   // One canonical list per article: following pages are browsable, not indexed.
@@ -54,7 +54,7 @@ export default async function ArticleJurisprudence({ params, searchParams }: Pag
       </h1>
       {stats && (
         <p className="mt-4 text-lg text-fg-2">
-          {stats.decisions} décision{stats.decisions > 1 ? "s" : ""} de la Cour de cassation
+          {stats.decisions} décision{stats.decisions > 1 ? "s" : ""} de justice
           {stats.first_date && stats.last_date && <> · {stats.first_date.slice(0, 4)}–{stats.last_date.slice(0, 4)}</>}
           {" · "}
           {Object.entries(stats.by_formation).sort((x, y) => y[1] - x[1]).slice(0, 3).map(([f, n]) => `${formationLabel(f)} ${n}`).join(", ")}
@@ -68,7 +68,7 @@ export default async function ArticleJurisprudence({ params, searchParams }: Pag
               <span className="flex flex-wrap items-baseline justify-between gap-2">
                 <span className="font-semibold">{citation(d)}</span>
                 <span className="font-mono text-xs uppercase text-fg-2">
-                  {formationLabel(d.formation)} · {d.solution}{d.publie === 1 && " · Bulletin"}
+                  {formationLabel(d.formation)} · {d.solution}{d.publie === 1 && " · Publié"}
                 </span>
               </span>
               {d.sommaire && <span className="line-clamp-3 max-w-[80ch] text-[0.9375rem] text-fg-2">{teaser(d.sommaire, 360)}</span>}

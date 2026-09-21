@@ -15,10 +15,12 @@ async function main() {
   if (!reportOnly) {
     G.syncCodes(db);
     const b = G.backfillArticles(db);
+    const merged = G.mergeRepublished(db);
+    if (merged) G.rebuildDecisionRelations(db);
     const pairs = G.buildCoCitations(db);
     const stats = G.buildArticleStats(db);
     G.buildTopics(db, getTopics());
-    console.log(`rebuilt in ${((Date.now() - t) / 1000).toFixed(1)} s · articles backfilled ${b.changed} · co-citation pairs ${pairs} · article stats ${stats}\n`);
+    console.log(`rebuilt in ${((Date.now() - t) / 1000).toFixed(1)} s · articles backfilled ${b.changed} · republished duplicates merged ${merged} · co-citation pairs ${pairs} · article stats ${stats}\n`);
   }
 
   const m = G.graphMetrics(db);

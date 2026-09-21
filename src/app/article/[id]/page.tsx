@@ -180,10 +180,10 @@ export default async function ArticlePage({ params }: PageProps<"/article/[id]">
           <header className="border-t-2 border-fg pt-5">
             <p className={`${label} text-fg-2`}>Jurisprudence</p>
             <h2 id="juri-title" className={`${display} mt-4 text-3xl leading-none sm:text-5xl`}>
-              Ce qu’en dit <span className="font-serif font-normal italic">la Cour de cassation</span>
+              Ce qu’en disent <span className="font-serif font-normal italic">les juges</span>
             </h2>
             <p className="mt-4 text-fg-2">
-              <strong className="text-fg">{juri.total} décision{juri.total > 1 ? "s" : ""}</strong> de la Cour de cassation référence{juri.total > 1 ? "nt" : ""} cet article
+              <strong className="text-fg">{juri.total} décision{juri.total > 1 ? "s" : ""} de justice</strong> référence{juri.total > 1 ? "nt" : ""} cet article
               {stats?.first_date && stats.last_date && stats.first_date.slice(0, 4) !== stats.last_date.slice(0, 4) && <> (de {stats.first_date.slice(0, 4)} à {stats.last_date.slice(0, 4)})</>}
               {juri.total > juri.rows.length && <> · les {juri.rows.length} plus récentes :</>}
             </p>
@@ -252,7 +252,7 @@ export default async function ArticlePage({ params }: PageProps<"/article/[id]">
             <h2 className={`${display} text-2xl leading-none sm:text-4xl`}>
               {caseLawCoCited.length > 0 ? <>Articles fréquemment cités avec l’article {a.num}</> : "Souvent cités avec cet article"}
             </h2>
-            {caseLawCoCited.length > 0 && <p className="mt-3 text-fg-2">Dans les mêmes décisions de la Cour de cassation.</p>}
+            {caseLawCoCited.length > 0 && <p className="mt-3 text-fg-2">Dans les mêmes décisions de justice.</p>}
             <ul className="mt-6 flex flex-wrap gap-2">
               {(caseLawCoCited.length > 0 ? caseLawCoCited : coCited).map((c) => (
                 <li key={c.id}>
