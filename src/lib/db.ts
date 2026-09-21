@@ -129,6 +129,11 @@ CREATE TABLE IF NOT EXISTS usage (
   created_at INTEGER NOT NULL DEFAULT (unixepoch())
 );
 CREATE INDEX IF NOT EXISTS usage_subject ON usage(subject, kind, created_at);
+-- Global anti-runaway cap: one row per UTC day, incremented before every live LLM call (src/lib/budget.ts).
+CREATE TABLE IF NOT EXISTS llm_budget (
+  day   TEXT PRIMARY KEY,                   -- YYYY-MM-DD (UTC): the counter resets at 00:00 UTC
+  calls INTEGER NOT NULL DEFAULT 0
+);
 -- Dossier wizard (src/lib/wizard.ts). JSON columns are written and read by wizard.ts only.
 CREATE TABLE IF NOT EXISTS dossiers (
   id           TEXT PRIMARY KEY,            -- random, unguessable

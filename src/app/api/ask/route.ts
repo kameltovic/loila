@@ -1,6 +1,7 @@
 import { ask, AskValidationError } from "@/lib/ask";
 import { clientIp, getIdentity, rateLimited, sameOrigin } from "@/lib/auth";
 import { consume, getMe } from "@/lib/billing";
+import { BudgetExceededError } from "@/lib/budget";
 import { getDb } from "@/lib/db";
 import { MissingApiKeyError } from "@/lib/openrouter";
 
@@ -53,7 +54,10 @@ export async function POST(request: Request) {
     return Response.json({ ...result, me: getMe(id) });
   } catch (e) {
     if (e instanceof AskValidationError) return Response.json({ error: e.message }, { status: 400 });
-    logQuestion(id.userId, body.question, theme, "error");
+    logQuestion(id.userId, body.question, theme, e instanceof BudgetExceededError ? "budget" : "error");
+    if (e instanceof BudgetExceededError) {
+      return Response.json({ error: "Le service a atteint sa limite de réponses pour aujourd'hui. Réessayez demain." }, { status: 503 });
+    }
     if (e instanceof MissingApiKeyError) {
       return Response.json({ error: "Le service de réponse est momentanément indisponible." }, { status: 503 });
     }

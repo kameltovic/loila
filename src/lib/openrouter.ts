@@ -1,3 +1,5 @@
+import { reserveLlmCall } from "./budget";
+
 export type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
 
 export class MissingApiKeyError extends Error {
@@ -8,13 +10,16 @@ export class MissingApiKeyError extends Error {
 
 export async function chat(
   messages: ChatMessage[],
-  { model = process.env.OPENROUTER_CHAT_MODEL, maxTokens = 700, json = false, temperature = 0.2, timeoutMs = 30_000, extra }:
+  { model = process.env.OPENROUTER_CHAT_MODEL, maxTokens = 700, json = false, temperature = 0.2, timeoutMs = 30_000, extra, budget = true }:
     // extra: raw OpenRouter body fields, e.g. { provider: { data_collection: "deny" }, reasoning: {...} }
-    { model?: string; maxTokens?: number; json?: boolean; temperature?: number; timeoutMs?: number; extra?: Record<string, unknown> } = {},
+    // budget: false for owner-run batch jobs; live requests keep the global daily cap (src/lib/budget.ts)
+    { model?: string; maxTokens?: number; json?: boolean; temperature?: number; timeoutMs?: number; extra?: Record<string, unknown>; budget?: boolean } = {},
 ): Promise<{ content: string; model: string; provider?: string; usage?: { prompt_tokens: number; completion_tokens: number; cost?: number } }> {
   const key = process.env.OPENROUTER_API_KEY;
   if (!key) throw new MissingApiKeyError();
   if (!model) throw new Error("No model: set OPENROUTER_CHAT_MODEL");
+  // Throws BudgetExceededError before any network call once the day's cap is reached.
+  if (budget) reserveLlmCall();
 
   const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
     method: "POST",

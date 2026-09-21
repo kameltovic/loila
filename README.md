@@ -55,6 +55,7 @@ Variables (`.env`) :
 | `OPENROUTER_API_KEY` | clé OpenRouter |
 | `OPENROUTER_CHAT_MODEL` | modèle économique pour les questions en direct |
 | `OPENROUTER_BATCH_MODEL` | modèle plus fort pour la FAQ (lancée une fois) |
+| `LLM_DAILY_BUDGET` | plafond global d'appels LLM **live** par jour UTC, toute la site confondue (défaut 500 ; `0` = illimité) |
 | `DATABASE_PATH` | chemin du fichier SQLite (défaut `./data/loila.db`) |
 
 ### Générer la FAQ
@@ -67,7 +68,11 @@ npm run batch:faq -- --force                      # régénère aussi les questi
 
 Les questions sont dans `seed/questions.json` (`theme`, `slug`, `emoji`, `question`, `hints`). Les `hints` aident la recherche : mots-clés, et numéros d'articles (`L1237-11`, `22`…) récupérés directement. Seuls les articles réellement cités par le modèle et présents en base sont enregistrés.
 
-`npm run check` lance la vérification des types, le self-check de la cascade celui de la facturation (`scripts/check-billing.ts`) et celui du wizard avec un faux LLM (`scripts/check-wizard.ts`).
+### Plafond global d'appels LLM
+
+`LLM_DAILY_BUDGET` borne le nombre d'appels LLM **live** par jour UTC (défaut 500, `0` = illimité), tous points d'entrée confondus (`/api/ask` et les dossiers). Le compteur est en base (`llm_budget`), incrémenté dans `openrouter.ts` **avant** l'appel réseau : une fois le plafond atteint, `/api/ask` continue de servir FAQ et cache mais renvoie 503 pour la génération, et les nouveaux dossiers sont refusés. Les jobs lancés par le propriétaire (`npm run batch:faq`, `scripts/wizard-proto.ts`) s'en exemptent (`budget: false`). C'est le filet anti-facture : même si tout le reste (comptes, en-têtes IP, bug) fuit, la dépense du jour reste bornée. À compléter par un plafond de crédit sur la clé directement dans OpenRouter.
+
+`npm run check` lance la vérification des types, le self-check de la cascade celui de la facturation (`scripts/check-billing.ts`), le plafond LLM (`scripts/check-budget.ts`) et celui du wizard avec un faux LLM (`scripts/check-wizard.ts`).
 
 ## Paiements
 

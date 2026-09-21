@@ -83,7 +83,7 @@ async function main() {
       { role: "system" as const, content: SYSTEM },
       { role: "user" as const, content: `Articles :\n\n${context}\n\nQuestion : ${s.question}` },
     ];
-    const { content } = await chat(messages, { model: process.env.OPENROUTER_BATCH_MODEL, maxTokens: 3000, json: true, timeoutMs: 240_000 });
+    const { content } = await chat(messages, { model: process.env.OPENROUTER_BATCH_MODEL, maxTokens: 3000, json: true, timeoutMs: 240_000, budget: false });
     // ponytail: chat() doesn't expose OpenRouter usage, so ~4 chars/token estimate.
     approxTokens += Math.round((messages.reduce((n, m) => n + m.content.length, 0) + content.length) / 4);
     const ans = parseAnswer(content);

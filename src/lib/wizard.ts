@@ -4,6 +4,7 @@ import { randomBytes } from "node:crypto";
 import { excerpt, normalize, retrieve, type AskArticle } from "./ask";
 import { rateLimited, type Identity } from "./auth";
 import { consume, getMe } from "./billing";
+import { BudgetExceededError } from "./budget";
 import { getDb, type Article } from "./db";
 import { chat, type ChatMessage } from "./openrouter";
 import { CODES, THEMES } from "./themes";
@@ -179,7 +180,9 @@ async function jsonStep<T>(calls: Call[], step: string, messages: ChatMessage[],
       const v = parseJson(content);
       if (v && typeof v === "object" && valid(v as Record<string, unknown>)) return v as T;
       calls[calls.length - 1].note = "invalid_json";
-    } catch {}
+    } catch (e) {
+      if (e instanceof BudgetExceededError) throw e; // daily cap reached: no point retrying
+    }
   }
   throw new WizardError(502, "L’analyse n’a pas abouti. Réessayez dans un instant.");
 }
@@ -339,7 +342,7 @@ export async function startDossier(id: Identity, storyInput: unknown): Promise<D
     return view(owned(id, dossierId));
   } catch (e) {
     update(dossierId, { status: "failed", calls: JSON.stringify(calls) });
-    if (e instanceof WizardError) throw e;
+    if (e instanceof WizardError || e instanceof BudgetExceededError) throw e;
     console.error("[wizard] start", e);
     throw new WizardError(502, "L’analyse n’a pas abouti. Réessayez dans un instant.");
   }
@@ -391,7 +394,7 @@ export async function synthesizeDossier(id: Identity, dossierId: unknown, answer
     return { dossier: view(owned(id, row.id)) };
   } catch (e) {
     update(row.id, { status: "answered", calls: JSON.stringify(calls) });
-    if (e instanceof WizardError) throw e;
+    if (e instanceof WizardError || e instanceof BudgetExceededError) throw e;
     console.error("[wizard] synthesis", e);
     throw new WizardError(502, "La synthèse n’a pas pu être rédigée. Aucune question n’a été décomptée : réessayez.");
   }
@@ -422,7 +425,7 @@ export async function followUp(id: Identity, dossierId: unknown, questionInput: 
     consume(id);
     return { dossier: view(owned(id, row.id)) };
   } catch (e) {
-    if (e instanceof WizardError) throw e;
+    if (e instanceof WizardError || e instanceof BudgetExceededError) throw e;
     console.error("[wizard] follow-up", e);
     throw new WizardError(502, "La réponse n’a pas pu être rédigée. Aucune question n’a été décomptée : réessayez.");
   }
@@ -453,6 +456,7 @@ export async function wizardRoute(request: Request, run: (id: Identity, body: Re
     return Response.json({ dossier: r.dossier, me: getMe(id) });
   } catch (e) {
     if (e instanceof WizardError) return Response.json({ error: e.message }, { status: e.status });
+    if (e instanceof BudgetExceededError) return Response.json({ error: "Le service a atteint sa limite de réponses pour aujourd'hui. Réessayez demain." }, { status: 503 });
     if (e instanceof MissingApiKeyError) return Response.json({ error: "Le service est momentanément indisponible." }, { status: 503 });
     console.error("[api/dossiers]", e);
     return Response.json({ error: "Une erreur est survenue, réessayez plus tard." }, { status: 500 });

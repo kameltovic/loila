@@ -31,7 +31,7 @@ async function llm(ctx: { arm: string; case: string }, step: string, m: Model, m
   if (spent > BUDGET * 0.95) throw new Error(`BUDGET: spent $${spent.toFixed(3)}`);
   const t = Date.now();
   const r = await chat(messages, {
-    model, json, maxTokens, temperature: 0, timeoutMs: 180_000,
+    model, json, maxTokens, temperature: 0, timeoutMs: 180_000, budget: false, // owner-run eval: its own $ BUDGET guard below
     // DeepSeek endpoints vary 10x in speed: favour throughput (Haiku/Gemini have first-party providers anyway).
     extra: { provider: { data_collection: "deny", ...(model.startsWith("deepseek/") ? { sort: "throughput" } : {}) }, usage: { include: true }, ...m.extra },
   });
