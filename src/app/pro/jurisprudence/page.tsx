@@ -34,7 +34,7 @@ export default async function ProJurisprudence() {
         ) : (
           <div className="grid gap-4 border-2 border-fg bg-surface p-6 sm:p-8">
             <p className="text-lg">L’assistant est réservé à l’offre Pro, en cours d’ouverture.</p>
-            <Link href="/tarifs#pro" className={`${btnPrimary} justify-self-start`}>
+            <Link href="/avocats#offre" className={`${btnPrimary} justify-self-start`}>
               Rejoindre la liste d’attente <ArrowRight aria-hidden className="size-4" />
             </Link>
           </div>

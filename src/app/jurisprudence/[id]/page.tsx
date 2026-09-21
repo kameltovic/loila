@@ -195,8 +195,8 @@ export default async function DecisionPage({ params }: PageProps<"/jurisprudence
               </h2>
               <p className="mt-4 max-w-2xl text-lg text-fg-2">Posez une question de droit : l’IA cherche dans les décisions et les codes, et répond en citant chaque arrêt et chaque article.</p>
             </div>
-            <Link href="/tarifs#pro" data-umami-event="juri-pro" className={`${btnPrimary} justify-self-start`}>
-              Rejoindre la liste d’attente <ArrowRight aria-hidden className="size-4" />
+            <Link href="/avocats" data-umami-event="juri-pro" className={`${btnPrimary} justify-self-start`}>
+              L’offre avocats <ArrowRight aria-hidden className="size-4" />
             </Link>
           </div>
         </div>

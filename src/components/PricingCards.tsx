@@ -3,7 +3,7 @@
 import { useId, useState } from "react";
 import Link from "next/link";
 import { AlertTriangle, ArrowRight, Check, Clock, Loader2 } from "lucide-react";
-import { OFFERS, formatPrice } from "@/lib/plans";
+import { AVOCATS_AUDIENCE, AVOCATS_FEATURES, OFFERS, formatPrice } from "@/lib/plans";
 import { btnPrimary, label } from "@/components/ui";
 import { postJson } from "@/components/AccountMenu";
 
@@ -109,7 +109,14 @@ function DossierCard({ compact }: { compact: boolean }) {
   );
 }
 
-function ProCard() {
+
+/** A waitlist offer card (Pro, Avocats): the form posts to /api/pro-waitlist with the métier prefilled. */
+export function WaitlistCard({
+  id, name, price, tagline, audience, included, soon, metierPlaceholder, defaultMetier, href,
+}: {
+  id: string; name: string; price: React.ReactNode; tagline: string; audience: string; included: string[]; soon: string[];
+  metierPlaceholder: string; defaultMetier?: string; href?: string;
+}) {
   const [open, setOpen] = useState(false);
   const [state, setState] = useState<"idle" | "loading" | "done">("idle");
   const [message, setMessage] = useState("");
@@ -134,23 +141,22 @@ function ProCard() {
 
   const field = "min-h-11 w-full border-2 border-fg bg-surface px-3 text-base text-fg placeholder:text-fg-2 focus:outline-2 focus:outline-offset-2 focus:outline-fg";
   return (
-    <li id="pro" className="relative flex scroll-mt-24 flex-col border-2 border-fg bg-bg p-6 sm:p-8">
+    <li id={id} className="relative flex scroll-mt-24 flex-col border-2 border-fg bg-bg p-6 sm:p-8">
       <span className={`${label} absolute -top-3.5 left-5 flex items-center gap-1.5 border-2 border-fg bg-bg px-2 py-0.5`}>
         <Clock aria-hidden strokeWidth={2.25} className="size-3.5" /> Bientôt
       </span>
-      <h3 className={`${label} text-fg-2`}>{PRO.name}</h3>
-      <p className="mt-3 flex flex-wrap items-baseline gap-x-2">
-        <span className="font-display text-6xl font-extrabold tracking-[-0.04em]">{formatPrice(PRO.priceCents)}</span>
-        <span className="text-fg-2">{PRO.taxLabel} / mois</span>
-      </p>
-      <p className="mt-2 font-serif text-xl italic">{PRO.tagline}</p>
-      <p className="mt-2 text-sm text-fg-2">{PRO_AUDIENCE}</p>
+      <h3 className={`${label} text-fg-2`}>{name}</h3>
+      <div className="mt-3">{price}</div>
+      <p className="mt-2 font-serif text-xl italic">{tagline}</p>
+      <p className="mt-2 text-sm text-fg-2">{audience}</p>
       <ul className="mt-5 space-y-2 border-t border-rule pt-5 text-[0.9375rem]">
-        <li className="flex items-start gap-2">
-          <Check aria-hidden strokeWidth={2.25} className="mt-0.5 size-4 shrink-0 text-focus" />
-          {PRO.monthlyQuota} questions par mois (usage raisonnable)
-        </li>
-        {PRO_SOON.map((f) => (
+        {included.map((f) => (
+          <li key={f} className="flex items-start gap-2">
+            <Check aria-hidden strokeWidth={2.25} className="mt-0.5 size-4 shrink-0 text-focus" />
+            {f}
+          </li>
+        ))}
+        {soon.map((f) => (
           <li key={f} className="flex items-start gap-2 text-fg-2">
             <Clock aria-hidden strokeWidth={2} className="mt-0.5 size-4 shrink-0" />
             <span>
@@ -159,6 +165,11 @@ function ProCard() {
           </li>
         ))}
       </ul>
+      {href && (
+        <Link href={href} className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold underline decoration-signal decoration-2 underline-offset-4">
+          Tout savoir sur cette offre <ArrowRight aria-hidden className="size-4" />
+        </Link>
+      )}
       <div className="mt-auto pt-7">
         {state === "done" ? (
           <p role="status" className="border-2 border-fg bg-urbanisme px-4 py-3 text-ink">
@@ -173,7 +184,7 @@ function ProCard() {
             <label htmlFor={metierId} className="block text-sm font-semibold">
               Votre métier <span className="font-normal text-fg-2">(facultatif)</span>
             </label>
-            <input id={metierId} name="metier" type="text" maxLength={120} placeholder="Syndic bénévole, artisan…" className={field} />
+            <input id={metierId} name="metier" type="text" maxLength={120} defaultValue={defaultMetier} placeholder={metierPlaceholder} className={field} />
             <button type="submit" disabled={state === "loading"} className={`${btnPrimary} w-full disabled:opacity-60`}>
               {state === "loading" ? <Loader2 aria-hidden className="size-4 animate-spin" /> : <ArrowRight aria-hidden className="size-4" />}
               M’inscrire
@@ -190,11 +201,46 @@ function ProCard() {
   );
 }
 
+const ProCard = () => (
+  <WaitlistCard
+    id="pro"
+    name={PRO.name}
+    price={
+      <p className="flex flex-wrap items-baseline gap-x-2">
+        <span className="font-display text-6xl font-extrabold tracking-[-0.04em]">{formatPrice(PRO.priceCents)}</span>
+        <span className="text-fg-2">{PRO.taxLabel} / mois</span>
+      </p>
+    }
+    tagline={PRO.tagline}
+    audience={PRO_AUDIENCE}
+    included={[`${PRO.monthlyQuota} questions par mois (usage raisonnable)`]}
+    soon={PRO_SOON}
+    metierPlaceholder="Syndic bénévole, artisan…"
+  />
+);
+
+// ponytail: no price yet (business decision pending): "tarif de lancement" for waitlist members.
+export const AvocatsCard = () => (
+  <WaitlistCard
+    id="avocats"
+    name="Avocats"
+    price={<p className="font-display text-4xl font-extrabold tracking-[-0.04em]">Tarif de lancement</p>}
+    tagline="La jurisprudence, avec une IA qui cite ses sources."
+    audience={`${AVOCATS_AUDIENCE} Prix réservé aux inscrits de la liste d’attente.`}
+    included={[]}
+    soon={AVOCATS_FEATURES}
+    metierPlaceholder="Avocat, juriste…"
+    defaultMetier="Avocat"
+    href="/avocats"
+  />
+);
+
 /** Full grid on /tarifs (Dossier + Pro waitlist); `compact` (paywall) shows the Dossier only. */
 export default function PricingCards({ compact = false }: { compact?: boolean }) {
   return (
-    <ul className={`grid gap-6 ${compact ? "" : "md:grid-cols-2 md:gap-8"}`}>
+    <ul className={`grid gap-6 ${compact ? "" : "md:grid-cols-2 md:gap-8 xl:grid-cols-3"}`}>
       <DossierCard compact={compact} />
+      {!compact && <AvocatsCard />}
       {!compact && <ProCard />}
     </ul>
   );

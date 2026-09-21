@@ -24,6 +24,7 @@ export default function Footer() {
       title: "Loilà",
       links: [
         { href: "/pour", label: "Pour les pros" },
+        { href: "/avocats", label: "Avocats et juristes" },
         { href: "/a-propos", label: "À propos" },
         { href: "/tarifs", label: "Tarifs" },
         { href: "/cgv", label: "CGV" },

@@ -90,8 +90,8 @@ export default function Jurisprudence() {
               </h2>
               <p className="mt-4 max-w-2xl text-lg text-fg-2">Une question de droit, une réponse qui cite chaque arrêt et chaque article, vérifiable en un clic.</p>
             </div>
-            <Link href="/pro/jurisprudence" data-umami-event="juri-pro-hub" className={`${btnPrimary} justify-self-start`}>
-              Découvrir l’assistant <ArrowRight aria-hidden className="size-4" />
+            <Link href="/avocats" data-umami-event="juri-pro-hub" className={`${btnPrimary} justify-self-start`}>
+              L’offre avocats <ArrowRight aria-hidden className="size-4" />
             </Link>
           </div>
         </div>

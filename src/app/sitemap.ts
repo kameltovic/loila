@@ -42,6 +42,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url("/modeles-lettres", 0.8),
     url("/relance-amiable", 0.9),
     url("/jurisprudence", 0.8, "daily"),
+    url("/avocats", 0.8, "weekly"),
     ...decisions.map((d) => ({ ...url(`/jurisprudence/${d.id}`, 0.5, "monthly"), lastModified: new Date(d.date) })),
     ...getLettres().map((l) => url(lettreUrl(l), 0.9)),
     ...getTopics().map((t) => url(`/sujets/${t.slug}`, 0.8)),

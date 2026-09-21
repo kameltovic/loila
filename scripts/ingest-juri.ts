@@ -11,6 +11,8 @@
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
+import { Readable } from "node:stream";
+import { pipeline } from "node:stream/promises";
 
 try { process.loadEnvFile(); } catch { /* no .env */ }
 
@@ -128,8 +130,10 @@ async function main() {
   if (!fs.existsSync(archive)) {
     console.log(`Downloading ${archiveUrl}…`);
     const res = await fetch(archiveUrl);
-    if (!res.ok) throw new Error(`DILA ${res.status}`);
-    fs.writeFileSync(archive, Buffer.from(await res.arrayBuffer()));
+    if (!res.ok || !res.body) throw new Error(`DILA ${res.status}`);
+    // Streamed to disk (JADE is 1.2 GB): never held in memory; ".part" until complete, so a crash can't leave a truncated archive.
+    await pipeline(Readable.fromWeb(res.body as import("node:stream/web").ReadableStream), fs.createWriteStream(`${archive}.part`));
+    fs.renameSync(`${archive}.part`, archive);
   }
   if (!fs.existsSync(out)) {
     fs.mkdirSync(out);
