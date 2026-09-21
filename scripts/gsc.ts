@@ -1,4 +1,5 @@
 // Google Search Console stats in the terminal (same data as /admin/seo). Auth: see src/lib/gsc.ts.
+export {}; // module scope: every script declares its own main()
 //   npx tsx scripts/gsc.ts --sites                         list the properties the account can read
 //   npx tsx scripts/gsc.ts [--dims page|query|date|page,query] [--days 28] [--page /article/] [--query préavis] [--limit 25]
 // Data lags ~2 days behind today.

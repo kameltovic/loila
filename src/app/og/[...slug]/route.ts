@@ -4,6 +4,7 @@ import { CODES, THEMES } from "@/lib/themes";
 import { getTopic } from "@/lib/topics";
 import { getMetier } from "@/lib/metiers";
 import { getLettre } from "@/lib/lettres";
+import { citation, getDecision } from "@/lib/decisions";
 import { conventionHeading, getConvention } from "@/lib/conventions";
 
 // Share images live at /og/<page path>.png (home: /og/index.png). A real .png extension:
@@ -40,6 +41,11 @@ function image(parts: string[]) {
   if (a === "pour" && parts.length === 2) {
     const m = getMetier(b);
     return m ? renderOg({ kind: "topic", title: `${m.h1} ${m.h1Accent}`, label: `Pour les pros · ${m.title}`, theme: m.theme }) : null;
+  }
+  if (a === "jurisprudence" && parts.length === 1) return renderOg({ kind: "topic", title: "La loi, et ce qu’en disent les juges", label: "Jurisprudence · Cour de cassation" });
+  if (a === "jurisprudence" && parts.length === 2) {
+    const d = getDecision(b);
+    return d ? renderOg({ kind: "topic", title: citation(d), label: `Jurisprudence · ${d.solution ?? d.juridiction}` }) : null;
   }
   if (a === "relance-amiable" && parts.length === 1) return renderOg({ kind: "topic", title: "Un impayé ? Relancez d’abord à l’amiable", label: "Relances et mise en demeure · Modèles gratuits" });
   if (a === "modeles-lettres" && parts.length === 1) return renderOg({ kind: "topic", title: "La bonne lettre, avec le bon article", label: "Modèles de lettres gratuits" });

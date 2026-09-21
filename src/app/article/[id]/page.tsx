@@ -9,6 +9,7 @@ import { LettreCards } from "@/components/Lettres";
 import { articleSummary, coCitedArticles, linkRefs } from "@/lib/articles";
 import { lettresForArticle } from "@/lib/lettres";
 import { getTopic } from "@/lib/topics";
+import { articleNeighbors, articleStats, citation, coCitedByCaseLaw, decisionUrl, decisionsForArticle, teaser } from "@/lib/decisions";
 import { JsonLd, abs, breadcrumbJsonLd, clip, pageMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
@@ -36,7 +37,8 @@ export async function generateMetadata({ params }: PageProps<"/article/[id]">): 
   const description = articleSummary(a)?.summary ?? `${first} Texte officiel en vigueur et explications simples.`;
   const meta = pageMetadata({ title, description: clip(description), path: `/article/${a.id}`, type: "article" });
   // Only articles cited by an answer or a letter are worth indexing; the other ~100k are raw legal text (thin pages).
-  const indexable = citedBy(a.id).length > 0 || lettresForArticle(a.id).length > 0;
+  const indexable =
+    citedBy(a.id).length > 0 || lettresForArticle(a.id).length > 0 || (!!articleSummary(a) && decisionsForArticle(a.id, 1).total > 0);
   return { ...meta, title: title.length > 52 ? { absolute: title } : title, ...(indexable ? {} : { robots: { index: false, follow: true } }) };
 }
 
@@ -49,6 +51,13 @@ export default async function ArticlePage({ params }: PageProps<"/article/[id]">
   const lettres = lettresForArticle(a.id);
   const topics = [...new Set(related.map((f) => f.topic).filter((t): t is string => !!t))].map(getTopic).filter((t) => !!t);
   const coCited = coCitedArticles(a.id);
+  const juri = decisionsForArticle(a.id);
+  const stats = juri.total ? articleStats(a.id) : undefined;
+  // Case-law co-citation graph first (deterministic, scored); the FAQ-based neighbours only when case law has none.
+  const caseLawCoCited = coCitedByCaseLaw(a.id);
+  const { prev, next } = articleNeighbors(a.id);
+  const ownTheme = THEMES.find((t) => (t.codes as readonly string[]).includes(a.code));
+  const askHref = ownTheme ? `/${ownTheme.slug}#question` : "/#question";
   const code = CODES[a.code as keyof typeof CODES];
   // Summary block colour: the theme owning this code (Code civil etc. fall back to the logement yellow).
   const themeSlug = THEMES.find((t) => (t.codes as readonly string[]).includes(a.code))?.slug ?? "logement";
@@ -154,8 +163,56 @@ export default async function ArticlePage({ params }: PageProps<"/article/[id]">
             Voir sur Légifrance <ArrowUpRight aria-hidden strokeWidth={1.75} size={16} />
             <span className="sr-only">(nouvel onglet)</span>
           </a>
+          <Link href={askHref} className="flex items-center gap-1.5 font-semibold underline decoration-signal decoration-2 underline-offset-4">
+            Poser une question à Loilà <ArrowRight aria-hidden className="size-4" />
+          </Link>
+          {(prev || next) && (
+            <nav aria-label="Articles voisins" className="flex justify-between gap-3 border-t-2 border-fg pt-4 font-mono text-sm">
+              {prev ? <Link href={`/article/${prev.id}`} rel="prev" className="hover:underline">← Art. {prev.num}</Link> : <span />}
+              {next && <Link href={`/article/${next.id}`} rel="next" className="hover:underline">Art. {next.num} →</Link>}
+            </nav>
+          )}
         </aside>
       </article>
+
+      {juri.rows.length > 0 && (
+        <section aria-labelledby="juri-title" className={`${container} pb-16 sm:pb-20`}>
+          <header className="border-t-2 border-fg pt-5">
+            <p className={`${label} text-fg-2`}>Jurisprudence</p>
+            <h2 id="juri-title" className={`${display} mt-4 text-3xl leading-none sm:text-5xl`}>
+              Ce qu’en dit <span className="font-serif font-normal italic">la Cour de cassation</span>
+            </h2>
+            <p className="mt-4 text-fg-2">
+              <strong className="text-fg">{juri.total} décision{juri.total > 1 ? "s" : ""}</strong> de la Cour de cassation référence{juri.total > 1 ? "nt" : ""} cet article
+              {stats?.first_date && stats.last_date && stats.first_date.slice(0, 4) !== stats.last_date.slice(0, 4) && <> (de {stats.first_date.slice(0, 4)} à {stats.last_date.slice(0, 4)})</>}
+              {juri.total > juri.rows.length && <> · les {juri.rows.length} plus récentes :</>}
+            </p>
+          </header>
+          <ul className="mt-8 grid gap-4 md:grid-cols-2">
+            {juri.rows.map((d) => (
+              <li key={d.id}>
+                <Link href={decisionUrl(d)} className="group flex h-full flex-col border-2 border-fg bg-surface p-5 transition-[transform,box-shadow] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-hard-sm shadow-hard motion-reduce:transition-none">
+                  <span className="flex flex-wrap items-baseline justify-between gap-2">
+                    <span className="font-semibold">{citation(d)}</span>
+                    {d.solution && <span className="font-mono text-xs uppercase text-fg-2">{d.solution}</span>}
+                  </span>
+                  {d.sommaire && <span className="mt-3 line-clamp-4 text-[0.9375rem] text-fg-2">{teaser(d.sommaire)}</span>}
+                  <span className="mt-auto flex items-center gap-1.5 pt-4 font-mono text-xs font-bold uppercase">
+                    Lire la décision <ArrowRight aria-hidden className="size-4 transition group-hover:translate-x-1 motion-reduce:transition-none" />
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+          {juri.total > juri.rows.length && (
+            <p className="mt-6">
+              <Link href={`/article/${a.id}/jurisprudence`} className="inline-flex items-center gap-1.5 font-semibold underline decoration-signal decoration-2 underline-offset-4">
+                Voir toute la jurisprudence ({juri.total} décisions) <ArrowRight aria-hidden className="size-4" />
+              </Link>
+            </p>
+          )}
+        </section>
+      )}
 
       <section aria-labelledby="related-title" className={`${container} pb-20 sm:pb-28`}>
         <header className="border-t-2 border-fg pt-5">
@@ -190,11 +247,14 @@ export default async function ArticlePage({ params }: PageProps<"/article/[id]">
           </div>
         )}
 
-        {coCited.length > 0 && (
+        {(caseLawCoCited.length > 0 || coCited.length > 0) && (
           <div className="mt-16">
-            <h2 className={`${display} text-2xl leading-none sm:text-4xl`}>Souvent cités avec cet article</h2>
+            <h2 className={`${display} text-2xl leading-none sm:text-4xl`}>
+              {caseLawCoCited.length > 0 ? <>Articles fréquemment cités avec l’article {a.num}</> : "Souvent cités avec cet article"}
+            </h2>
+            {caseLawCoCited.length > 0 && <p className="mt-3 text-fg-2">Dans les mêmes décisions de la Cour de cassation.</p>}
             <ul className="mt-6 flex flex-wrap gap-2">
-              {coCited.map((c) => (
+              {(caseLawCoCited.length > 0 ? caseLawCoCited : coCited).map((c) => (
                 <li key={c.id}>
                   <Link href={`/article/${c.id}`} className="inline-flex items-center gap-1 rounded-full border-[1.5px] border-fg px-3 py-1 font-mono text-sm font-semibold hover:bg-fg hover:text-bg">
                     Art. {c.num} · {(CODES[c.code as keyof typeof CODES]?.name ?? c.code).replace(/ \(.*\)$/, "")}

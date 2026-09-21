@@ -56,6 +56,8 @@ export function llmsTxt() {
     out.push("\n## Modèles de lettres\n", `- [Relance amiable d'un impayé](${SITE_URL}/relance-amiable) : modèles de relance et de mise en demeure, étapes jusqu'au juge.`);
     for (const l of lettres) out.push(`- [${l.title}](${SITE_URL}${lettreUrl(l)}) : ${l.seo.description}`);
   }
+  const decisions = (getDb().prepare("SELECT COUNT(*) n FROM decisions").get() as { n: number }).n;
+  if (decisions) out.push("\n## Jurisprudence\n", `- [Jurisprudence de la Cour de cassation](${SITE_URL}/jurisprudence) : ${decisions} arrêts publiés depuis 2017, reliés aux articles qu'ils appliquent, avec un résumé en clair. Chaque page /jurisprudence/<id> reprend le sommaire officiel et le texte intégral (pseudonymisé).`);
   const conventions = getConventions();
   if (conventions.length) {
     out.push("\n## Conventions collectives (par branche)\n");

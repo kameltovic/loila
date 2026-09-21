@@ -15,6 +15,7 @@ export default function Footer() {
         { href: "/#comment-ca-marche", label: "Comment ça marche" },
         { href: "/modeles-lettres", label: "Modèles de lettres" },
         { href: "/relance-amiable", label: "Relancer un impayé" },
+        { href: "/jurisprudence", label: "Jurisprudence" },
         { href: "https://www.legifrance.gouv.fr", label: "Sources officielles (Légifrance)" },
         { href: "https://echanges.dila.gouv.fr/OPENDATA/", label: "Données ouvertes DILA" },
       ],

@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { createHash } from "node:crypto";
 import { gunzipSync } from "node:zlib";
+import { rebuildGraph } from "./legal-graph";
 
 const DB_PATH = process.env.DATABASE_PATH ?? path.join(process.cwd(), "data", "loila.db");
 
@@ -186,6 +187,168 @@ CREATE TABLE IF NOT EXISTS contact_messages (
   created_at INTEGER NOT NULL DEFAULT (unixepoch())
 );
 
+-- Case law (scripts/ingest-juri.ts, DILA open data), linked to the articles each decision cites.
+CREATE TABLE IF NOT EXISTS decisions (
+  id          TEXT PRIMARY KEY,             -- JURITEXT… (Légifrance id)
+  source      TEXT NOT NULL,                -- 'cass' (Cour de cassation, published)…
+  juridiction TEXT NOT NULL,
+  formation   TEXT,                         -- e.g. CHAMBRE_SOCIALE
+  date        TEXT NOT NULL,                -- YYYY-MM-DD
+  numero      TEXT,                         -- case number, e.g. 23-20428
+  solution    TEXT,                         -- Cassation, Rejet…
+  titre       TEXT NOT NULL,
+  ecli        TEXT,
+  publie      INTEGER NOT NULL DEFAULT 0,   -- published in the Bulletin
+  sommaire    TEXT,                         -- official abstract (may be empty)
+  texte       TEXT NOT NULL,
+  url         TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS decision_articles (
+  decision_id TEXT NOT NULL,
+  article_id  TEXT NOT NULL,
+  PRIMARY KEY (decision_id, article_id)
+);
+CREATE INDEX IF NOT EXISTS decision_articles_article ON decision_articles(article_id);
+CREATE VIRTUAL TABLE IF NOT EXISTS decisions_fts USING fts5(
+  titre, sommaire, texte, content='decisions', content_rowid='rowid',
+  tokenize='unicode61 remove_diacritics 2'
+);
+CREATE TRIGGER IF NOT EXISTS decisions_ai AFTER INSERT ON decisions BEGIN
+  INSERT INTO decisions_fts(rowid, titre, sommaire, texte) VALUES (new.rowid, new.titre, new.sommaire, new.texte);
+END;
+CREATE TRIGGER IF NOT EXISTS decisions_ad AFTER DELETE ON decisions BEGIN
+  INSERT INTO decisions_fts(decisions_fts, rowid, titre, sommaire, texte) VALUES ('delete', old.rowid, old.titre, old.sommaire, old.texte);
+END;
+CREATE TRIGGER IF NOT EXISTS decisions_au AFTER UPDATE ON decisions BEGIN
+  INSERT INTO decisions_fts(decisions_fts, rowid, titre, sommaire, texte) VALUES ('delete', old.rowid, old.titre, old.sommaire, old.texte);
+  INSERT INTO decisions_fts(rowid, titre, sommaire, texte) VALUES (new.rowid, new.titre, new.sommaire, new.texte);
+END;
+-- Plain-language summaries of decisions (scripts/batch-decisions.ts). A decision page is indexable only with one.
+CREATE TABLE IF NOT EXISTS decision_summaries (
+  decision_id TEXT PRIMARY KEY,
+  summary     TEXT NOT NULL,
+  points      TEXT NOT NULL,                -- JSON array
+  model       TEXT,
+  created_at  INTEGER NOT NULL DEFAULT (unixepoch())
+);
+
+-- ===== Legal knowledge graph (src/lib/legal-graph.ts). Relations are explicit rows, each with its provenance. =====
+-- Codes and texts (ARTICLE_BELONGS_TO_CODE = articles.code → legal_codes.id). Synced from themes.ts CODES.
+CREATE TABLE IF NOT EXISTS legal_codes (
+  id          TEXT PRIMARY KEY,             -- slug, e.g. 'code-civil'
+  name        TEXT NOT NULL,
+  kind        TEXT NOT NULL,                -- code | loi | decret | convention
+  official_id TEXT,                         -- LEGITEXT… / JORFTEXT… / KALICONT…
+  source      TEXT NOT NULL                 -- dataset: LEGI | KALI
+);
+-- Where every imported row comes from. Several rows per entity when several sources carry it (dedup keeps them all).
+CREATE TABLE IF NOT EXISTS provenance (
+  entity_type       TEXT NOT NULL,          -- article | decision | code
+  entity_id         TEXT NOT NULL,
+  dataset           TEXT NOT NULL,          -- LEGI | KALI | CASS | CAPP | INCA | JADE | CONSTIT
+  source            TEXT NOT NULL,          -- publisher: 'DILA'
+  origin_url        TEXT NOT NULL,          -- archive or file URL actually fetched
+  origin_ref        TEXT,                   -- path inside the archive / official id
+  mirror            INTEGER NOT NULL DEFAULT 0, -- 1: fetched from a non-official mirror (tricoteuses.fr)
+  raw_checksum      TEXT,                   -- sha256 of the raw source file (NULL: not recorded, legacy import)
+  extractor         TEXT NOT NULL,          -- script
+  extractor_version TEXT NOT NULL,
+  imported_at       INTEGER NOT NULL DEFAULT (unixepoch()),
+  verified_at       INTEGER NOT NULL DEFAULT (unixepoch()),
+  PRIMARY KEY (entity_type, entity_id, dataset, origin_url)
+);
+-- DECISION_CITES_ARTICLE, every detected reference (resolved or not). decision_articles is its projection:
+-- status = 'resolved' AND confidence >= 0.9 (rebuilt by the extractor).
+CREATE TABLE IF NOT EXISTS citations (
+  id                INTEGER PRIMARY KEY,
+  decision_id       TEXT NOT NULL,
+  article_id        TEXT,                   -- set only when status = 'resolved'
+  code_id           TEXT,
+  num               TEXT NOT NULL,          -- normalized number
+  reference_raw     TEXT NOT NULL,
+  location          TEXT NOT NULL,          -- sommaire | textes_appliques | visa | moyen | motifs | dispositif | texte
+  context           TEXT,
+  status            TEXT NOT NULL,          -- resolved | unknown_article | historical | versioned | no_code
+  match_method      TEXT NOT NULL,
+  confidence        REAL NOT NULL,
+  extractor_version TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS citations_decision ON citations(decision_id);
+CREATE INDEX IF NOT EXISTS citations_article ON citations(article_id) WHERE article_id IS NOT NULL;
+CREATE INDEX IF NOT EXISTS citations_status ON citations(status, code_id);
+-- Case numbers (a decision can join several pourvois): search by number and SAME_CASE relations.
+CREATE TABLE IF NOT EXISTS decision_numbers (
+  decision_id TEXT NOT NULL,
+  numero      TEXT NOT NULL,                -- normalized: digits and dashes, e.g. 23-20428
+  PRIMARY KEY (decision_id, numero)
+);
+CREATE INDEX IF NOT EXISTS decision_numbers_numero ON decision_numbers(numero);
+-- DECISION_RELATED_DECISION, only what the data states (citation of a decision, same case, decision under appeal).
+-- to_id NULL: target not (yet) in Loilà, kept with its raw reference so a later import can resolve it.
+CREATE TABLE IF NOT EXISTS decision_relations (
+  from_id           TEXT NOT NULL,
+  kind              TEXT NOT NULL,          -- cites | same_case | appeal_from | (later: similar)
+  target_ref        TEXT NOT NULL,          -- raw reference or external key (pourvoi number, "CA Paris 2023-01-18")
+  to_id             TEXT,
+  method            TEXT NOT NULL,
+  confidence        REAL NOT NULL,
+  extractor_version TEXT NOT NULL,
+  PRIMARY KEY (from_id, kind, target_ref)
+);
+CREATE INDEX IF NOT EXISTS decision_relations_to ON decision_relations(to_id) WHERE to_id IS NOT NULL;
+-- ARTICLE_RELATED_ARTICLE, both directions stored so "related to X by score" is one indexed range scan.
+CREATE TABLE IF NOT EXISTS article_relations (
+  a_id         TEXT NOT NULL,
+  b_id         TEXT NOT NULL,
+  kind         TEXT NOT NULL,               -- co_citation
+  shared       INTEGER NOT NULL,            -- decisions citing both
+  first_date   TEXT,
+  last_date    TEXT,
+  juridictions TEXT,                        -- JSON {juridiction: shared count}, descriptive
+  score        REAL NOT NULL,
+  metric       TEXT NOT NULL,
+  computed_at  INTEGER NOT NULL DEFAULT (unixepoch()),
+  PRIMARY KEY (a_id, b_id, kind)
+);
+CREATE INDEX IF NOT EXISTS article_relations_rank ON article_relations(a_id, kind, score DESC);
+-- ARTICLE_VERSION_OF (prepared: the LEGI import keeps only the version in force today).
+CREATE TABLE IF NOT EXISTS article_versions (
+  version_id  TEXT PRIMARY KEY,             -- LEGIARTI of the version
+  article_cid TEXT NOT NULL,                -- stable common id across versions
+  article_id  TEXT,                         -- current version in articles, when known
+  date_debut  TEXT,
+  date_fin    TEXT,
+  etat        TEXT
+);
+-- Precomputed per-article case-law statistics (recomputed by legal-graph.ts).
+CREATE TABLE IF NOT EXISTS article_stats (
+  article_id     TEXT PRIMARY KEY,
+  decisions      INTEGER NOT NULL,
+  first_date     TEXT,
+  last_date      TEXT,
+  by_year        TEXT NOT NULL,             -- JSON {year: n}
+  by_juridiction TEXT NOT NULL,             -- JSON
+  by_formation   TEXT NOT NULL,             -- JSON
+  computed_at    INTEGER NOT NULL DEFAULT (unixepoch())
+);
+-- LEGAL_TOPIC (prepared; filled deterministically from the editorial topics, no AI).
+CREATE TABLE IF NOT EXISTS legal_topics (
+  id     TEXT PRIMARY KEY,                  -- slug
+  label  TEXT NOT NULL,
+  source TEXT NOT NULL                      -- 'loila:topics' (seed/topics.json)
+);
+CREATE TABLE IF NOT EXISTS topic_articles (
+  topic_id   TEXT NOT NULL,
+  article_id TEXT NOT NULL,
+  method     TEXT NOT NULL,                 -- 'faq_citation': an answer of the topic cites the article
+  PRIMARY KEY (topic_id, article_id)
+);
+-- Graph size over time (npm run legal-graph).
+CREATE TABLE IF NOT EXISTS graph_snapshots (
+  taken_at INTEGER PRIMARY KEY,
+  metrics  TEXT NOT NULL                    -- JSON
+);
+
 -- Plain-language "En clair" summaries of article pages (scripts/batch-articles.ts, shipped in content bundles).
 CREATE TABLE IF NOT EXISTS article_summaries (
   article_id TEXT PRIMARY KEY,              -- articles.id
@@ -225,6 +388,17 @@ export function getDb() {
     purgeExpired(db);
     // Daily, for the long-running server (retention periods published in /mentions-legales).
     setInterval(() => purgeExpired(db!), 86_400_000).unref();
+    // Legal graph columns on tables created before them (additive, nullable).
+    const addCols = (table: string, cols: [string, string][]) => {
+      const have = new Set((db!.prepare(`PRAGMA table_info(${table})`).all() as { name: string }[]).map((c) => c.name));
+      for (const [name, def] of cols) if (!have.has(name)) db!.exec(`ALTER TABLE ${table} ADD COLUMN ${name} ${def}`);
+    };
+    addCols("articles", [["num_norm", "TEXT"], ["etat", "TEXT"], ["date_fin", "TEXT"], ["checksum", "TEXT"], ["source", "TEXT"]]);
+    // liens / attaquee_*: raw fields kept so the whole graph can be re-extracted from the DB alone (production).
+    addCols("decisions", [["checksum", "TEXT"], ["extractor_version", "TEXT"], ["liens", "TEXT"], ["attaquee_juridiction", "TEXT"], ["attaquee_date", "TEXT"]]);
+    db.exec("CREATE INDEX IF NOT EXISTS articles_code_num_norm ON articles(code, num_norm)");
+    db.exec("CREATE INDEX IF NOT EXISTS decisions_date ON decisions(date)");
+    db.exec("CREATE INDEX IF NOT EXISTS decisions_ecli ON decisions(ecli) WHERE ecli IS NOT NULL AND ecli <> ''");
     // Migration for DBs created before credit batches existed.
     const usageCols = db.prepare("PRAGMA table_info(usage)").all() as { name: string }[];
     if (!usageCols.some((c) => c.name === "batch_id")) db.exec("ALTER TABLE usage ADD COLUMN batch_id INTEGER");
@@ -244,7 +418,9 @@ export function importContent(d: Database.Database, dir = path.join(process.cwd(
       const sha = createHash("sha256").update(buf).digest("hex");
       const done = d.prepare("SELECT sha FROM content_imports WHERE name = ?").get(file) as { sha: string } | undefined;
       if (done?.sha === sha) continue;
-      const { articles = [], faq = [], deleteArticleIds = [], summaries = [] } = JSON.parse(gunzipSync(buf).toString("utf8")) as {
+      const { articles = [], faq = [], deleteArticleIds = [], summaries = [], decisions = [], decisionNumbers = [], decisionProvenance = [], decisionSummaries = [] } = JSON.parse(gunzipSync(buf).toString("utf8")) as {
+        decisions?: Record<string, unknown>[]; decisionNumbers?: { decision_id: string; numero: string }[]; decisionProvenance?: Record<string, unknown>[];
+        decisionSummaries?: { decision_id: string; summary: string; points: string; model: string | null }[];
         articles?: Article[]; faq?: Omit<Faq, "id">[]; deleteArticleIds?: string[]; // ids no longer in force (re-ingest diffs)
         summaries?: Omit<ArticleSummary, "created_at">[];
       };
@@ -265,10 +441,33 @@ export function importContent(d: Database.Database, dir = path.join(process.cwd(
            ON CONFLICT(article_id) DO UPDATE SET texte_sha = excluded.texte_sha, summary = excluded.summary, points = excluded.points, model = excluded.model`,
         );
         for (const s of summaries) sum.run(s);
+        const dec = d.prepare(
+          `INSERT INTO decisions (id, source, juridiction, formation, date, numero, solution, titre, ecli, publie, sommaire, texte, url, checksum, extractor_version, liens, attaquee_juridiction, attaquee_date)
+           VALUES (@id, @source, @juridiction, @formation, @date, @numero, @solution, @titre, @ecli, @publie, @sommaire, @texte, @url, @checksum, @extractor_version, @liens, @attaquee_juridiction, @attaquee_date)
+           ON CONFLICT(id) DO UPDATE SET juridiction = excluded.juridiction, formation = excluded.formation, date = excluded.date, numero = excluded.numero,
+             solution = excluded.solution, titre = excluded.titre, ecli = excluded.ecli, publie = excluded.publie, sommaire = excluded.sommaire, texte = excluded.texte,
+             url = excluded.url, checksum = excluded.checksum, extractor_version = excluded.extractor_version, liens = excluded.liens,
+             attaquee_juridiction = excluded.attaquee_juridiction, attaquee_date = excluded.attaquee_date`,
+        );
+        for (const x of decisions) dec.run({ checksum: null, extractor_version: null, liens: null, attaquee_juridiction: null, attaquee_date: null, ...x });
+        const num = d.prepare("INSERT OR IGNORE INTO decision_numbers (decision_id, numero) VALUES (?, ?)");
+        for (const n of decisionNumbers) num.run(n.decision_id, n.numero);
+        const prov = d.prepare(
+          `INSERT OR REPLACE INTO provenance (entity_type, entity_id, dataset, source, origin_url, origin_ref, mirror, raw_checksum, extractor, extractor_version, imported_at, verified_at)
+           VALUES (@entity_type, @entity_id, @dataset, @source, @origin_url, @origin_ref, @mirror, @raw_checksum, @extractor, @extractor_version, @imported_at, @verified_at)`,
+        );
+        for (const p of decisionProvenance) prov.run(p);
+        const dsum = d.prepare(
+          `INSERT INTO decision_summaries (decision_id, summary, points, model) VALUES (@decision_id, @summary, @points, @model)
+           ON CONFLICT(decision_id) DO UPDATE SET summary = excluded.summary, points = excluded.points, model = excluded.model`,
+        );
+        for (const s of decisionSummaries) dsum.run(s);
         for (const f of faq) q.run({ ...f, topic: f.topic ?? null, emoji: f.emoji ?? null, article_ids: typeof f.article_ids === "string" ? f.article_ids : JSON.stringify(f.article_ids) });
         d.prepare("INSERT INTO content_imports (name, sha) VALUES (?, ?) ON CONFLICT(name) DO UPDATE SET sha = excluded.sha, imported_at = unixepoch()").run(file, sha);
       })();
-      console.log(`[db] content ${file}: ${articles.length} articles, ${faq.length} faq, ${summaries.length} summaries, ${deleteArticleIds.length} deleted`);
+      // Derived graph layers (citations, relations, co-citations, stats) are recomputed, never shipped.
+      if (decisions.length || articles.length || deleteArticleIds.length) rebuildGraph(d, { reextract: decisions.length > 0 || articles.length > 0 });
+      console.log(`[db] content ${file}: ${articles.length} articles, ${faq.length} faq, ${summaries.length} summaries, ${decisions.length} decisions, ${deleteArticleIds.length} deleted`);
     } catch (e) {
       console.error(`[db] content ${file} failed`, e instanceof Error ? e.message : e);
     }
