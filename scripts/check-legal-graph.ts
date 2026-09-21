@@ -53,10 +53,23 @@ async function fixture() {
   assert.deepEqual(rel.map((r) => `${r.a_id}-${r.b_id}:${r.shared}`), ["A1103-A1240:2", "A1240-A1103:2"], "one pair, both directions");
   assert.ok(rel[0].score > 0 && rel[0].score <= 1 && rel[0].score === rel[1].score);
 
+  // Internal search: text + article + date filters, number lookup, FTS input never injects syntax.
+  const S = await import("../src/lib/legal-search");
+  db.prepare("INSERT INTO decisions (id, source, juridiction, formation, date, numero, titre, texte, url) VALUES ('D4', 'cass', 'Cour de cassation', 'CHAMBRE_CIVILE_3', '2022-06-01', '22-15536', 'Cass. civ. 3e', 'La clause d''exclusion de garantie des vices cachés est écartée : le vendeur est un professionnel.', '')").run();
+  db.prepare("INSERT INTO decision_numbers (decision_id, numero) VALUES ('D4', '22-15536')").run();
+  G.saveCitations(db, "D4", G.extractCitations({ id: "D4", date: "2022-06-01", sommaire: null, texte: "Vu l'article 1240 du code civil" }, resolve));
+  assert.deepEqual(S.searchDecisions({ q: "clause exclusion vices cachés professionnel", since: "2020-01-01" }).rows.map((r) => r.id), ["D4"]);
+  assert.deepEqual(S.searchDecisions({ q: "vices cachés", articleIds: ["A1103"] }).rows.map((r) => r.id), [], "article filter applies");
+  assert.deepEqual(S.searchDecisions({ numero: "22-15.536" }).rows.map((r) => r.id), ["D4"], "number in any written form");
+  assert.equal(S.searchDecisions({ q: 'vices" OR * NEAR(' }).rows.length >= 0, true, "no FTS syntax error");
+  assert.ok(S.decisionPassages("D4", "vendeur professionnel").some((p) => p.includes("professionnel")));
+
   // Checksum change detection: a different raw text gives a different checksum.
   assert.notEqual(G.sha256("<xml>a</xml>"), G.sha256("<xml>b</xml>"));
   // Pourvoi numbers normalize to one form (stable relation keys).
   for (const s of ["23-20.428", "23-20428", "23-20 428"]) assert.equal(G.normalizePourvoi(s), "23-20428");
+  assert.equal(G.normalizePourvoi("25LY03408"), "25LY03408", "CAA request numbers are kept");
+  assert.equal(G.normalizePourvoi("499377"), "499377");
 }
 
 function invariants(file: string) {

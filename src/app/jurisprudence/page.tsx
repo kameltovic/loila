@@ -27,7 +27,7 @@ export default function Jurisprudence() {
   const db = getDb();
   const stats = db.prepare("SELECT COUNT(*) n, MIN(date) since FROM decisions").get() as { n: number; since: string | null };
   const linkedArticles = (db.prepare("SELECT COUNT(DISTINCT article_id) n FROM decision_articles").get() as { n: number }).n;
-  const latest = db.prepare("SELECT id, formation, date, numero, solution, sommaire FROM decisions WHERE formation = ? ORDER BY date DESC LIMIT 8");
+  const latest = db.prepare("SELECT id, juridiction, formation, date, numero, solution, sommaire FROM decisions WHERE formation = ? ORDER BY date DESC LIMIT 8");
 
   return (
     <>
@@ -58,7 +58,7 @@ export default function Jurisprudence() {
       </section>
 
       {CHAMBERS.map((f, i) => {
-        const rows = latest.all(f) as Pick<Decision, "id" | "formation" | "date" | "numero" | "solution" | "sommaire">[];
+        const rows = latest.all(f) as Pick<Decision, "id" | "juridiction" | "formation" | "date" | "numero" | "solution" | "sommaire">[];
         if (!rows.length) return null;
         return (
           <section key={f} aria-labelledby={`ch-${f}`} className="pt-16 sm:pt-20">
@@ -90,8 +90,8 @@ export default function Jurisprudence() {
               </h2>
               <p className="mt-4 max-w-2xl text-lg text-fg-2">Une question de droit, une réponse qui cite chaque arrêt et chaque article, vérifiable en un clic.</p>
             </div>
-            <Link href="/tarifs#pro" data-umami-event="juri-pro-hub" className={`${btnPrimary} justify-self-start`}>
-              Rejoindre la liste d’attente <ArrowRight aria-hidden className="size-4" />
+            <Link href="/pro/jurisprudence" data-umami-event="juri-pro-hub" className={`${btnPrimary} justify-self-start`}>
+              Découvrir l’assistant <ArrowRight aria-hidden className="size-4" />
             </Link>
           </div>
         </div>

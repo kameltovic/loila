@@ -30,8 +30,8 @@ export default async function DecisionPage({ params }: PageProps<"/jurisprudence
   const related = relatedDecisions(d.id);
   const links = decisionLinks(d.id);
   const explicit = [
-    ...links.sameCase.map((r) => ({ id: r.to_id!, label: "Même affaire", cite: citation({ formation: r.formation, date: r.date!, numero: r.numero }) })),
-    ...links.cites.map((r) => ({ id: r.to_id!, label: "Arrêt cité", cite: citation({ formation: r.formation, date: r.date!, numero: r.numero }) })),
+    ...links.sameCase.map((r) => ({ id: r.to_id!, label: "Même affaire", cite: citation({ juridiction: r.juridiction, formation: r.formation, date: r.date!, numero: r.numero }) })),
+    ...links.cites.map((r) => ({ id: r.to_id!, label: "Arrêt cité", cite: citation({ juridiction: r.juridiction, formation: r.formation, date: r.date!, numero: r.numero }) })),
     ...links.citedBy.map((r) => ({ id: r.id, label: "Cité par", cite: citation(r) })),
   ];
   const themeSlug = THEMES.find((t) => articles.some((a) => (t.codes as readonly string[]).includes(a.code)))?.slug ?? "travail";
@@ -108,7 +108,7 @@ export default async function DecisionPage({ params }: PageProps<"/jurisprudence
 
           {d.sommaire && (
             <section aria-labelledby="sommaire-title" className="border-2 border-fg bg-surface p-6 sm:p-10">
-              <h2 id="sommaire-title" className={`${label} inline-flex border-2 border-fg px-3 py-1.5`}>Sommaire officiel · Cour de cassation</h2>
+              <h2 id="sommaire-title" className={`${label} inline-flex border-2 border-fg px-3 py-1.5`}>Sommaire officiel · {d.juridiction}</h2>
               <div className="mt-6 max-w-[68ch] space-y-4 text-[1.0625rem] leading-[1.75]">
                 {d.sommaire.split(/\n+/).filter((p) => p.trim()).map((p, i) => <p key={i}>{linked(p)}</p>)}
               </div>

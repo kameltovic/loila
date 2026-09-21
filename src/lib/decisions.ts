@@ -16,14 +16,28 @@ const FORMATIONS: Record<string, [string, string]> = {
   ASSEMBLEE_PLENIERE: ["Assemblée plénière", "ass. plén."],
   CHAMBRE_MIXTE: ["Chambre mixte", "ch. mixte"],
   AVIS: ["Avis", "avis"],
+  DC: ["Décision DC (contrôle de la loi)", "DC"],
+  QPC: ["Question prioritaire de constitutionnalité", "QPC"],
 };
-export const formationLabel = (f: string | null) => (f && FORMATIONS[f]?.[0]) || "Cour de cassation";
+export const formationLabel = (f: string | null) => (f && FORMATIONS[f]?.[0]) || f || "Cour de cassation";
 /** "23-20428" → "23-20.428" (how pourvoi numbers are cited). */
 export const pourvoi = (n: string | null) => (n ?? "").replace(/^(\d{2}-\d{2})(\d{3})$/, "$1.$2");
 const frDate = (d: string) => new Date(`${d}T12:00:00`).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
-/** Short citation, e.g. "Cass. soc., 2 juillet 2025, n° 23-20.428". */
-export const citation = (d: Pick<Decision, "formation" | "date" | "numero">) =>
-  `Cass. ${(d.formation && FORMATIONS[d.formation]?.[1]) || ""}, ${frDate(d.date)}${d.numero ? `, n° ${pourvoi(d.numero)}` : ""}`.replace("Cass. ,", "Cass.,");
+/** Court prefix as cited: "Cass. soc.", "CE", "CAA Lyon", "Cons. const.", "CA Paris". */
+function court(d: { formation: string | null; juridiction?: string | null }) {
+  const j = d.juridiction ?? "Cour de cassation";
+  if (/cassation/i.test(j)) return `Cass. ${(d.formation && FORMATIONS[d.formation]?.[1]) || ""}`.trim();
+  if (/conseil d.[ée]tat/i.test(j)) return "CE";
+  if (/conseil constitutionnel/i.test(j)) return "Cons. const.";
+  const caa = j.match(/^CAA\s+(?:de\s+|d['’])?(.+)$/i);
+  if (caa) return `CAA ${caa[1].charAt(0) + caa[1].slice(1).toLowerCase()}`;
+  const ca = j.match(/^Cour d['’]appel\s+(?:de\s+|d['’])(.+)$/i);
+  if (ca) return `CA ${ca[1]}`;
+  return j;
+}
+/** Short citation, e.g. "Cass. soc., 2 juillet 2025, n° 23-20.428", "CE, 16 juillet 2026, n° 499377". */
+export const citation = (d: Pick<Decision, "formation" | "date" | "numero"> & { juridiction?: string | null }) =>
+  `${court(d)}, ${frDate(d.date)}${d.numero ? `, n° ${pourvoi(d.numero)}` : ""}`;
 export const decisionUrl = (d: Pick<Decision, "id">) => `/jurisprudence/${d.id}`;
 
 export const getDecision = (id: string) => getDb().prepare("SELECT * FROM decisions WHERE id = ?").get(id) as Decision | undefined;
@@ -43,10 +57,10 @@ export function decisionsForArticle(articleId: string, limit = 6) {
   const db = getDb();
   const rows = db
     .prepare(
-      `SELECT d.id, d.formation, d.date, d.numero, d.solution, d.sommaire FROM decision_articles da JOIN decisions d ON d.id = da.decision_id
+      `SELECT d.id, d.juridiction, d.formation, d.date, d.numero, d.solution, d.sommaire FROM decision_articles da JOIN decisions d ON d.id = da.decision_id
        WHERE da.article_id = ? ORDER BY d.date DESC LIMIT ?`,
     )
-    .all(articleId, limit) as Pick<Decision, "id" | "formation" | "date" | "numero" | "solution" | "sommaire">[];
+    .all(articleId, limit) as Pick<Decision, "id" | "juridiction" | "formation" | "date" | "numero" | "solution" | "sommaire">[];
   const total = (db.prepare("SELECT COUNT(*) n FROM decision_articles WHERE article_id = ?").get(articleId) as { n: number }).n;
   return { rows, total };
 }
@@ -61,12 +75,12 @@ export const decisionArticles = (id: string) =>
 export const relatedDecisions = (id: string, limit = 5) =>
   getDb()
     .prepare(
-      `SELECT d.id, d.formation, d.date, d.numero, d.solution, COUNT(*) AS shared FROM decision_articles me
+      `SELECT d.id, d.juridiction, d.formation, d.date, d.numero, d.solution, COUNT(*) AS shared FROM decision_articles me
        JOIN decision_articles o ON o.article_id = me.article_id AND o.decision_id <> me.decision_id
        JOIN decisions d ON d.id = o.decision_id
        WHERE me.decision_id = ? GROUP BY d.id ORDER BY shared DESC, d.date DESC LIMIT ?`,
     )
-    .all(id, limit) as (Pick<Decision, "id" | "formation" | "date" | "numero" | "solution"> & { shared: number })[];
+    .all(id, limit) as (Pick<Decision, "id" | "juridiction" | "formation" | "date" | "numero" | "solution"> & { shared: number })[];
 
 /** First sentence(s) of the official abstract, for lists. */
 export const teaser = (s: string | null, max = 280) => {
@@ -122,16 +136,16 @@ export function decisionLinks(id: string) {
   const db = getDb();
   const out = db
     .prepare(
-      `SELECT r.kind, r.target_ref, r.to_id, d.formation, d.date, d.numero, d.solution FROM decision_relations r
+      `SELECT r.kind, r.target_ref, r.to_id, d.juridiction, d.formation, d.date, d.numero, d.solution FROM decision_relations r
        LEFT JOIN decisions d ON d.id = r.to_id WHERE r.from_id = ? ORDER BY r.kind, d.date DESC LIMIT 30`,
     )
-    .all(id) as { kind: string; target_ref: string; to_id: string | null; formation: string | null; date: string | null; numero: string | null; solution: string | null }[];
+    .all(id) as { kind: string; target_ref: string; to_id: string | null; juridiction: string | null; formation: string | null; date: string | null; numero: string | null; solution: string | null }[];
   const citedBy = db
     .prepare(
-      `SELECT d.id, d.formation, d.date, d.numero, d.solution FROM decision_relations r JOIN decisions d ON d.id = r.from_id
+      `SELECT d.id, d.juridiction, d.formation, d.date, d.numero, d.solution FROM decision_relations r JOIN decisions d ON d.id = r.from_id
        WHERE r.to_id = ? AND r.kind = 'cites' ORDER BY d.date DESC LIMIT 10`,
     )
-    .all(id) as Pick<Decision, "id" | "formation" | "date" | "numero" | "solution">[];
+    .all(id) as Pick<Decision, "id" | "juridiction" | "formation" | "date" | "numero" | "solution">[];
   const appeal = out.find((r) => r.kind === "appeal_from");
   const [appealCourt, appealDate] = appeal ? appeal.target_ref.split("|") : [];
   return {

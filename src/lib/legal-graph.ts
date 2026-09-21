@@ -161,8 +161,13 @@ export function saveCitations(db: Database.Database, decisionId: string, rows: C
 
 // ---------- Decision ↔ decision ----------
 
-/** "23-20.428", "23-20428", "n° 23-20 428" → "23-20428". */
-export const normalizePourvoi = (s: string) => s.replace(/[^\d-]/g, "").replace(/^(\d{2})-?(\d{2})(\d{3})$/, "$1-$2$3");
+/** Cassation pourvoi "23-20.428" / "23-20428" / "23-20 428" → "23-20428"; other numbers (CE "499377", CAA "25LY03408",
+ * RG "12/03281", CC "2023-1045") are kept as written, uppercased, without spaces. */
+export const normalizePourvoi = (s: string) => {
+  const t = s.trim();
+  const m = t.match(/^(\d{2})-?(\d{2})[.\s]?(\d{3})$/);
+  return m ? `${m[1]}-${m[2]}${m[3]}` : t.toUpperCase().replace(/\s+/g, "");
+};
 
 // "(Soc., 19 juin 2024, pourvoi n° 23-10.817" / "Cass. 3e civ., …, n° 21-18.520" / "1re Civ., 1er mars 2023, pourvoi n° 21-22.121"
 const CITED_POURVOI = /(?:pourvoi|n°)\s*(?:n°\s*)?(\d{2}-\d{2}\.?\s?\d{3})/g;

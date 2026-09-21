@@ -3,6 +3,7 @@
 import { expandQuery, retrieve, type LlmCall } from "./ask";
 import { getDb, type Article } from "./db";
 import { citation, decisionUrl, teaser, type Decision } from "./decisions";
+import { searchDecisions } from "./legal-search";
 import { chat } from "./openrouter";
 import { CODES } from "./themes";
 
@@ -23,37 +24,26 @@ Règles :
 const realLlm: LlmCall = (messages) =>
   chat(messages, { model: process.env.JURI_MODEL ?? process.env.OPENROUTER_BATCH_MODEL, maxTokens: 1800, timeoutMs: 90_000 });
 
-type Row = Pick<Decision, "id" | "formation" | "date" | "numero" | "solution" | "sommaire" | "texte"> & { summary: string | null };
-const COLS = "d.id, d.formation, d.date, d.numero, d.solution, d.sommaire, d.texte, s.summary";
+type Row = Pick<Decision, "id" | "juridiction" | "formation" | "date" | "numero" | "solution" | "sommaire" | "texte"> & { summary: string | null };
+const COLS = "d.id, d.juridiction, d.formation, d.date, d.numero, d.solution, d.sommaire, d.texte, s.summary";
 
-/** Decisions applying the retrieved articles, then full-text matches; most relevant first, capped. */
+/** Decisions applying the retrieved articles (most recent) interleaved with full-text matches (most relevant), via the
+ * internal legal search service; then their stored fields for the model's context. */
 export function findDecisions(q: string, words: string, articles: Pick<Article, "id">[], limit = MAX_DECISIONS): Row[] {
-  const db = getDb();
-  const byArticle = articles.length
-    ? (db
-        .prepare(
-          `SELECT ${COLS}, COUNT(*) AS hits FROM decision_articles da JOIN decisions d ON d.id = da.decision_id
-           LEFT JOIN decision_summaries s ON s.decision_id = d.id
-           WHERE da.article_id IN (${articles.map(() => "?").join(",")}) GROUP BY d.id ORDER BY hits DESC, d.date DESC LIMIT 12`,
-        )
-        .all(...articles.map((a) => a.id)) as Row[])
-    : [];
-  // FTS5 query: OR of the distinct significant words (quoted, so user input can't inject FTS syntax).
-  const terms = [...new Set(`${q} ${words}`.toLowerCase().match(/[\p{L}\d]{4,}/gu) ?? [])].slice(0, 12);
-  const byText = terms.length
-    ? (db
-        .prepare(
-          `SELECT ${COLS} FROM decisions_fts f JOIN decisions d ON d.rowid = f.rowid LEFT JOIN decision_summaries s ON s.decision_id = d.id
-           WHERE decisions_fts MATCH ? ORDER BY bm25(decisions_fts, 5, 3, 1) LIMIT 12`,
-        )
-        .all(terms.map((t) => `"${t}"`).join(" OR ")) as Row[])
-    : [];
-  // Interleave: a decision found both ways ranks by its first appearance.
+  const byArticle = articles.length ? searchDecisions({ articleIds: articles.map((a) => a.id), limit: 12 }).rows : [];
+  const byText = searchDecisions({ q: `${q} ${words}`, limit: 12 }).rows;
   const seen = new Set<string>();
-  return Array.from({ length: 12 }, (_, i) => [byArticle[i], byText[i]])
+  const ids = Array.from({ length: 12 }, (_, i) => [byArticle[i], byText[i]])
     .flat()
-    .filter((d): d is Row => !!d && !seen.has(d.id) && !!seen.add(d.id))
-    .slice(0, limit);
+    .filter((d): d is (typeof byText)[number] => !!d && !seen.has(d.id) && !!seen.add(d.id))
+    .slice(0, limit)
+    .map((d) => d.id);
+  if (!ids.length) return [];
+  const rows = getDb()
+    .prepare(`SELECT ${COLS} FROM decisions d LEFT JOIN decision_summaries s ON s.decision_id = d.id WHERE d.id IN (${ids.map(() => "?").join(",")})`)
+    .all(...ids) as Row[];
+  const byId = new Map(rows.map((r) => [r.id, r]));
+  return ids.map((id) => byId.get(id)!).filter(Boolean);
 }
 
 /** What the model sees for one decision: official abstract, our summary, then the Court's answer. */

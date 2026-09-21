@@ -51,12 +51,55 @@ export function parseJudi(xml: string): DecisionRecord {
   };
 }
 
-// Corpus adapters. JADE (TEXTE_JURI_ADMIN) and CONSTIT get theirs once their format is inspected (phase 4).
+/** Administrative format TEXTE_JURI_ADMIN (JADE: Conseil d'État, CAA, TA). */
+export function parseAdmin(xml: string): DecisionRecord {
+  const recueil = tag(xml, "PUBLI_RECUEIL").trim().toUpperCase();
+  return {
+    id: tag(xml, "ID"),
+    juridiction: decode(tag(xml, "JURIDICTION")),
+    formation: decode(tag(xml, "FORMATION")),
+    date: tag(xml, "DATE_DEC"),
+    numeros: [decode(tag(xml, "NUMERO"))].filter(Boolean),
+    solution: decode(tag(xml, "SOLUTION")),
+    titre: decode(tag(xml, "TITRE")),
+    ecli: decode(tag(xml, "ECLI")),
+    publie: recueil === "A" || recueil === "B" ? 1 : 0, // A: published in the Recueil, B: mentioned in its tables
+    sommaire: [...xml.matchAll(/<(?:SCT|ANA)[^>]*>([\s\S]*?)<\/(?:SCT|ANA)>/g)].map((m) => decode(m[1])).filter(Boolean).join("\n\n"),
+    texte: decode(tag(xml, "CONTENU")),
+    liens: [...xml.matchAll(/<LIEN [^>]*>([^<]*)<\/LIEN>/g)].map((m) => decode(m[1])).join("\n"),
+  };
+}
+
+/** Conseil constitutionnel TEXTE_JURI_CONSTIT: the nature (DC, QPC…) goes in formation. */
+export function parseConstit(xml: string): DecisionRecord {
+  return {
+    id: tag(xml, "ID"),
+    juridiction: "Conseil constitutionnel",
+    formation: decode(tag(xml, "NATURE")),
+    date: tag(xml, "DATE_DEC"),
+    numeros: [decode(tag(xml, "NUMERO"))].filter(Boolean),
+    solution: decode(tag(xml, "SOLUTION")),
+    titre: decode(tag(xml, "TITRE")),
+    ecli: decode(tag(xml, "ECLI")),
+    publie: 1, // all published in the Journal officiel
+    sommaire: "",
+    texte: decode(tag(xml, "CONTENU")),
+    liens: [...xml.matchAll(/<LIEN [^>]*>([^<]*)<\/LIEN>/g)].map((m) => decode(m[1])).join("\n"),
+  };
+}
+
+const DILA = "https://echanges.dila.gouv.fr/OPENDATA";
+const legifrance = (kind: string) => (id: string) => `https://www.legifrance.gouv.fr/${kind}/id/${id}`;
+const always = () => true;
+// Corpus adapters. Order of import recommended by the corpus report: CONSTIT → INCA → JADE → CAPP.
 const CORPORA = {
-  cass: {
-    dataset: "CASS", url: "https://echanges.dila.gouv.fr/OPENDATA/CASS/Freemium_cass_global_20250713-140000.tar.gz", parse: parseJudi,
-    url_of: (id: string) => `https://www.legifrance.gouv.fr/juri/id/${id}`,
-  },
+  cass: { dataset: "CASS", url: `${DILA}/CASS/Freemium_cass_global_20250713-140000.tar.gz`, parse: parseJudi, url_of: legifrance("juri"), keep: always },
+  // Unpublished Cassation rulings: withdrawals and "non-lieu" carry no rule.
+  inca: { dataset: "INCA", url: `${DILA}/INCA/Freemium_inca_global_20250713-140000.tar.gz`, parse: parseJudi, url_of: legifrance("juri"), keep: (r: DecisionRecord) => !/désistement|non-lieu/i.test(r.solution) },
+  capp: { dataset: "CAPP", url: `${DILA}/CAPP/Freemium_capp_global_20250713-140000.tar.gz`, parse: parseJudi, url_of: legifrance("juri"), keep: always },
+  jade: { dataset: "JADE", url: `${DILA}/JADE/Freemium_jade_global_20250713-140000.tar.gz`, parse: parseAdmin, url_of: legifrance("ceta"), keep: always },
+  // Only constitutional review (DC, QPC): election litigation is 57 % of the corpus and useless for Loilà.
+  constit: { dataset: "CONSTIT", url: `${DILA}/CONSTIT/Freemium_constit_global_20250713-140000.tar.gz`, parse: parseConstit, url_of: legifrance("cons"), keep: (r: DecisionRecord) => /^(DC|QPC)$/i.test(r.formation) },
 } as const;
 type Corpus = keyof typeof CORPORA;
 
@@ -72,16 +115,19 @@ async function main() {
   const corpus = CORPORA[source];
   if (!corpus) throw new Error(`unknown source ${source} (known: ${Object.keys(CORPORA).join(", ")})`);
   const since = opt("since", "2017-01-01");
+  // --archive <url>: use another archive of the same corpus (e.g. a small daily increment for a dry run).
+  const archiveUrl = opt("archive", corpus.url);
   const dryRun = argv.includes("--dry-run");
   const force = argv.includes("--force");
 
   const dir = path.join(process.cwd(), "data", "raw", "juri");
-  const archive = path.join(dir, `${source}.tar.gz`);
-  const out = path.join(dir, source);
+  const custom = archiveUrl !== corpus.url;
+  const archive = path.join(dir, custom ? path.basename(archiveUrl) : `${source}.tar.gz`);
+  const out = path.join(dir, custom ? path.basename(archiveUrl, ".tar.gz") : source);
   fs.mkdirSync(dir, { recursive: true });
   if (!fs.existsSync(archive)) {
-    console.log(`Downloading ${corpus.url}…`);
-    const res = await fetch(corpus.url);
+    console.log(`Downloading ${archiveUrl}…`);
+    const res = await fetch(archiveUrl);
     if (!res.ok) throw new Error(`DILA ${res.status}`);
     fs.writeFileSync(archive, Buffer.from(await res.arrayBuffer()));
   }
@@ -114,8 +160,8 @@ async function main() {
   const delNums = db.prepare("DELETE FROM decision_numbers WHERE decision_id = ?");
   const insNum = db.prepare("INSERT OR IGNORE INTO decision_numbers (decision_id, numero) VALUES (?, ?)");
 
-  const files = (fs.readdirSync(out, { recursive: true }) as string[]).filter((f) => /JURITEXT\d+\.xml$/.test(f)).sort();
-  const stats = { files: files.length, recent: 0, unchanged: 0, updated: 0, created: 0, skippedNoRef: 0, duplicates: 0, duplicateFiles: 0, citations: 0, byStatus: {} as Record<string, number> };
+  const files = (fs.readdirSync(out, { recursive: true }) as string[]).filter((f) => /(?:JURI|CETA|CONS)TEXT\d+\.xml$/.test(f)).sort();
+  const stats = { files: files.length, recent: 0, unchanged: 0, updated: 0, created: 0, skippedNoRef: 0, duplicates: 0, duplicateFiles: 0, filtered: 0, citations: 0, byStatus: {} as Record<string, number> };
   const seen = new Set<string>();
   type Work = { rec: DecisionRecord; rel: string; raw: string; sum: string; isNew: boolean };
   let batch: Work[] = [];
@@ -127,7 +173,7 @@ async function main() {
         url: corpus.url_of(rec.id), checksum: sum, extractor_version: EXTRACTOR_VERSION,
         liens: rec.liens, attaquee_juridiction: rec.attaquee?.juridiction ?? null, attaquee_date: rec.attaquee?.date ?? null,
       });
-      prov.run(rec.id, corpus.dataset, corpus.url, rel, sum, EXTRACTOR, EXTRACTOR_VERSION);
+      prov.run(rec.id, corpus.dataset, archiveUrl, rel, sum, EXTRACTOR, EXTRACTOR_VERSION);
       delNums.run(rec.id);
       for (const n of rec.numeros) insNum.run(rec.id, G.normalizePourvoi(n));
       G.saveCitations(db, rec.id, G.extractCitations({ id: rec.id, date: rec.date, sommaire: rec.sommaire, texte: rec.texte, liens: rec.liens }, resolve));
@@ -140,6 +186,10 @@ async function main() {
     if (date < since) continue;
     stats.recent++;
     const rec = corpus.parse(raw);
+    if (!corpus.keep(rec)) {
+      stats.filtered++;
+      continue;
+    }
     // The archive sometimes holds the same decision in two folders: first path (sorted) wins, deterministic.
     if (seen.has(rec.id)) {
       stats.duplicateFiles++;
@@ -157,7 +207,7 @@ async function main() {
     const dup = rec.ecli && (byEcli.get(rec.ecli, rec.id) as { id: string } | undefined);
     if (dup) {
       stats.duplicates++;
-      if (!dryRun) prov.run(dup.id, corpus.dataset, corpus.url, rel, sum, EXTRACTOR, EXTRACTOR_VERSION);
+      if (!dryRun) prov.run(dup.id, corpus.dataset, archiveUrl, rel, sum, EXTRACTOR, EXTRACTOR_VERSION);
       continue;
     }
     const cites = G.extractCitations({ id: rec.id, date: rec.date, sommaire: rec.sommaire, texte: rec.texte, liens: rec.liens }, resolve);
@@ -178,8 +228,9 @@ async function main() {
   if (!dryRun) G.rebuildDecisionRelations(db);
 
   // Upstream deletions are reported, never applied silently.
-  const missing = (db.prepare("SELECT id FROM decisions WHERE source = ? AND date >= ?").all(source, since) as { id: string }[]).filter((r) => !seen.has(r.id));
-  console.log(`${source}: ${stats.files} files, ${stats.recent} since ${since} · created ${stats.created}, updated ${stats.updated}, unchanged ${stats.unchanged}, no reference ${stats.skippedNoRef}, ECLI duplicates ${stats.duplicates}, same decision twice in the archive ${stats.duplicateFiles}`);
+  // Only a global archive is complete: an increment says nothing about what disappeared.
+  const missing = custom ? [] : (db.prepare("SELECT id FROM decisions WHERE source = ? AND date >= ?").all(source, since) as { id: string }[]).filter((r) => !seen.has(r.id));
+  console.log(`${source}: ${stats.files} files, ${stats.recent} since ${since}, ${stats.filtered} filtered out by the corpus rule · created ${stats.created}, updated ${stats.updated}, unchanged ${stats.unchanged}, no reference ${stats.skippedNoRef}, ECLI duplicates ${stats.duplicates}, same decision twice in the archive ${stats.duplicateFiles}`);
   console.log(`citations extracted: ${stats.citations} · by status: ${JSON.stringify(stats.byStatus)}`);
   console.log(`in Loilà but not in this archive anymore (review, not deleted): ${missing.length}${dryRun ? " · dry run, nothing written" : ""}`);
 }
