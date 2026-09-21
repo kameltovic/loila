@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { faqsBySlugs } from "./metiers";
+import { faqsBySlugs, refArticles } from "./metiers";
 
 // Letter templates (/modeles-lettres/<slug>), one JSON per letter in seed/lettres (shipped via outputFileTracingIncludes).
 export type LetterField = {
@@ -42,3 +42,6 @@ export const lettreUrl = (l: Pick<Lettre, "slug">) => `/modeles-lettres/${l.slug
 export const lettreFaqs = (l: Lettre) => faqsBySlugs(l.faqSlugs);
 /** Letters that answer a FAQ (reverse link from question pages). */
 export const lettresForFaq = (slug: string) => getLettres().filter((l) => l.faqSlugs.includes(slug));
+/** Letters whose legal tips cite this article (reverse link from /article pages). */
+export const lettresForArticle = (id: string) =>
+  getLettres().filter((l) => refArticles(l.tips.flatMap((t) => t.refs)).some((a) => a.id === id));

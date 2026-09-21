@@ -185,6 +185,16 @@ CREATE TABLE IF NOT EXISTS contact_messages (
   emailed    INTEGER NOT NULL DEFAULT 0,  -- 1 once the notification email was accepted by Sweego
   created_at INTEGER NOT NULL DEFAULT (unixepoch())
 );
+
+-- Plain-language "En clair" summaries of article pages (scripts/batch-articles.ts, shipped in content bundles).
+CREATE TABLE IF NOT EXISTS article_summaries (
+  article_id TEXT PRIMARY KEY,              -- articles.id
+  texte_sha  TEXT NOT NULL,                 -- sha256 of the texte summarized: a re-ingested text makes the summary stale (hidden)
+  summary    TEXT NOT NULL,                 -- 2 to 4 sentences
+  points     TEXT NOT NULL,                 -- JSON array of short key points
+  model      TEXT,
+  created_at INTEGER NOT NULL DEFAULT (unixepoch())
+);
 `;
 
 let db: Database.Database | undefined;
@@ -234,8 +244,9 @@ export function importContent(d: Database.Database, dir = path.join(process.cwd(
       const sha = createHash("sha256").update(buf).digest("hex");
       const done = d.prepare("SELECT sha FROM content_imports WHERE name = ?").get(file) as { sha: string } | undefined;
       if (done?.sha === sha) continue;
-      const { articles = [], faq = [], deleteArticleIds = [] } = JSON.parse(gunzipSync(buf).toString("utf8")) as {
+      const { articles = [], faq = [], deleteArticleIds = [], summaries = [] } = JSON.parse(gunzipSync(buf).toString("utf8")) as {
         articles?: Article[]; faq?: Omit<Faq, "id">[]; deleteArticleIds?: string[]; // ids no longer in force (re-ingest diffs)
+        summaries?: Omit<ArticleSummary, "created_at">[];
       };
       const art = d.prepare(
         `INSERT INTO articles (id, code, num, section, texte, date_debut, url) VALUES (@id, @code, @num, @section, @texte, @date_debut, @url)
@@ -249,10 +260,15 @@ export function importContent(d: Database.Database, dir = path.join(process.cwd(
         for (const a of articles) art.run(a);
         const del = d.prepare("DELETE FROM articles WHERE id = ?");
         for (const id of deleteArticleIds) del.run(id);
+        const sum = d.prepare(
+          `INSERT INTO article_summaries (article_id, texte_sha, summary, points, model) VALUES (@article_id, @texte_sha, @summary, @points, @model)
+           ON CONFLICT(article_id) DO UPDATE SET texte_sha = excluded.texte_sha, summary = excluded.summary, points = excluded.points, model = excluded.model`,
+        );
+        for (const s of summaries) sum.run(s);
         for (const f of faq) q.run({ ...f, topic: f.topic ?? null, emoji: f.emoji ?? null, article_ids: typeof f.article_ids === "string" ? f.article_ids : JSON.stringify(f.article_ids) });
         d.prepare("INSERT INTO content_imports (name, sha) VALUES (?, ?) ON CONFLICT(name) DO UPDATE SET sha = excluded.sha, imported_at = unixepoch()").run(file, sha);
       })();
-      console.log(`[db] content ${file}: ${articles.length} articles, ${faq.length} faq, ${deleteArticleIds.length} deleted`);
+      console.log(`[db] content ${file}: ${articles.length} articles, ${faq.length} faq, ${summaries.length} summaries, ${deleteArticleIds.length} deleted`);
     } catch (e) {
       console.error(`[db] content ${file} failed`, e instanceof Error ? e.message : e);
     }
@@ -263,6 +279,7 @@ export type Article = {
   id: string; code: string; num: string; section: string | null;
   texte: string; date_debut: string | null; url: string;
 };
+export type ArticleSummary = { article_id: string; texte_sha: string; summary: string; points: string; model: string | null; created_at: number };
 export type Faq = {
   id: number; theme: string; topic: string | null; slug: string; emoji: string | null; question: string;
   short: string; answer_md: string; article_ids: string;

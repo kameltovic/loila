@@ -9,7 +9,7 @@
     "lint": "eslint",
     "ingest": "tsx scripts/ingest.ts",
     "batch:faq": "tsx scripts/batch-faq.ts",
-    "check": "tsc --noEmit && tsx scripts/check-ask.ts && tsx scripts/check-billing.ts && tsx scripts/check-budget.ts && tsx scripts/check-wizard.ts && tsx scripts/check-lettres.ts",
+    "check": "tsc --noEmit && tsx scripts/check-ask.ts && tsx scripts/check-billing.ts && tsx scripts/check-budget.ts && tsx scripts/check-wizard.ts && tsx scripts/check-lettres.ts && tsx scripts/check-articles.ts",
     "stripe:setup": "tsx --env-file=.env scripts/stripe-setup.ts"
   },
   "dependencies": {

@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { getDb, type Article, type Faq } from "@/lib/db";
 import { CODES } from "@/lib/themes";
 import { Empty, FaqIndex, btnPrimary, container, display, label } from "@/components/ui";
+import { LettreCards } from "@/components/Lettres";
+import { articleSummary, coCitedArticles, linkRefs } from "@/lib/articles";
+import { lettresForArticle } from "@/lib/lettres";
+import { getTopic } from "@/lib/topics";
 import { JsonLd, abs, breadcrumbJsonLd, clip, pageMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
@@ -29,9 +33,11 @@ export async function generateMetadata({ params }: PageProps<"/article/[id]">): 
   if (!a) return {};
   const title = `${artLabel(a)} ${ofCode(a)} expliqué`;
   const first = a.texte.split(/(?<=[.;:])\s|\n/)[0] ?? a.texte;
-  const meta = pageMetadata({ title, description: clip(`${first} Texte officiel en vigueur et explications simples.`), path: `/article/${a.id}`, type: "article" });
-  // Only articles cited by an answer are worth indexing; the other ~35k are raw legal text (thin pages).
-  return { ...meta, title: title.length > 52 ? { absolute: title } : title, ...(citedBy(a.id).length ? {} : { robots: { index: false, follow: true } }) };
+  const description = articleSummary(a)?.summary ?? `${first} Texte officiel en vigueur et explications simples.`;
+  const meta = pageMetadata({ title, description: clip(description), path: `/article/${a.id}`, type: "article" });
+  // Only articles cited by an answer or a letter are worth indexing; the other ~100k are raw legal text (thin pages).
+  const indexable = citedBy(a.id).length > 0 || lettresForArticle(a.id).length > 0;
+  return { ...meta, title: title.length > 52 ? { absolute: title } : title, ...(indexable ? {} : { robots: { index: false, follow: true } }) };
 }
 
 export default async function ArticlePage({ params }: PageProps<"/article/[id]">) {
@@ -39,6 +45,10 @@ export default async function ArticlePage({ params }: PageProps<"/article/[id]">
   if (!a) notFound();
 
   const related = citedBy(a.id);
+  const summary = articleSummary(a);
+  const lettres = lettresForArticle(a.id);
+  const topics = [...new Set(related.map((f) => f.topic).filter((t): t is string => !!t))].map(getTopic).filter((t) => !!t);
+  const coCited = coCitedArticles(a.id);
   const code = CODES[a.code as keyof typeof CODES];
   const jsonLd = [
     breadcrumbJsonLd([{ name: "Accueil", path: "/" }, { name: codeName(a), path: `/article/${a.id}` }, { name: artLabel(a), path: `/article/${a.id}` }]),
@@ -55,6 +65,7 @@ export default async function ArticlePage({ params }: PageProps<"/article/[id]">
       isBasedOn: a.url,
       sameAs: a.url,
       text: a.texte,
+      ...(summary && { abstract: summary.summary }),
       ...(code && { isPartOf: { "@type": "Legislation", name: code.name, legislationIdentifier: code.legitext, legislationJurisdiction: "FR" } }),
     },
   ];
@@ -83,14 +94,43 @@ export default async function ArticlePage({ params }: PageProps<"/article/[id]">
       </section>
 
       <article className={`${container} grid gap-10 py-12 sm:py-16 lg:grid-cols-[1fr_16rem]`}>
-        <div className="rounded-2xl border-2 border-fg bg-surface p-6 sm:p-10">
-          <div className="max-w-[68ch] space-y-5 text-[1.0625rem] leading-[1.8] sm:text-lg">
-            {a.texte
-              .split(/\n+/)
-              .filter((p) => p.trim())
-              .map((p, i) => (
-                <p key={i}>{p}</p>
-              ))}
+        <div className="min-w-0 space-y-8">
+          {summary && (
+            <section aria-labelledby="en-clair-title" className="border-2 border-fg bg-surface p-6 shadow-[6px_6px_0_0_var(--signal)] sm:p-10">
+              <p className={`${label} flex items-center gap-3 text-fg-2`}>
+                <span aria-hidden className="size-2 rounded-full bg-signal" />
+                En clair
+              </p>
+              <h2 id="en-clair-title" className="sr-only">Ce que dit cet article, en clair</h2>
+              <p className="mt-4 max-w-[68ch] text-lg leading-relaxed sm:text-xl">{summary.summary}</p>
+              {summary.points.length > 0 && (
+                <ul className="mt-6 max-w-[68ch] space-y-3">
+                  {summary.points.map((pt) => (
+                    <li key={pt} className="flex gap-3"><span aria-hidden className="mt-2.5 size-2 shrink-0 bg-fg" />{pt}</li>
+                  ))}
+                </ul>
+              )}
+              <p className="mt-6 text-sm text-fg-2">Résumé rédigé à partir du texte officiel ci-dessous, qui seul fait foi.</p>
+            </section>
+          )}
+          <div className="rounded-2xl border-2 border-fg bg-surface p-6 sm:p-10">
+            {summary && <h2 className={`${label} mb-6 text-fg-2`}>Texte officiel</h2>}
+            <div className="max-w-[68ch] space-y-5 text-[1.0625rem] leading-[1.8] sm:text-lg">
+              {a.texte
+                .split(/\n+/)
+                .filter((p) => p.trim())
+                .map((p, i) => (
+                  <p key={i}>
+                    {linkRefs(p, a).map((part, j) =>
+                      part.id ? (
+                        <Link key={j} href={`/article/${part.id}`} className="underline decoration-signal decoration-2 underline-offset-4 hover:bg-signal/20">{part.text}</Link>
+                      ) : (
+                        part.text
+                      ),
+                    )}
+                  </p>
+                ))}
+            </div>
           </div>
         </div>
 
@@ -120,6 +160,43 @@ export default async function ArticlePage({ params }: PageProps<"/article/[id]">
         <div className="mt-10">
           {related.length > 0 ? <FaqIndex faqs={related} showTheme /> : <Empty>Aucune question ne cite encore cet article.</Empty>}
         </div>
+
+        {lettres.length > 0 && (
+          <div className="mt-16">
+            <h2 className={`${display} text-2xl leading-none sm:text-4xl`}>Modèles de lettres</h2>
+            <div className="mt-8"><LettreCards lettres={lettres} from={`/article/${a.id}`} /></div>
+          </div>
+        )}
+
+        {topics.length > 0 && (
+          <div className="mt-16">
+            <h2 className={`${display} text-2xl leading-none sm:text-4xl`}>Sujets liés</h2>
+            <ul className="mt-6 flex flex-wrap gap-3">
+              {topics.map((t) => (
+                <li key={t.slug}>
+                  <Link href={`/sujets/${t.slug}`} className="inline-flex items-center gap-2 border-2 border-fg px-4 py-2 font-semibold hover:bg-fg hover:text-bg">
+                    {t.title} <ArrowRight aria-hidden className="size-4" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {coCited.length > 0 && (
+          <div className="mt-16">
+            <h2 className={`${display} text-2xl leading-none sm:text-4xl`}>Souvent cités avec cet article</h2>
+            <ul className="mt-6 flex flex-wrap gap-2">
+              {coCited.map((c) => (
+                <li key={c.id}>
+                  <Link href={`/article/${c.id}`} className="inline-flex items-center gap-1 rounded-full border-[1.5px] border-fg px-3 py-1 font-mono text-sm font-semibold hover:bg-fg hover:text-bg">
+                    Art. {c.num} · {(CODES[c.code as keyof typeof CODES]?.name ?? c.code).replace(/ \(.*\)$/, "")}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </section>
     </>
   );

@@ -1,5 +1,6 @@
-// Bundles legal texts + reviewed FAQ rows for production (applied at startup by importContent in src/lib/db.ts).
+// Bundles legal texts + reviewed FAQ rows (+ article summaries with --summaries) for production (applied at startup by importContent in src/lib/db.ts).
 // npx tsx scripts/export-content.ts <bundle-name> [--codes code-a,code-b] [--faq seed/generated/x.json ...]
+//   --summaries: every row of article_summaries (upserts, so re-exporting the same bundle name is enough)
 //   --diff-from <old.db>: with --codes, only articles added or changed since that DB, plus ids to delete (after a re-ingest)
 //   → seed/content/<bundle-name>.json.gz   (re-export after changes: a new hash re-applies the bundle)
 import fs from "node:fs";
@@ -26,14 +27,15 @@ async function main() {
     deleteArticleIds = [...before.keys()].filter((id) => !now.has(id));
     articles = articles.filter((a) => before.get(a.id) !== sig(a as unknown as Record<string, unknown>));
   }
+  const summaries = argv.includes("--summaries") ? db.prepare("SELECT article_id, texte_sha, summary, points, model FROM article_summaries ORDER BY article_id").all() : [];
   const faq = faqFiles.flatMap((f) => JSON.parse(fs.readFileSync(f, "utf8")) as unknown[]);
   const missing = argv.includes("--diff-from") ? [] : codes.filter((c) => !articles.some((a) => a.code === c));
   if (missing.length) throw new Error(`no articles for: ${missing.join(", ")} (ingest first)`);
   const out = path.join("seed", "content", `${name}.json.gz`);
   fs.mkdirSync(path.dirname(out), { recursive: true });
-  const buf = gzipSync(JSON.stringify({ articles, faq, ...(deleteArticleIds.length ? { deleteArticleIds } : {}) }), { level: 9 });
+  const buf = gzipSync(JSON.stringify({ articles, faq, ...(summaries.length ? { summaries } : {}), ...(deleteArticleIds.length ? { deleteArticleIds } : {}) }), { level: 9 });
   fs.writeFileSync(out, buf);
-  console.log(`${out}: ${articles.length} articles, ${faq.length} faq, ${deleteArticleIds.length} deletions, ${(buf.length / 1024 / 1024).toFixed(1)} MB`);
+  console.log(`${out}: ${articles.length} articles, ${faq.length} faq, ${summaries.length} summaries, ${deleteArticleIds.length} deletions, ${(buf.length / 1024 / 1024).toFixed(1)} MB`);
 }
 
 main().catch((e) => {
