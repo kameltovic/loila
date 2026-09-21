@@ -41,6 +41,7 @@ function image(parts: string[]) {
     const m = getMetier(b);
     return m ? renderOg({ kind: "topic", title: `${m.h1} ${m.h1Accent}`, label: `Pour les pros · ${m.title}`, theme: m.theme }) : null;
   }
+  if (a === "relance-amiable" && parts.length === 1) return renderOg({ kind: "topic", title: "Un impayé ? Relancez d’abord à l’amiable", label: "Relances et mise en demeure · Modèles gratuits" });
   if (a === "modeles-lettres" && parts.length === 1) return renderOg({ kind: "topic", title: "La bonne lettre, avec le bon article", label: "Modèles de lettres gratuits" });
   if (a === "modeles-lettres" && parts.length === 2) {
     const l = getLettre(b);

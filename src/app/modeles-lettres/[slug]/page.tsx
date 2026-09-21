@@ -5,7 +5,7 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import LetterForm from "@/components/LetterForm";
 import { LettreCards } from "@/components/Lettres";
 import { FaqIndex, SectionHead, block, btnPrimary, container, display, label } from "@/components/ui";
-import { getLettre, getLettres, lettreFaqs, lettreUrl } from "@/lib/lettres";
+import { LETTRE_GROUPS, getLettre, getLettres, lettreFaqs, lettreUrl } from "@/lib/lettres";
 import { refArticles } from "@/lib/metiers";
 import { JsonLd, SITE_NAME, SITE_URL, abs, breadcrumbJsonLd, contentUpdatedAt, pageMetadata } from "@/lib/seo";
 import { CODES, THEMES } from "@/lib/themes";
@@ -28,11 +28,13 @@ export default async function LettrePage({ params }: PageProps<"/modeles-lettres
   const tips = l.tips.map((t) => ({ ...t, articles: refArticles(t.refs) }));
   const cited = [...new Map(tips.flatMap((t) => t.articles).map((a) => [a.id, a])).values()];
   const theme = THEMES.find((t) => t.slug === l.theme);
-  // Same theme first, so a tenant sees the other tenant letters before the employment ones.
+  // Same family, then same theme first, so a tenant sees the other tenant letters before the employment ones.
+  const near = (x: typeof l) => (l.group && x.group === l.group ? 2 : 0) + (x.theme === l.theme ? 1 : 0);
   const others = getLettres()
     .filter((x) => x.slug !== l.slug)
-    .sort((a, b) => Number(b.theme === l.theme) - Number(a.theme === l.theme))
-    .slice(0, 3);
+    .sort((a, b) => near(b) - near(a))
+    .slice(0, l.group ? 6 : 3);
+  const group = l.group ? LETTRE_GROUPS[l.group] : undefined;
   let n = 0;
   const num = () => String(++n).padStart(2, "0");
 
@@ -40,7 +42,12 @@ export default async function LettrePage({ params }: PageProps<"/modeles-lettres
     <>
       <JsonLd
         data={[
-          breadcrumbJsonLd([{ name: "Accueil", path: "/" }, { name: "Modèles de lettres", path: "/modeles-lettres" }, { name: l.title, path }]),
+          breadcrumbJsonLd([
+            { name: "Accueil", path: "/" },
+            { name: "Modèles de lettres", path: "/modeles-lettres" },
+            ...(group ? [{ name: group.title, path: group.href }] : []),
+            { name: l.title, path },
+          ]),
           {
             "@context": "https://schema.org",
             "@type": "WebPage",
@@ -62,6 +69,12 @@ export default async function LettrePage({ params }: PageProps<"/modeles-lettres
             <span aria-hidden>/</span>
             <Link href="/modeles-lettres" className="underline-offset-4 hover:underline">Modèles de lettres</Link>
             <span aria-hidden>/</span>
+            {group && (
+              <>
+                <Link href={group.href} className="underline-offset-4 hover:underline">{group.title}</Link>
+                <span aria-hidden>/</span>
+              </>
+            )}
             <span aria-current="page">{l.title}</span>
           </nav>
           <h1 className={`${display} mt-12 max-w-5xl text-[clamp(2.5rem,7vw,5.5rem)] leading-[0.92] text-balance sm:mt-16`}>
@@ -149,6 +162,11 @@ export default async function LettrePage({ params }: PageProps<"/modeles-lettres
           <SectionHead num={num()} kicker="Autres modèles" id="others-title" title="Voir aussi" />
           <div className="mt-10"><LettreCards lettres={others} from={path} /></div>
           <p className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
+            {group && (
+              <Link href={group.href} className="inline-flex items-center gap-1.5 font-semibold underline decoration-signal decoration-2 underline-offset-4">
+                Le guide : relancer un impayé étape par étape <ArrowRight aria-hidden className="size-4" />
+              </Link>
+            )}
             <Link href="/modeles-lettres" className="inline-flex items-center gap-1.5 font-semibold underline decoration-signal decoration-2 underline-offset-4">
               Tous les modèles de lettres <ArrowRight aria-hidden className="size-4" />
             </Link>

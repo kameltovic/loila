@@ -1,0 +1,89 @@
+{
+  "slug": "relance-facture-impayee",
+  "title": "Relance de facture impayée",
+  "theme": "sujets",
+  "group": "relances",
+  "seo": {
+    "title": "Lettre de relance facture impayée : modèle gratuit",
+    "description": "Modèle gratuit de relance amiable pour facture impayée, client pro ou particulier : 1re relance courtoise, 2e relance ferme, pénalités et indemnité de 40 €."
+  },
+  "h1": "Facture impayée :",
+  "h1Accent": "la relance amiable",
+  "intro": "Avant la mise en demeure, une relance écrite règle la plupart des retards. Choisissez votre type de client et le niveau de relance : les bonnes règles de pénalités s’ajoutent toutes seules. Aucune inscription, rien n’est envoyé à nos serveurs.",
+  "when": [
+    "Un client (entreprise ou particulier) n’a pas payé à l’échéance",
+    "Vous voulez relancer sans abîmer la relation commerciale",
+    "Vous voulez une trace écrite avant une éventuelle mise en demeure"
+  ],
+  "fields": [
+    { "name": "entreprise", "label": "Votre entreprise", "type": "text", "placeholder": "Atelier Martin, SIRET 123 456 789 00012" },
+    { "name": "adresse", "label": "Votre adresse", "type": "textarea", "placeholder": "12 rue des Artisans\n69003 Lyon" },
+    { "name": "client", "label": "Client", "type": "text", "placeholder": "Société Exemple SAS" },
+    { "name": "adresse_client", "label": "Adresse du client", "type": "textarea", "placeholder": "Service comptabilité\n1 avenue de la République\n69002 Lyon" },
+    {
+      "name": "type_client",
+      "label": "Votre client est",
+      "type": "select",
+      "options": [
+        { "label": "Un professionnel (entreprise, association…)", "text": "Pour rappel, en application de l’article L. 441-10 du Code de commerce, des pénalités de retard sont exigibles de plein droit dès le lendemain de l’échéance, ainsi qu’une indemnité forfaitaire pour frais de recouvrement de 40 euros (article D. 441-5 du même code)." },
+        { "label": "Un particulier", "text": "Je vous rappelle que ce montant reste dû et qu’à défaut de règlement, il pourra être majoré des intérêts au taux légal à compter d’une mise en demeure (article 1231-6 du Code civil)." }
+      ]
+    },
+    { "name": "facture", "label": "N° de facture", "type": "text", "placeholder": "F-2026-042" },
+    { "name": "date_facture", "label": "Date de la facture", "type": "date" },
+    { "name": "echeance", "label": "Date d’échéance", "type": "date" },
+    { "name": "montant", "label": "Montant TTC restant dû (€)", "type": "text", "placeholder": "1 280,00" },
+    { "name": "objet", "label": "Objet de la facture (pour…)", "type": "text", "placeholder": "des travaux de peinture du 3 au 7 août 2026" },
+    {
+      "name": "niveau",
+      "label": "Niveau de relance",
+      "type": "select",
+      "options": [
+        { "label": "1re relance : courtoise (simple oubli ?)", "text": "Il s’agit sans doute d’un simple oubli. Je vous remercie de bien vouloir procéder au règlement dans les meilleurs délais, ou de me le signaler si ce paiement a déjà été effectué." },
+        { "label": "2e relance : ferme, avant mise en demeure", "text": "Malgré ma précédente relance, cette facture reste impayée. Je vous demande de procéder au règlement sous {{delai}}. À défaut, je serai contraint(e) de vous adresser une mise en demeure, puis d’engager une procédure de recouvrement." }
+      ]
+    },
+    {
+      "name": "geste",
+      "label": "Proposer une solution",
+      "type": "select",
+      "options": [
+        { "label": "Non, paiement intégral", "text": "" },
+        { "label": "Proposer un paiement en plusieurs fois", "text": "Si vous rencontrez une difficulté ponctuelle, je suis ouvert(e) à un paiement échelonné : contactez-moi pour en convenir par écrit." },
+        { "label": "Demander si la facture est contestée", "text": "Si cette facture appelle de votre part une réserve ou une contestation, je vous remercie de me l’indiquer par écrit afin que nous puissions l’examiner ensemble." }
+      ]
+    },
+    { "name": "paiement", "label": "Moyen de paiement à rappeler", "type": "text", "placeholder": "virement sur l’IBAN FR76 1234 5678 9012 3456 7890 123" },
+    { "name": "delai", "label": "Délai accordé (2e relance)", "type": "text", "placeholder": "8 jours" },
+    { "name": "ville", "label": "Ville", "type": "text", "placeholder": "Lyon" },
+    { "name": "date", "label": "Date de la lettre", "type": "date" }
+  ],
+  "body": "{{entreprise}}\n{{adresse}}\n\n{{client}}\n{{adresse_client}}\n\nÀ {{ville}}, le {{date}}\n\nObjet : relance, facture n° {{facture}} du {{date_facture}}\n\nMadame, Monsieur,\n\nSauf erreur de notre part, la facture n° {{facture}} du {{date_facture}}, d’un montant de {{montant}} euros, pour {{objet}}, arrivée à échéance le {{echeance}}, n’a pas été réglée à ce jour.\n\n{{niveau}}\n\n{{type_client}}\n\n{{geste}}\n\nPour mémoire, le règlement peut être effectué par {{paiement}}. Vous trouverez ci-joint une copie de la facture.\n\nJe vous prie d’agréer, Madame, Monsieur, l’expression de mes salutations distinguées.\n\n{{entreprise}}",
+  "tips": [
+    {
+      "title": "Entre professionnels, pénalités et 40 € sont automatiques",
+      "detail": "Les pénalités de retard courent dès le lendemain de l’échéance, sans rappel, au taux prévu dans vos conditions (au moins trois fois le taux d’intérêt légal). S’y ajoute une indemnité forfaitaire de 40 € pour frais de recouvrement. Vous pouvez choisir de ne pas les réclamer à la première relance pour préserver la relation.",
+      "refs": ["code-commerce:L441-10", "code-commerce:D441-5"],
+      "link": { "href": "/sujets/paiement-travaux-entreprise/penalites-retard-indemnite-40-euros", "label": "Pénalités de retard et indemnité de 40 €" }
+    },
+    {
+      "title": "Les délais de paiement maximum entre professionnels",
+      "detail": "Sans accord particulier, 30 jours après la livraison ou la prestation. Le délai convenu ne peut pas dépasser 60 jours après la date de la facture, ou 45 jours fin de mois si le contrat le prévoit expressément.",
+      "refs": ["code-commerce:L441-10"],
+      "link": { "href": "/sujets/paiement-travaux-entreprise/delai-paiement-facture-travaux-professionnel", "label": "Quel délai de paiement maximum ?" }
+    },
+    {
+      "title": "Client particulier : 2 ans pour agir",
+      "detail": "L’action d’un professionnel contre un consommateur pour les biens ou services fournis se prescrit par deux ans. Ne laissez pas traîner les relances : une facture oubliée peut devenir impossible à réclamer.",
+      "refs": ["code-consommation:L218-2"],
+      "link": { "href": "/sujets/dettes-et-recouvrement/prescription-dette-consommateur-2-ans", "label": "Une facture se prescrit-elle en deux ans ?" }
+    },
+    {
+      "title": "La relance n’est pas une mise en demeure",
+      "detail": "Une relance amiable garde la porte ouverte. Si elle reste sans effet, l’étape suivante est la mise en demeure, de préférence en recommandé avec accusé de réception : c’est elle qui fait courir les intérêts de retard au taux légal.",
+      "refs": ["code-civil:1344", "code-civil:1344-1"],
+      "link": { "href": "/modeles-lettres/mise-en-demeure-de-payer", "label": "Modèle : mise en demeure de payer" }
+    }
+  ],
+  "faqSlugs": ["penalites-retard-indemnite-40-euros", "delai-paiement-facture-travaux-professionnel", "prescription-dette-consommateur-2-ans", "prescription-dette-5-ans", "societe-recouvrement-frais", "travaux-supplementaires-sans-accord-ecrit"]
+}

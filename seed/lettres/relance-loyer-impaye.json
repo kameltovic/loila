@@ -1,0 +1,84 @@
+{
+  "slug": "relance-loyer-impaye",
+  "title": "Relance de loyer impayé",
+  "theme": "logement",
+  "group": "relances",
+  "seo": {
+    "title": "Lettre de relance loyer impayé : modèle gratuit",
+    "description": "Bailleur : modèle gratuit de relance amiable pour loyer impayé, avant le commandement de payer. Échéancier, garant, aides : les bonnes options en un clic."
+  },
+  "h1": "Loyer impayé :",
+  "h1Accent": "la relance amiable",
+  "intro": "Un retard de loyer se règle souvent à l’amiable, avant tout commandement de payer. Cette lettre rappelle la dette, propose une solution et garde une trace. Aucune inscription, rien n’est envoyé à nos serveurs.",
+  "when": [
+    "Vous êtes bailleur et un loyer (ou des charges) n’a pas été payé",
+    "Vous voulez trouver une solution avant d’engager des frais de commissaire de justice",
+    "Vous voulez prévenir le garant ou orienter le locataire vers une aide"
+  ],
+  "fields": [
+    { "name": "bailleur", "label": "Vos prénom et nom (ou votre SCI)", "type": "text", "placeholder": "Dominique Dupont" },
+    { "name": "adresse_bailleur", "label": "Votre adresse", "type": "textarea", "placeholder": "3 place Bellecour\n69002 Lyon" },
+    { "name": "locataire", "label": "Prénom et nom du locataire", "type": "text", "placeholder": "Camille Martin" },
+    { "name": "adresse_logement", "label": "Adresse du logement loué", "type": "textarea", "placeholder": "12 rue des Lilas, appartement 4B\n69003 Lyon" },
+    { "name": "periode", "label": "Loyer(s) concerné(s)", "type": "text", "placeholder": "loyer du mois de septembre 2026" },
+    { "name": "montant", "label": "Montant restant dû, charges comprises (€)", "type": "text", "placeholder": "850" },
+    {
+      "name": "niveau",
+      "label": "Situation",
+      "type": "select",
+      "options": [
+        { "label": "1er retard : relance courtoise", "text": "Il s’agit peut-être d’un oubli ou d’un incident de paiement. Je vous remercie de régulariser la situation dans les meilleurs délais, ou de me contacter si vous rencontrez une difficulté." },
+        { "label": "Retard persistant : relance ferme", "text": "Malgré mes précédentes demandes, cette somme reste impayée. Je vous demande de régulariser la situation sous {{delai}}. À défaut, je serai contraint(e) de vous faire délivrer un commandement de payer par un commissaire de justice, ce qui entraînera des frais et pourra conduire à une procédure de résiliation du bail." }
+      ]
+    },
+    {
+      "name": "geste",
+      "label": "Proposer une solution",
+      "type": "select",
+      "options": [
+        { "label": "Proposer un échéancier", "text": "Si vous traversez une difficulté passagère, je suis prêt(e) à vous accorder un échéancier de paiement, que nous fixerons par écrit, en plus du loyer courant." },
+        { "label": "Orienter vers les aides (FSL, CAF)", "text": "Si vous rencontrez des difficultés financières, vous pouvez solliciter une aide du fonds de solidarité pour le logement (FSL) de votre département, ou vous rapprocher de votre caisse d’allocations familiales." },
+        { "label": "Rien à ajouter", "text": "" }
+      ]
+    },
+    {
+      "name": "garant",
+      "label": "Garant",
+      "type": "select",
+      "options": [
+        { "label": "Pas de garant (ou ne pas le mentionner)", "text": "" },
+        { "label": "Mentionner le garant", "text": "Je vous informe que, faute de régularisation, je devrai également me tourner vers la personne qui s’est portée caution pour ce bail." }
+      ]
+    },
+    { "name": "delai", "label": "Délai accordé (relance ferme)", "type": "text", "placeholder": "8 jours" },
+    { "name": "ville", "label": "Ville", "type": "text", "placeholder": "Lyon" },
+    { "name": "date", "label": "Date de la lettre", "type": "date" }
+  ],
+  "body": "{{bailleur}}\n{{adresse_bailleur}}\n\n{{locataire}}\n{{adresse_logement}}\n\nÀ {{ville}}, le {{date}}\n\nObjet : relance pour loyer impayé, logement situé {{adresse_logement}}\n\nMadame, Monsieur,\n\nSauf erreur de ma part, je n’ai pas reçu le paiement du {{periode}}, pour un montant de {{montant}} euros, charges comprises.\n\n{{niveau}}\n\n{{geste}}\n\n{{garant}}\n\nJe reste à votre disposition pour en parler et vous prie d’agréer, Madame, Monsieur, l’expression de mes salutations distinguées.\n\n{{bailleur}}",
+  "tips": [
+    {
+      "title": "Payer le loyer aux termes convenus : une obligation du locataire",
+      "detail": "C’est la première obligation du locataire. La relance amiable n’est pas obligatoire, mais elle permet souvent de régler un simple retard sans frais.",
+      "refs": ["loi-89-462:7"]
+    },
+    {
+      "title": "Ensuite : le commandement de payer, 6 semaines",
+      "detail": "Si le bail contient une clause résolutoire, elle ne joue que six semaines après un commandement de payer délivré par un commissaire de justice et resté sans effet. Ce commandement doit notamment mentionner le décompte de la dette et la possibilité de saisir le FSL.",
+      "refs": ["loi-89-462:24"],
+      "link": { "href": "/sujets/loyers-impayes-bailleur/clause-resolutoire-impayes-bailleur", "label": "Comment mettre en œuvre la clause résolutoire ?" }
+    },
+    {
+      "title": "Pensez au garant",
+      "detail": "Si le bail est garanti par une caution, le commandement de payer doit lui être signifié dans les quinze jours. La prévenir dès la relance permet souvent de débloquer la situation.",
+      "refs": ["loi-89-462:24"],
+      "link": { "href": "/sujets/loyers-impayes-bailleur/actionner-garant-loyers-impayes", "label": "Comment se retourner contre le garant ?" }
+    },
+    {
+      "title": "Ne laissez pas la dette grossir",
+      "detail": "Un bailleur a un délai limité pour réclamer des loyers impayés. Mieux vaut relancer tôt et garder une trace écrite de chaque échange et de chaque paiement partiel.",
+      "refs": [],
+      "link": { "href": "/sujets/loyers-impayes-bailleur/prescription-loyers-impayes", "label": "Combien de temps pour réclamer des loyers impayés ?" }
+    }
+  ],
+  "faqSlugs": ["clause-resolutoire-impayes-bailleur", "actionner-garant-loyers-impayes", "prescription-loyers-impayes", "delai-commandement-de-payer", "assurance-loyers-impayes-garant"]
+}

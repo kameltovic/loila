@@ -1,0 +1,86 @@
+{
+  "slug": "relance-argent-prete",
+  "title": "Relance pour récupérer de l’argent prêté",
+  "theme": "sujets",
+  "group": "relances",
+  "seo": {
+    "title": "Récupérer de l’argent prêté : lettre de relance gratuite",
+    "description": "Vous avez prêté de l’argent à un proche qui ne rembourse pas ? Modèle gratuit de relance amiable, avec ou sans reconnaissance de dette, avant mise en demeure."
+  },
+  "h1": "Argent prêté non remboursé :",
+  "h1Accent": "la relance amiable",
+  "intro": "Réclamer de l’argent à un ami ou à un proche est délicat. Cette lettre reste cordiale, rappelle le prêt et propose une solution. Aucune inscription, rien n’est envoyé à nos serveurs.",
+  "when": [
+    "Vous avez prêté de l’argent à un ami, un proche ou un collègue",
+    "La date de remboursement convenue est passée",
+    "Vous voulez une trace écrite du prêt et de votre demande"
+  ],
+  "fields": [
+    { "name": "nom", "label": "Vos prénom et nom", "type": "text", "placeholder": "Camille Martin" },
+    { "name": "adresse", "label": "Votre adresse", "type": "textarea", "placeholder": "12 rue des Lilas\n69003 Lyon" },
+    { "name": "emprunteur", "label": "Prénom et nom de l’emprunteur", "type": "text", "placeholder": "Alex Durand" },
+    { "name": "adresse_emprunteur", "label": "Adresse de l’emprunteur", "type": "textarea", "placeholder": "8 rue Nationale\n59000 Lille" },
+    { "name": "montant", "label": "Somme prêtée restant due (€)", "type": "text", "placeholder": "2 000" },
+    { "name": "date_pret", "label": "Date du prêt", "type": "date" },
+    { "name": "echeance", "label": "Date de remboursement convenue", "type": "text", "placeholder": "fin juin 2026" },
+    {
+      "name": "preuve",
+      "label": "Ce qui prouve le prêt",
+      "type": "select",
+      "options": [
+        { "label": "Une reconnaissance de dette signée", "text": "Comme en atteste la reconnaissance de dette que vous avez signée le {{date_pret}}, vous vous étiez engagé(e) à me rembourser cette somme." },
+        { "label": "Un virement et des messages", "text": "Je vous ai versé cette somme le {{date_pret}}, et nous étions convenus par écrit, comme en attestent nos échanges, qu’il s’agissait d’un prêt." },
+        { "label": "Rien d’écrit (prêt de la main à la main)", "text": "Je vous ai prêté cette somme le {{date_pret}}, et nous étions convenus que vous me la rembourseriez." }
+      ]
+    },
+    {
+      "name": "niveau",
+      "label": "Niveau de relance",
+      "type": "select",
+      "options": [
+        { "label": "1re relance : amicale", "text": "Je reviens vers vous par écrit pour que nous puissions régler cette question simplement, sans que cela n’abîme nos relations." },
+        { "label": "2e relance : ferme, avant mise en demeure", "text": "Malgré mes demandes, je n’ai reçu aucun remboursement. Je vous demande de me rembourser sous {{delai}}. À défaut, je vous adresserai une mise en demeure puis engagerai les démarches nécessaires au recouvrement de cette somme." }
+      ]
+    },
+    {
+      "name": "geste",
+      "label": "Proposer une solution",
+      "type": "select",
+      "options": [
+        { "label": "Proposer un remboursement en plusieurs fois", "text": "Si vous ne pouvez pas tout rembourser en une fois, je suis prêt(e) à accepter des versements réguliers : proposez-moi un échéancier que nous confirmerons par écrit." },
+        { "label": "Non, remboursement intégral", "text": "" }
+      ]
+    },
+    { "name": "delai", "label": "Délai accordé (2e relance)", "type": "text", "placeholder": "15 jours" },
+    { "name": "ville", "label": "Ville", "type": "text", "placeholder": "Lyon" },
+    { "name": "date", "label": "Date de la lettre", "type": "date" }
+  ],
+  "body": "{{nom}}\n{{adresse}}\n\n{{emprunteur}}\n{{adresse_emprunteur}}\n\nÀ {{ville}}, le {{date}}\n\nObjet : remboursement de la somme de {{montant}} euros\n\nBonjour,\n\n{{preuve}} Le remboursement était prévu pour {{echeance}}. À ce jour, la somme de {{montant}} euros reste due.\n\n{{niveau}}\n\n{{geste}}\n\nJe vous remercie de me répondre rapidement, et reste à votre disposition pour en parler.\n\nBien cordialement,\n\n{{nom}}",
+  "tips": [
+    {
+      "title": "Un prêt doit être remboursé",
+      "detail": "Celui qui emprunte une somme d’argent est tenu de rendre la même somme au terme convenu. Le tout est de pouvoir prouver qu’il s’agissait d’un prêt, et non d’un don.",
+      "refs": ["code-civil:1892", "code-civil:1902"],
+      "link": { "href": "/sujets/dettes-et-recouvrement/pret-argent-ami-preuve", "label": "Comment récupérer de l’argent prêté à un ami ?" }
+    },
+    {
+      "title": "Au-delà de 1 500 €, il faut un écrit",
+      "detail": "Pour un prêt dont le montant dépasse le seuil fixé par décret (1 500 €), la preuve se fait par écrit signé, comme une reconnaissance de dette. Sans écrit, gardez tout ce qui peut servir : virement, messages, e-mails où l’emprunteur reconnaît le prêt.",
+      "refs": ["code-civil:1359", "code-civil:1353"],
+      "link": { "href": "/sujets/dettes-et-recouvrement/reconnaissance-dette-valeur", "label": "Quelle valeur pour une reconnaissance de dette ?" }
+    },
+    {
+      "title": "Vous avez 5 ans pour agir",
+      "detail": "L’action en remboursement se prescrit en principe par cinq ans à compter du moment où vous pouviez agir, en pratique la date de remboursement prévue.",
+      "refs": ["code-civil:2224"],
+      "link": { "href": "/sujets/dettes-et-recouvrement/prescription-dette-5-ans", "label": "Au bout de combien de temps une dette est-elle prescrite ?" }
+    },
+    {
+      "title": "Faites confirmer tout accord par écrit",
+      "detail": "Si l’emprunteur répond en reconnaissant la dette ou en proposant un échéancier, gardez sa réponse : c’est une preuve précieuse. Sans réponse, l’étape suivante est la mise en demeure.",
+      "refs": [],
+      "link": { "href": "/modeles-lettres/mise-en-demeure-de-payer", "label": "Modèle : mise en demeure de payer" }
+    }
+  ],
+  "faqSlugs": ["pret-argent-ami-preuve", "reconnaissance-dette-valeur", "prescription-dette-5-ans"]
+}

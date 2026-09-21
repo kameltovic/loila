@@ -7,6 +7,8 @@ import { Empty, FaqIndex, SectionHead, TopicList, container, display, label } fr
 import { JsonLd, breadcrumbJsonLd, clip, faqJsonLd, pageMetadata } from "@/lib/seo";
 import { faqUrl } from "@/lib/themes";
 import { getCategories, getTopic, getTopicFaqs } from "@/lib/topics";
+import { LettreCards } from "@/components/Lettres";
+import { getLettres } from "@/lib/lettres";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +30,8 @@ export default async function TopicPage({ params }: PageProps<"/sujets/[topic]">
   const category = getCategories().find((c) => c.slug === topic.category);
   const faqs = getTopicFaqs(topic.slug);
   const related = (category?.topics ?? []).filter((t) => t.slug !== topic.slug);
+  const faqSlugs = new Set(faqs.map((f) => f.slug));
+  const lettres = getLettres().filter((l) => l.faqSlugs.some((s) => faqSlugs.has(s)));
   const path = `/sujets/${topic.slug}`;
   let n = 0;
   const num = () => String(++n).padStart(2, "0");
@@ -80,6 +84,15 @@ export default async function TopicPage({ params }: PageProps<"/sujets/[topic]">
           </div>
         </div>
       </section>
+
+      {lettres.length > 0 && (
+        <section aria-labelledby="lettres-title" className="pb-16 sm:pb-24">
+          <div className={container}>
+            <SectionHead num={num()} kicker="Modèles de lettres" id="lettres-title" title="Passer à l’action" />
+            <div className="mt-12"><LettreCards lettres={lettres} from={path} /></div>
+          </div>
+        </section>
+      )}
 
       <section id="question" aria-labelledby="ask-title" className="scroll-mt-20 pb-16 sm:pb-24">
         <div className={container}>

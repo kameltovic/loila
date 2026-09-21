@@ -53,7 +53,7 @@ export function llmsTxt() {
   }
   const lettres = getLettres();
   if (lettres.length) {
-    out.push("\n## Modèles de lettres\n");
+    out.push("\n## Modèles de lettres\n", `- [Relance amiable d'un impayé](${SITE_URL}/relance-amiable) : modèles de relance et de mise en demeure, étapes jusqu'au juge.`);
     for (const l of lettres) out.push(`- [${l.title}](${SITE_URL}${lettreUrl(l)}) : ${l.seo.description}`);
   }
   const conventions = getConventions();

@@ -2,7 +2,7 @@
 // Always: every {{placeholder}} has a field, selects have options, slugs/themes are valid.
 // With a populated DB (data/loila.db): cited articles, FAQ slugs and internal tip links all resolve.
 import assert from "node:assert/strict";
-import { getLettres, lettresForFaq } from "../src/lib/lettres";
+import { LETTRE_GROUPS, getLettres, lettresForFaq } from "../src/lib/lettres";
 import { THEMES, faqUrl } from "../src/lib/themes";
 
 const lettres = getLettres();
@@ -14,7 +14,10 @@ for (const l of lettres) {
   const texts = [l.body, ...l.fields.flatMap((f) => f.options?.map((o) => o.text) ?? [])];
   for (const t of texts) for (const [, name] of t.matchAll(/\{\{(\w+)\}\}/g)) assert.ok(names.has(name), `${l.slug}: {{${name}}} has no field`);
   for (const f of l.fields) if (f.type === "select") assert.ok(f.options?.length, `${l.slug}: select ${f.name} without options`);
-  assert.ok(THEMES.some((t) => t.slug === l.theme), `${l.slug}: unknown theme ${l.theme}`);
+  assert.ok(l.theme === "sujets" || THEMES.some((t) => t.slug === l.theme), `${l.slug}: unknown theme ${l.theme}`);
+  assert.ok(!l.group || l.group in LETTRE_GROUPS, `${l.slug}: unknown group ${l.group}`);
+  // A letter outside the THEMES hubs must belong to a group, or no index would list it.
+  assert.ok(l.group || l.theme !== "sujets", `${l.slug}: "sujets" letter without group`);
   assert.ok(l.seo.title.length <= 60 && l.seo.description.length <= 160, `${l.slug}: SEO title/description too long`);
 }
 
@@ -25,7 +28,7 @@ async function withDb() {
   const paths = new Set(
     (getDb().prepare("SELECT theme, slug, topic FROM faq").all() as { theme: string; slug: string; topic: string | null }[]).map(faqUrl),
   );
-  const pages = new Set(["/conventions", ...THEMES.map((t) => `/${t.slug}`), ...lettres.map((l) => `/modeles-lettres/${l.slug}`)]);
+  const pages = new Set(["/conventions", ...THEMES.map((t) => `/${t.slug}`), ...lettres.map((l) => `/modeles-lettres/${l.slug}`), ...Object.values(LETTRE_GROUPS).map((g) => g.href)]);
   for (const l of lettres) {
     for (const t of l.tips) {
       assert.equal(refArticles(t.refs).length, t.refs.length, `${l.slug}: unknown article in ${t.refs.join(", ")}`);

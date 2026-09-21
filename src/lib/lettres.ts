@@ -12,10 +12,17 @@ export type LetterField = {
   options?: { label: string; text: string }[];
 };
 
+/** Cross-theme families of letters, each with a hub page. */
+export const LETTRE_GROUPS = {
+  relances: { title: "Relances amiables et impayés", href: "/relance-amiable" },
+} as const;
+
 export type Lettre = {
   slug: string;
   title: string;
+  /** THEMES slug (colour + listed on that theme hub), or "sujets" for everyday-life letters. */
   theme: string;
+  group?: keyof typeof LETTRE_GROUPS;
   seo: { title: string; description: string };
   h1: string;
   h1Accent: string;

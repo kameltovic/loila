@@ -29,6 +29,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url("/pour", 0.8),
     ...getMetiers().map((m) => url(`/pour/${m.slug}`, 0.9)),
     url("/modeles-lettres", 0.8),
+    url("/relance-amiable", 0.9),
     ...getLettres().map((l) => url(lettreUrl(l), 0.9)),
     ...getTopics().map((t) => url(`/sujets/${t.slug}`, 0.8)),
     ...getConventions().map((c) => url(conventionUrl(c), 0.8)),

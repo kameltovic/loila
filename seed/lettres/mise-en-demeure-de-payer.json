@@ -1,0 +1,83 @@
+{
+  "slug": "mise-en-demeure-de-payer",
+  "title": "Mise en demeure de payer",
+  "theme": "sujets",
+  "group": "relances",
+  "seo": {
+    "title": "Mise en demeure de payer : modèle de lettre gratuit",
+    "description": "Relances restées sans effet ? Modèle gratuit de mise en demeure de payer (facture, prêt, somme due) : intérêts au taux légal, délai, étapes suivantes."
+  },
+  "h1": "Relances sans effet :",
+  "h1Accent": "la mise en demeure",
+  "intro": "C’est la dernière étape amiable. La mise en demeure fixe un ultime délai, fait courir les intérêts de retard et prépare une éventuelle action en justice. Aucune inscription, rien n’est envoyé à nos serveurs.",
+  "when": [
+    "Vos relances amiables sont restées sans réponse",
+    "Vous voulez faire courir les intérêts de retard",
+    "Vous préparez une procédure de recouvrement ou une injonction de payer"
+  ],
+  "fields": [
+    { "name": "nom", "label": "Vous (nom, ou raison sociale et SIRET)", "type": "text", "placeholder": "Atelier Martin, SIRET 123 456 789 00012" },
+    { "name": "adresse", "label": "Votre adresse", "type": "textarea", "placeholder": "12 rue des Artisans\n69003 Lyon" },
+    { "name": "debiteur", "label": "Débiteur", "type": "text", "placeholder": "Société Exemple SAS" },
+    { "name": "adresse_debiteur", "label": "Adresse du débiteur", "type": "textarea", "placeholder": "1 avenue de la République\n69002 Lyon" },
+    {
+      "name": "origine",
+      "label": "Origine de la dette",
+      "type": "select",
+      "options": [
+        { "label": "Facture impayée", "text": "au titre de la facture n° {{reference}} du {{date_origine}}, restée impayée malgré mes relances" },
+        { "label": "Prêt non remboursé", "text": "au titre de la somme que je vous ai prêtée le {{date_origine}}, que vous n’avez pas remboursée malgré mes relances" },
+        { "label": "Autre somme due (acompte, remboursement…)", "text": "au titre de {{reference}}, somme due depuis le {{date_origine}} et restée impayée malgré mes relances" }
+      ]
+    },
+    { "name": "reference", "label": "Référence (n° de facture ou objet)", "type": "text", "placeholder": "F-2026-042" },
+    { "name": "date_origine", "label": "Date (facture, prêt ou exigibilité)", "type": "date" },
+    { "name": "montant", "label": "Montant réclamé (€)", "type": "text", "placeholder": "1 280,00" },
+    {
+      "name": "type_debiteur",
+      "label": "Le débiteur est",
+      "type": "select",
+      "options": [
+        { "label": "Un particulier", "text": "" },
+        { "label": "Un professionnel (entre entreprises)", "text": "S’y ajoutent les pénalités de retard prévues à l’article L. 441-10 du Code de commerce et l’indemnité forfaitaire pour frais de recouvrement de 40 euros (article D. 441-5 du même code)." }
+      ]
+    },
+    { "name": "delai", "label": "Ultime délai accordé", "type": "text", "placeholder": "8 jours" },
+    {
+      "name": "suite",
+      "label": "Suite annoncée",
+      "type": "select",
+      "options": [
+        { "label": "Saisir le juge (injonction de payer)", "text": "je saisirai la juridiction compétente, notamment par voie d’injonction de payer, afin d’obtenir votre condamnation au paiement de cette somme, des intérêts et des frais" },
+        { "label": "Confier le dossier à un commissaire de justice", "text": "je confierai le recouvrement de cette créance à un commissaire de justice, puis saisirai si nécessaire la juridiction compétente" }
+      ]
+    },
+    { "name": "ville", "label": "Ville", "type": "text", "placeholder": "Lyon" },
+    { "name": "date", "label": "Date de la lettre", "type": "date" }
+  ],
+  "body": "{{nom}}\n{{adresse}}\n\n{{debiteur}}\n{{adresse_debiteur}}\n\nÀ {{ville}}, le {{date}}\n\nLettre recommandée avec demande d’avis de réception\n\nObjet : mise en demeure de payer la somme de {{montant}} euros\n\nMadame, Monsieur,\n\nVous restez me devoir la somme de {{montant}} euros {{origine}}.\n\nPar la présente, je vous mets en demeure de me régler cette somme dans un délai de {{delai}} à compter de la réception de ce courrier.\n\nConformément aux articles 1231-6 et 1344-1 du Code civil, cette mise en demeure fait courir les intérêts au taux légal sur la somme due. {{type_debiteur}}\n\nÀ défaut de paiement dans ce délai, {{suite}}.\n\nCette lettre vaut mise en demeure au sens de l’article 1344 du Code civil.\n\nJe vous prie d’agréer, Madame, Monsieur, l’expression de mes salutations distinguées.\n\n{{nom}}",
+  "tips": [
+    {
+      "title": "Ce que change la mise en demeure",
+      "detail": "Elle constitue officiellement le débiteur en retard. Pour une somme d’argent, elle fait courir les intérêts au taux légal, sans que vous ayez à prouver un préjudice.",
+      "refs": ["code-civil:1344", "code-civil:1344-1", "code-civil:1231-6"]
+    },
+    {
+      "title": "Envoyez-la en recommandé avec accusé de réception",
+      "detail": "La loi n’impose pas de forme précise, mais vous devez pouvoir prouver l’envoi et sa date. Le recommandé avec accusé de réception est la solution la plus simple ; gardez une copie de la lettre.",
+      "refs": []
+    },
+    {
+      "title": "Petites créances : la procédure simplifiée",
+      "detail": "Pour une créance contractuelle sous un montant fixé par décret, un commissaire de justice peut obtenir en un mois un accord de paiement qui vaut titre exécutoire. Elle ne s’applique pas aux factures entre commerçants, et ses frais restent à votre charge.",
+      "refs": ["code-procedures-civiles-execution:L125-1"]
+    },
+    {
+      "title": "Surveillez la prescription",
+      "detail": "En principe 5 ans pour agir. Mais l’action d’un professionnel contre un consommateur se prescrit par 2 ans : une mise en demeure n’interrompt pas ce délai, seule une action en justice ou une reconnaissance de la dette par le débiteur le fait.",
+      "refs": ["code-civil:2224", "code-consommation:L218-2"],
+      "link": { "href": "/sujets/dettes-et-recouvrement/prescription-dette-5-ans", "label": "Au bout de combien de temps une dette est-elle prescrite ?" }
+    }
+  ],
+  "faqSlugs": ["prescription-dette-5-ans", "prescription-dette-consommateur-2-ans", "societe-recouvrement-frais", "pret-argent-ami-preuve", "penalites-retard-indemnite-40-euros"]
+}

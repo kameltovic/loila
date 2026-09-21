@@ -1,0 +1,77 @@
+{
+  "slug": "relance-remboursement-achat",
+  "title": "Relance pour un remboursement d’achat en ligne",
+  "theme": "sujets",
+  "group": "relances",
+  "seo": {
+    "title": "Remboursement non reçu après rétractation : lettre gratuite",
+    "description": "Achat en ligne renvoyé mais pas remboursé ? Modèle gratuit de relance : 14 jours pour rembourser et majorations automatiques (Code de la consommation)."
+  },
+  "h1": "Toujours pas remboursé :",
+  "h1Accent": "relancer le vendeur",
+  "intro": "Après une rétractation, le vendeur a 14 jours pour vous rembourser. Passé ce délai, les sommes dues sont majorées automatiquement. Cette lettre le lui rappelle. Aucune inscription, rien n’est envoyé à nos serveurs.",
+  "when": [
+    "Vous avez exercé votre droit de rétractation sur un achat à distance",
+    "Le vendeur tarde à vous rembourser",
+    "Vous voulez un écrit avant de saisir un médiateur ou le juge"
+  ],
+  "fields": [
+    { "name": "nom", "label": "Vos prénom et nom", "type": "text", "placeholder": "Camille Martin" },
+    { "name": "adresse", "label": "Votre adresse", "type": "textarea", "placeholder": "12 rue des Lilas\n69003 Lyon" },
+    { "name": "vendeur", "label": "Vendeur (nom du site ou de la société)", "type": "text", "placeholder": "Boutique Exemple SAS" },
+    { "name": "adresse_vendeur", "label": "Adresse du vendeur (ou service client)", "type": "textarea", "placeholder": "Service client\n10 rue du Commerce\n75015 Paris" },
+    { "name": "commande", "label": "N° de commande", "type": "text", "placeholder": "CMD-784512" },
+    { "name": "date_commande", "label": "Date de la commande", "type": "date" },
+    { "name": "montant", "label": "Montant à rembourser, livraison comprise (€)", "type": "text", "placeholder": "129,90" },
+    { "name": "date_retractation", "label": "Date à laquelle vous avez informé le vendeur de votre rétractation", "type": "date" },
+    {
+      "name": "retour",
+      "label": "Le produit",
+      "type": "select",
+      "options": [
+        { "label": "Je l’ai renvoyé", "text": "Je vous ai retourné le produit le {{date_retour}}, comme en atteste le justificatif d’expédition joint." },
+        { "label": "Vous avez proposé de venir le récupérer", "text": "Vous vous étiez engagé à récupérer vous-même le produit." },
+        { "label": "Prestation de service (pas de produit à renvoyer)", "text": "" }
+      ]
+    },
+    { "name": "date_retour", "label": "Date du renvoi (si renvoyé)", "type": "date" },
+    {
+      "name": "niveau",
+      "label": "Niveau de relance",
+      "type": "select",
+      "options": [
+        { "label": "1re relance : rappel du délai", "text": "Je vous remercie de procéder au remboursement sans délai, par le même moyen de paiement que celui utilisé lors de la commande." },
+        { "label": "2e relance : ferme, avec majorations", "text": "Faute de remboursement dans le délai légal, les sommes dues sont de plein droit majorées, selon la durée du retard, en application de l’article L. 242-4 du Code de la consommation. Je vous demande de procéder au remboursement, majorations comprises, sous {{delai}}. À défaut, je saisirai le médiateur de la consommation dont vous relevez, puis, si nécessaire, le juge compétent." }
+      ]
+    },
+    { "name": "delai", "label": "Délai accordé (2e relance)", "type": "text", "placeholder": "8 jours" },
+    { "name": "ville", "label": "Ville", "type": "text", "placeholder": "Lyon" },
+    { "name": "date", "label": "Date de la lettre", "type": "date" }
+  ],
+  "body": "{{nom}}\n{{adresse}}\n\n{{vendeur}}\n{{adresse_vendeur}}\n\nÀ {{ville}}, le {{date}}\n\nObjet : remboursement de la commande n° {{commande}}\n\nMadame, Monsieur,\n\nLe {{date_commande}}, j’ai passé la commande n° {{commande}} sur votre site. Le {{date_retractation}}, je vous ai informé de ma décision d’exercer mon droit de rétractation. {{retour}}\n\nConformément à l’article L. 221-24 du Code de la consommation, vous deviez me rembourser la totalité des sommes versées, frais de livraison compris, soit {{montant}} euros, au plus tard dans les quatorze jours suivant l’information de ma rétractation. À ce jour, je n’ai reçu aucun remboursement.\n\n{{niveau}}\n\nJe vous prie d’agréer, Madame, Monsieur, l’expression de mes salutations distinguées.\n\n{{nom}}",
+  "tips": [
+    {
+      "title": "14 jours pour rembourser, livraison comprise",
+      "detail": "Le vendeur doit rembourser la totalité des sommes versées, frais de livraison inclus, au plus tard 14 jours après avoir été informé de votre rétractation. Pour un bien, il peut attendre de l’avoir récupéré ou d’avoir la preuve de son expédition.",
+      "refs": ["code-consommation:L221-24"],
+      "link": { "href": "/sujets/retourner-un-achat-internet/delai-remboursement-retractation", "label": "Dans quel délai le vendeur doit-il rembourser ?" }
+    },
+    {
+      "title": "En retard : des majorations automatiques",
+      "detail": "Taux d’intérêt légal jusqu’à 10 jours de retard, puis 5 %, 10 %, 20 %, 50 % selon la durée du retard, et cinq points de plus par nouveau mois, dans la limite du prix du produit.",
+      "refs": ["code-consommation:L242-4"]
+    },
+    {
+      "title": "Vérifiez que l’achat ouvrait droit à rétractation",
+      "detail": "Certains achats en sont exclus (biens personnalisés, denrées périssables…), et un achat entre particuliers n’en bénéficie pas.",
+      "refs": ["code-consommation:L221-28"],
+      "link": { "href": "/sujets/retourner-un-achat-internet/exceptions-droit-retractation", "label": "Quels achats n’ont pas de droit de rétractation ?" }
+    },
+    {
+      "title": "Gardez les preuves",
+      "detail": "Captures de la commande, e-mail de rétractation, justificatif d’envoi du colis avec numéro de suivi : joignez-en une copie et conservez les originaux.",
+      "refs": []
+    }
+  ],
+  "faqSlugs": ["delai-remboursement-retractation", "exceptions-droit-retractation", "achat-entre-particuliers-retractation", "remboursement-apres-annulation-livraison", "colis-perdu-vendeur-responsable"]
+}

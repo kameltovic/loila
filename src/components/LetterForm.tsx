@@ -22,7 +22,8 @@ function render(body: string, fields: LetterField[], values: Record<string, stri
       if (!v) return `[${f.label.replace(/ \(.*\)$/, "")}]`;
       return f.type === "date" ? frDate(v) : v;
     });
-  return fill(fill(body));
+  // An option with no text (e.g. "rien à ajouter") must not leave a blank gap in the letter.
+  return fill(fill(body)).replace(/\n{3,}/g, "\n\n").replace(/ +\n/g, "\n");
 }
 
 const input = "w-full border-2 border-fg bg-bg px-3 py-2 text-base focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal";
