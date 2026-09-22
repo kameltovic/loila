@@ -772,7 +772,8 @@ export function importContent(d: Database.Database, dir = path.join(process.cwd(
       const sha = createHash("sha256").update(buf).digest("hex");
       const done = d.prepare("SELECT sha FROM content_imports WHERE name = ?").get(file) as { sha: string } | undefined;
       if (done?.sha === sha) continue;
-      const { articles = [], faq = [], deleteArticleIds = [], summaries = [], decisions = [], decisionNumbers = [], decisionProvenance = [], decisionSummaries = [], jorfTexts, jorfArticleLinks = [], jorfDecisionLinks = [], jorfProvenance = [] } = JSON.parse(gunzipSync(buf).toString("utf8")) as {
+      const { articles = [], faq = [], deleteArticleIds = [], summaries = [], decisions = [], decisionNumbers = [], decisionProvenance = [], decisionSummaries = [], jorfTexts, jorfArticleLinks = [], jorfDecisionLinks = [], jorfProvenance = [], refTables } = JSON.parse(gunzipSync(buf).toString("utf8")) as {
+        refTables?: Record<string, Record<string, unknown>[]>;
         jorfTexts?: Record<string, unknown>[]; jorfArticleLinks?: Record<string, unknown>[]; jorfDecisionLinks?: Record<string, unknown>[]; jorfProvenance?: Record<string, unknown>[];
         decisions?: Record<string, unknown>[]; decisionNumbers?: { decision_id: string; numero: string }[]; decisionProvenance?: Record<string, unknown>[];
         decisionSummaries?: { decision_id: string; summary: string; points: string; model: string | null }[];
@@ -831,12 +832,26 @@ export function importContent(d: Database.Database, dir = path.join(process.cwd(
           for (const l of jorfDecisionLinks) jd.run(l);
           for (const p of jorfProvenance) prov.run(p);
         }
+        // Open data reference tables (scripts/export-content.ts --refs): snapshot tables replaced whole, shared ones upserted.
+        if (refTables) {
+          const SNAPSHOT = ["collective_agreements", "jurisdictions", "housing_zones", "legal_indices"];
+          const UPSERT = ["entities", "entity_ids", "source_records"];
+          for (const table of [...UPSERT, ...SNAPSHOT]) { // referenced rows first (foreign keys)
+            const rows = refTables[table] ?? [];
+            if (!rows.length) continue;
+            const known = new Set((d.prepare(`PRAGMA table_info(${table})`).all() as { name: string }[]).map((c) => c.name));
+            const cols = Object.keys(rows[0]).filter((c) => known.has(c)); // bundle columns never reach SQL unchecked
+            if (SNAPSHOT.includes(table)) d.exec(`DELETE FROM ${table}`);
+            const ins = d.prepare(`INSERT OR REPLACE INTO ${table} (${cols.join(", ")}) VALUES (${cols.map((c) => `@${c}`).join(", ")})`);
+            for (const r of rows) ins.run(Object.fromEntries(cols.map((c) => [c, r[c] ?? null])));
+          }
+        }
         for (const f of faq) q.run({ ...f, topic: f.topic ?? null, emoji: f.emoji ?? null, article_ids: typeof f.article_ids === "string" ? f.article_ids : JSON.stringify(f.article_ids) });
         d.prepare("INSERT INTO content_imports (name, sha) VALUES (?, ?) ON CONFLICT(name) DO UPDATE SET sha = excluded.sha, imported_at = unixepoch()").run(file, sha);
       })();
       // Derived graph layers are recomputed once all bundles are in (never shipped): see below.
       if (decisions.length || articles.length || deleteArticleIds.length) graphDirty = true;
-      console.log(`[db] content ${file}: ${articles.length} articles, ${faq.length} faq, ${summaries.length} summaries, ${decisions.length} decisions, ${deleteArticleIds.length} deleted${jorfTexts ? `, ${jorfTexts.length} JORF texts, ${jorfArticleLinks.length} JORF links` : ""}`);
+      console.log(`[db] content ${file}: ${articles.length} articles, ${faq.length} faq, ${summaries.length} summaries, ${decisions.length} decisions, ${deleteArticleIds.length} deleted${jorfTexts ? `, ${jorfTexts.length} JORF texts, ${jorfArticleLinks.length} JORF links` : ""}${refTables ? `, reference tables ${Object.keys(refTables).join(" ")}` : ""}`);
     } catch (e) {
       console.error(`[db] content ${file} failed`, e instanceof Error ? e.message : e);
     }

@@ -4,6 +4,8 @@
 //   --decision-summaries: every decision summary (small: re-export this one after scripts/batch-decisions.ts)
 //   --jorf: the Journal officiel layer (jorf_texts, article/decision links, provenance), a snapshot that replaces the
 //           links on import (scripts/legal-jorf.ts builds it from the LEGI cache and the JORF dump, absent in production)
+//   --refs: open data reference tables served by production (IDCC, juridictions, zones tendues, IRL) with their entities
+//           and source records; snapshot tables are replaced on import (npm run open-data:refs builds them locally)
 //   --summaries: every row of article_summaries (upserts, so re-exporting the same bundle name is enough)
 //   --diff-from <old.db>: with --codes, only articles added or changed since that DB, plus ids to delete (after a re-ingest)
 //   → seed/content/<bundle-name>.json.gz   (re-export after changes: a new hash re-applies the bundle)
@@ -51,13 +53,28 @@ async function main() {
         jorfProvenance: db.prepare(`SELECT p.* FROM provenance p JOIN jorf_texts t ON t.id = p.entity_id WHERE p.entity_type = 'jorf_text' AND ${JORF_SHIPPED} ORDER BY p.entity_id`).all(),
       }
     : {};
+  const refTables = argv.includes("--refs")
+    ? {
+        collective_agreements: db.prepare("SELECT * FROM collective_agreements ORDER BY idcc").all(),
+        jurisdictions: db.prepare("SELECT * FROM jurisdictions ORDER BY citycode, kind").all(),
+        housing_zones: db.prepare("SELECT * FROM housing_zones ORDER BY citycode").all(),
+        legal_indices: db.prepare("SELECT * FROM legal_indices ORDER BY kind, period").all(),
+        entities: db.prepare("SELECT * FROM entities WHERE type = 'agreement' ORDER BY id").all(),
+        entity_ids: db.prepare("SELECT * FROM entity_ids WHERE scheme = 'idcc' ORDER BY value").all(),
+        source_records: db.prepare(
+          `SELECT * FROM source_records WHERE id IN (SELECT source_record_id FROM collective_agreements UNION SELECT source_record_id FROM jurisdictions
+             UNION SELECT source_record_id FROM housing_zones UNION SELECT source_record_id FROM legal_indices)`,
+        ).all(),
+      }
+    : undefined;
   const faq = faqFiles.flatMap((f) => JSON.parse(fs.readFileSync(f, "utf8")) as unknown[]);
   const missing = argv.includes("--diff-from") ? [] : codes.filter((c) => !articles.some((a) => a.code === c));
   if (missing.length) throw new Error(`no articles for: ${missing.join(", ")} (ingest first)`);
   const out = path.join("seed", "content", `${name}.json.gz`);
   fs.mkdirSync(path.dirname(out), { recursive: true });
-  const buf = gzipSync(JSON.stringify({ articles, faq, ...(summaries.length ? { summaries } : {}), ...(withDecisions ? { decisions, decisionNumbers, decisionProvenance } : {}), ...(decisionSummaries.length ? { decisionSummaries } : {}), ...jorf, ...(deleteArticleIds.length ? { deleteArticleIds } : {}) }), { level: 9 });
+  const buf = gzipSync(JSON.stringify({ articles, faq, ...(summaries.length ? { summaries } : {}), ...(withDecisions ? { decisions, decisionNumbers, decisionProvenance } : {}), ...(decisionSummaries.length ? { decisionSummaries } : {}), ...jorf, ...(refTables ? { refTables } : {}), ...(deleteArticleIds.length ? { deleteArticleIds } : {}) }), { level: 9 });
   fs.writeFileSync(out, buf);
+  if (refTables) console.log(`refs: ${Object.entries(refTables).map(([t, r]) => `${t} ${r.length}`).join(", ")}`);
   if (withJorf) console.log(`jorf: ${jorf.jorfTexts?.length} texts, ${jorf.jorfArticleLinks?.length} article links, ${jorf.jorfDecisionLinks?.length} decision links`);
   console.log(`${out}: ${articles.length} articles, ${faq.length} faq, ${summaries.length} summaries, ${decisions.length} decisions, ${decisionSummaries.length} decision summaries, ${deleteArticleIds.length} deletions, ${(buf.length / 1024 / 1024).toFixed(1)} MB`);
 }
