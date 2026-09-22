@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Empty, SectionHead, block, container, display, label } from "@/components/ui";
 import { SourceBadge } from "@/components/SourceBadge";
+import JurisdictionCard from "@/components/JurisdictionCard";
 import {
   addressDpe,
   addressIndexable,
@@ -264,6 +265,7 @@ export default async function BienPage({ params }: PageProps<"/bien/[id]">) {
         </div>
 
         <aside className="space-y-8 lg:pt-2">
+          <JurisdictionCard citycode={a.citycode} city={a.city} kinds={["tj", "tprx", "ca"]} />
           <div className="border-t-2 border-fg pt-4">
             <h2 className={`${label} text-fg-2`}>Vérifier vous-même</h2>
             <ul className="mt-3 space-y-2 text-sm">

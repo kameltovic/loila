@@ -206,7 +206,7 @@ export const getCompany = (siren: string) => getDb().prepare("SELECT * FROM comp
 export const companyEstablishments = (siren: string) =>
   getDb().prepare("SELECT * FROM establishments WHERE siren = ? ORDER BY est_siege DESC, etat_administratif, code_postal").all(digits(siren)) as {
     siret: string; est_siege: number; enseigne: string | null; activite_principale: string | null; etat_administratif: string | null;
-    code_postal: string | null; libelle_commune: string | null; liste_idcc: string | null;
+    code_postal: string | null; commune_code: string | null; libelle_commune: string | null; liste_idcc: string | null;
   }[];
 
 export const companyAnnouncements = (siren: string, limit = 30) =>

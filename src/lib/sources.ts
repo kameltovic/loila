@@ -52,6 +52,14 @@ export const SOURCES = {
     licence: "LOV2",
     ttl: 90 * 86400, // re-run scripts/open-data-idcc.ts quarterly
   },
+  "MINJUSTICE:competences-territoriales": {
+    provider: "MINJUSTICE",
+    dataset: "competences-territoriales",
+    name: "Juridictions compétentes par commune (ministère de la Justice)",
+    url: "https://www.data.gouv.fr/datasets/liste-des-juridictions-competentes-pour-les-communes-de-france",
+    licence: "LOV2",
+    ttl: 365 * 86400, // yearly vintage ("2026 juillet"): re-run scripts/open-data-jurisdictions.ts
+  },
   "DILA:bodacc": {
     provider: "DILA",
     dataset: "bodacc",

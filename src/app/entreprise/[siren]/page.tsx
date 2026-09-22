@@ -1,4 +1,5 @@
 import ThemeIcon from "@/components/ThemeIcon";
+import JurisdictionCard from "@/components/JurisdictionCard";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -289,6 +290,17 @@ export default async function CompanyPage({ params }: PageProps<"/entreprise/[si
         </div>
 
         <aside className="space-y-8 lg:pt-2">
+          {(() => {
+            const siege = estabs.find((e) => e.est_siege) ?? estabs[0];
+            return (
+              <JurisdictionCard
+                citycode={siege?.commune_code}
+                city={siege?.libelle_commune}
+                kinds={["cph", "tj", "ca"]}
+                note="Pour le siège. Un salarié saisit le conseil de prud’hommes du lieu de son établissement de travail."
+              />
+            );
+          })()}
           <div className="border-t-2 border-fg pt-4">
             <h2 className={`${label} text-fg-2`}>Vérifier vous-même</h2>
             <ul className="mt-3 space-y-2 text-sm">

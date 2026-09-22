@@ -141,6 +141,16 @@ async function main() {
     assert.ok(Number.isFinite(meta.ttl) && meta.ttl >= 0, `ttl on ${key} must be a finite non-negative number`);
   }
 
+  // 11. Jurisdictions: Paris arrondissements fall back to 75056, Marseille/Lyon communes to arrondissement 1.
+  const J = await import("../src/lib/jurisdictions");
+  const addJ = db.prepare("INSERT OR REPLACE INTO jurisdictions (citycode, kind, label, source) VALUES (?, ?, ?, 'test')");
+  addJ.run("75056", "ca", "Cour d'Appel de Paris"); addJ.run("75056", "tj", "Tribunal judiciaire de Paris");
+  addJ.run("13201", "tj", "Tribunal judiciaire de Marseille");
+  assert.deepEqual(J.jurisdictionsFor("75107").map((j) => j.kind), ["tj", "ca"], "Paris arrondissement → 75056, ordered tj before ca");
+  assert.equal(J.jurisdictionsFor("13055")[0]?.label, "Tribunal judiciaire de Marseille");
+  assert.deepEqual(J.jurisdictionsFor("01001"), []);
+  assert.deepEqual(J.jurisdictionsFor(null), []);
+
   console.log("check-open-data: OK");
 }
 
