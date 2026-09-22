@@ -654,6 +654,13 @@ CREATE TABLE IF NOT EXISTS jurisdictions (
   PRIMARY KEY (citycode, kind)
 );
 CREATE INDEX IF NOT EXISTS jurisdictions_kind ON jurisdictions(kind);
+-- Housing market zoning per commune (décret 2013-392 as amended): 1 = zone tendue, 2 = touristique et tendue, 3 = non tendue.
+CREATE TABLE IF NOT EXISTS housing_zones (
+  citycode     TEXT PRIMARY KEY,
+  zone         INTEGER NOT NULL,
+  city         TEXT,
+  source_record_id TEXT
+);
 -- Versioned deterministic index (IRL, SMIC…) used by calculators. Always sourced.
 CREATE TABLE IF NOT EXISTS legal_indices (
   id          INTEGER PRIMARY KEY,

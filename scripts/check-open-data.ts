@@ -15,7 +15,7 @@ const OPEN_DATA_TABLES = [
   "companies", "establishments", "company_announcements", "rge_certifications",
   "collective_agreements", "company_agreements",
   "addresses", "parcels", "parcel_addresses", "transactions", "dpe_diagnostics", "risks", "urban_zones",
-  "jurisdictions", "legal_indices",
+  "jurisdictions", "housing_zones", "legal_indices",
 ];
 
 async function main() {
@@ -150,6 +150,11 @@ async function main() {
   assert.equal(J.jurisdictionsFor("13055")[0]?.label, "Tribunal judiciaire de Marseille");
   assert.deepEqual(J.jurisdictionsFor("01001"), []);
   assert.deepEqual(J.jurisdictionsFor(null), []);
+  // 12. Housing zones: Lyon arrondissement → 69123 (the list keys Lyon as one commune).
+  const Z = await import("../src/lib/zones");
+  db.prepare("INSERT OR REPLACE INTO housing_zones (citycode, zone) VALUES ('69123', 1)").run();
+  assert.equal(Z.housingZone("69383")?.zone, 1);
+  assert.equal(Z.housingZone("01001"), undefined);
 
   console.log("check-open-data: OK");
 }

@@ -60,6 +60,14 @@ export const SOURCES = {
     licence: "LOV2",
     ttl: 365 * 86400, // yearly vintage ("2026 juillet"): re-run scripts/open-data-jurisdictions.ts
   },
+  "MTE:zonage-tlv": {
+    provider: "MTE",
+    dataset: "zonage-tlv",
+    name: "Communes selon le zonage TLV / zones tendues (ministère de la Transition écologique)",
+    url: "https://www.data.gouv.fr/datasets/liste-des-communes-selon-le-zonage-tlv-1",
+    licence: "LOV2",
+    ttl: 365 * 86400, // changes only with a décret amending décret 2013-392: re-run scripts/open-data-zones.ts
+  },
   "DILA:bodacc": {
     provider: "DILA",
     dataset: "bodacc",
