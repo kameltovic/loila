@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return pageMetadata({
     title: last ? `Révision de loyer : calcul avec l’IRL (${quarterLabel(last.period)} = ${last.value.toLocaleString("fr-FR")})` : "Révision de loyer : calcul avec l’IRL",
     description:
-      "Calculez la révision annuelle de votre loyer avec l’indice de référence des loyers publié par l’INSEE, selon l’article 17-1 de la loi du 6 juillet 1989. Gratuit, sources officielles.",
+      "Calculez la révision annuelle de votre loyer avec l’IRL publié par l’INSEE, selon l’article 17-1 de la loi du 6 juillet 1989. Gratuit, sources officielles.",
     path: "/revision-loyer",
   });
 }

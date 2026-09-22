@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = pageMetadata({
   title: "Prix immobilier au m² par commune et département (DVF)",
   description:
-    "Prix au m² des appartements et des maisons dans chaque commune et département de France, évolution depuis 2021, d’après les ventes officielles DVF, avec les règles de location et les tribunaux compétents.",
+    "Prix au m² des appartements et maisons dans chaque commune de France, évolution depuis 2021 et carte par quartier, d’après les ventes officielles DVF.",
   path: "/prix-immobilier",
 });
 

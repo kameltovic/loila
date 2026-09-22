@@ -57,6 +57,14 @@ export function llmsTxt() {
     for (const l of lettres) out.push(`- [${l.title}](${SITE_URL}${lettreUrl(l)}) : ${l.seo.description}`);
   }
   const decisions = (getDb().prepare("SELECT COUNT(*) n FROM decisions").get() as { n: number }).n;
+  out.push(
+    "\n## Outils et données officielles\n",
+    `- [Prix immobilier au m²](${SITE_URL}/prix-immobilier) : prix médian au m² des appartements et des maisons pour chaque commune et département (pages /prix-immobilier/<commune>-<code INSEE>), évolution depuis 2021, carte par section cadastrale, d'après les ventes DVF de la DGFiP, avec zone tendue et tribunaux compétents.`,
+    `- [Réviser un loyer (IRL)](${SITE_URL}/revision-loyer) : calcul de l'article 17-1 de la loi du 6 juillet 1989 avec l'indice de référence des loyers publié par l'INSEE.`,
+    `- [Vérifier un bien immobilier](${SITE_URL}/verifier-un-bien) : parcelle cadastrale, ventes DVF, DPE, risques, zonage du PLU et prix du quartier pour une adresse.`,
+    `- [Vérifier une entreprise](${SITE_URL}/verifier-entreprise) : identité SIRENE, annonces BODACC, certification RGE et convention collective déclarée.`,
+    `- [Journal officiel](${SITE_URL}/jo) : lois, ordonnances et décrets reliés aux articles qu'ils ont créés, modifiés ou abrogés, et aux décisions qui les citent.`,
+  );
   if (decisions) out.push("\n## Jurisprudence\n", `- [Jurisprudence](${SITE_URL}/jurisprudence) : ${decisions} décisions (Cour de cassation, Conseil d'État, cours administratives d'appel, Conseil constitutionnel) depuis 2017, reliés aux articles qu'ils appliquent, avec un résumé en clair. Chaque page /jurisprudence/<id> reprend le sommaire officiel et le texte intégral (pseudonymisé).`);
   const conventions = getConventions();
   if (conventions.length) {

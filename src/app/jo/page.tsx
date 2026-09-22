@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = pageMetadata({
   title: "Journal officiel : lois et décrets reliés aux articles de loi",
   description:
-    "Retrouvez une loi, une ordonnance ou un décret du Journal officiel par son numéro : articles de code créés ou modifiés, jurisprudence qui le cite, sources officielles.",
+    "Une loi, une ordonnance ou un décret du Journal officiel par son numéro : articles créés ou modifiés, décisions qui le citent, sources officielles.",
   path: "/jo",
 });
 
