@@ -9,9 +9,14 @@ const OPEN_DATA_TABLES = [
   "entities", "entity_ids", "source_records", "companies", "establishments", "company_announcements",
   "rge_certifications", "collective_agreements", "company_agreements", "addresses", "parcels",
   "transactions", "dpe_diagnostics", "risks", "urban_zones", "jurisdictions", "legal_indices",
+  "housing_zones", "jorf_texts", "jorf_article_links", "jorf_decision_links",
 ] as const;
 
 const OPEN_DATA_LABELS: Record<(typeof OPEN_DATA_TABLES)[number], string> = {
+  housing_zones: "Zonage zones tendues (housing_zones)",
+  jorf_texts: "Textes du Journal officiel (jorf_texts)",
+  jorf_article_links: "Liens article ↔ texte JO (jorf_article_links)",
+  jorf_decision_links: "Liens décision ↔ texte JO (jorf_decision_links)",
   entities: "Entités (entities)",
   entity_ids: "Identifiants externes (entity_ids)",
   source_records: "Enregistrements source (source_records)",

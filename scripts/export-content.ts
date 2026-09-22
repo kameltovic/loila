@@ -11,6 +11,9 @@ import fs from "node:fs";
 import path from "node:path";
 import { gzipSync } from "node:zlib";
 
+const JORF_SHIPPED = `(t.nature IN ('LOI', 'LOI_ORGANIQUE', 'LOI_CONSTIT', 'LOI_PROGRAMME', 'ORDONNANCE')
+  OR EXISTS (SELECT 1 FROM jorf_article_links l WHERE l.jorf_text_id = t.id) OR EXISTS (SELECT 1 FROM jorf_decision_links d WHERE d.jorf_text_id = t.id))`;
+
 async function main() {
   const { getDb } = await import("../src/lib/db");
   const argv = process.argv.slice(2);
@@ -41,10 +44,11 @@ async function main() {
   const withJorf = argv.includes("--jorf");
   const jorf = withJorf
     ? {
-        jorfTexts: db.prepare("SELECT * FROM jorf_texts ORDER BY id").all(),
+        // Texts the graph links to, plus every loi/ordonnance (searchable by number); unlinked décrets stay local.
+        jorfTexts: db.prepare(`SELECT * FROM jorf_texts t WHERE ${JORF_SHIPPED} ORDER BY id`).all(),
         jorfArticleLinks: db.prepare("SELECT article_id, jorf_text_id, jorf_article, relation FROM jorf_article_links ORDER BY article_id").all(),
         jorfDecisionLinks: db.prepare("SELECT decision_id, jorf_text_id, mentions FROM jorf_decision_links ORDER BY decision_id").all(),
-        jorfProvenance: db.prepare("SELECT * FROM provenance WHERE entity_type = 'jorf_text' ORDER BY entity_id").all(),
+        jorfProvenance: db.prepare(`SELECT p.* FROM provenance p JOIN jorf_texts t ON t.id = p.entity_id WHERE p.entity_type = 'jorf_text' AND ${JORF_SHIPPED} ORDER BY p.entity_id`).all(),
       }
     : {};
   const faq = faqFiles.flatMap((f) => JSON.parse(fs.readFileSync(f, "utf8")) as unknown[]);

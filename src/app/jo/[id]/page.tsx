@@ -131,6 +131,12 @@ export default async function JorfPage({ params }: PageProps<"/jo/[id]">) {
           );
         })}
 
+        {num === 0 && decisions.length === 0 && (
+          <p className="max-w-2xl text-lg text-fg-2">
+            Aucun article ni aucune décision de Loilà n’est encore relié à ce texte. Son contenu intégral est consultable sur Légifrance.
+          </p>
+        )}
+
         {decisions.length > 0 && (
           <section aria-labelledby="decisions-title">
             <SectionHead num={String(num + 1).padStart(2, "0")} kicker="Jurisprudence" id="decisions-title" title="Décisions qui citent ce texte" />
