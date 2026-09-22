@@ -32,6 +32,9 @@ export default function HousingZoneCard({ citycode }: { citycode: string | null 
           </>
         )}
       </p>
+      <p className="mt-2 text-sm">
+        <Link href="/revision-loyer" className="underline underline-offset-2">Calculer une révision de loyer (IRL)</Link>
+      </p>
       <SourceBadge name={SRC.name} url={rec?.official_url ?? SRC.url} licence={SRC.licence} retrievedAt={rec?.retrieved_at} matchQuality="CERTAIN" />
     </div>
   );

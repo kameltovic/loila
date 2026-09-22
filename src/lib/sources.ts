@@ -68,6 +68,14 @@ export const SOURCES = {
     licence: "LOV2",
     ttl: 365 * 86400, // changes only with a décret amending décret 2013-392: re-run scripts/open-data-zones.ts
   },
+  "INSEE:irl": {
+    provider: "INSEE",
+    dataset: "irl",
+    name: "Indice de référence des loyers (INSEE, série 001515333)",
+    url: "https://www.insee.fr/fr/statistiques/serie/001515333",
+    licence: "LOV2",
+    ttl: 92 * 86400, // quarterly: re-run scripts/open-data-irl.ts after each publication
+  },
   "DILA:bodacc": {
     provider: "DILA",
     dataset: "bodacc",
@@ -147,22 +155,6 @@ export const SOURCES = {
     url: "https://apicarto.ign.fr/api/gpu",
     licence: "notspecified",
     ttl: 90 * 86400,
-  },
-  "INSEE:irl": {
-    provider: "INSEE",
-    dataset: "irl",
-    name: "Indice de référence des loyers (INSEE)",
-    url: "https://www.insee.fr/fr/statistiques/serie/001515333",
-    licence: "LOV2",
-    ttl: 30 * 86400,
-  },
-  "Justice:juridictions": {
-    provider: "Justice",
-    dataset: "juridictions",
-    name: "Juridictions compétentes (Ministère de la Justice)",
-    url: "https://www.data.gouv.fr/datasets/liste-des-juridictions-competentes-pour-les-communes-de-france",
-    licence: "LOV2",
-    ttl: 0,
   },
 } satisfies Record<string, SourceMeta>;
 

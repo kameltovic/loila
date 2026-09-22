@@ -156,6 +156,15 @@ async function main() {
   assert.equal(Z.housingZone("69383")?.zone, 1);
   assert.equal(Z.housingZone("01001"), undefined);
 
+  // 13. Rent revision (art. 17-1): rent × IRL(Q, year) / IRL(Q, year - 1), real 2022-2023 values.
+  const I = await import("../src/lib/irl");
+  const irl = [{ period: "2023-Q2", value: 140.59 }, { period: "2022-Q2", value: 135.84 }].map((p) => ({ ...p, valid_from: null, source_record_id: null }));
+  const rev = I.reviseRent(850, 2, 2023, irl);
+  assert.ok(!("error" in rev) && rev.newRent === 879.72, JSON.stringify(rev));
+  assert.ok("error" in I.reviseRent(850, 3, 2023, irl), "missing quarter must not compute");
+  assert.ok("error" in I.reviseRent(-1, 2, 2023, irl));
+  assert.equal(I.quarterLabel("2026-Q2"), "T2 2026");
+
   console.log("check-open-data: OK");
 }
 

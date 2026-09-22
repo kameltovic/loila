@@ -34,6 +34,7 @@ export default async function sitemap({ id }: { id: Promise<string> }): Promise<
       ...getMetiers().map((m) => url(`/pour/${m.slug}`, 0.9)),
       url("/modeles-lettres", 0.8),
       url("/relance-amiable", 0.9),
+      url("/revision-loyer", 0.8, "weekly"),
       url("/jurisprudence", 0.8, "daily"),
       url("/avocats", 0.8, "weekly"),
       url("/entreprise", 0.7, "daily"),
