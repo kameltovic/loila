@@ -3,8 +3,59 @@
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 
+// Mapbox Standard config (schema: api.mapbox.com/styles/v1/mapbox/standard). Quiet basemap, 3D on.
+const BASE = {
+  theme: "default",
+  showPointOfInterestLabels: false,
+  showTransitLabels: false,
+  showLandmarkIcons: false,
+  show3dObjects: true,
+  show3dTrees: true,
+  font: "DIN Pro",
+};
+
+// Palette in Loilà's paper & ink. Day: roads one step darker than the paper, muted sage greens and slate water.
+// Night: the same hues under the night light, roads lit up and detailed façades (lit windows where available).
+function palette(dark: boolean): Record<string, string | number | boolean> {
+  const common = {
+    colorGreenspace: dark ? "hsl(110, 22%, 62%)" : "hsl(95, 30%, 80%)",
+    colorWater: dark ? "hsl(210, 40%, 55%)" : "hsl(205, 38%, 79%)",
+    colorCommercial: "hsl(36, 22%, 92%)",
+    colorEducation: "hsl(40, 24%, 90%)",
+    colorMedical: "hsl(10, 22%, 92%)",
+    colorIndustrial: "hsl(30, 8%, 90%)",
+  };
+  return dark
+    ? {
+        ...common,
+        lightPreset: "night",
+        roadsBrightness: 0.8,
+        show3dFacades: true,
+        colorLand: "hsl(30, 6%, 30%)",
+        colorBuildings: "hsl(30, 8%, 42%)",
+        colorRoads: "hsl(36, 60%, 60%)",
+        colorTrunks: "hsl(34, 72%, 60%)",
+        colorMotorways: "hsl(28, 80%, 58%)",
+        colorRoadLabels: "hsl(38, 30%, 85%)",
+        colorPlaceLabels: "hsl(38, 25%, 92%)",
+      }
+    : {
+        ...common,
+        lightPreset: "day",
+        roadsBrightness: 0.4,
+        show3dFacades: false,
+        colorLand: "hsl(40, 33%, 94%)",
+        colorBuildings: "hsl(40, 30%, 98%)",
+        colorRoads: "hsl(35, 10%, 76%)",
+        colorTrunks: "hsl(32, 12%, 68%)",
+        colorMotorways: "hsl(26, 16%, 60%)",
+        colorRoadLabels: "hsl(30, 8%, 28%)",
+        colorPlaceLabels: "hsl(30, 10%, 14%)",
+      };
+}
+
 /**
- * Property hero map (Mapbox Standard, monochrome, 3D buildings): flies in to the address, outlines the cadastral
+ * Property hero map (Mapbox Standard, custom paper & ink palette, 3D buildings): flies in to the address, outlines the cadastral
  * parcel in the signal color, and follows the site's light/dark theme. mapbox-gl is loaded only when the map
  * scrolls into view. Renders nothing without a token. The token is read on the server at request time and passed
  * in, so a runtime env var is enough (a NEXT_PUBLIC_ value would otherwise be frozen at build time).
@@ -31,15 +82,7 @@ export default function PropertyMap({ token, lat, lon, label, parcel, className,
       map = new mapboxgl.Map({
         container: el,
         style: "mapbox://styles/mapbox/standard",
-        config: {
-          basemap: {
-            theme: "monochrome",
-            lightPreset: dark.matches ? "night" : "day",
-            showPointOfInterestLabels: false,
-            showTransitLabels: false,
-            show3dObjects: true,
-          },
-        },
+        config: { basemap: { ...BASE, ...palette(dark.matches) } },
         center: [lon, lat],
         zoom: reduced ? 17.2 : 13,
         pitch: reduced ? 55 : 0,
@@ -81,7 +124,9 @@ export default function PropertyMap({ token, lat, lon, label, parcel, className,
         }
       });
 
-      const onTheme = (e: MediaQueryListEvent) => map?.setConfigProperty("basemap", "lightPreset", e.matches ? "night" : "day");
+      const onTheme = (e: MediaQueryListEvent) => {
+        for (const [key, value] of Object.entries(palette(e.matches))) map?.setConfigProperty("basemap", key, value);
+      };
       dark.addEventListener("change", onTheme);
       map.once("remove", () => dark.removeEventListener("change", onTheme));
     };

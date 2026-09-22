@@ -384,6 +384,33 @@ export const addressParcel = (banId: string, db: Database.Database = getDb()) =>
     .get(banId) as Parcel | undefined;
 
 /** Transactions for a BAN id or an idu directly. `ref` may be either; an idu is detected by its shape. */
+/**
+ * Average price per m² of the dwelling sales on the parcel: Σ price / Σ surface over "Vente" mutations made only of
+ * apartments/houses (a DVF mutation repeats its total price on each lot row, so rows are grouped by mutation first;
+ * mixed sales with a shop or an industrial local are left out). Surface: Carrez when known, else built surface.
+ */
+export function pricePerSqm(rows: Transaction[]): { value: number; sales: number; from: string; to: string } | undefined {
+  const byMutation = new Map<string, Transaction[]>();
+  for (const r of rows) byMutation.set(r.id_mutation, [...(byMutation.get(r.id_mutation) ?? []), r]);
+  let price = 0, surface = 0, sales = 0;
+  const dates: string[] = [];
+  for (const lots of byMutation.values()) {
+    const first = lots[0];
+    if (first.nature_mutation !== "Vente" || !first.valeur_fonciere || !first.date_mutation) continue;
+    const built = lots.filter((l) => (l.surface_reelle_bati ?? 0) > 0);
+    if (!built.length || built.some((l) => l.type_local !== "Appartement" && l.type_local !== "Maison")) continue;
+    const m2 = built.reduce((sum, l) => sum + (l.lot1_surface_carrez || l.surface_reelle_bati || 0), 0);
+    if (m2 < 9) continue; // below the decency minimum: a data error, not a dwelling
+    price += first.valeur_fonciere;
+    surface += m2;
+    sales++;
+    dates.push(first.date_mutation);
+  }
+  if (!sales) return undefined;
+  dates.sort();
+  return { value: Math.round(price / surface), sales, from: dates[0], to: dates[dates.length - 1] };
+}
+
 export function addressTransactions(ref: string, limit = 20, db: Database.Database = getDb()): Transaction[] {
   const idu = isIdu(ref) ? ref : addressParcel(ref, db)?.idu;
   if (!idu) return [];

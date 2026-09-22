@@ -175,6 +175,21 @@ async function main() {
   assert.ok("error" in I.reviseRent(-1, 2, 2023, irl));
   assert.equal(I.quarterLabel("2026-Q2"), "T2 2026");
 
+  // 14. Price per m² (DVF): grouped by mutation (the total price repeats on each lot), dwellings only.
+  const { pricePerSqm } = await import("../src/lib/address");
+  const tx = (id: string, type: string, value: number, surface: number | null, carrez: number | null = null, nature = "Vente") =>
+    ({ id_mutation: id, id_parcelle: "P", date_mutation: `2024-0${id.length}-01`, nature_mutation: nature, valeur_fonciere: value, adresse_numero: null,
+       adresse_nom_voie: null, code_postal: null, citycode: null, nom_commune: null, type_local: type, surface_reelle_bati: surface, nombre_pieces: null,
+       lot1_surface_carrez: carrez, match_quality: "POSSIBLE" as const, source_record_id: null });
+  const ppm = pricePerSqm([
+    tx("M1", "Appartement", 500_000, 52, 50), // 50 m² Carrez
+    tx("M22", "Appartement", 600_000, 30), tx("M22", "Dépendance", 600_000, null), tx("M22", "Appartement", 600_000, 20), // one sale, 50 m²
+    tx("M333", "Local industriel. commercial ou assimilé", 900_000, 100), tx("M333", "Appartement", 900_000, 40), // mixed: skipped
+    tx("M4444", "Appartement", 100_000, 40, null, "Echange"), // not a sale: skipped
+  ]);
+  assert.deepEqual(ppm && { value: ppm.value, sales: ppm.sales }, { value: 11_000, sales: 2 });
+  assert.equal(pricePerSqm([]), undefined);
+
   console.log("check-open-data: OK");
 }
 

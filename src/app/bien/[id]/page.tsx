@@ -16,6 +16,7 @@ import {
   addressRisks,
   addressSource,
   addressTransactions,
+  pricePerSqm,
   addressZones,
   getAddress,
 } from "@/lib/address";
@@ -57,6 +58,7 @@ export default async function BienPage({ params }: PageProps<"/bien/[id]">) {
 
   const parcel = addressParcel(id);
   const transactions = addressTransactions(id, 24);
+  const ppm = pricePerSqm(addressTransactions(id, 500));
   const dpe = addressDpe(id);
   const risks = addressRisks(id);
   const zones = addressZones(id);
@@ -186,6 +188,20 @@ export default async function BienPage({ params }: PageProps<"/bien/[id]">) {
 
           <section aria-labelledby="ventes-title">
             <SectionHead num="02" kicker="Ventes" id="ventes-title" title="Ventes enregistrées (DVF)" />
+            {ppm && (
+              <div className="mt-8 flex flex-wrap items-end justify-between gap-x-8 gap-y-3 border-2 border-ink bg-signal p-5 text-ink shadow-[5px_5px_0_0_var(--fg)] sm:p-6">
+                <div>
+                  <p className="font-mono text-xs font-bold uppercase tracking-wide">Prix moyen au m² · logements</p>
+                  <p className="mt-1 font-display text-5xl font-extrabold tracking-[-0.04em] sm:text-6xl">
+                    {ppm.value.toLocaleString("fr-FR")}&nbsp;€<span className="text-2xl sm:text-3xl">/m²</span>
+                  </p>
+                </div>
+                <p className="max-w-xs text-sm font-medium">
+                  Sur {ppm.sales} vente{ppm.sales > 1 ? "s" : ""} d’appartement ou de maison de la parcelle,{" "}
+                  {ppm.from.slice(0, 4) === ppm.to.slice(0, 4) ? `en ${ppm.from.slice(0, 4)}` : `de ${ppm.from.slice(0, 4)} à ${ppm.to.slice(0, 4)}`}. Indicatif : prix total ÷ surface Carrez ou habitable.
+                </p>
+              </div>
+            )}
             {transactions.length === 0 ? (
               <div className="mt-8"><Empty>Aucune mutation DVF en cache pour cette parcelle (l’historique DVF est semestriel et absent d’Alsace-Moselle et de Mayotte).</Empty></div>
             ) : (
