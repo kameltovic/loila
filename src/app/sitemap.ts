@@ -14,7 +14,7 @@ export const revalidate = 3600;
 // Split by entity family so Google can diagnose coverage per section (docs/research/2026-09-seo-search.md §4).
 // Production URLs: /sitemap/0.xml … /sitemap/6.xml (Next 16 `generateSitemaps`). Each section lists ONLY
 // indexable entities: `src/lib/eligibility.ts` is the single gate shared with page metadata.
-const SECTIONS = ["core", "articles", "decisions", "contenus", "entites", "jo", "prix"] as const;
+export const SECTIONS = ["core", "articles", "decisions", "contenus", "entites", "jo", "prix"] as const;
 
 export function generateSitemaps() {
   return SECTIONS.map((_, id) => ({ id }));
