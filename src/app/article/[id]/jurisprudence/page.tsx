@@ -5,12 +5,13 @@ import { ArrowRight } from "lucide-react";
 import { container, display, label } from "@/components/ui";
 import { getDb, type Article } from "@/lib/db";
 import { articleStats, citation, decisionUrl, decisionsPage, formationLabel, teaser } from "@/lib/decisions";
+import { jurisprudenceListIndexable } from "@/lib/eligibility";
 import { JsonLd, breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 import { CODES } from "@/lib/themes";
 
 export const dynamic = "force-dynamic";
 
-const load = (id: string) => getDb().prepare("SELECT id, code, num FROM articles WHERE id = ?").get(id) as Pick<Article, "id" | "code" | "num"> | undefined;
+const load = (id: string) => getDb().prepare("SELECT id, code, num, texte FROM articles WHERE id = ?").get(id) as Pick<Article, "id" | "code" | "num" | "texte"> | undefined;
 const codeName = (c: string) => (CODES[c as keyof typeof CODES]?.name ?? c).replace(/ \(.*\)$/, "");
 const CURSOR = /^\d{4}-\d{2}-\d{2}_(?:JURI|CETA|CONS)TEXT\d+$/; // Cassation, administrative, constitutional ids
 
@@ -25,8 +26,13 @@ export async function generateMetadata({ params, searchParams }: PageProps<"/art
     description: `${stats?.decisions ?? 0} décisions de justice (Cour de cassation, Conseil d’État, cours administratives d’appel, Conseil constitutionnel) appliquant l’article ${a.num} du ${codeName(a.code)}, des plus récentes aux plus anciennes, avec leur sommaire officiel.`,
     path: `/article/${a.id}/jurisprudence`,
   });
-  // One canonical list per article: following pages are browsable, not indexed.
-  return { ...meta, title: { absolute: title }, ...(cursor ? { robots: { index: false, follow: true } } : {}) };
+  // One canonical list per article: following pages are browsable, not indexed. The list inherits the
+  // parent article's indexability (a noindex article's case-law list must not be indexed either).
+  return {
+    ...meta,
+    title: { absolute: title },
+    ...(cursor || !jurisprudenceListIndexable(a.id, a) ? { robots: { index: false, follow: true } } : {}),
+  };
 }
 
 export default async function ArticleJurisprudence({ params, searchParams }: PageProps<"/article/[id]/jurisprudence">) {

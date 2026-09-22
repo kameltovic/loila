@@ -8,7 +8,7 @@ import { rebuildGraph } from "./legal-graph";
 const DB_PATH = process.env.DATABASE_PATH ?? path.join(process.cwd(), "data", "loila.db");
 
 // Shared contract between ingestion, batch, API and UI. Change here only.
-const SCHEMA = `
+export const SCHEMA = `
 CREATE TABLE IF NOT EXISTS articles (
   id           TEXT PRIMARY KEY,        -- Légifrance id, e.g. LEGIARTI000006901112
   code         TEXT NOT NULL,           -- slug from THEMES[].codes, e.g. 'code-du-travail'
@@ -358,6 +358,317 @@ CREATE TABLE IF NOT EXISTS article_summaries (
   model      TEXT,
   created_at INTEGER NOT NULL DEFAULT (unixepoch())
 );
+
+-- ===== Open data: common entity resolution + source records (docs/OPEN_DATA_ROADMAP.md) =====
+-- One internal id per real-world entity, whatever the vertical. id is opaque: "company:552081317",
+-- "address:75107_9114_00095", "parcel:75107000AB0013", "agreement:1486"…
+CREATE TABLE IF NOT EXISTS entities (
+  id         TEXT PRIMARY KEY,              -- "<type>:<canonical>"
+  type       TEXT NOT NULL,                 -- company | establishment | address | parcel | agreement | jurisdiction | dpe | decision | article
+  label      TEXT,
+  canonical  TEXT,                          -- canonical external key (SIREN, IDU, IDCC…)
+  created_at INTEGER NOT NULL DEFAULT (unixepoch()),
+  updated_at INTEGER NOT NULL DEFAULT (unixepoch())
+);
+CREATE INDEX IF NOT EXISTS entities_type ON entities(type);
+-- Every external identifier of an entity. The single join point between verticals and sources.
+CREATE TABLE IF NOT EXISTS entity_ids (
+  scheme    TEXT NOT NULL,                  -- siren | siret | idcc | naf | insee | ban | idu | dpe | bodacc | rge | legiarti | juritext
+  value     TEXT NOT NULL,
+  entity_id TEXT NOT NULL REFERENCES entities(id),
+  PRIMARY KEY (scheme, value)
+);
+CREATE INDEX IF NOT EXISTS entity_ids_entity ON entity_ids(entity_id);
+-- SOURCE_RECORD: one row per external record fetched (runtime cache + provenance + audit).
+-- A payload is stored only for our own caching; the source of truth stays the official URL.
+CREATE TABLE IF NOT EXISTS source_records (
+  id            TEXT PRIMARY KEY,           -- "<provider>:<dataset>:<external_id>"
+  provider      TEXT NOT NULL,              -- DINUM | DILA | ADEME | DGFiP | IGN | BRGM | INSEE | MTE | Justice
+  dataset       TEXT NOT NULL,              -- recherche-entreprises | bodacc | rge | dsn-idcc | dpe | ban | dvf | gpu | georisques
+  external_id   TEXT,
+  official_url  TEXT,                       -- official documentation or record URL
+  licence       TEXT NOT NULL,              -- LOV2 | fr-lo | ODbL | notspecified
+  payload       TEXT,                       -- raw JSON actually fetched (cache; never rendered verbatim)
+  checksum      TEXT,                       -- sha256 of payload
+  match_quality TEXT NOT NULL DEFAULT 'CERTAIN', -- CERTAIN | PROBABLE | POSSIBLE | UNKNOWN
+  published_at  TEXT,
+  updated_at    TEXT,                       -- source's own update date, when stated
+  retrieved_at  INTEGER NOT NULL DEFAULT (unixepoch()),
+  expires_at    INTEGER                     -- NULL: batch import, no expiry
+);
+CREATE INDEX IF NOT EXISTS source_records_lookup ON source_records(provider, dataset, external_id);
+
+-- ----- Company vertical -----
+CREATE TABLE IF NOT EXISTS companies (
+  siren                    TEXT PRIMARY KEY,   -- canonical key
+  entity_id                TEXT NOT NULL REFERENCES entities(id),
+  nom_complet              TEXT,
+  nom_raison_sociale       TEXT,
+  sigle                    TEXT,
+  nature_juridique         TEXT,
+  categorie_entreprise     TEXT,               -- PME/PMI/ETI/GE
+  activite_principale      TEXT,               -- NAF rev.2
+  activite_principale_naf25 TEXT,              -- NAF 2025
+  section_activite         TEXT,
+  etat_administratif       TEXT,               -- A actif / C cessé
+  date_creation            TEXT,
+  date_fermeture           TEXT,
+  tranche_effectif         TEXT,
+  annee_tranche_effectif   INTEGER,
+  caractere_employeur      TEXT,
+  tva                      TEXT,               -- JSON array
+  statut_diffusion         TEXT,               -- O / P (P: partial diffusion, never republish everything)
+  siege_siret              TEXT,
+  complements              TEXT,               -- JSON: api flags + liste_idcc
+  date_mise_a_jour_insee   TEXT,
+  date_mise_a_jour_rne     TEXT,
+  source_record_id         TEXT,
+  fetched_at               INTEGER,
+  expires_at               INTEGER
+);
+CREATE TABLE IF NOT EXISTS establishments (
+  siret            TEXT PRIMARY KEY,
+  siren            TEXT NOT NULL,
+  entity_id        TEXT NOT NULL REFERENCES entities(id),
+  est_siege        INTEGER,
+  enseigne         TEXT,
+  activite_principale TEXT,
+  etat_administratif  TEXT,
+  numero_voie      TEXT,
+  type_voie        TEXT,
+  libelle_voie     TEXT,
+  complement_adresse TEXT,
+  code_postal      TEXT,
+  commune_code     TEXT,                     -- INSEE commune
+  libelle_commune  TEXT,
+  departement      TEXT,
+  latitude         REAL,
+  longitude        REAL,
+  liste_idcc       TEXT,                     -- JSON array declared for this SIRET
+  date_creation    TEXT,
+  date_debut_activite TEXT,
+  date_fermeture   TEXT,
+  source_record_id TEXT,
+  fetched_at       INTEGER,
+  expires_at       INTEGER
+);
+CREATE INDEX IF NOT EXISTS establishments_siren ON establishments(siren);
+CREATE TABLE IF NOT EXISTS company_announcements (
+  bodacc_id       TEXT PRIMARY KEY,          -- e.g. A202601803235
+  siren           TEXT,                      -- normalized from registre
+  entity_id       TEXT REFERENCES entities(id),
+  dateparution    TEXT,
+  familleavis     TEXT,                      -- collective | dpc | modification | radiation | vente…
+  familleavis_lib TEXT,
+  typeavis        TEXT,
+  typeavis_lib    TEXT,
+  numeroannonce   INTEGER,
+  tribunal        TEXT,
+  departement     TEXT,
+  ville           TEXT,
+  code_postal     TEXT,
+  commercant      TEXT,
+  url_complete    TEXT,
+  jugement        TEXT,                      -- raw JSON blob
+  source_record_id TEXT,
+  fetched_at      INTEGER
+);
+CREATE INDEX IF NOT EXISTS company_announcements_siren ON company_announcements(siren, dateparution DESC);
+CREATE INDEX IF NOT EXISTS company_announcements_famille ON company_announcements(familleavis);
+CREATE TABLE IF NOT EXISTS rge_certifications (
+  id               INTEGER PRIMARY KEY,
+  siret            TEXT NOT NULL,
+  siren            TEXT,
+  entity_id        TEXT REFERENCES entities(id),
+  nom_entreprise   TEXT,
+  organisme        TEXT,
+  domaine          TEXT,
+  meta_domaine     TEXT,
+  code_qualification TEXT,
+  nom_qualification TEXT,
+  nom_certificat   TEXT,
+  url_qualification TEXT,
+  particulier      INTEGER,
+  lien_date_debut  TEXT,
+  lien_date_fin    TEXT,
+  source_record_id TEXT,
+  UNIQUE(siret, domaine, nom_qualification, organisme, lien_date_debut)
+);
+CREATE INDEX IF NOT EXISTS rge_certifications_siren ON rge_certifications(siren);
+-- One row per IDCC (official Dares tracking file + KALI metadata). idcc normalized to 4 digits.
+CREATE TABLE IF NOT EXISTS collective_agreements (
+  idcc           TEXT PRIMARY KEY,            -- "1486"
+  entity_id      TEXT REFERENCES entities(id),
+  titre          TEXT NOT NULL,
+  titre_court    TEXT,
+  legitext       TEXT,                        -- KALICONT… container
+  texte_base     TEXT,                        -- KALITEXT… of the base text
+  etat           TEXT,                        -- VIGUEUR_ETEN | VIGUEUR_NON_ETEN | ABROGE | DENONCE…
+  actif          INTEGER NOT NULL DEFAULT 0,
+  regime         TEXT,                        -- Général | Agricole
+  champ          TEXT,                        -- National | Local
+  date_signature TEXT,
+  date_effet     TEXT,
+  date_fin       TEXT,
+  nouvelle_idcc  TEXT,
+  source         TEXT NOT NULL,               -- 'dares' | 'kali' | 'recherche-entreprises'
+  source_record_id TEXT,
+  fetched_at     INTEGER
+);
+-- SIRET/SIREN → IDCC with method + confidence. Levels are never merged.
+CREATE TABLE IF NOT EXISTS company_agreements (
+  siret          TEXT NOT NULL,
+  siren          TEXT,
+  idcc           TEXT,
+  method         TEXT NOT NULL,               -- dsn_declared | api_recherche_entreprises | naf_suggested
+  confidence     TEXT NOT NULL,               -- CERTAIN | PROBABLE | POSSIBLE | UNKNOWN
+  declared_month TEXT,
+  source         TEXT NOT NULL,
+  source_record_id TEXT,
+  fetched_at     INTEGER,
+  PRIMARY KEY (siret, idcc, method)
+);
+CREATE INDEX IF NOT EXISTS company_agreements_siren ON company_agreements(siren);
+
+-- ----- Address / property vertical -----
+CREATE TABLE IF NOT EXISTS addresses (
+  ban_id       TEXT PRIMARY KEY,              -- BAN id (stable)
+  entity_id    TEXT NOT NULL REFERENCES entities(id),
+  label        TEXT NOT NULL,
+  housenumber  TEXT,
+  street       TEXT,
+  postcode     TEXT,
+  citycode     TEXT,                          -- INSEE commune
+  city         TEXT,
+  lat          REAL,
+  lon          REAL,
+  score        REAL,
+  source_record_id TEXT,
+  fetched_at   INTEGER,
+  expires_at   INTEGER
+);
+CREATE INDEX IF NOT EXISTS addresses_citycode ON addresses(citycode);
+CREATE TABLE IF NOT EXISTS parcels (
+  idu        TEXT PRIMARY KEY,                -- "75107000AB0013" (commune+prefixe+section+numero)
+  entity_id  TEXT NOT NULL REFERENCES entities(id),
+  citycode   TEXT,
+  prefixe    TEXT,
+  section    TEXT,
+  numero     TEXT,
+  contenance INTEGER,                         -- m²
+  lat        REAL,
+  lon        REAL,
+  source_record_id TEXT,
+  fetched_at INTEGER
+);
+CREATE INDEX IF NOT EXISTS parcels_citycode ON parcels(citycode);
+-- Deterministic address ↔ parcel link (BAN-PLUS) and address-matched fallbacks.
+CREATE TABLE IF NOT EXISTS parcel_addresses (
+  parcel_id  TEXT NOT NULL,
+  ban_id     TEXT,
+  match_quality TEXT NOT NULL,               -- CERTAIN | PROBABLE | POSSIBLE
+  method     TEXT NOT NULL,                  -- ban_plus | point_in_polygon | dvf_address
+  PRIMARY KEY (parcel_id, ban_id, method)
+);
+CREATE TABLE IF NOT EXISTS transactions (
+  id_mutation   TEXT NOT NULL,               -- DVF mutation id
+  id_parcelle   TEXT NOT NULL DEFAULT '',
+  entity_id     TEXT REFERENCES entities(id),
+  date_mutation TEXT,
+  nature_mutation TEXT,
+  valeur_fonciere REAL,
+  adresse_numero TEXT,
+  adresse_nom_voie TEXT,
+  code_postal   TEXT,
+  citycode      TEXT,
+  nom_commune   TEXT,
+  type_local    TEXT,                        -- Maison | Appartement | Dépendance…
+  surface_reelle_bati REAL,
+  nombre_pieces INTEGER,
+  lot1_surface_carrez REAL,
+  match_quality TEXT NOT NULL DEFAULT 'POSSIBLE',
+  source_record_id TEXT,
+  PRIMARY KEY (id_mutation, id_parcelle, type_local)
+);
+CREATE INDEX IF NOT EXISTS transactions_parcelle ON transactions(id_parcelle, date_mutation DESC);
+CREATE INDEX IF NOT EXISTS transactions_citycode ON transactions(citycode, date_mutation DESC);
+CREATE TABLE IF NOT EXISTS dpe_diagnostics (
+  numero_dpe   TEXT PRIMARY KEY,
+  ban_id       TEXT,
+  entity_id    TEXT REFERENCES entities(id),
+  adresse_ban  TEXT,
+  code_postal  TEXT,
+  citycode     TEXT,
+  etiquette_dpe TEXT,                        -- A…G
+  etiquette_ges TEXT,
+  date_etablissement TEXT,
+  surface_habitable REAL,
+  conso_energie REAL,
+  type_batiment TEXT,
+  match_quality TEXT NOT NULL DEFAULT 'PROBABLE',
+  source_record_id TEXT,
+  fetched_at   INTEGER
+);
+CREATE INDEX IF NOT EXISTS dpe_diagnostics_ban ON dpe_diagnostics(ban_id);
+CREATE TABLE IF NOT EXISTS risks (
+  id              INTEGER PRIMARY KEY,
+  ban_id          TEXT,
+  citycode        TEXT,
+  lat             REAL,
+  lon             REAL,
+  risk            TEXT NOT NULL,             -- libellé du risque
+  category        TEXT,                      -- naturel | technologique
+  source_id       TEXT,                      -- georisques record id
+  match_quality   TEXT NOT NULL,
+  source_record_id TEXT,
+  fetched_at      INTEGER
+);
+CREATE INDEX IF NOT EXISTS risks_ban ON risks(ban_id);
+CREATE INDEX IF NOT EXISTS risks_citycode ON risks(citycode);
+CREATE TABLE IF NOT EXISTS urban_zones (
+  id              INTEGER PRIMARY KEY,
+  ban_id          TEXT,
+  lat             REAL,
+  lon             REAL,
+  citycode        TEXT,
+  typezone        TEXT,                      -- U | AU | A | N | …
+  libelle         TEXT,
+  libelong        TEXT,
+  document        TEXT,                      -- gpu document id
+  nomfic          TEXT,                      -- règlement PDF
+  urlfic          TEXT,
+  datvalid        TEXT,
+  match_quality   TEXT NOT NULL DEFAULT 'CERTAIN',
+  source_record_id TEXT,
+  fetched_at      INTEGER
+);
+CREATE INDEX IF NOT EXISTS urban_zones_ban ON urban_zones(ban_id);
+-- Commune → competent courts (Ministère de la Justice). Brique "où agir".
+CREATE TABLE IF NOT EXISTS jurisdictions (
+  citycode     TEXT NOT NULL,
+  kind         TEXT NOT NULL,                -- ca | tj | tprx | cph | ta | te
+  label        TEXT NOT NULL,
+  city         TEXT,
+  source       TEXT NOT NULL,
+  source_record_id TEXT,
+  PRIMARY KEY (citycode, kind)
+);
+CREATE INDEX IF NOT EXISTS jurisdictions_kind ON jurisdictions(kind);
+-- Versioned deterministic index (IRL, SMIC…) used by calculators. Always sourced.
+CREATE TABLE IF NOT EXISTS legal_indices (
+  id          INTEGER PRIMARY KEY,
+  kind        TEXT NOT NULL,                 -- irl | smic_horaire | smic_mensuel | minimum_garanti
+  period      TEXT NOT NULL,                 -- "2026-Q2" | "2026-06-01"
+  value       REAL NOT NULL,
+  unit        TEXT NOT NULL,                 -- index | EUR/h | EUR/mois
+  article_id  TEXT,                          -- article Loilà the value applies to, when known
+  source_name TEXT NOT NULL,
+  source_url  TEXT,
+  valid_from  TEXT,
+  valid_to    TEXT,
+  source_record_id TEXT,
+  UNIQUE(kind, period)
+);
 `;
 
 let db: Database.Database | undefined;
@@ -402,7 +713,10 @@ export function getDb() {
     // Migration for DBs created before credit batches existed.
     const usageCols = db.prepare("PRAGMA table_info(usage)").all() as { name: string }[];
     if (!usageCols.some((c) => c.name === "batch_id")) db.exec("ALTER TABLE usage ADD COLUMN batch_id INTEGER");
-    if (process.env.NODE_ENV === "production" || process.env.CONTENT_IMPORT === "1") importContent(db);
+    // Content bundles are applied on first open in production (and in the `tools` image). CONTENT_IMPORT=0
+    // is the operator escape hatch: build/validate against an already-populated DB without re-importing
+    // (and without the derived-graph rebuild that a fresh import triggers). Never set in production.
+    if ((process.env.NODE_ENV === "production" || process.env.CONTENT_IMPORT === "1") && process.env.CONTENT_IMPORT !== "0") importContent(db);
   }
   return db;
 }

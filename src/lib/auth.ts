@@ -27,8 +27,11 @@ export const sha256 = (s: string) => createHash("sha256").update(s).digest("hex"
 const hmac = (s: string) => createHmac("sha256", secret()).update(s).digest("base64url");
 const token = () => randomBytes(32).toString("base64url");
 
+// The first X-Forwarded-For entry is client-controlled: trust headers set by the edge (Cloudflare, then the
+// reverse proxy's X-Real-IP), else the LAST forwarded hop, which our own proxy appended.
 export function clientIp(req: Request) {
-  return req.headers.get("x-forwarded-for")?.split(",")[0].trim() || req.headers.get("x-real-ip") || "local";
+  const h = req.headers;
+  return h.get("cf-connecting-ip") || h.get("x-real-ip") || h.get("x-forwarded-for")?.split(",").at(-1)?.trim() || "local";
 }
 
 // ponytail: in-memory, single-instance only; move to a shared store (Redis) when running several instances.

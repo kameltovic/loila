@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowRight, Menu, X } from "lucide-react";
+import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
 import { btnPrimary } from "@/components/ui";
 import AccountMenu from "@/components/AccountMenu";
 
@@ -12,12 +12,19 @@ const NAV = [
   { slug: "urbanisme", label: "Urbanisme" },
   { slug: "logement", label: "Logement" },
   { slug: "conventions", label: "Conventions" },
-  { slug: "sujets", label: "Tous les sujets" },
+  { slug: "sujets", label: "Sujets" },
   { slug: "tarifs", label: "Tarifs" },
 ];
 
+// Open data tools, grouped under one "Vérifier" entry.
+const CHECK = [
+  { slug: "verifier-entreprise", label: "Une entreprise", hint: "SIREN, annonces BODACC, convention" },
+  { slug: "verifier-un-bien", label: "Un bien immobilier", hint: "Ventes DVF, DPE, risques, PLU" },
+  { slug: "jurisprudence", label: "La jurisprudence", hint: "Décisions reliées aux articles" },
+];
+
 const navItem =
-  "relative block whitespace-nowrap border-2 border-transparent px-3 py-1.5 transition-[transform,box-shadow,background-color] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:border-fg hover:bg-surface hover:shadow-[3px_3px_0_0_var(--fg)] aria-[current=page]:border-fg aria-[current=page]:bg-fg aria-[current=page]:text-bg motion-reduce:transition-none motion-reduce:hover:translate-0";
+  "relative inline-flex items-center gap-1.5 whitespace-nowrap border-2 border-transparent px-2 py-1.5 transition-[transform,box-shadow,background-color] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:border-fg hover:bg-surface hover:shadow-[3px_3px_0_0_var(--fg)] aria-[current=page]:border-fg aria-[current=page]:bg-fg aria-[current=page]:text-bg motion-reduce:transition-none motion-reduce:hover:translate-0";
 
 export function Logo({ className = "" }: { className?: string }) {
   return (
@@ -32,14 +39,15 @@ export function Logo({ className = "" }: { className?: string }) {
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const [check, setCheck] = useState(false);
   const pathname = usePathname();
   const close = () => setOpen(false);
   useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    if (!open && !check) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && (setOpen(false), setCheck(false));
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
+  }, [open, check]);
 
   const active = (slug: string) => pathname === `/${slug}` || pathname.startsWith(`/${slug}/`);
 
@@ -62,6 +70,34 @@ export default function Header() {
               </Link>
             </li>
           ))}
+          <li
+            className="relative"
+            onBlur={(e) => !e.currentTarget.contains(e.relatedTarget) && setCheck(false)}
+          >
+            <button
+              type="button"
+              aria-expanded={check}
+              aria-controls="check-menu"
+              aria-current={CHECK.some((c) => active(c.slug)) ? "page" : undefined}
+              onClick={() => setCheck((c) => !c)}
+              className={`${navItem} inline-flex items-center gap-1 uppercase`}
+            >
+              Vérifier
+              <ChevronDown aria-hidden size={14} strokeWidth={2} className={check ? "rotate-180" : ""} />
+            </button>
+            {check && (
+              <ul id="check-menu" className="absolute top-full right-0 mt-2 w-72 border-2 border-fg bg-surface p-1 normal-case shadow-[4px_4px_0_0_var(--fg)]">
+                {CHECK.map((c) => (
+                  <li key={c.slug}>
+                    <Link href={`/${c.slug}`} aria-current={active(c.slug) ? "page" : undefined} onClick={() => setCheck(false)} className="block px-3 py-2.5 hover:bg-bg aria-[current=page]:bg-bg">
+                      <span className="block font-sans text-[0.9375rem] tracking-normal">{c.label}</span>
+                      <span className="block font-sans text-xs font-normal tracking-normal text-fg-2">{c.hint}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
         </ul>
 
         <div className="flex items-center gap-2">
@@ -98,6 +134,18 @@ export default function Header() {
                   className="flex items-center gap-3 py-4 font-display text-2xl font-bold tracking-tight decoration-signal decoration-[3px] underline-offset-[6px] aria-[current=page]:underline"
                 >
                   {n.label}
+                </Link>
+              </li>
+            ))}
+            {CHECK.map((c) => (
+              <li key={c.slug} className="border-b border-rule">
+                <Link
+                  href={`/${c.slug}`}
+                  aria-current={active(c.slug) ? "page" : undefined}
+                  onClick={close}
+                  className="flex items-center gap-3 py-4 font-display text-2xl font-bold tracking-tight decoration-signal decoration-[3px] underline-offset-[6px] aria-[current=page]:underline"
+                >
+                  Vérifier {c.label.toLowerCase()}
                 </Link>
               </li>
             ))}

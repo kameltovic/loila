@@ -10,7 +10,8 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "*", allow: "/", disallow: "/api/" },
       { userAgent: AI_BOTS, allow: "/", disallow: "/api/" },
     ],
-    sitemap: `${SITE_URL}/sitemap.xml`,
+    // Split sitemaps (generateSitemaps in app/sitemap.ts): one per entity family, each listing only indexable URLs.
+    sitemap: [0, 1, 2, 3, 4].map((i) => `${SITE_URL}/sitemap/${i}.xml`),
     host: SITE_URL,
   };
 }

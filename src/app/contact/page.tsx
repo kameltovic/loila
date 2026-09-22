@@ -3,11 +3,15 @@ import { pageMetadata } from "@/lib/seo";
 import { container, display, label } from "@/components/ui";
 import ContactForm from "@/components/ContactForm";
 
-export const metadata: Metadata = pageMetadata({
-  title: "Contact",
-  description: "Écrire à l’équipe Loilà : question sur le service, partenariat, offre Pro ou exercice de vos droits sur vos données.",
-  path: "/contact",
-});
+export const metadata: Metadata = {
+  ...pageMetadata({
+    title: "Contact",
+    description: "Écrire à l’équipe Loilà : question sur le service, partenariat, offre Pro ou exercice de vos droits sur vos données.",
+    path: "/contact",
+  }),
+  // Thin utility page: kept reachable, never indexed.
+  robots: { index: false, follow: true },
+};
 
 export default function Contact() {
   return (

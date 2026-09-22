@@ -7,6 +7,7 @@ import { CODES, THEMES } from "@/lib/themes";
 import { Empty, FaqIndex, block, btnPrimary, container, display, label } from "@/components/ui";
 import { LettreCards } from "@/components/Lettres";
 import { articleSummary, coCitedArticles, linkRefs } from "@/lib/articles";
+import { articleIndexable } from "@/lib/eligibility";
 import { lettresForArticle } from "@/lib/lettres";
 import { getTopic } from "@/lib/topics";
 import { articleNeighbors, articleStats, citation, coCitedByCaseLaw, decisionUrl, decisionsForArticle, teaser } from "@/lib/decisions";
@@ -36,10 +37,8 @@ export async function generateMetadata({ params }: PageProps<"/article/[id]">): 
   const first = a.texte.split(/(?<=[.;:])\s|\n/)[0] ?? a.texte;
   const description = articleSummary(a)?.summary ?? `${first} Texte officiel en vigueur et explications simples.`;
   const meta = pageMetadata({ title, description: clip(description), path: `/article/${a.id}`, type: "article" });
-  // Only articles cited by an answer or a letter are worth indexing; the other ~100k are raw legal text (thin pages).
-  const indexable =
-    citedBy(a.id).length > 0 || lettresForArticle(a.id).length > 0 || (!!articleSummary(a) && decisionsForArticle(a.id, 1).total > 0);
-  return { ...meta, title: title.length > 52 ? { absolute: title } : title, ...(indexable ? {} : { robots: { index: false, follow: true } }) };
+  // SEO_ELIGIBLE (src/lib/eligibility.ts): one rule, shared with the sitemap. Raw legal text stays noindex.
+  return { ...meta, title: title.length > 52 ? { absolute: title } : title, ...(articleIndexable(a) ? {} : { robots: { index: false, follow: true } }) };
 }
 
 export default async function ArticlePage({ params }: PageProps<"/article/[id]">) {
