@@ -22,7 +22,8 @@
     "open-data:refs": "tsx scripts/open-data-idcc.ts && tsx scripts/open-data-jurisdictions.ts && tsx scripts/open-data-zones.ts && tsx scripts/open-data-irl.ts && tsx scripts/open-data-prices.ts",
     "open-data:company": "tsx scripts/open-data-company.ts",
     "open-data:address": "tsx scripts/open-data-address.ts",
-    "stripe:setup": "tsx --env-file=.env scripts/stripe-setup.ts"
+    "stripe:setup": "tsx --env-file=.env scripts/stripe-setup.ts",
+    "gsc:export": "tsx scripts/gsc-export.ts"
   },
   "dependencies": {
     "better-sqlite3": "^13.0.3",

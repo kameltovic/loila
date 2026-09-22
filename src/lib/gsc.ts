@@ -100,6 +100,13 @@ export async function gscQuery({ days, dims, page, query }: { days: number; dims
   return out;
 }
 
+/** Raw Search Console query, for what gscQuery does not cover (hourly view: dimension "hour" + dataState "hourly_all"). */
+export async function gscRaw(body: object): Promise<GscRow[]> {
+  const site = await gscSite();
+  const { rows = [] } = await api(`/sites/${encodeURIComponent(site)}/searchAnalytics/query`, body);
+  return rows as GscRow[];
+}
+
 /** "https://loila.fr/article/X" → "/article/X". */
 export const gscPath = (url: string) => url.replace(/^https?:\/\/[^/]+/, "") || "/";
 
