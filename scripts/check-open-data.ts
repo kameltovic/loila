@@ -15,7 +15,7 @@ const OPEN_DATA_TABLES = [
   "companies", "establishments", "company_announcements", "rge_certifications",
   "collective_agreements", "company_agreements",
   "addresses", "parcels", "parcel_addresses", "transactions", "dpe_diagnostics", "risks", "urban_zones",
-  "jurisdictions", "housing_zones", "legal_indices",
+  "jurisdictions", "housing_zones", "legal_indices", "price_stats",
 ];
 
 async function main() {
@@ -189,6 +189,19 @@ async function main() {
   ]);
   assert.deepEqual(ppm && { value: ppm.value, sales: ppm.sales }, { value: 11_000, sales: 2 });
   assert.equal(pricePerSqm([]), undefined);
+
+  // 15. Price history: yearly = monthly medians weighted by sales; section years under 5 sales dropped.
+  const { priceHistory } = await import("../src/lib/address");
+  const stat = db.prepare("INSERT INTO price_stats (code, level, month, apt_sales, apt_median) VALUES (?, ?, ?, ?, ?)");
+  stat.run("99001", "commune", "2024-01", 10, 5000); stat.run("99001", "commune", "2024-02", 30, 6000); // 2024: (10×5000 + 30×6000) / 40
+  stat.run("99001", "commune", "2025-01", 20, 6200);
+  stat.run("99001000AB", "section", "2024-01", 3, 9000); // under 5 sales: dropped
+  stat.run("99001000AB", "section", "2025-01", 6, 7000);
+  const hist = priceHistory("99001", "99001000AB");
+  assert.deepEqual(hist?.commune.map((p) => [p.year, p.median, p.sales]), [[2024, 5750, 40], [2025, 6200, 20]]);
+  assert.deepEqual(hist?.section.map((p) => p.year), [2025]);
+  assert.equal(hist?.kind, "appartements");
+  assert.equal(priceHistory("00000", null), undefined);
 
   console.log("check-open-data: OK");
 }

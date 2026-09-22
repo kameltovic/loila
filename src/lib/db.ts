@@ -654,6 +654,16 @@ CREATE TABLE IF NOT EXISTS jurisdictions (
   PRIMARY KEY (citycode, kind)
 );
 CREATE INDEX IF NOT EXISTS jurisdictions_kind ON jurisdictions(kind);
+-- DVF price statistics (Etalab, dvf-api.data.gouv.fr): monthly median price per m² by commune or cadastral section.
+CREATE TABLE IF NOT EXISTS price_stats (
+  code        TEXT NOT NULL,                  -- INSEE commune (75119) or section (75119000DY)
+  level       TEXT NOT NULL,                  -- commune | section
+  month       TEXT NOT NULL,                  -- "2025-06"
+  apt_sales   INTEGER, apt_median  INTEGER,   -- appartements
+  house_sales INTEGER, house_median INTEGER,  -- maisons
+  source_record_id TEXT,
+  PRIMARY KEY (code, month)
+);
 -- Journal officiel (JORF): lois, ordonnances, décrets, arrêtés… linked to the legal graph. Built by scripts/legal-jorf.ts
 -- from the LIENS of LEGI/KALI articles (créé/modifié/abrogé/codifié par, citations), enriched with the JORF metadata.
 CREATE TABLE IF NOT EXISTS jorf_texts (

@@ -6,12 +6,13 @@
 // a match quality travels with every row (CERTAIN > PROBABLE > POSSIBLE > UNKNOWN).
 import type Database from "better-sqlite3";
 import { getDb } from "./db";
-import { fetchJson, getSourceRecord, isFresh, saveSourceRecord, SOURCES, type MatchQuality, type SourceRecord } from "./sources";
+import { fetchJson, getSourceRecord, isFresh, recordImport, saveSourceRecord, SOURCES, type MatchQuality, type SourceRecord } from "./sources";
 import { linkExternalId, resolveExternal } from "./entities";
 
 const BAN = SOURCES["IGN:ban"];
 const CADASTRE = SOURCES["IGN:cadastre"];
 const DVF = SOURCES["DGFiP:dvf"];
+const DVF_STATS = SOURCES["ETALAB:dvf-stats"];
 const DPE = SOURCES["ADEME:dpe"];
 const GEORISQUES = SOURCES["BRGM:georisques"];
 const GPU = SOURCES["IGN:gpu"];
@@ -325,6 +326,7 @@ export async function syncAddressFull(query: string, db: Database.Database = get
     syncDpeForAddress(a, db).catch(() => 0),
     syncRisksForAddress(a, db).catch(() => 0),
     syncZonesForAddress(a, db).catch(() => 0),
+    a.citycode ? syncPriceStats(a.citycode, parcel ? parcel.idu.slice(0, 10) : null, db).catch(() => 0) : Promise.resolve(0),
   ]);
   return { banId, parcel: parcel?.idu, transactions, dpe, risks, zones };
 }
@@ -389,6 +391,59 @@ export const addressParcel = (banId: string, db: Database.Database = getDb()) =>
  * apartments/houses (a DVF mutation repeats its total price on each lot row, so rows are grouped by mutation first;
  * mixed sales with a shop or an industrial local are left out). Surface: Carrez when known, else built surface.
  */
+type DvfStat = { d?: string; a?: number | null; m_a?: number | null; m?: number | null; m_m?: number | null };
+
+/** Monthly DVF medians (Etalab) for a commune and a cadastral section → price_stats. Network, sync jobs only. */
+export async function syncPriceStats(citycode: string, section: string | null, db: Database.Database = getDb()): Promise<number> {
+  const targets: [string, "commune" | "section"][] = [[citycode, "commune"], ...(section ? [[section, "section"] as [string, "section"]] : [])];
+  let n = 0;
+  for (const [code, level] of targets) {
+    const url = `${DVF_API}/${level}/${code}`;
+    const data = await fetchJson<{ data?: DvfStat[] }>(url, { retries: 2 });
+    const rows = (data.data ?? []).filter((r) => r.d && /^\d{4}-\d{2}$/.test(r.d));
+    const srcId = recordImport(db, DVF_STATS, `${level}:${code}`, { officialUrl: url, matchQuality: "CERTAIN" });
+    const up = db.prepare(
+      `INSERT OR REPLACE INTO price_stats (code, level, month, apt_sales, apt_median, house_sales, house_median, source_record_id)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    );
+    db.transaction(() => { for (const r of rows) up.run(code, level, r.d, r.a ?? null, r.m_a ?? null, r.m ?? null, r.m_m ?? null, srcId); })();
+    n += rows.length;
+  }
+  return n;
+}
+
+export type PricePoint = { year: number; median: number; sales: number };
+export type PriceSeries = { kind: "appartements" | "maisons"; commune: PricePoint[]; section: PricePoint[]; source_record_id: string | null };
+
+/**
+ * Yearly price per m² from the monthly DVF medians: mean of the monthly medians weighted by their sales (an
+ * approximation of the yearly median). One property type, the one that sells most in the commune. Section years
+ * with fewer than 5 sales are dropped (a median of 2 sales is noise).
+ */
+export function priceHistory(citycode: string | null, section: string | null, db: Database.Database = getDb()): PriceSeries | undefined {
+  if (!citycode) return undefined;
+  const rows = db.prepare("SELECT code, level, month, apt_sales, apt_median, house_sales, house_median, source_record_id FROM price_stats WHERE code IN (?, ?)")
+    .all(citycode, section ?? "") as { code: string; level: string; month: string; apt_sales: number | null; apt_median: number | null; house_sales: number | null; house_median: number | null; source_record_id: string | null }[];
+  const commune = rows.filter((r) => r.code === citycode);
+  if (!commune.length) return undefined;
+  const sum = (k: "apt_sales" | "house_sales") => commune.reduce((t, r) => t + (r[k] ?? 0), 0);
+  const kind = sum("apt_sales") >= sum("house_sales") ? "appartements" : "maisons";
+  const [salesKey, medianKey] = kind === "appartements" ? (["apt_sales", "apt_median"] as const) : (["house_sales", "house_median"] as const);
+  const yearly = (list: typeof rows, min: number): PricePoint[] => {
+    const acc = new Map<number, { s: number; w: number }>();
+    for (const r of list) {
+      const n = r[salesKey], m = r[medianKey];
+      if (!n || !m) continue;
+      const y = Number(r.month.slice(0, 4));
+      const a = acc.get(y) ?? { s: 0, w: 0 };
+      acc.set(y, { s: a.s + n, w: a.w + n * m });
+    }
+    return [...acc].filter(([, a]) => a.s >= min).map(([year, a]) => ({ year, median: Math.round(a.w / a.s), sales: a.s })).sort((x, y) => x.year - y.year);
+  };
+  const series = { kind, commune: yearly(commune, 5), section: section ? yearly(rows.filter((r) => r.code === section), 5) : [], source_record_id: commune[0].source_record_id } as PriceSeries;
+  return series.commune.length >= 2 ? series : undefined;
+}
+
 export function pricePerSqm(rows: Transaction[]): { value: number; sales: number; from: string; to: string } | undefined {
   const byMutation = new Map<string, Transaction[]>();
   for (const r of rows) byMutation.set(r.id_mutation, [...(byMutation.get(r.id_mutation) ?? []), r]);

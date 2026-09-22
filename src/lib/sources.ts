@@ -76,6 +76,14 @@ export const SOURCES = {
     licence: "LOV2",
     ttl: 92 * 86400, // quarterly: re-run scripts/open-data-irl.ts after each publication
   },
+  "ETALAB:dvf-stats": {
+    provider: "ETALAB",
+    dataset: "dvf-stats",
+    name: "Statistiques DVF (DGFiP, Etalab)",
+    url: "https://www.data.gouv.fr/datasets/statistiques-dvf",
+    licence: "LOV2",
+    ttl: 30 * 86400,
+  },
   "DILA:bodacc": {
     provider: "DILA",
     dataset: "bodacc",

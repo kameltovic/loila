@@ -8,6 +8,7 @@ import { SourceBadge } from "@/components/SourceBadge";
 import JurisdictionCard from "@/components/JurisdictionCard";
 import HousingZoneCard from "@/components/HousingZoneCard";
 import PropertyMap from "@/components/PropertyMap";
+import PriceChart from "@/components/PriceChart";
 import { housingZone } from "@/lib/zones";
 import {
   addressDpe,
@@ -17,6 +18,7 @@ import {
   addressSource,
   addressTransactions,
   pricePerSqm,
+  priceHistory,
   addressZones,
   getAddress,
 } from "@/lib/address";
@@ -59,6 +61,9 @@ export default async function BienPage({ params }: PageProps<"/bien/[id]">) {
   const parcel = addressParcel(id);
   const transactions = addressTransactions(id, 24);
   const ppm = pricePerSqm(addressTransactions(id, 500));
+  const history = priceHistory(a.citycode, parcel ? parcel.idu.slice(0, 10) : null);
+  const arr = a.citycode?.match(/^(?:751|6938|132)(\d\d)$/)?.[1]; // Paris, Lyon, Marseille: stats per arrondissement
+  const communeName = arr && a.city ? `${a.city} ${Number(arr)}${Number(arr) === 1 ? "er" : "e"}` : a.city ?? "Commune";
   const dpe = addressDpe(id);
   const risks = addressRisks(id);
   const zones = addressZones(id);
@@ -199,6 +204,21 @@ export default async function BienPage({ params }: PageProps<"/bien/[id]">) {
                 <p className="max-w-xs text-sm font-medium">
                   Sur {ppm.sales} vente{ppm.sales > 1 ? "s" : ""} d’appartement ou de maison de la parcelle,{" "}
                   {ppm.from.slice(0, 4) === ppm.to.slice(0, 4) ? `en ${ppm.from.slice(0, 4)}` : `de ${ppm.from.slice(0, 4)} à ${ppm.to.slice(0, 4)}`}. Indicatif : prix total ÷ surface Carrez ou habitable.
+                </p>
+              </div>
+            )}
+            {history && (
+              <div className="mt-6">
+                <PriceChart
+                  title={`Prix médian au m² des ${history.kind}`}
+                  series={[
+                    ...(history.section.length >= 2 ? [{ key: "a" as const, name: `Quartier (section ${parcel?.idu.slice(8, 10)})`, points: history.section }] : []),
+                    { key: "b" as const, name: communeName, points: history.commune },
+                  ]}
+                />
+                <p className="mt-2 text-xs text-fg-2">
+                  Statistiques DVF (DGFiP, Etalab, Licence Ouverte 2.0) : médianes mensuelles, moyennées sur l’année selon le nombre de ventes.
+                  Quartier affiché seulement pour les années d’au moins 5 ventes.
                 </p>
               </div>
             )}

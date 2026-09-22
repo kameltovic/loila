@@ -10,6 +10,9 @@
   --signal: #ff4a1c; /* decoration + large text only */
   --focus: #d9370b; /* darker vermilion: 3:1+ on paper */
   --danger-bg: #ffe1d6;
+  /* Chart series (validated: scripts/validate_palette.js of the dataviz skill, light on paper) */
+  --chart-a: #ff4a1c;
+  --chart-b: #3f6fa8;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,6 +25,8 @@
     --signal: #ff4a1c;
     --focus: #ff4a1c;
     --danger-bg: #3a160c;
+    --chart-a: #f0501f;
+    --chart-b: #4f86cf;
   }
 }
 
