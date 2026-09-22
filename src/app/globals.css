@@ -165,3 +165,29 @@ body {
 .prose-loila th {
   border-bottom: 2px solid var(--fg);
 }
+
+/* Property map (PropertyMap.tsx): address pin, signal dot with a slow pulse ring. */
+.loila-pin {
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  background: var(--signal);
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 2px var(--signal), 0 6px 18px rgb(0 0 0 / 0.35);
+  position: relative;
+}
+.loila-pin::after {
+  content: "";
+  position: absolute;
+  inset: -12px;
+  border-radius: 9999px;
+  border: 2px solid var(--signal);
+  animation: loila-pulse 2.2s ease-out infinite;
+}
+@keyframes loila-pulse {
+  from { transform: scale(0.4); opacity: 0.9; }
+  to { transform: scale(1.6); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .loila-pin::after { animation: none; opacity: 0; }
+}

@@ -746,6 +746,7 @@ export function getDb() {
     addCols("articles", [["num_norm", "TEXT"], ["etat", "TEXT"], ["date_fin", "TEXT"], ["checksum", "TEXT"], ["source", "TEXT"]]);
     // liens / attaquee_*: raw fields kept so the whole graph can be re-extracted from the DB alone (production).
     addCols("decisions", [["checksum", "TEXT"], ["extractor_version", "TEXT"], ["liens", "TEXT"], ["attaquee_juridiction", "TEXT"], ["attaquee_date", "TEXT"]]);
+    addCols("parcels", [["geometry", "TEXT"]]); // cadastral outline (GeoJSON) for the property map
     db.exec("CREATE INDEX IF NOT EXISTS articles_code_num_norm ON articles(code, num_norm)");
     db.exec("CREATE INDEX IF NOT EXISTS decisions_date ON decisions(date)");
     db.exec("CREATE INDEX IF NOT EXISTS decisions_ecli ON decisions(ecli) WHERE ecli IS NOT NULL AND ecli <> ''");

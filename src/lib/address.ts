@@ -102,22 +102,25 @@ export async function syncParcelForAddress(banId: string, db: Database.Database 
   const a = getAddress(banId, db);
   if (!a?.lat || !a?.lon) return undefined;
   const url = `${CADASTRE_API}?geom=${encodeURIComponent(JSON.stringify({ type: "Point", coordinates: [a.lon, a.lat] }))}`;
-  const data = await fetchJson<{ features?: { properties?: ParcelProps }[] }>(url);
+  const data = await fetchJson<{ features?: { properties?: ParcelProps; geometry?: { type?: string } }[] }>(url);
   const p = data.features?.[0]?.properties;
+  const geom = data.features?.[0]?.geometry;
+  // Outline kept for the map; a parcel is a few KB, anything huge (railway land…) is not worth storing.
+  const geometry = geom && /Polygon$/.test(geom.type ?? "") && JSON.stringify(geom).length < 60_000 ? JSON.stringify(geom) : null;
   if (!p?.idu) return undefined;
   const idu = p.idu;
   const srcId = saveSourceRecord(db, CADASTRE, idu, p, { officialUrl: url, matchQuality: "CERTAIN" });
   const eid = linkExternalId(db, "idu", idu, "parcel", idu, `${p.section ?? ""}${p.numero ?? ""}`.trim() || idu);
   db.prepare(
-    `INSERT INTO parcels (idu, entity_id, citycode, prefixe, section, numero, contenance, lat, lon, source_record_id, fetched_at)
-     VALUES (@idu, @entity, @citycode, @prefixe, @section, @numero, @contenance, @lat, @lon, @src, unixepoch())
+    `INSERT INTO parcels (idu, entity_id, citycode, prefixe, section, numero, contenance, lat, lon, geometry, source_record_id, fetched_at)
+     VALUES (@idu, @entity, @citycode, @prefixe, @section, @numero, @contenance, @lat, @lon, @geometry, @src, unixepoch())
      ON CONFLICT(idu) DO UPDATE SET entity_id = excluded.entity_id, citycode = excluded.citycode, prefixe = excluded.prefixe,
        section = excluded.section, numero = excluded.numero, contenance = excluded.contenance, lat = excluded.lat,
-       lon = excluded.lon, source_record_id = excluded.source_record_id, fetched_at = unixepoch()`,
+       lon = excluded.lon, geometry = COALESCE(excluded.geometry, geometry), source_record_id = excluded.source_record_id, fetched_at = unixepoch()`,
   ).run({
     idu, entity: eid, citycode: p.code_insee ?? idu.slice(0, 5), prefixe: p.prefixe ?? idu.slice(5, 8),
     section: p.section ?? idu.slice(8, 10), numero: p.numero ?? idu.slice(10, 14),
-    contenance: typeof p.contenance === "number" ? p.contenance : null, lat: a.lat, lon: a.lon, src: srcId,
+    contenance: typeof p.contenance === "number" ? p.contenance : null, lat: a.lat, lon: a.lon, geometry, src: srcId,
   });
   db.prepare(
     `INSERT INTO parcel_addresses (parcel_id, ban_id, match_quality, method) VALUES (@idu, @banId, 'CERTAIN', 'point_in_polygon')
@@ -336,7 +339,7 @@ export type Address = {
 
 export type Parcel = {
   idu: string; entity_id: string; citycode: string | null; prefixe: string | null; section: string | null;
-  numero: string | null; contenance: number | null; lat: number | null; lon: number | null;
+  numero: string | null; contenance: number | null; lat: number | null; lon: number | null; geometry: string | null;
   source_record_id: string | null; fetched_at: number | null;
 };
 

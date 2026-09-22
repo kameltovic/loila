@@ -7,6 +7,8 @@ import { Empty, SectionHead, block, container, display, label } from "@/componen
 import { SourceBadge } from "@/components/SourceBadge";
 import JurisdictionCard from "@/components/JurisdictionCard";
 import HousingZoneCard from "@/components/HousingZoneCard";
+import PropertyMap from "@/components/PropertyMap";
+import { housingZone } from "@/lib/zones";
 import {
   addressDpe,
   addressIndexable,
@@ -63,6 +65,15 @@ export default async function BienPage({ params }: PageProps<"/bien/[id]">) {
   const path = `/bien/${id}`;
   const hasBlocks = transactions.length > 0 || dpe.length > 0 || risks.length > 0 || zones.length > 0;
 
+  const zone = housingZone(a.citycode);
+  const mapToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+  const mapFacts: { label: string; value: string }[] = [
+    ...(parcel ? [{ label: "Parcelle", value: `${parcel.section ?? ""} ${parcel.numero ?? ""}${parcel.contenance ? ` · ${parcel.contenance.toLocaleString("fr-FR")} m²` : ""}`.trim() }] : []),
+    ...(zones[0]?.libelle ? [{ label: "PLU", value: zones[0].libelle }] : []),
+    ...(dpe[0]?.etiquette_dpe ? [{ label: "DPE", value: dpe[0].etiquette_dpe }] : []),
+    ...(zone?.zone === 1 ? [{ label: "Location", value: "Zone tendue" }] : []),
+  ];
+
   const blockSource = (sourceId: string | null | undefined) => addressSource(sourceId ?? null);
 
   return (
@@ -87,25 +98,60 @@ export default async function BienPage({ params }: PageProps<"/bien/[id]">) {
         ]}
       />
 
-      <section className={`${block("urbanisme")} border-b-2 border-ink`}>
-        <div className={`${container} pt-8 pb-12 sm:pt-10 sm:pb-16`}>
-          <nav aria-label="Fil d’Ariane" className={`${label} flex flex-wrap items-center gap-2`}>
-            <Link href="/" className="underline-offset-4 hover:underline">Accueil</Link>
-            <span aria-hidden>/</span>
-            <Link href="/bien" className="underline-offset-4 hover:underline">Biens</Link>
-          </nav>
-          <p className={`${label} mt-12 flex flex-wrap items-center gap-2`}>
-            <ThemeIcon slug="urbanisme" className="size-8 shrink-0" />
-            <span className="border-2 border-ink px-2 py-1">BAN {a.ban_id}</span>
-            {a.postcode && <span className="border-2 border-ink px-2 py-1">{a.postcode}</span>}
-            {parcel && <span className="border-2 border-ink px-2 py-1">Parcelle {parcel.idu}</span>}
-          </p>
-          <h1 className={`${display} mt-6 max-w-5xl text-[clamp(2.25rem,6vw,4.5rem)] leading-[0.95] text-balance`}>
-            {a.label}
-          </h1>
-          {a.city && <p className="mt-3 font-serif text-xl italic">{a.city}{a.citycode ? ` (INSEE ${a.citycode})` : ""}</p>}
-        </div>
-      </section>
+      {mapToken && a.lat != null && a.lon != null ? (
+        <section className="relative border-b-2 border-ink">
+          <PropertyMap token={mapToken} lat={a.lat} lon={a.lon} label={a.label} parcel={parcel?.geometry ?? null} className="h-[clamp(30rem,82vh,52rem)] w-full">
+            {/* Overlay stops 2rem above the bottom edge: the Mapbox logo and attribution must stay visible. */}
+            <div className="pointer-events-none absolute inset-x-0 top-0 bottom-8 flex flex-col justify-between">
+              <div className="bg-gradient-to-b from-bg/85 to-transparent pb-10">
+                <nav aria-label="Fil d’Ariane" className={`${container} ${label} pointer-events-auto flex flex-wrap items-center gap-2 pt-6`}>
+                  <Link href="/" className="underline-offset-4 hover:underline">Accueil</Link>
+                  <span aria-hidden>/</span>
+                  <Link href="/bien" className="underline-offset-4 hover:underline">Biens</Link>
+                </nav>
+              </div>
+              <div className="bg-gradient-to-t from-bg via-bg/80 to-transparent pt-24">
+                <div className={container}>
+                  <p className={`${label} flex flex-wrap items-center gap-2`}>
+                    <ThemeIcon slug="urbanisme" className="size-7 shrink-0" />
+                    {mapFacts.map((f) => (
+                      <span key={f.label} className="border-2 border-ink bg-bg px-2 py-1">
+                        <span className="text-fg-2">{f.label}</span> {f.value}
+                      </span>
+                    ))}
+                  </p>
+                  <h1 className={`${display} mt-5 max-w-4xl text-[clamp(2.25rem,6vw,4.75rem)] leading-[0.95] text-balance [text-shadow:0_1px_0_var(--bg)]`}>
+                    {a.label}
+                  </h1>
+                  <p className="mt-3 pb-4 font-serif text-xl italic">
+                    {a.city}{a.citycode ? ` (INSEE ${a.citycode})` : ""} · <span className="font-mono text-sm not-italic">BAN {a.ban_id}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </PropertyMap>
+        </section>
+      ) : (
+        <section className={`${block("urbanisme")} border-b-2 border-ink`}>
+          <div className={`${container} pt-8 pb-12 sm:pt-10 sm:pb-16`}>
+            <nav aria-label="Fil d’Ariane" className={`${label} flex flex-wrap items-center gap-2`}>
+              <Link href="/" className="underline-offset-4 hover:underline">Accueil</Link>
+              <span aria-hidden>/</span>
+              <Link href="/bien" className="underline-offset-4 hover:underline">Biens</Link>
+            </nav>
+            <p className={`${label} mt-12 flex flex-wrap items-center gap-2`}>
+              <ThemeIcon slug="urbanisme" className="size-8 shrink-0" />
+              <span className="border-2 border-ink px-2 py-1">BAN {a.ban_id}</span>
+              {a.postcode && <span className="border-2 border-ink px-2 py-1">{a.postcode}</span>}
+              {parcel && <span className="border-2 border-ink px-2 py-1">Parcelle {parcel.idu}</span>}
+            </p>
+            <h1 className={`${display} mt-6 max-w-5xl text-[clamp(2.25rem,6vw,4.5rem)] leading-[0.95] text-balance`}>
+              {a.label}
+            </h1>
+            {a.city && <p className="mt-3 font-serif text-xl italic">{a.city}{a.citycode ? ` (INSEE ${a.citycode})` : ""}</p>}
+          </div>
+        </section>
+      )}
 
       <article className={`${container} grid gap-10 py-12 sm:py-16 lg:grid-cols-[1fr_18rem]`}>
         <div className="min-w-0 space-y-12">
