@@ -683,6 +683,14 @@ CREATE TABLE IF NOT EXISTS places (
   sales       INTEGER NOT NULL DEFAULT 0      -- apartments + houses sold over the whole period
 );
 CREATE INDEX IF NOT EXISTS places_dep ON places(dep, sales);
+-- Price by cadastral section over the last three years pooled (a section is a few blocks: one year is too thin).
+CREATE TABLE IF NOT EXISTS section_prices (
+  code        TEXT PRIMARY KEY,               -- 75119000DY
+  commune     TEXT NOT NULL,
+  apt_sales   INTEGER, apt_median  INTEGER,
+  house_sales INTEGER, house_median INTEGER
+);
+CREATE INDEX IF NOT EXISTS section_prices_commune ON section_prices(commune);
 -- Journal officiel (JORF): lois, ordonnances, décrets, arrêtés… linked to the legal graph. Built by scripts/legal-jorf.ts
 -- from the LIENS of LEGI/KALI articles (créé/modifié/abrogé/codifié par, citations), enriched with the JORF metadata.
 CREATE TABLE IF NOT EXISTS jorf_texts (
@@ -864,7 +872,7 @@ export function importContent(d: Database.Database, dir = path.join(process.cwd(
         }
         // Open data reference tables (scripts/export-content.ts --refs): snapshot tables replaced whole, shared ones upserted.
         if (refTables) {
-          const SNAPSHOT = ["collective_agreements", "jurisdictions", "housing_zones", "legal_indices", "price_years", "places"];
+          const SNAPSHOT = ["collective_agreements", "jurisdictions", "housing_zones", "legal_indices", "price_years", "places", "section_prices"];
           const UPSERT = ["entities", "entity_ids", "source_records"];
           for (const table of [...UPSERT, ...SNAPSHOT]) { // referenced rows first (foreign keys)
             const rows = refTables[table] ?? [];

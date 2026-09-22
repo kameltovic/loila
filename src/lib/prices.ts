@@ -56,6 +56,33 @@ export const indexablePlaces = (): Place[] => {
 export const communesOf = (dep: string, limit = 500) =>
   getDb().prepare("SELECT * FROM places WHERE level = 'commune' AND dep = ? ORDER BY sales DESC LIMIT ?").all(dep, limit) as Place[];
 
+/** Paris, Lyon, Marseille arrondissements: 75101…75120, 69381…69389, 13201…13216. */
+export const arrondissementCity = (code: string) => (/^751\d\d$/.test(code) ? "751" : /^6938\d$/.test(code) ? "6938" : /^132\d\d$/.test(code) ? "132" : null);
+
+/** Sibling places listed on a page: every arrondissement of the same city in order, else the busiest communes of the département. */
+export function neighbours(p: Place, limit: number): Place[] {
+  const city = p.level === "commune" ? arrondissementCity(p.code) : null;
+  if (city) return getDb().prepare("SELECT * FROM places WHERE level = 'commune' AND code LIKE ? ORDER BY code").all(`${city}%`) as Place[];
+  const dep = p.level === "commune" ? p.dep ?? "" : p.code;
+  const list = communesOf(dep, limit);
+  // A département made only of arrondissements (Paris): number order reads better than sales order.
+  return list.length && list.every((c) => arrondissementCity(c.code)) ? list.sort((a, b) => a.code.localeCompare(b.code)) : list;
+}
+
+export type SectionPrice = { code: string; median: number; sales: number };
+
+/** Section prices of some communes for one property type (≥ 5 sales pooled over three years), plus 5-class quantile breaks. */
+export function sectionPrices(communes: string[], kind: Kind): { sections: SectionPrice[]; breaks: number[] } {
+  if (!communes.length) return { sections: [], breaks: [] };
+  const [sales, median] = kind === "apt" ? ["apt_sales", "apt_median"] : ["house_sales", "house_median"];
+  const sections = getDb()
+    .prepare(`SELECT code, ${median} AS median, ${sales} AS sales FROM section_prices WHERE commune IN (${communes.map(() => "?").join(",")}) AND ${sales} >= 5 AND ${median} > 0`)
+    .all(...communes) as SectionPrice[];
+  const sorted = sections.map((s) => s.median).sort((a, b) => a - b);
+  const q = (f: number) => sorted[Math.min(sorted.length - 1, Math.floor(f * sorted.length))];
+  return { sections, breaks: sorted.length >= 5 ? [q(0.2), q(0.4), q(0.6), q(0.8)] : [] };
+}
+
 export const departements = () =>
   getDb().prepare("SELECT * FROM places WHERE level = 'departement' ORDER BY code").all() as Place[];
 

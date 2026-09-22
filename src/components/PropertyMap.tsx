@@ -4,7 +4,7 @@ import { type ReactNode, useEffect, useRef, useState } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 // Mapbox Standard config (schema: api.mapbox.com/styles/v1/mapbox/standard). Quiet basemap, 3D on.
-const BASE = {
+export const BASE = {
   theme: "default",
   showPointOfInterestLabels: false,
   showTransitLabels: false,
@@ -16,7 +16,7 @@ const BASE = {
 
 // Palette in Loilà's paper & ink. Day: roads one step darker than the paper, muted sage greens and slate water.
 // Night: the same hues under the night light, roads lit up and detailed façades (lit windows where available).
-function palette(dark: boolean): Record<string, string | number | boolean> {
+export function palette(dark: boolean): Record<string, string | number | boolean> {
   const common = {
     colorGreenspace: dark ? "hsl(110, 22%, 62%)" : "hsl(95, 30%, 80%)",
     colorWater: dark ? "hsl(210, 40%, 55%)" : "hsl(205, 38%, 79%)",
@@ -88,6 +88,7 @@ export default function PropertyMap({ token, lat, lon, label, parcel, className,
         pitch: reduced ? 55 : 0,
         bearing: reduced ? -20 : 0,
         antialias: true,
+        language: "fr",
         cooperativeGestures: true, // no scroll trap: ctrl/⌘ + wheel, two fingers on touch
         attributionControl: true,
         locale: { "ScrollZoomBlocker.CtrlMessage": "Ctrl + molette pour zoomer", "ScrollZoomBlocker.CmdMessage": "⌘ + molette pour zoomer", "TouchPanBlocker.Message": "Deux doigts pour déplacer la carte" },

@@ -54,6 +54,7 @@ async function main() {
   // 2. Monthly medians → yearly, weighted by sales.
   type Acc = { as: number; aw: number; hs: number; hw: number };
   const acc = new Map<string, Acc>(); // key: code|year
+  const bySection = new Map<string, { commune: string; months: { year: number; as: number; am: number; hs: number; hm: number }[] }>();
   const res = await fetch(STATS, { headers: UA });
   if (!res.ok || !res.body) throw new Error(`HTTP ${res.status} on ${STATS}`);
   const rl = readline.createInterface({ input: Readable.fromWeb(res.body as import("node:stream/web").ReadableStream) });
@@ -64,6 +65,14 @@ async function main() {
     if (!header) { header = f; continue; }
     const col = (k: string) => f[header!.indexOf(k)];
     const level = col("echelle_geo");
+    if (level === "section") {
+      const y = Number(col("annee_mois")?.slice(0, 4));
+      const n = (k: string) => { const v = Number(col(k)); return Number.isFinite(v) && v > 0 ? v : 0; };
+      const e = bySection.get(col("code_geo")) ?? { commune: col("code_parent"), months: [] };
+      e.months.push({ year: y, as: n("nb_ventes_appartement"), am: n("med_prix_m2_appartement"), hs: n("nb_ventes_maison"), hm: n("med_prix_m2_maison") });
+      bySection.set(col("code_geo"), e);
+      continue;
+    }
     if (level !== "commune" && level !== "departement" && level !== "nation") continue;
     const code = level === "nation" ? "FR" : col("code_geo");
     const year = col("annee_mois")?.slice(0, 4);
@@ -85,9 +94,23 @@ async function main() {
   const srcStats = recordImport(db, SOURCES["ETALAB:dvf-stats"], "stats_dvf.csv", { officialUrl: STATS, matchQuality: "CERTAIN" });
   recordImport(db, SOURCES["DINUM:geo"], "communes", { officialUrl: `${GEO}/communes`, matchQuality: "CERTAIN" });
   const py = db.prepare("INSERT INTO price_years (code, year, apt_sales, apt_median, house_sales, house_median) VALUES (?, ?, ?, ?, ?, ?)");
+  // Sections: the last three years present in the file, pooled, medians weighted by sales.
+  let lastYear = 0;
+  for (const k of acc.keys()) lastYear = Math.max(lastYear, Number(k.split("|")[1]));
+  const sp = db.prepare("INSERT INTO section_prices (code, commune, apt_sales, apt_median, house_sales, house_median) VALUES (?, ?, ?, ?, ?, ?)");
   const pl = db.prepare("INSERT INTO places (code, level, name, slug, dep, population, sales) VALUES (?, ?, ?, ?, ?, ?, ?)");
   db.transaction(() => {
-    db.exec("DELETE FROM price_years; DELETE FROM places;");
+    db.exec("DELETE FROM price_years; DELETE FROM places; DELETE FROM section_prices;");
+    for (const [code, e] of bySection) {
+      const a = { as: 0, aw: 0, hs: 0, hw: 0 };
+      for (const m of e.months) {
+        if (m.year < lastYear - 2) continue;
+        if (m.as && m.am) { a.as += m.as; a.aw += m.as * m.am; }
+        if (m.hs && m.hm) { a.hs += m.hs; a.hw += m.hs * m.hm; }
+      }
+      if (a.as + a.hs < 3) continue; // nothing to say about this section
+      sp.run(code, e.commune, a.as || null, a.as ? Math.round(a.aw / a.as) : null, a.hs || null, a.hs ? Math.round(a.hw / a.hs) : null);
+    }
     for (const [key, a] of acc) {
       const [code, year] = key.split("|");
       py.run(code, Number(year), a.as || null, a.as ? Math.round(a.aw / a.as) : null, a.hs || null, a.hs ? Math.round(a.hw / a.hs) : null);
@@ -99,7 +122,7 @@ async function main() {
       pl.run(code, n.level, n.name, placeSlug(n.name, code), n.dep, n.population, sales.get(code));
     }
   })();
-  const c = db.prepare("SELECT level, COUNT(*) n FROM places GROUP BY level").all();
+  const c = [...db.prepare("SELECT level, COUNT(*) n FROM places GROUP BY level").all(), db.prepare("SELECT 'sections' level, COUNT(*) n FROM section_prices").get()];
   console.log(`[prices] places ${JSON.stringify(c)} · source ${srcStats} · ${((Date.now() - t) / 1000).toFixed(0)} s`);
 }
 

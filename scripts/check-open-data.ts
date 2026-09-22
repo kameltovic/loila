@@ -15,7 +15,7 @@ const OPEN_DATA_TABLES = [
   "companies", "establishments", "company_announcements", "rge_certifications",
   "collective_agreements", "company_agreements",
   "addresses", "parcels", "parcel_addresses", "transactions", "dpe_diagnostics", "risks", "urban_zones",
-  "jurisdictions", "housing_zones", "legal_indices", "price_stats", "price_years", "places",
+  "jurisdictions", "housing_zones", "legal_indices", "price_stats", "price_years", "places", "section_prices",
 ];
 
 async function main() {
@@ -225,6 +225,14 @@ async function main() {
   assert.equal(PR.placeIndexable(PR.getPlace("98002")!), false, "20 sales, one year: noindex");
   assert.deepEqual(PR.indexablePlaces().map((p) => p.code).sort(), ["2A", "98001"]);
   assert.equal(PR.change(8000, 8240), 3);
+  // Section map: ≥ 5 sales only, 4 quantile breaks once there are 5 sections.
+  const sp = db.prepare("INSERT INTO section_prices (code, commune, apt_sales, apt_median) VALUES (?, '98001', ?, ?)");
+  [[10, 3000], [12, 3500], [8, 4000], [20, 4500], [6, 5000], [3, 9000]].forEach(([n, m], i) => sp.run(`98001000A${i}`, n, m));
+  const sm = PR.sectionPrices(["98001"], "apt");
+  assert.equal(sm.sections.length, 5, "the 3-sale section is left out");
+  assert.deepEqual(sm.breaks, [3500, 4000, 4500, 5000]);
+  assert.deepEqual(PR.sectionPrices([], "apt"), { sections: [], breaks: [] });
+  assert.deepEqual(PR.neighbours(PR.getPlace("98001")!, 10).map((p) => p.code), ["98001", "98002"]);
 
   console.log("check-open-data: OK");
 }

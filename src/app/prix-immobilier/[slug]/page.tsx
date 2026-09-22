@@ -5,11 +5,12 @@ import { ArrowRight } from "lucide-react";
 import HousingZoneCard from "@/components/HousingZoneCard";
 import JurisdictionCard from "@/components/JurisdictionCard";
 import PriceChart from "@/components/PriceChart";
+import PriceMap from "@/components/PriceMap";
 import { SourceBadge } from "@/components/SourceBadge";
 import ThemeIcon from "@/components/ThemeIcon";
 import { SectionHead, block, btnPrimary, container, display, label } from "@/components/ui";
 import {
-  KIND_LABEL, type Kind, type Place, change, communesOf, getPlace, mainKind, placeFromSlug, placeIndexable, placeName, placeUrl, pointsOf, priceYears,
+  KIND_LABEL, type Kind, type Place, arrondissementCity, change, getPlace, neighbours, sectionPrices, mainKind, placeFromSlug, placeIndexable, placeName, placeUrl, pointsOf, priceYears,
 } from "@/lib/prices";
 import { JsonLd, breadcrumbJsonLd, clip, pageMetadata } from "@/lib/seo";
 import { SOURCES } from "@/lib/sources";
@@ -67,8 +68,12 @@ export default async function PricePage({ params }: PageProps<"/prix-immobilier/
   const f = facts(p);
   const isCommune = p.level === "commune";
   const where = isCommune ? placeName(p) : `${p.name} (${p.code})`;
-  const neighbours = communesOf(isCommune ? p.dep ?? "" : p.code, isCommune ? 13 : 300).filter((c) => c.code !== p.code);
+  const siblings = neighbours(p, isCommune ? 13 : 300).filter((c) => c.code !== p.code);
   const zone = isCommune ? housingZone(p.code) : undefined;
+  // Section map: the commune, or the whole city for an arrondissement, or all of Paris on the 75 page.
+  const city = isCommune ? arrondissementCity(p.code) : null;
+  const mapCommunes = city ? neighbours(p, 0).map((c) => c.code) : isCommune ? [p.code] : siblings.length && siblings.every((c) => arrondissementCity(c.code)) ? siblings.map((c) => c.code) : [];
+  const sectionMap = sectionPrices(mapCommunes, f.kind);
   const parentName = f.parent ? (f.parent.level === "nation" ? "France" : `${f.parent.name} (${f.parent.code})`) : "";
   const parentIn = f.parent?.level === "nation" ? "nationale" : `du ${f.parent?.code} (${f.parent?.name})`;
   const vsParent = f.last && f.parentLast ? change(f.parentLast.median, f.last.median) : null;
@@ -214,16 +219,29 @@ export default async function PricePage({ params }: PageProps<"/prix-immobilier/
             />
           </section>
 
-          {neighbours.length > 0 && (
+          {sectionMap.breaks.length === 4 && (
+            <section aria-labelledby="carte-title">
+              <SectionHead num="02" kicker="Quartiers" id="carte-title" title={`Le prix au m² quartier par quartier${city ? "" : ` ${inName(p)}`}`} />
+              <p className="mt-6 max-w-3xl text-fg-2">
+                Chaque zone est une section cadastrale, quelques pâtés de maisons. Couleur : prix médian au m² des {kindLabel} sur les trois dernières années,
+                pour les sections d’au moins 5 ventes. Survolez une zone pour son prix.
+              </p>
+              <div className="mt-8">
+                <PriceMap token={process.env.NEXT_PUBLIC_MAPBOX_TOKEN} communes={mapCommunes} focus={isCommune ? p.code : ""} sections={sectionMap.sections} breaks={sectionMap.breaks} kind={kindLabel} />
+              </div>
+            </section>
+          )}
+
+          {siblings.length > 0 && (
             <section aria-labelledby="communes-title">
               <SectionHead
-                num="02"
+                num={sectionMap.breaks.length === 4 ? "03" : "02"}
                 kicker={isCommune ? "Autour" : "Communes"}
                 id="communes-title"
-                title={isCommune ? `Prix dans les autres communes ${f.parent ? parentIn : ""}` : `Prix au m² commune par commune`}
+                title={isCommune ? (arrondissementCity(p.code) ? "Prix dans les autres arrondissements" : `Prix dans les autres communes ${f.parent ? parentIn : ""}`) : "Prix au m² commune par commune"}
               />
               <ul className="mt-8 grid gap-x-8 sm:grid-cols-2">
-                {neighbours.map((c) => {
+                {siblings.map((c) => {
                   const pts = pointsOf(priceYears(c.code), f.kind);
                   const lastPt = pts.at(-1);
                   return (
@@ -240,7 +258,7 @@ export default async function PricePage({ params }: PageProps<"/prix-immobilier/
           )}
 
           <section aria-labelledby="faq-title">
-            <SectionHead num={neighbours.length ? "03" : "02"} kicker="Questions" id="faq-title" title="En bref" />
+            <SectionHead num={String(2 + (siblings.length ? 1 : 0) + (sectionMap.breaks.length === 4 ? 1 : 0)).padStart(2, "0")} kicker="Questions" id="faq-title" title="En bref" />
             <dl className="mt-8 space-y-6">
               {faq.map((x) => (
                 <div key={x.q} className="border-b border-rule pb-6">
