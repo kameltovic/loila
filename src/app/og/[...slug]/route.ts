@@ -102,9 +102,11 @@ function image(parts: string[]) {
 export async function GET(_req: Request, { params }: { params: Promise<{ slug: string[] }> }) {
   const slug = [...(await params).slug];
   const last = slug.pop();
-  if (!last?.endsWith(".png")) return new Response("Not found", { status: 404 });
+  // no-store: a CDN must not keep a 404 for an image whose data arrives later (new page, deploy, synced address).
+  const notFound = () => new Response("Not found", { status: 404, headers: { "Cache-Control": "no-store" } });
+  if (!last?.endsWith(".png")) return notFound();
   const res = image([...slug, last.slice(0, -4)]);
-  if (!res) return new Response("Not found", { status: 404 });
+  if (!res) return notFound();
   res.headers.set("Cache-Control", "public, max-age=86400, s-maxage=604800, stale-while-revalidate=86400");
   return res;
 }
