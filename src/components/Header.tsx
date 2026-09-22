@@ -20,6 +20,7 @@ const NAV = [
 const CHECK = [
   { slug: "verifier-entreprise", label: "Une entreprise", hint: "SIREN, annonces BODACC, convention" },
   { slug: "verifier-un-bien", label: "Un bien immobilier", hint: "Ventes DVF, DPE, risques, PLU" },
+  { slug: "prix-immobilier", label: "Les prix immobiliers", hint: "Prix au m² par commune, ventes DVF" },
   { slug: "jurisprudence", label: "La jurisprudence", hint: "Décisions reliées aux articles" },
 ];
 

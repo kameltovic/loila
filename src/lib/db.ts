@@ -664,6 +664,25 @@ CREATE TABLE IF NOT EXISTS price_stats (
   source_record_id TEXT,
   PRIMARY KEY (code, month)
 );
+-- Price per m² pages (/prix-immobilier): yearly DVF statistics by commune / département / nation, from the monthly
+-- Etalab file (medians weighted by sales), and the places they describe (official names from geo.api.gouv.fr).
+CREATE TABLE IF NOT EXISTS price_years (
+  code        TEXT NOT NULL,                  -- INSEE commune (arrondissement for Paris/Lyon/Marseille), département, 'FR'
+  year        INTEGER NOT NULL,
+  apt_sales   INTEGER, apt_median  INTEGER,
+  house_sales INTEGER, house_median INTEGER,
+  PRIMARY KEY (code, year)
+);
+CREATE TABLE IF NOT EXISTS places (
+  code        TEXT PRIMARY KEY,
+  level       TEXT NOT NULL,                  -- commune | departement | nation
+  name        TEXT NOT NULL,
+  slug        TEXT NOT NULL,
+  dep         TEXT,                           -- département code of a commune
+  population  INTEGER,
+  sales       INTEGER NOT NULL DEFAULT 0      -- apartments + houses sold over the whole period
+);
+CREATE INDEX IF NOT EXISTS places_dep ON places(dep, sales);
 -- Journal officiel (JORF): lois, ordonnances, décrets, arrêtés… linked to the legal graph. Built by scripts/legal-jorf.ts
 -- from the LIENS of LEGI/KALI articles (créé/modifié/abrogé/codifié par, citations), enriched with the JORF metadata.
 CREATE TABLE IF NOT EXISTS jorf_texts (
@@ -845,7 +864,7 @@ export function importContent(d: Database.Database, dir = path.join(process.cwd(
         }
         // Open data reference tables (scripts/export-content.ts --refs): snapshot tables replaced whole, shared ones upserted.
         if (refTables) {
-          const SNAPSHOT = ["collective_agreements", "jurisdictions", "housing_zones", "legal_indices"];
+          const SNAPSHOT = ["collective_agreements", "jurisdictions", "housing_zones", "legal_indices", "price_years", "places"];
           const UPSERT = ["entities", "entity_ids", "source_records"];
           for (const table of [...UPSERT, ...SNAPSHOT]) { // referenced rows first (foreign keys)
             const rows = refTables[table] ?? [];

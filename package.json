@@ -17,8 +17,9 @@
     "open-data:idcc": "tsx scripts/open-data-idcc.ts",
     "open-data:jurisdictions": "tsx scripts/open-data-jurisdictions.ts",
     "open-data:zones": "tsx scripts/open-data-zones.ts",
-    "open-data:irl": "tsx scripts/open-data-irl.ts",
-    "open-data:refs": "tsx scripts/open-data-idcc.ts && tsx scripts/open-data-jurisdictions.ts && tsx scripts/open-data-zones.ts && tsx scripts/open-data-irl.ts",
+    "open-data:irl": "tsx scripts/open-data-irl.ts && tsx scripts/open-data-prices.ts",
+    "open-data:prices": "tsx scripts/open-data-prices.ts",
+    "open-data:refs": "tsx scripts/open-data-idcc.ts && tsx scripts/open-data-jurisdictions.ts && tsx scripts/open-data-zones.ts && tsx scripts/open-data-irl.ts && tsx scripts/open-data-prices.ts",
     "open-data:company": "tsx scripts/open-data-company.ts",
     "open-data:address": "tsx scripts/open-data-address.ts",
     "stripe:setup": "tsx --env-file=.env scripts/stripe-setup.ts"

@@ -5,15 +5,16 @@ import { THEMES, faqUrl } from "@/lib/themes";
 import { getTopics } from "@/lib/topics";
 import { getMetiers } from "@/lib/metiers";
 import { getLettres, lettreUrl } from "@/lib/lettres";
+import { indexablePlaces, placeUrl } from "@/lib/prices";
 import { conventionUrl, getConventions } from "@/lib/conventions";
 import { indexableAddresses, indexableArticles, indexableCompanies, indexableDecisions, indexableJorfTexts, indexableJurisprudenceLists } from "@/lib/eligibility";
 
 export const revalidate = 3600;
 
 // Split by entity family so Google can diagnose coverage per section (docs/research/2026-09-seo-search.md §4).
-// Production URLs: /sitemap/0.xml … /sitemap/5.xml (Next 16 `generateSitemaps`). Each section lists ONLY
+// Production URLs: /sitemap/0.xml … /sitemap/6.xml (Next 16 `generateSitemaps`). Each section lists ONLY
 // indexable entities: `src/lib/eligibility.ts` is the single gate shared with page metadata.
-const SECTIONS = ["core", "articles", "decisions", "contenus", "entites", "jo"] as const;
+const SECTIONS = ["core", "articles", "decisions", "contenus", "entites", "jo", "prix"] as const;
 
 export function generateSitemaps() {
   return SECTIONS.map((_, id) => ({ id }));
@@ -69,6 +70,10 @@ export default async function sitemap({ id }: { id: Promise<string> }): Promise<
       ...getConventions().map((c) => url(conventionUrl(c), 0.8)),
       ...faqs.map((f) => url(faqUrl(f), 0.7)),
     ];
+  }
+
+  if (section === "prix") {
+    return [url("/prix-immobilier", 0.8, "monthly"), ...indexablePlaces().map((p) => url(placeUrl(p), p.level === "departement" ? 0.7 : 0.6, "monthly"))];
   }
 
   if (section === "jo") {

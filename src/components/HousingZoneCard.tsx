@@ -21,7 +21,7 @@ export default function HousingZoneCard({ citycode }: { citycode: string | null 
           <>
             Logement loué vide : le locataire peut donner congé avec un{" "}
             <Link href="/article/loi-89-462/15" className="underline underline-offset-2">préavis d’un mois</Link> au lieu de trois.
-            À la relocation, la hausse du loyer est encadrée (article 17 de la même loi).
+            À la relocation, la hausse du loyer est encadrée (article 17 de la loi du 6 juillet 1989).
           </>
         ) : z.zone === 2 ? (
           <>La commune peut majorer la taxe d’habitation des résidences secondaires. Ce classement ne réduit pas le préavis du locataire.</>

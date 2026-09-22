@@ -9,6 +9,7 @@ import JurisdictionCard from "@/components/JurisdictionCard";
 import HousingZoneCard from "@/components/HousingZoneCard";
 import PropertyMap from "@/components/PropertyMap";
 import PriceChart from "@/components/PriceChart";
+import { getPlace, placeName as pricePlaceName, placeUrl } from "@/lib/prices";
 import { housingZone } from "@/lib/zones";
 import {
   addressDpe,
@@ -63,6 +64,7 @@ export default async function BienPage({ params }: PageProps<"/bien/[id]">) {
   const ppm = pricePerSqm(addressTransactions(id, 500));
   const history = priceHistory(a.citycode, parcel ? parcel.idu.slice(0, 10) : null);
   const arr = a.citycode?.match(/^(?:751|6938|132)(\d\d)$/)?.[1]; // Paris, Lyon, Marseille: stats per arrondissement
+  const pricePlace = a.citycode ? getPlace(a.citycode) : undefined;
   const communeName = arr && a.city ? `${a.city} ${Number(arr)}${Number(arr) === 1 ? "er" : "e"}` : a.city ?? "Commune";
   const dpe = addressDpe(id);
   const risks = addressRisks(id);
@@ -220,6 +222,13 @@ export default async function BienPage({ params }: PageProps<"/bien/[id]">) {
                   Statistiques DVF (DGFiP, Etalab, Licence Ouverte 2.0) : médianes mensuelles, moyennées sur l’année selon le nombre de ventes.
                   Quartier affiché seulement pour les années d’au moins 5 ventes.
                 </p>
+                {pricePlace && (
+                  <p className="mt-3 text-sm font-semibold">
+                    <Link href={placeUrl(pricePlace)} className="inline-flex items-center gap-1 underline decoration-signal decoration-2 underline-offset-4">
+                      Prix immobilier à {pricePlaceName(pricePlace)} <ArrowRight aria-hidden className="size-4" />
+                    </Link>
+                  </p>
+                )}
               </div>
             )}
             {transactions.length === 0 ? (

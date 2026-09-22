@@ -84,6 +84,14 @@ export const SOURCES = {
     licence: "LOV2",
     ttl: 30 * 86400,
   },
+  "DINUM:geo": {
+    provider: "DINUM",
+    dataset: "geo",
+    name: "API Découpage administratif (geo.api.gouv.fr)",
+    url: "https://geo.api.gouv.fr/decoupage-administratif",
+    licence: "LOV2",
+    ttl: 365 * 86400,
+  },
   "DILA:bodacc": {
     provider: "DILA",
     dataset: "bodacc",

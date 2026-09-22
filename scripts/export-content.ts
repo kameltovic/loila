@@ -59,11 +59,14 @@ async function main() {
         jurisdictions: db.prepare("SELECT * FROM jurisdictions ORDER BY citycode, kind").all(),
         housing_zones: db.prepare("SELECT * FROM housing_zones ORDER BY citycode").all(),
         legal_indices: db.prepare("SELECT * FROM legal_indices ORDER BY kind, period").all(),
+        price_years: db.prepare("SELECT * FROM price_years ORDER BY code, year").all(),
+        places: db.prepare("SELECT * FROM places ORDER BY code").all(),
         entities: db.prepare("SELECT * FROM entities WHERE type = 'agreement' ORDER BY id").all(),
         entity_ids: db.prepare("SELECT * FROM entity_ids WHERE scheme = 'idcc' ORDER BY value").all(),
         source_records: db.prepare(
           `SELECT * FROM source_records WHERE id IN (SELECT source_record_id FROM collective_agreements UNION SELECT source_record_id FROM jurisdictions
-             UNION SELECT source_record_id FROM housing_zones UNION SELECT source_record_id FROM legal_indices)`,
+             UNION SELECT source_record_id FROM housing_zones UNION SELECT source_record_id FROM legal_indices)
+             OR id IN ('ETALAB:dvf-stats:stats_dvf.csv', 'DINUM:geo:communes')`,
         ).all(),
       }
     : undefined;

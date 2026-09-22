@@ -15,7 +15,7 @@ const OPEN_DATA_TABLES = [
   "companies", "establishments", "company_announcements", "rge_certifications",
   "collective_agreements", "company_agreements",
   "addresses", "parcels", "parcel_addresses", "transactions", "dpe_diagnostics", "risks", "urban_zones",
-  "jurisdictions", "housing_zones", "legal_indices", "price_stats",
+  "jurisdictions", "housing_zones", "legal_indices", "price_stats", "price_years", "places",
 ];
 
 async function main() {
@@ -202,6 +202,29 @@ async function main() {
   assert.deepEqual(hist?.section.map((p) => p.year), [2025]);
   assert.equal(hist?.kind, "appartements");
   assert.equal(priceHistory("00000", null), undefined);
+
+  // 16. Price pages: slugs carry the code, secondary type needs volume, one indexability rule.
+  const PR = await import("../src/lib/prices");
+  assert.equal(PR.placeSlug("Paris 19e Arrondissement", "75119"), "paris-19e-75119");
+  assert.equal(PR.placeSlug("L'Abergement-Clémenciat", "01001"), "l-abergement-clemenciat-01001");
+  assert.equal(PR.placeSlug("Corse-du-Sud", "2A"), "corse-du-sud-2a");
+  const place = db.prepare("INSERT INTO places (code, level, name, slug, dep, sales) VALUES (?, ?, ?, ?, ?, ?)");
+  const year = db.prepare("INSERT INTO price_years (code, year, apt_sales, apt_median, house_sales, house_median) VALUES (?, ?, ?, ?, ?, ?)");
+  place.run("2A", "departement", "Corse-du-Sud", "corse-du-sud-2a", null, 10);
+  place.run("98001", "commune", "Grandeville", "grandeville-98001", "2A", 120);
+  place.run("98002", "commune", "Petitbourg", "petitbourg-98002", "2A", 20);
+  for (const y of [2023, 2024, 2025]) year.run("98001", y, 40, 3000 + y - 2023, 8, 2500);
+  year.run("98002", 2025, 20, 2000, null, null);
+  assert.equal(PR.placeFromSlug("corse-du-sud-2a")?.code, "2A");
+  assert.equal(PR.placeFromSlug("n-importe-quoi-98001")?.code, "98001", "the code decides, the page redirects to the canonical slug");
+  assert.equal(PR.placeFromSlug("france"), undefined);
+  const rows98 = PR.priceYears("98001");
+  assert.equal(PR.mainKind(rows98), "apt");
+  assert.equal(PR.pointsOf(rows98, "house", 20).length, 0, "8 house sales a year: too few for the secondary type");
+  assert.equal(PR.placeIndexable(PR.getPlace("98001")!), true);
+  assert.equal(PR.placeIndexable(PR.getPlace("98002")!), false, "20 sales, one year: noindex");
+  assert.deepEqual(PR.indexablePlaces().map((p) => p.code).sort(), ["2A", "98001"]);
+  assert.equal(PR.change(8000, 8240), 3);
 
   console.log("check-open-data: OK");
 }
