@@ -117,6 +117,16 @@ async function main() {
   mkAddress("addr-2");
   db.prepare("INSERT INTO dpe_diagnostics (numero_dpe, ban_id) VALUES ('DPE1', 'addr-2')").run();
   assert.deepEqual(EL.indexableAddresses().map((a) => a.ban_id).sort(), ["addr-2"]);
+  // Sitemap ⇔ page robots: an address with only a parcel (no DPE/risk/zone/sale) stays out of both (QA audit §3).
+  mkAddress("addr-3");
+  db.prepare("INSERT INTO parcels (idu, entity_id) VALUES ('75107000BT0001', ?)").run(E.ensureEntity(db, "parcel", "75107000BT0001", "parcelle"));
+  db.prepare("INSERT INTO parcel_addresses (parcel_id, ban_id, match_quality, method) VALUES ('75107000BT0001', 'addr-3', 'CERTAIN', 'point_in_polygon')").run();
+  const inSitemapA = new Set(EL.indexableAddresses().map((a) => a.ban_id));
+  for (const { ban_id } of db.prepare("SELECT ban_id FROM addresses").all() as { ban_id: string }[])
+    assert.equal((await import("../src/lib/address")).addressIndexable(ban_id), inSitemapA.has(ban_id), `address ${ban_id}: sitemap and robots disagree`);
+  const inSitemapC = new Set(EL.indexableCompanies().map((c) => c.siren));
+  for (const { siren } of db.prepare("SELECT siren FROM companies").all() as { siren: string }[])
+    assert.equal(C.companyIndexable(siren), inSitemapC.has(siren), `company ${siren}: sitemap and robots disagree`);
 
   // 8. companyAgreements never returns idcc 9999 ("not declared") as a convention.
   db.prepare("INSERT INTO company_agreements (siret, siren, idcc, method, confidence, source) VALUES ('22222222200001', '222222222', '1486', 'dsn_declared', 'CERTAIN', 'dsn')").run();
