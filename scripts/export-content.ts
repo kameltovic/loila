@@ -2,6 +2,8 @@
 // npx tsx scripts/export-content.ts <bundle-name> [--codes code-a,code-b] [--faq seed/generated/x.json ...]
 //   --decisions: every decision and its article links (case law, ≈30 MB: rarely re-exported, see scripts/ingest-juri.ts)
 //   --decision-summaries: every decision summary (small: re-export this one after scripts/batch-decisions.ts)
+//   --jorf: the Journal officiel layer (jorf_texts, article/decision links, provenance), a snapshot that replaces the
+//           links on import (scripts/legal-jorf.ts builds it from the LEGI cache and the JORF dump, absent in production)
 //   --summaries: every row of article_summaries (upserts, so re-exporting the same bundle name is enough)
 //   --diff-from <old.db>: with --codes, only articles added or changed since that DB, plus ids to delete (after a re-ingest)
 //   → seed/content/<bundle-name>.json.gz   (re-export after changes: a new hash re-applies the bundle)
@@ -36,13 +38,23 @@ async function main() {
   const decisionNumbers = withDecisions ? db.prepare("SELECT decision_id, numero FROM decision_numbers ORDER BY decision_id").all() : [];
   const decisionProvenance = withDecisions ? db.prepare("SELECT * FROM provenance WHERE entity_type = 'decision' ORDER BY entity_id").all() : [];
   const decisionSummaries = argv.includes("--decision-summaries") ? db.prepare("SELECT decision_id, summary, points, model FROM decision_summaries ORDER BY decision_id").all() : [];
+  const withJorf = argv.includes("--jorf");
+  const jorf = withJorf
+    ? {
+        jorfTexts: db.prepare("SELECT * FROM jorf_texts ORDER BY id").all(),
+        jorfArticleLinks: db.prepare("SELECT article_id, jorf_text_id, jorf_article, relation FROM jorf_article_links ORDER BY article_id").all(),
+        jorfDecisionLinks: db.prepare("SELECT decision_id, jorf_text_id, mentions FROM jorf_decision_links ORDER BY decision_id").all(),
+        jorfProvenance: db.prepare("SELECT * FROM provenance WHERE entity_type = 'jorf_text' ORDER BY entity_id").all(),
+      }
+    : {};
   const faq = faqFiles.flatMap((f) => JSON.parse(fs.readFileSync(f, "utf8")) as unknown[]);
   const missing = argv.includes("--diff-from") ? [] : codes.filter((c) => !articles.some((a) => a.code === c));
   if (missing.length) throw new Error(`no articles for: ${missing.join(", ")} (ingest first)`);
   const out = path.join("seed", "content", `${name}.json.gz`);
   fs.mkdirSync(path.dirname(out), { recursive: true });
-  const buf = gzipSync(JSON.stringify({ articles, faq, ...(summaries.length ? { summaries } : {}), ...(withDecisions ? { decisions, decisionNumbers, decisionProvenance } : {}), ...(decisionSummaries.length ? { decisionSummaries } : {}), ...(deleteArticleIds.length ? { deleteArticleIds } : {}) }), { level: 9 });
+  const buf = gzipSync(JSON.stringify({ articles, faq, ...(summaries.length ? { summaries } : {}), ...(withDecisions ? { decisions, decisionNumbers, decisionProvenance } : {}), ...(decisionSummaries.length ? { decisionSummaries } : {}), ...jorf, ...(deleteArticleIds.length ? { deleteArticleIds } : {}) }), { level: 9 });
   fs.writeFileSync(out, buf);
+  if (withJorf) console.log(`jorf: ${jorf.jorfTexts?.length} texts, ${jorf.jorfArticleLinks?.length} article links, ${jorf.jorfDecisionLinks?.length} decision links`);
   console.log(`${out}: ${articles.length} articles, ${faq.length} faq, ${summaries.length} summaries, ${decisions.length} decisions, ${decisionSummaries.length} decision summaries, ${deleteArticleIds.length} deletions, ${(buf.length / 1024 / 1024).toFixed(1)} MB`);
 }
 

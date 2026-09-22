@@ -654,6 +654,38 @@ CREATE TABLE IF NOT EXISTS jurisdictions (
   PRIMARY KEY (citycode, kind)
 );
 CREATE INDEX IF NOT EXISTS jurisdictions_kind ON jurisdictions(kind);
+-- Journal officiel (JORF): lois, ordonnances, décrets, arrêtés… linked to the legal graph. Built by scripts/legal-jorf.ts
+-- from the LIENS of LEGI/KALI articles (créé/modifié/abrogé/codifié par, citations), enriched with the JORF metadata.
+CREATE TABLE IF NOT EXISTS jorf_texts (
+  id          TEXT PRIMARY KEY,               -- JORFTEXT…
+  nature      TEXT,                           -- LOI | LOI_ORGANIQUE | ORDONNANCE | DECRET | ARRETE | DECISION …
+  num         TEXT,                           -- "2025-391"
+  nor         TEXT,
+  date_texte  TEXT,                           -- signature
+  date_publi  TEXT,                           -- publication au JO (JORF metadata)
+  jo          TEXT,                           -- "JORF n°0103 du 2 mai 2025"
+  titre       TEXT NOT NULL,                  -- "Loi n° 2025-391 du 30 avril 2025"
+  titre_full  TEXT,                           -- official full title (TITREFULL)
+  eli         TEXT,
+  fetched_at  INTEGER                         -- JORF metadata fetched; NULL = known from LEGI links only, 0 = not in the JORF dump
+);
+CREATE INDEX IF NOT EXISTS jorf_texts_num ON jorf_texts(num);
+CREATE INDEX IF NOT EXISTS jorf_texts_publi ON jorf_texts(date_publi);
+CREATE TABLE IF NOT EXISTS jorf_article_links (
+  article_id    TEXT NOT NULL,                -- LEGIARTI/KALIARTI in articles
+  jorf_text_id  TEXT NOT NULL,
+  jorf_article  TEXT NOT NULL DEFAULT '',     -- article number inside the JORF text ("24"); '' = the whole text
+  relation      TEXT NOT NULL,                -- cree | modifie | abroge | deplace | codifie | cite | cite_par | applique
+  PRIMARY KEY (article_id, jorf_text_id, jorf_article, relation)
+);
+CREATE INDEX IF NOT EXISTS jorf_article_links_text ON jorf_article_links(jorf_text_id, relation);
+CREATE TABLE IF NOT EXISTS jorf_decision_links (
+  decision_id   TEXT NOT NULL,
+  jorf_text_id  TEXT NOT NULL,
+  mentions      INTEGER NOT NULL DEFAULT 1,   -- "loi n° …" occurrences in the decision
+  PRIMARY KEY (decision_id, jorf_text_id)
+);
+CREATE INDEX IF NOT EXISTS jorf_decision_links_text ON jorf_decision_links(jorf_text_id);
 -- Housing market zoning per commune (décret 2013-392 as amended): 1 = zone tendue, 2 = touristique et tendue, 3 = non tendue.
 CREATE TABLE IF NOT EXISTS housing_zones (
   citycode     TEXT PRIMARY KEY,
@@ -740,7 +772,8 @@ export function importContent(d: Database.Database, dir = path.join(process.cwd(
       const sha = createHash("sha256").update(buf).digest("hex");
       const done = d.prepare("SELECT sha FROM content_imports WHERE name = ?").get(file) as { sha: string } | undefined;
       if (done?.sha === sha) continue;
-      const { articles = [], faq = [], deleteArticleIds = [], summaries = [], decisions = [], decisionNumbers = [], decisionProvenance = [], decisionSummaries = [] } = JSON.parse(gunzipSync(buf).toString("utf8")) as {
+      const { articles = [], faq = [], deleteArticleIds = [], summaries = [], decisions = [], decisionNumbers = [], decisionProvenance = [], decisionSummaries = [], jorfTexts, jorfArticleLinks = [], jorfDecisionLinks = [], jorfProvenance = [] } = JSON.parse(gunzipSync(buf).toString("utf8")) as {
+        jorfTexts?: Record<string, unknown>[]; jorfArticleLinks?: Record<string, unknown>[]; jorfDecisionLinks?: Record<string, unknown>[]; jorfProvenance?: Record<string, unknown>[];
         decisions?: Record<string, unknown>[]; decisionNumbers?: { decision_id: string; numero: string }[]; decisionProvenance?: Record<string, unknown>[];
         decisionSummaries?: { decision_id: string; summary: string; points: string; model: string | null }[];
         articles?: Article[]; faq?: Omit<Faq, "id">[]; deleteArticleIds?: string[]; // ids no longer in force (re-ingest diffs)
@@ -784,12 +817,26 @@ export function importContent(d: Database.Database, dir = path.join(process.cwd(
            ON CONFLICT(decision_id) DO UPDATE SET summary = excluded.summary, points = excluded.points, model = excluded.model`,
         );
         for (const s of decisionSummaries) dsum.run(s);
+        // Journal officiel layer: a full snapshot, so its links replace the previous ones.
+        if (jorfTexts) {
+          const jt = d.prepare(
+            `INSERT OR REPLACE INTO jorf_texts (id, nature, num, nor, date_texte, date_publi, jo, titre, titre_full, eli, fetched_at)
+             VALUES (@id, @nature, @num, @nor, @date_texte, @date_publi, @jo, @titre, @titre_full, @eli, @fetched_at)`,
+          );
+          for (const t of jorfTexts) jt.run(t);
+          d.exec("DELETE FROM jorf_article_links; DELETE FROM jorf_decision_links;");
+          const jl = d.prepare("INSERT OR IGNORE INTO jorf_article_links (article_id, jorf_text_id, jorf_article, relation) VALUES (@article_id, @jorf_text_id, @jorf_article, @relation)");
+          for (const l of jorfArticleLinks) jl.run(l);
+          const jd = d.prepare("INSERT OR IGNORE INTO jorf_decision_links (decision_id, jorf_text_id, mentions) VALUES (@decision_id, @jorf_text_id, @mentions)");
+          for (const l of jorfDecisionLinks) jd.run(l);
+          for (const p of jorfProvenance) prov.run(p);
+        }
         for (const f of faq) q.run({ ...f, topic: f.topic ?? null, emoji: f.emoji ?? null, article_ids: typeof f.article_ids === "string" ? f.article_ids : JSON.stringify(f.article_ids) });
         d.prepare("INSERT INTO content_imports (name, sha) VALUES (?, ?) ON CONFLICT(name) DO UPDATE SET sha = excluded.sha, imported_at = unixepoch()").run(file, sha);
       })();
       // Derived graph layers are recomputed once all bundles are in (never shipped): see below.
       if (decisions.length || articles.length || deleteArticleIds.length) graphDirty = true;
-      console.log(`[db] content ${file}: ${articles.length} articles, ${faq.length} faq, ${summaries.length} summaries, ${decisions.length} decisions, ${deleteArticleIds.length} deleted`);
+      console.log(`[db] content ${file}: ${articles.length} articles, ${faq.length} faq, ${summaries.length} summaries, ${decisions.length} decisions, ${deleteArticleIds.length} deleted${jorfTexts ? `, ${jorfTexts.length} JORF texts, ${jorfArticleLinks.length} JORF links` : ""}`);
     } catch (e) {
       console.error(`[db] content ${file} failed`, e instanceof Error ? e.message : e);
     }

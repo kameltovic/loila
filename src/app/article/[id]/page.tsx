@@ -6,6 +6,7 @@ import { getDb, type Article, type Faq } from "@/lib/db";
 import { CODES, THEMES } from "@/lib/themes";
 import { Empty, FaqIndex, block, btnPrimary, container, display, label } from "@/components/ui";
 import { LettreCards } from "@/components/Lettres";
+import JorfHistory from "@/components/JorfHistory";
 import { articleSummary, coCitedArticles, linkRefs } from "@/lib/articles";
 import { articleIndexable } from "@/lib/eligibility";
 import { lettresForArticle } from "@/lib/lettres";
@@ -158,6 +159,7 @@ export default async function ArticlePage({ params }: PageProps<"/article/[id]">
               </p>
             </div>
           )}
+          <JorfHistory articleId={a.id} />
           <a href={a.url} target="_blank" rel="noopener noreferrer" className={btnPrimary}>
             Voir sur Légifrance <ArrowUpRight aria-hidden strokeWidth={1.75} size={16} />
             <span className="sr-only">(nouvel onglet)</span>

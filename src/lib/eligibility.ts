@@ -110,3 +110,17 @@ export function indexableAddresses(): { ban_id: string; fetched_at: number | nul
     )
     .all() as { ban_id: string; fetched_at: number | null }[];
 }
+
+// Journal officiel texts (/jo/<id>): indexable only with the official JORF title AND a real graph footprint:
+// ≥ 2 articles created/modified/repealed/moved/codified by the text, or ≥ 3 decisions citing it. Pure citations don't count.
+// Joined to articles/decisions: the links snapshot may name rows this database doesn't carry (production has fewer decisions).
+const JORF_INDEXABLE = `t.fetched_at > 0 AND (
+  (SELECT COUNT(DISTINCT l.article_id) FROM jorf_article_links l JOIN articles a ON a.id = l.article_id
+     WHERE l.jorf_text_id = t.id AND l.relation IN ('cree', 'modifie', 'abroge', 'deplace', 'codifie')) >= 2
+  OR (SELECT COUNT(*) FROM jorf_decision_links d JOIN decisions x ON x.id = d.decision_id WHERE d.jorf_text_id = t.id) >= 3)`;
+
+export const jorfIndexable = (id: string): boolean =>
+  !!getDb().prepare(`SELECT 1 FROM jorf_texts t WHERE t.id = ? AND ${JORF_INDEXABLE}`).get(id);
+
+export const indexableJorfTexts = (): { id: string; date_publi: string | null }[] =>
+  getDb().prepare(`SELECT t.id, t.date_publi FROM jorf_texts t WHERE ${JORF_INDEXABLE} ORDER BY t.date_publi DESC`).all() as { id: string; date_publi: string | null }[];
