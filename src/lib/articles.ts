@@ -24,6 +24,27 @@ export function articleByPath(code: string, num: string): Article | undefined {
   return rows.length === 1 ? rows[0] : undefined;
 }
 
+// Section headings that say nothing about the article ("Dispositions générales", "Section unique"…).
+const GENERIC = /^(dispositions?\b|autres dispositions|chapitre unique|section unique|ordre public|champ d'application|d[ée]finitions?|principes?( g[ée]n[ée]raux)?|fonctionnement|organisation|composition|missions|sanctions|proc[ée]dure|constitution|contr[ôo]le|publicit[ée]|cotisations|saint-|partie |livre |titre )/i;
+const STOP = /(?:\s+(?:de|des|du|la|le|les|l'|d'|et|à|au|aux|en|pour|par|sur|ou))+$/i;
+
+/**
+ * 3-to-5-word topic for the title, from the deepest meaningful section heading:
+ * "Paragraphe 2 : De la garantie des défauts de la chose vendue." → "Garantie des défauts de la chose vendue".
+ */
+export function articleTopic(section: string | null, max: number): string | undefined {
+  const seg = (section ?? "")
+    .split(" > ")
+    .reverse()
+    .map((s) => (s.includes(" : ") ? s.slice(s.indexOf(" : ") + 3) : ""))
+    .map((s) => s.replace(/\s*\(.*?\)|\.$/g, "").replace(/^(?:de la|de l'|du|des|le|la|les|l')\s*/i, "").replace(/ et (?:de la |de l'|du )/g, " et ").trim())
+    .find((s) => s && !GENERIC.test(s));
+  if (!seg) return;
+  let t = seg;
+  while (t.length > max && t.includes(" ")) t = t.slice(0, t.lastIndexOf(" ")).replace(STOP, "");
+  return t.length > max ? undefined : t.charAt(0).toUpperCase() + t.slice(1);
+}
+
 /** "En clair" summary of an article, only if it was written from the text currently in force. */
 export function articleSummary(a: Pick<Article, "id" | "texte">): { summary: string; points: string[] } | undefined {
   const row = getDb().prepare("SELECT * FROM article_summaries WHERE article_id = ?").get(a.id) as ArticleSummary | undefined;
@@ -39,20 +60,20 @@ export function articleSummary(a: Pick<Article, "id" | "texte">): { summary: str
 const REF = /\b([LRD])\.\s?(\d{3,4}(?:-\d+)*)\b/g;
 
 /** Splits an article's text into plain and linked parts: references to other articles of the same code become links. */
-export function linkRefs(texte: string, a: Pick<Article, "id" | "code">): { text: string; id?: string }[] {
+export function linkRefs(texte: string, a: Pick<Article, "id" | "code">): { text: string; id?: string; path?: string }[] {
   const nums = [...new Set([...texte.matchAll(REF)].map((m) => `${m[1]}${m[2]}`))];
   if (!nums.length) return [{ text: texte }];
   const rows = getDb()
-    .prepare(`SELECT id, num FROM articles WHERE code = ? AND num IN (${nums.map(() => "?").join(",")})`)
-    .all(a.code, ...nums) as { id: string; num: string }[];
-  const ids = new Map(rows.filter((r) => r.id !== a.id).map((r) => [r.num, r.id]));
-  const out: { text: string; id?: string }[] = [];
+    .prepare(`SELECT id, code, num FROM articles WHERE code = ? AND num IN (${nums.map(() => "?").join(",")})`)
+    .all(a.code, ...nums) as { id: string; code: string; num: string }[];
+  const ids = new Map(rows.filter((r) => r.id !== a.id).map((r) => [r.num, r]));
+  const out: { text: string; id?: string; path?: string }[] = [];
   let last = 0;
   for (const m of texte.matchAll(REF)) {
-    const id = ids.get(`${m[1]}${m[2]}`);
-    if (!id) continue;
+    const r = ids.get(`${m[1]}${m[2]}`);
+    if (!r) continue;
     if (m.index > last) out.push({ text: texte.slice(last, m.index) });
-    out.push({ text: m[0], id });
+    out.push({ text: m[0], id: r.id, path: articlePath(r) });
     last = m.index + m[0].length;
   }
   if (last < texte.length) out.push({ text: texte.slice(last) });

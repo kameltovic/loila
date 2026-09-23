@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getDb } from "@/lib/db";
+import { articlePath } from "@/lib/articles";
 import { SITE_URL } from "@/lib/seo";
 import { THEMES, faqUrl } from "@/lib/themes";
 import { getTopics } from "@/lib/topics";
@@ -53,8 +54,8 @@ export default async function sitemap({ id }: { id: Promise<string> }): Promise<
     const articles = indexableArticles();
     const lists = new Set(indexableJurisprudenceLists().map((l) => l.id));
     return [
-      ...articles.map((a) => ({ ...url(`/article/${a.id}`, 0.4, "monthly", date(a.date_debut)) })),
-      ...articles.filter((a) => lists.has(a.id)).map((a) => url(`/article/${a.id}/jurisprudence`, 0.4, "weekly", date(a.date_debut))),
+      ...articles.map((a) => ({ ...url(articlePath(a), 0.4, "monthly", date(a.date_debut)) })),
+      ...articles.filter((a) => lists.has(a.id)).map((a) => url(`${articlePath(a)}/jurisprudence`, 0.4, "weekly", date(a.date_debut))),
     ];
   }
 

@@ -107,7 +107,7 @@ export async function gscRaw(body: object): Promise<GscRow[]> {
   return rows as GscRow[];
 }
 
-/** "https://loila.fr/article/X" → "/article/X". */
+/** "https://loila.fr/article/code-civil/1643" → "/article/code-civil/1643". */
 export const gscPath = (url: string) => url.replace(/^https?:\/\/[^/]+/, "") || "/";
 
 /** Totals and per-section rollup of page rows ("/article", "/sujets"…). */

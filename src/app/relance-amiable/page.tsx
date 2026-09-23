@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { articlePath } from "@/lib/articles";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { LettreCards } from "@/components/Lettres";
 import { FaqIndex, SectionHead, btnPrimary, container, display, label } from "@/components/ui";
@@ -120,7 +121,7 @@ export default function RelanceAmiable() {
                 <p className="mt-3 text-fg-2">{r.detail}</p>
                 <p className="mt-auto flex flex-wrap gap-2 pt-5">
                   {r.articles.map((a) => (
-                    <Link key={a.id} href={`/article/${a.id}`} className="inline-flex items-center gap-1 rounded-full border-[1.5px] border-fg px-2.5 py-0.5 font-mono text-xs font-semibold hover:bg-fg hover:text-bg">
+                    <Link key={a.id} href={articlePath(a)} className="inline-flex items-center gap-1 rounded-full border-[1.5px] border-fg px-2.5 py-0.5 font-mono text-xs font-semibold hover:bg-fg hover:text-bg">
                       Art. {a.num} · {codeName(a.code)}
                       <ArrowUpRight aria-hidden className="size-3.5" />
                     </Link>

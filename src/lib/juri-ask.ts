@@ -1,5 +1,6 @@
 // Case-law assistant (Pro): a legal question → the articles and Cour de cassation decisions that answer it → an answer
 // citing each decision as [D1], [D2]… and each article as (art. X). Same retrieval as /api/ask for the articles.
+import { articlePath } from "./articles";
 import { expandQuery, retrieve, type LlmCall } from "./ask";
 import { getDb, type Article } from "./db";
 import { citation, decisionUrl, teaser, type Decision } from "./decisions";
@@ -8,7 +9,7 @@ import { chat } from "./openrouter";
 import { CODES } from "./themes";
 
 export type JuriSource = { ref: string; id: string; citation: string; solution: string | null; url: string };
-export type JuriResult = { answer_md: string; decisions: JuriSource[]; articles: { id: string; num: string; code: string }[] };
+export type JuriResult = { answer_md: string; decisions: JuriSource[]; articles: { id: string; num: string; code: string; path: string }[] };
 
 const MAX_DECISIONS = 8;
 const SYSTEM = `Tu es l'assistant de recherche juridique de Loilà, pour des avocats et juristes.
@@ -87,6 +88,6 @@ export async function askJuri(question: string, llm: LlmCall = realLlm, expand =
   return {
     answer_md: content,
     decisions: (citedDec.length ? citedDec : refs).map(({ d, ref }) => ({ ref, id: d.id, citation: citation(d), solution: d.solution, url: decisionUrl(d) })),
-    articles: (citedArt.length ? citedArt : found).map(({ id, num, code }) => ({ id, num, code })),
+    articles: (citedArt.length ? citedArt : found).map(({ id, num, code }) => ({ id, num, code, path: articlePath({ id, code, num }) })),
   };
 }

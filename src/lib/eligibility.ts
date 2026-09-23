@@ -6,7 +6,7 @@ import { texteSha } from "./articles";
 import { getLettres } from "./lettres";
 import { getArticleByNum } from "./search";
 
-export type IndexableArticle = { id: string; date_debut: string | null };
+export type IndexableArticle = { id: string; code: string; num: string; date_debut: string | null };
 
 /** Articles cited by a letter's legal tips, resolved once (batch, no per-letter DB round-trip storm). */
 function letterCitedArticleIds(): Set<string> {
@@ -28,25 +28,25 @@ function letterCitedArticleIds(): Set<string> {
  */
 export function indexableArticles(): IndexableArticle[] {
   const db = getDb();
-  const out = new Map<string, string | null>();
+  const out = new Map<string, IndexableArticle>();
   for (const r of db
-    .prepare("SELECT DISTINCT a.id, a.date_debut FROM faq, json_each(faq.article_ids) j JOIN articles a ON a.id = j.value")
+    .prepare("SELECT DISTINCT a.id, a.code, a.num, a.date_debut FROM faq, json_each(faq.article_ids) j JOIN articles a ON a.id = j.value")
     .all() as IndexableArticle[]) {
-    out.set(r.id, r.date_debut);
+    out.set(r.id, r);
   }
   for (const id of letterCitedArticleIds()) {
     if (out.has(id)) continue;
-    const a = db.prepare("SELECT date_debut FROM articles WHERE id = ?").get(id) as { date_debut: string | null } | undefined;
-    if (a) out.set(id, a.date_debut);
+    const a = db.prepare("SELECT id, code, num, date_debut FROM articles WHERE id = ?").get(id) as IndexableArticle | undefined;
+    if (a) out.set(id, a);
   }
   const withSummary = db
     .prepare(
-      `SELECT a.id, a.date_debut, a.texte, s.texte_sha FROM articles a JOIN article_summaries s ON s.article_id = a.id
+      `SELECT a.id, a.code, a.num, a.date_debut, a.texte, s.texte_sha FROM articles a JOIN article_summaries s ON s.article_id = a.id
        WHERE EXISTS (SELECT 1 FROM decision_articles da WHERE da.article_id = a.id)`,
     )
-    .all() as { id: string; date_debut: string | null; texte: string; texte_sha: string }[];
-  for (const r of withSummary) if (texteSha(r.texte) === r.texte_sha) out.set(r.id, r.date_debut);
-  return [...out].map(([id, date_debut]) => ({ id, date_debut }));
+    .all() as (IndexableArticle & { texte: string; texte_sha: string })[];
+  for (const { texte, texte_sha, ...r } of withSummary) if (texteSha(texte) === texte_sha) out.set(r.id, r);
+  return [...out.values()];
 }
 
 /** Single-article variant for generateMetadata. */

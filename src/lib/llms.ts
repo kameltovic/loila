@@ -15,7 +15,7 @@ const HEADER = `# Loilà
 
 - Base : articles en vigueur du Code du travail, du Code de l'urbanisme, du Code de la construction et de l'habitation, de la loi n° 89-462 du 6 juillet 1989 et de ${Object.keys(CODES).filter((c) => c.startsWith("ccn-")).length} conventions collectives (KALI), importés depuis les données ouvertes de Légifrance. La base locale peut présenter un décalage avec les textes actuellement applicables ; vérifiez la version officielle avant toute démarche.
 - Chaque question a une réponse courte (« En bref ») puis une explication détaillée, avec les numéros d'articles cités et un lien vers Légifrance.
-- Les pages /article/<id> reproduisent le texte officiel d'un article (identifiant Légifrance LEGIARTI/KALIARTI).
+- Les pages /article/<code>/<numéro> (ex. /article/code-civil/1643, /article/code-du-travail/L3123-6) reproduisent le texte officiel d'un article avec son explication ; les identifiants Légifrance (/article/LEGIARTI…) y redirigent, et restent l'adresse des articles de conventions collectives (KALIARTI).
 - Information générale, pas un conseil juridique personnalisé.
 `;
 

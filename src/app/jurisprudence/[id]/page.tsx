@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { articlePath } from "@/lib/articles";
 import { notFound } from "next/navigation";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { SectionHead, block, btnPrimary, container, display, label } from "@/components/ui";
@@ -36,11 +37,11 @@ export default async function DecisionPage({ params }: PageProps<"/jurisprudence
   ];
   const themeSlug = THEMES.find((t) => articles.some((a) => (t.codes as readonly string[]).includes(a.code)))?.slug ?? "travail";
   // "L. 1221-1" in the text → link to that article's page when the decision is linked to it.
-  const byNum = new Map(articles.map((a) => [a.num, a.id]));
+  const byNum = new Map(articles.map((a) => [a.num, a]));
   const linked = (p: string) =>
     p.split(/(\b[LRD]\.\s?\d{3,4}(?:-\d+)*)/g).map((part, i) => {
-      const id = byNum.get(part.replace(/[.\s]/g, ""));
-      return id ? <Link key={i} href={`/article/${id}`} className="underline decoration-signal decoration-2 underline-offset-4">{part}</Link> : part;
+      const a = byNum.get(part.replace(/[.\s]/g, ""));
+      return a ? <Link key={i} href={articlePath(a)} className="underline decoration-signal decoration-2 underline-offset-4">{part}</Link> : part;
     });
   const path = decisionUrl(d);
 
@@ -57,7 +58,7 @@ export default async function DecisionPage({ params }: PageProps<"/jurisprudence
             inLanguage: "fr-FR",
             ...(summary && { abstract: summary.summary }),
             isBasedOn: d.url,
-            citation: articles.map((a) => ({ "@type": "Legislation", name: `Article ${a.num}, ${codeName(a.code)}`, url: abs(`/article/${a.id}`) })),
+            citation: articles.map((a) => ({ "@type": "Legislation", name: `Article ${a.num}, ${codeName(a.code)}`, url: abs(articlePath(a)) })),
           },
         ]}
       />
@@ -130,7 +131,7 @@ export default async function DecisionPage({ params }: PageProps<"/jurisprudence
               <ul className="mt-3 flex flex-wrap gap-2">
                 {articles.map((a) => (
                   <li key={a.id}>
-                    <Link href={`/article/${a.id}`} className="inline-flex items-center gap-1 rounded-full border-[1.5px] border-fg px-2.5 py-0.5 font-mono text-xs font-semibold hover:bg-fg hover:text-bg">
+                    <Link href={articlePath(a)} className="inline-flex items-center gap-1 rounded-full border-[1.5px] border-fg px-2.5 py-0.5 font-mono text-xs font-semibold hover:bg-fg hover:text-bg">
                       Art. {a.num} · {codeName(a.code)}
                     </Link>
                   </li>

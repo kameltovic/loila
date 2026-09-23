@@ -1,12 +1,13 @@
 import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
+import { articlePath } from "./articles";
 import { getDb, type Article, type Faq } from "./db";
 import { CODES, THEMES } from "./themes";
 import { chat, type ChatMessage } from "./openrouter";
 import { getArticleByNum, mentionedConventions, searchArticles } from "./search";
 
-export type AskArticle = { id: string; num: string; code: string; url: string };
+export type AskArticle = { id: string; num: string; code: string; url: string; path: string };
 export type AskResult = {
   source: "faq" | "cache" | "llm" | "none" | "paywall";
   answer_md: string;
@@ -46,8 +47,8 @@ function articlesByIds(ids: string[]): AskArticle[] {
   if (!ids.length) return [];
   const rows = getDb()
     .prepare(`SELECT id, num, code, url FROM articles WHERE id IN (${ids.map(() => "?").join(",")})`)
-    .all(...ids) as AskArticle[];
-  return ids.map((id) => rows.find((r) => r.id === id)).filter((r): r is AskArticle => !!r);
+    .all(...ids) as Omit<AskArticle, "path">[];
+  return ids.flatMap((id) => rows.filter((r) => r.id === id).map((r) => ({ ...r, path: articlePath(r) })));
 }
 
 const parseIds = (json: string): string[] => {
@@ -290,7 +291,7 @@ export async function ask(
   if (!isNonAnswer(content)) db.prepare("INSERT OR REPLACE INTO qa_cache (hash, question, answer_md, article_ids, model) VALUES (?, ?, ?, ?, ?)").run(
     hash, q, content, JSON.stringify(used.map((a) => a.id)), model,
   );
-  return { source: "llm", answer_md: content, articles: used.map(({ id, num, code, url }) => ({ id, num, code, url })) };
+  return { source: "llm", answer_md: content, articles: used.map(({ id, num, code, url }) => ({ id, num, code, url, path: articlePath({ id, code, num }) })) };
 }
 
 // Cached answers citing an article longer than `minChars` were possibly written from a truncated excerpt

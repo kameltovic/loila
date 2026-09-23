@@ -14,6 +14,7 @@ type ArticleData = {
   texte: string;
   date_debut: string | null;
   url: string;
+  path: string;
 };
 
 const OpenContext = createContext<((id: string) => void) | null>(null);
@@ -30,13 +31,13 @@ export function ArticleDrawerProvider({ children }: { children: React.ReactNode 
   );
 }
 
-/** Real link to /article/[id]; opens the drawer on plain left click when a provider is present. */
-export function ArticleLink({ id, className, children, ...rest }: { id: string } & React.ComponentProps<"a">) {
+/** Real link to the article page (`path` = articlePath, else the id URL that redirects); opens the drawer on plain left click when a provider is present. */
+export function ArticleLink({ id, path, className, children, ...rest }: { id: string; path?: string } & React.ComponentProps<"a">) {
   const open = useContext(OpenContext);
   return (
     <a
       {...rest}
-      href={`/article/${id}`}
+      href={path ?? `/article/${id}`}
       className={className}
       onClick={(e) => {
         if (!open || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
@@ -61,7 +62,7 @@ export function linkCitations(md: string, articles: { id: string; num: string }[
   return md.replace(re, (_m, word: string, sp: string, num: string) => `[${word}${sp}${num}](#article:${byNum.get(num)})`);
 }
 
-export function ArticleMarkdown({ md, articles }: { md: string; articles: { id: string; num: string }[] }) {
+export function ArticleMarkdown({ md, articles }: { md: string; articles: { id: string; num: string; path?: string }[] }) {
   return (
     <ReactMarkdown
       components={{
@@ -71,6 +72,7 @@ export function ArticleMarkdown({ md, articles }: { md: string; articles: { id: 
             return (
               <ArticleLink
                 id={href.slice(9)}
+                path={articles.find((a) => a.id === href.slice(9))?.path}
                 className="font-semibold underline decoration-signal decoration-2 underline-offset-4 hover:bg-signal hover:text-ink"
               >
                 {children}
@@ -226,7 +228,7 @@ function Drawer({ id, onClose }: { id: string; onClose: () => void }) {
           </a>
           )}
           <a
-            href={`/article/${id}`}
+            href={data?.path ?? `/article/${id}`}
             className="inline-flex items-center rounded-full border-2 border-fg px-4 py-2 text-sm font-semibold transition hover:bg-fg hover:text-bg"
           >
             Ouvrir la page

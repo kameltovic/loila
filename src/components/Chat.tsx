@@ -301,6 +301,7 @@ export function Answer({ result }: { result: AskResult }) {
             <li key={a.id}>
               <ArticleLink
                 id={a.id}
+                path={a.path}
                 className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-fg px-3 py-1 text-xs font-semibold transition hover:bg-fg hover:text-bg"
               >
                 <Scale aria-hidden strokeWidth={1.75} className="size-3.5" />

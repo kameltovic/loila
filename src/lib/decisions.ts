@@ -112,8 +112,8 @@ export function articleNeighbors(articleId: string) {
   const db = getDb();
   const cur = db.prepare("SELECT rowid AS r, code FROM articles WHERE id = ?").get(articleId) as { r: number; code: string } | undefined;
   if (!cur) return {};
-  const prev = db.prepare("SELECT id, num FROM articles WHERE code = ? AND rowid < ? ORDER BY rowid DESC LIMIT 1").get(cur.code, cur.r) as { id: string; num: string } | undefined;
-  const next = db.prepare("SELECT id, num FROM articles WHERE code = ? AND rowid > ? ORDER BY rowid LIMIT 1").get(cur.code, cur.r) as { id: string; num: string } | undefined;
+  const prev = db.prepare("SELECT id, code, num FROM articles WHERE code = ? AND rowid < ? ORDER BY rowid DESC LIMIT 1").get(cur.code, cur.r) as { id: string; code: string; num: string } | undefined;
+  const next = db.prepare("SELECT id, code, num FROM articles WHERE code = ? AND rowid > ? ORDER BY rowid LIMIT 1").get(cur.code, cur.r) as { id: string; code: string; num: string } | undefined;
   return { prev, next };
 }
 

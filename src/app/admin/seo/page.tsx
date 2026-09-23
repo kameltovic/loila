@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { requireAdmin } from "@/lib/auth";
 import { getDb } from "@/lib/db";
+import { articleByPath } from "@/lib/articles";
 import { gscConfigured, gscDay, gscPath, gscQuery, gscSections, gscTotals, type GscRow } from "@/lib/gsc";
 import { CODES } from "@/lib/themes";
 import { container, display, label } from "@/components/ui";
@@ -14,12 +15,17 @@ const PERIODS = [7, 28, 90];
 const pct = (x: number) => `${(x * 100).toFixed(1)} %`;
 const num = (x: number) => x.toLocaleString("fr-FR");
 
-/** "/article/LEGIARTI…" → "Art. 1376 · Code civil", so the table is readable. */
+/** "/article/LEGIARTI…" or "/article/code-civil/1376" → "Art. 1376 · Code civil", so the table is readable. */
 function articleLabels(paths: string[]) {
-  const ids = paths.map((p) => p.match(/^\/article\/([A-Z0-9]+)/)?.[1]).filter((x): x is string => !!x);
-  if (!ids.length) return new Map<string, string>();
-  const rows = getDb().prepare(`SELECT id, num, code FROM articles WHERE id IN (${ids.map(() => "?").join(",")})`).all(...ids) as { id: string; num: string; code: string }[];
-  return new Map(rows.map((r) => [r.id, `Art. ${r.num} · ${(CODES[r.code as keyof typeof CODES]?.name ?? r.code).replace(/ \(.*\)$/, "")}`]));
+  const byId = getDb().prepare("SELECT num, code FROM articles WHERE id = ?");
+  const out = new Map<string, string>();
+  for (const p of paths) {
+    const m = p.match(/^\/article\/([^/]+)(?:\/([^/]+))?/);
+    if (!m) continue;
+    const r = (m[2] && m[2] !== "jurisprudence" ? articleByPath(m[1], decodeURIComponent(m[2])) : byId.get(m[1])) as { num: string; code: string } | undefined;
+    if (r) out.set(p, `Art. ${r.num} · ${(CODES[r.code as keyof typeof CODES]?.name ?? r.code).replace(/ \(.*\)$/, "")}`);
+  }
+  return out;
 }
 
 export default async function AdminSeo({ searchParams }: { searchParams: Promise<{ days?: string; page?: string }> }) {
@@ -167,7 +173,7 @@ export default async function AdminSeo({ searchParams }: { searchParams: Promise
         <Table head={["Clics", "Impr.", "CTR", "Pos.", "Page"]}>
           {topPages.map((p) => {
             const path = gscPath(p.keys[0]);
-            const art = labels.get(path.split("/")[2] ?? "");
+            const art = labels.get(path);
             return (
               <tr key={path}>
                 <td>{p.clicks}</td>

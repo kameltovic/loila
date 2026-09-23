@@ -101,7 +101,7 @@ export default function JuriAssistant() {
                 <ul className="mt-3 flex flex-wrap gap-2">
                   {result.articles.map((a) => (
                     <li key={a.id}>
-                      <Link href={`/article/${a.id}`} className="inline-flex rounded-full border-[1.5px] border-fg px-2.5 py-0.5 font-mono text-xs font-semibold hover:bg-fg hover:text-bg">Art. {a.num}</Link>
+                      <Link href={a.path ?? `/article/${a.id}`} className="inline-flex rounded-full border-[1.5px] border-fg px-2.5 py-0.5 font-mono text-xs font-semibold hover:bg-fg hover:text-bg">Art. {a.num}</Link>
                     </li>
                   ))}
                 </ul>

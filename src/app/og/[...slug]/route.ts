@@ -4,6 +4,7 @@ import { irlSeries, quarterLabel } from "@/lib/irl";
 import { getJorfText } from "@/lib/jorf";
 import { KIND_LABEL, mainKind, placeFromSlug, placeName, pointsOf, priceYears } from "@/lib/prices";
 import { getDb, type Article, type Faq } from "@/lib/db";
+import { articleByPath } from "@/lib/articles";
 import { renderOg, renderWordmark, topicOg } from "@/lib/og";
 import { CODES, THEMES } from "@/lib/themes";
 import { getTopic } from "@/lib/topics";
@@ -28,8 +29,9 @@ function image(parts: string[]) {
     if (!faq && !topic) return null;
     return renderOg({ kind: "faq", theme: faq?.theme ?? "", themeTitle: topic?.title ?? "Sujet", question: faq?.question ?? topic?.h1 ?? "" });
   }
-  if (a === "article" && parts.length === 2) {
-    const art = getDb().prepare("SELECT num, code, section FROM articles WHERE id = ?").get(b) as Pick<Article, "num" | "code" | "section"> | undefined;
+  if (a === "article" && (parts.length === 2 || (parts.length === 3 && c !== "jurisprudence"))) {
+    // /og/article/<id>.png or, for readable URLs, /og/article/<code>/<num>.png
+    const art = parts.length === 3 ? articleByPath(b, c) : (getDb().prepare("SELECT num, code, section FROM articles WHERE id = ?").get(b) as Pick<Article, "num" | "code" | "section"> | undefined);
     if (!art) return null;
     return renderOg({
       kind: "article",

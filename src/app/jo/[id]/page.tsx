@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { articlePath } from "@/lib/articles";
 import { notFound } from "next/navigation";
 import { ArrowUpRight } from "lucide-react";
 import { SectionHead, btnPrimary, container, display, label } from "@/components/ui";
@@ -117,7 +118,7 @@ export default async function JorfPage({ params }: PageProps<"/jo/[id]">) {
                     <ul className="mt-3 flex flex-wrap gap-2">
                       {list.slice(0, 200).map((r) => (
                         <li key={r.article_id}>
-                          <Link href={`/article/${r.article_id}`} className="inline-block border-2 border-fg px-2.5 py-1 font-mono text-sm hover:bg-fg hover:text-bg">
+                          <Link href={articlePath({ id: r.article_id, code: r.code, num: r.num })} className="inline-block border-2 border-fg px-2.5 py-1 font-mono text-sm hover:bg-fg hover:text-bg">
                             {/^\d/.test(r.num) ? `Art. ${r.num}` : r.num}
                           </Link>
                         </li>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { articlePath } from "@/lib/articles";
 import { notFound } from "next/navigation";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Chat from "@/components/Chat";
@@ -179,7 +180,7 @@ export default async function ConventionPage({ params }: PageProps<"/conventions
             <ul className="mt-12 border-t border-fg">
               {cited.map((a) => (
                 <li key={a.id} className="border-b border-rule">
-                  <Link href={`/article/${a.id}`} className="group grid grid-cols-[1fr_auto] items-center gap-4 py-6 transition-colors hover:bg-surface sm:px-2">
+                  <Link href={articlePath(a)} className="group grid grid-cols-[1fr_auto] items-center gap-4 py-6 transition-colors hover:bg-surface sm:px-2">
                     <span className="min-w-0">
                       <span className="block font-display text-xl leading-tight font-bold tracking-[-0.025em] sm:text-2xl">
                         {a.num ? `Article ${a.num}` : (a.section?.split(" > ").pop() ?? "Texte officiel")}

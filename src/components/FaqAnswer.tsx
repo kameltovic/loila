@@ -1,5 +1,6 @@
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { getDb, type Article, type Faq } from "@/lib/db";
+import { articlePath } from "@/lib/articles";
 import { CODES } from "@/lib/themes";
 import { ArticleLink, ArticleMarkdown } from "@/components/ArticleDrawer";
 import { block, display, label } from "@/components/ui";
@@ -31,7 +32,7 @@ export default function FaqAnswer({ faq, articles, updated }: { faq: Faq; articl
       </p>
 
       <div className="prose-loila mt-12">
-        <ArticleMarkdown md={faq.answer_md} articles={articles.map(({ id, num }) => ({ id, num }))} />
+        <ArticleMarkdown md={faq.answer_md} articles={articles.map((a) => ({ id: a.id, num: a.num, path: articlePath(a) }))} />
       </div>
 
       {articles.length > 0 && (
@@ -47,7 +48,7 @@ export default function FaqAnswer({ faq, articles, updated }: { faq: Faq; articl
                   <p className={`${label} text-fg-2`}>{CODES[a.code as keyof typeof CODES]?.name ?? a.code}</p>
                   <h3 className="mt-2 font-display text-2xl font-bold tracking-[-0.03em]">
                     {/* Stretched link: whole row opens the drawer, still a real link for new-tab. */}
-                    <ArticleLink id={a.id} className="after:absolute after:inset-0 focus-visible:outline-none focus-visible:after:outline-3 focus-visible:after:outline-focus">
+                    <ArticleLink id={a.id} path={articlePath(a)} className="after:absolute after:inset-0 focus-visible:outline-none focus-visible:after:outline-3 focus-visible:after:outline-focus">
                       {a.num ? `Article ${a.num}` : (a.section?.split(" > ").pop() ?? "Article")}
                     </ArticleLink>
                   </h3>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { articlePath } from "@/lib/articles";
 import { notFound } from "next/navigation";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import ThemeIcon from "@/components/ThemeIcon";
@@ -82,7 +83,7 @@ export default async function MetierPage({ params }: PageProps<"/pour/[slug]">) 
                   {o.articles.length > 0 && (
                     <p className="mt-auto flex flex-wrap gap-2 pt-5">
                       {o.articles.map((a) => (
-                        <Link key={a.id} href={`/article/${a.id}`} className="inline-flex items-center gap-1 rounded-full border-[1.5px] border-fg px-2.5 py-0.5 font-mono text-xs font-semibold hover:bg-fg hover:text-bg">
+                        <Link key={a.id} href={articlePath(a)} className="inline-flex items-center gap-1 rounded-full border-[1.5px] border-fg px-2.5 py-0.5 font-mono text-xs font-semibold hover:bg-fg hover:text-bg">
                           Art. {a.num} · {codeName(a.code).replace(/ \(.*\)$/, "")}
                           <ArrowUpRight aria-hidden className="size-3.5" />
                         </Link>

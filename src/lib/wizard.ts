@@ -1,6 +1,7 @@
 // Dossier wizard: story → analysis (DeepSeek) → retrieval → ≤3 clarifying questions → refined retrieval → synthesis
 // (answer model) → follow-up questions. Evaluation and prompt design: docs/wizard-eval.md.
 import { randomBytes } from "node:crypto";
+import { articlePath } from "./articles";
 import { excerpt, normalize, retrieve, type AskArticle } from "./ask";
 import { rateLimited, type Identity } from "./auth";
 import { consume, getMe } from "./billing";
@@ -246,8 +247,8 @@ const now = () => Math.floor(Date.now() / 1000);
 
 function articles(ids: string[]): AskArticle[] {
   if (!ids.length) return [];
-  const rows = getDb().prepare(`SELECT id, num, code, url FROM articles WHERE id IN (${ids.map(() => "?").join(",")})`).all(...ids) as AskArticle[];
-  return ids.map((id) => rows.find((r) => r.id === id)).filter((r): r is AskArticle => !!r);
+  const rows = getDb().prepare(`SELECT id, num, code, url FROM articles WHERE id IN (${ids.map(() => "?").join(",")})`).all(...ids) as Omit<AskArticle, "path">[];
+  return ids.flatMap((id) => rows.filter((r) => r.id === id).map((r) => ({ ...r, path: articlePath(r) })));
 }
 
 /** Strict ownership: another user's dossier and a missing one are indistinguishable (404). */
