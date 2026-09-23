@@ -8,6 +8,7 @@ import { getMetiers } from "@/lib/metiers";
 import { getLettres, lettreUrl } from "@/lib/lettres";
 import { indexablePlaces, placeUrl } from "@/lib/prices";
 import { conventionUrl, getConventions } from "@/lib/conventions";
+import { codeTree, hubCodes, sectionHref } from "@/lib/codes";
 import { indexableAddresses, indexableArticles, indexableCompanies, indexableDecisions, indexableJorfTexts, indexableJurisprudenceLists } from "@/lib/eligibility";
 
 export const revalidate = 3600;
@@ -70,6 +71,7 @@ export default async function sitemap({ id }: { id: Promise<string> }): Promise<
       ...getTopics().map((t) => url(`/sujets/${t.slug}`, 0.8)),
       ...getConventions().map((c) => url(conventionUrl(c), 0.8)),
       ...faqs.map((f) => url(faqUrl(f), 0.7)),
+      ...[url("/codes", 0.7), ...hubCodes().flatMap((c) => [url(`/codes/${c}`, 0.6), ...[...codeTree(c)!.bySlug.values()].filter((n) => n.indexable).map((n) => url(sectionHref(c, n), 0.5, "monthly"))])],
     ];
   }
 

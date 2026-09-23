@@ -22,6 +22,7 @@ export default function Footer() {
         { href: "/revision-loyer", label: "Réviser un loyer (IRL)" },
         { href: "/jo", label: "Lois et décrets (Journal officiel)" },
         { href: "/conventions", label: "Conventions collectives" },
+        { href: "/codes", label: "Codes et lois" },
         { href: "https://www.legifrance.gouv.fr", label: "Sources officielles (Légifrance)" },
         { href: "https://echanges.dila.gouv.fr/OPENDATA/", label: "Données ouvertes DILA" },
       ],
