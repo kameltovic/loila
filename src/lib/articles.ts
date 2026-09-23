@@ -1,7 +1,28 @@
 import { createHash } from "node:crypto";
 import { getDb, type Article, type ArticleSummary } from "./db";
+import { normalizeNum } from "./legal-refs";
 
 export const texteSha = (texte: string) => createHash("sha256").update(texte).digest("hex");
+
+// ponytail: computed once per process; articles only change on deploy (seed bundles), which restarts the server.
+let ambiguous: Set<string> | undefined;
+/** (code, num_norm) pairs shared by several articles: conventions reuse numbers across avenants, codes repeat annex numbers. */
+const ambiguousNums = () =>
+  (ambiguous ??= new Set(
+    (getDb().prepare("SELECT code || '|' || num_norm k FROM articles GROUP BY code, num_norm HAVING COUNT(*) > 1").all() as { k: string }[]).map((r) => r.k),
+  ));
+
+/** Canonical URL: /article/code-civil/1643 when the number names one article of its code, else /article/<Légifrance id>. */
+export function articlePath(a: Pick<Article, "id" | "code" | "num">): string {
+  const n = a.num ? normalizeNum(a.num) : "";
+  return n && !ambiguousNums().has(`${a.code}|${n}`) ? `/article/${a.code}/${encodeURIComponent(n)}` : `/article/${a.id}`;
+}
+
+/** Reverse of articlePath: the single article of `code` numbered `num` (any spelling normalizeNum accepts). */
+export function articleByPath(code: string, num: string): Article | undefined {
+  const rows = getDb().prepare("SELECT * FROM articles WHERE code = ? AND num_norm = ? LIMIT 2").all(code, normalizeNum(num)) as Article[];
+  return rows.length === 1 ? rows[0] : undefined;
+}
 
 /** "En clair" summary of an article, only if it was written from the text currently in force. */
 export function articleSummary(a: Pick<Article, "id" | "texte">): { summary: string; points: string[] } | undefined {
