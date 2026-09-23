@@ -4,9 +4,11 @@ import { articlePath } from "@/lib/articles";
 import { notFound } from "next/navigation";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Chat from "@/components/Chat";
-import { Empty, FaqIndex, SectionHead, block, btnPrimary, container, display, label } from "@/components/ui";
+import { Empty, FaqIndex, SectionHead, block, btnPrimary, btnSecondary, container, display, label } from "@/components/ui";
 import { getDb, type Article, type Faq } from "@/lib/db";
 import { faqUrl } from "@/lib/themes";
+import { articlePath } from "@/lib/articles";
+import { formatDate } from "@/lib/plans";
 import { conventionHeading, conventionLegifranceUrl, conventionUrl, getConvention, getConventions } from "@/lib/conventions";
 import { JsonLd, abs, breadcrumbJsonLd, clip, faqJsonLd, pageMetadata } from "@/lib/seo";
 
@@ -41,29 +43,99 @@ function load(slug: string) {
        WHERE a.code = ? ORDER BY a.num`,
     )
     .all(c.code) as Article[];
-  return { c, articles, accords, faqs, cited };
+  const { grids, topics } = keyArticles(c.code);
+  return { c, articles, accords, faqs, cited, grids, topics, updated: lastVersion(c.code) };
+}
+
+/** "1er janvier 2026", as dates are written in French legal texts. */
+const frDate = (iso: string) => formatDate(iso).replace(/^1 /, "1er ");
+
+const lastVersion = (code: string) =>
+  (getDb().prepare("SELECT MAX(date_debut) AS d FROM articles WHERE code = ?").get(code) as { d: string | null }).d;
+
+// Deterministic key-article picks by keyword match on section titles (main text first, then by date).
+// ponytail: regex heuristics tuned on the 18 KALI conventions; revisit if a branch comes out empty or noisy.
+const GRID = /^salaires?\b|salaires? (minim|hiérarchiques|conventionnels)|appointements minim|minima (conventionnels|hiérarchiques)|rémunérations? minim|grille applicable|barème (unique )?des salaires/i;
+const NOT_GRID = /santé|prévoyance|épargne|intéressement|participation|retraite|égalité|temps partiel/i;
+const TOPICS: { title: string; section: RegExp; texte?: RegExp }[] = [
+  { title: "Salaires et classifications", section: /salaire|rémunération|classification|appointement/i },
+  { title: "Période d’essai", section: /période d['’]essai|\bessai\b/i, texte: /période d['’]essai/i },
+  { title: "Préavis et licenciement", section: /préavis|licenciement|rupture|démission|départ à la retraite|délai-congé/i, texte: /préavis/i },
+  { title: "Congés", section: /congés?\b/i, texte: /congés payés/i },
+  { title: "Primes et indemnités", section: /prime|indemnité|gratification|13e mois|treizième mois/i, texte: /\bprimes?\b|13e mois/i },
+  { title: "Durée du travail", section: /durée du travail|temps de travail|heures supplémentaires|travail de nuit|repos|dimanche|astreinte|aménagement du temps/i, texte: /durée du travail|heures supplémentaires/i },
+];
+type KeyArticle = Article & { title: string };
+
+function keyArticles(code: string) {
+  const rows = getDb().prepare("SELECT * FROM articles WHERE code = ? AND section IS NOT NULL AND section <> ''").all(code) as (Article & { section: string })[];
+  const leaf = (a: { section: string }) => a.section.split(" > ").pop()!;
+  const main = (a: { section: string }) => /^Convention collective\b/i.test(a.section);
+  const byDate = (x: Article, y: Article) => (y.date_debut ?? "").localeCompare(x.date_debut ?? "");
+
+  // One entry per salary text (avenant or title), its longest article being the grid itself.
+  const grids = new Map<string, KeyArticle>();
+  for (const a of rows) {
+    const seg = a.section.split(" > ").find((s) => GRID.test(s));
+    if (!seg || NOT_GRID.test(a.section)) continue;
+    const g = grids.get(seg);
+    if (!g || a.texte.length > g.texte.length) grids.set(seg, { ...a, title: seg });
+  }
+
+  const used = new Set<string>();
+  const topics = TOPICS.map((t) => {
+    const score = (a: Article & { section: string }) => (main(a) ? 4 : 0) + (t.section.test(leaf(a)) ? 2 : 0) + (a.num ? 1 : 0);
+    const seen = new Set<string>();
+    const items = rows
+      .filter((a) => !/égalit/i.test(a.section) && (t.section.test(leaf(a)) || (main(a) && !!t.texte?.test(a.texte))))
+      .sort((x, y) => score(y) - score(x) || byDate(x, y))
+      .filter((a) => {
+        const k = leaf(a).toLowerCase();
+        if (used.has(a.id) || seen.has(k)) return false;
+        seen.add(k);
+        return true;
+      })
+      .slice(0, 4)
+      .map((a) => ({ ...a, title: leaf(a) }));
+    for (const a of items) used.add(a.id);
+    return { title: t.title, items };
+  }).filter((t) => t.items.length);
+
+  return { grids: [...grids.values()].sort(byDate).slice(0, 4), topics };
+}
+
+/** Longest "Convention collective X (IDCC n) …" title that fits a search result (~60 chars). */
+function metaTitle(c: { short: string; idcc: string }) {
+  const id = `(IDCC ${c.idcc})`;
+  return (
+    [
+      `Convention collective ${c.short} ${id} : texte gratuit et à jour`,
+      `Convention collective ${c.short} ${id} gratuite et à jour`,
+      `CCN ${c.short} ${id} gratuite et à jour`,
+    ].find((t) => t.length <= 60) ?? `CCN ${c.short} ${id} gratuite`
+  );
 }
 
 export async function generateMetadata({ params }: PageProps<"/conventions/branche/[slug]">): Promise<Metadata> {
   const c = getConvention((await params).slug);
   if (!c) return {};
-  const { n } = getDb().prepare("SELECT COUNT(*) AS n FROM articles WHERE code = ?").get(c.code) as { n: number };
-  const title = `Convention collective ${c.short} (IDCC ${c.idcc})`;
+  const updated = lastVersion(c.code);
+  const title = metaTitle(c);
   const meta = pageMetadata({
     title,
     description: clip(
-      `${c.short} (IDCC ${c.idcc}) : réponses claires sur les règles de la branche, chaque règle sourcée par l’article officiel. ${n.toLocaleString("fr-FR")} articles de la convention publique.`,
+      `Convention collective ${c.short} (IDCC ${c.idcc}) gratuite et à jour${updated ? ` au ${frDate(updated)}` : ""} : salaires minimums, période d’essai, préavis, congés, primes. Texte officiel article par article.`,
     ),
     path: conventionUrl(c),
   });
-  // Long names skip the " · Loilà" suffix so the IDCC isn’t truncated in results.
-  return title.length > 52 ? { ...meta, title: { absolute: title } } : meta;
+  // Skip the " · Loilà" suffix so the IDCC isn’t truncated in results.
+  return { ...meta, title: { absolute: title } };
 }
 
 export default async function ConventionPage({ params }: PageProps<"/conventions/branche/[slug]">) {
   const data = load((await params).slug);
   if (!data) notFound();
-  const { c, articles, accords, faqs, cited } = data;
+  const { c, articles, accords, faqs, cited, grids, topics, updated } = data;
 
   const path = conventionUrl(c);
   const legifrance = conventionLegifranceUrl(c);
@@ -81,6 +153,8 @@ export default async function ConventionPage({ params }: PageProps<"/conventions
       url: abs(path),
       isBasedOn: legifrance,
       sameAs: legifrance,
+      isAccessibleForFree: true,
+      ...(updated && { dateModified: updated }),
     },
     ...(faqs.length ? [faqJsonLd(faqs.map((f) => ({ question: f.question, answer: f.short, path: faqUrl(f) })))] : []),
   ];
@@ -123,8 +197,65 @@ export default async function ConventionPage({ params }: PageProps<"/conventions
             Lire le texte officiel <ArrowUpRight aria-hidden strokeWidth={1.75} size={16} />
             <span className="sr-only">(nouvel onglet)</span>
           </a>
+          {grids.length > 0 && (
+            <a href="#grille" className={`${btnSecondary} mt-8 ml-3`}>
+              Grille des salaires
+            </a>
+          )}
+          <p className="mt-6 max-w-2xl text-sm">
+            Texte gratuit et à jour{updated && <> : dernière version en vigueur le {frDate(updated)}</>}. IDCC {c.idcc}, source{" "}
+            <a href={legifrance} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">Légifrance (KALI)</a>.
+          </p>
         </div>
       </section>
+
+      {grids.length > 0 && (
+        <section id="grille" aria-labelledby="grille-title" className="scroll-mt-20 pt-16 sm:pt-24">
+          <div className={container}>
+            <SectionHead num={num()} kicker="Salaires" id="grille-title" title="Grille des salaires minimums" />
+            <ul className="mt-12 border-t-2 border-fg">
+              {grids.map((g) => (
+                <li key={g.id} className="border-b-2 border-fg">
+                  <Link href={articlePath(g)} className="group grid grid-cols-[1fr_auto] items-center gap-4 py-6 transition-colors hover:bg-surface sm:px-2">
+                    <span className="min-w-0">
+                      <span className="block font-display text-xl leading-tight font-bold tracking-[-0.025em] sm:text-2xl">{g.title}</span>
+                      {g.date_debut && <span className="mt-2 block font-mono text-sm text-fg-2">En vigueur depuis le {frDate(g.date_debut)}</span>}
+                    </span>
+                    <ArrowRight aria-hidden strokeWidth={1.75} className="size-5 transition group-hover:translate-x-1 motion-reduce:transition-none" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-6 max-w-2xl text-sm text-fg-2">
+              Les minima conventionnels de la branche, texte officiel intégral. Aucun salaire ne peut être inférieur au SMIC.
+            </p>
+          </div>
+        </section>
+      )}
+
+      {topics.length > 0 && (
+        <section aria-labelledby="cles-title" className="pt-16 sm:pt-24">
+          <div className={container}>
+            <SectionHead num={num()} kicker="L’essentiel" id="cles-title" title="Les articles clés" />
+            <div className="mt-12 grid border-t-2 border-l-2 border-fg sm:grid-cols-2 lg:grid-cols-3">
+              {topics.map((t) => (
+                <div key={t.title} className="border-r-2 border-b-2 border-fg p-5 sm:p-6">
+                  <h3 className="font-display text-xl leading-tight font-bold tracking-[-0.02em]">{t.title}</h3>
+                  <ul className="mt-4 space-y-3">
+                    {t.items.map((a) => (
+                      <li key={a.id}>
+                        <Link href={articlePath(a)} className="underline decoration-signal decoration-2 underline-offset-4">
+                          {a.num ? `Art. ${a.num} · ` : ""}{a.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {accords.length > 0 && (
         <section aria-labelledby="accords-title" className="py-16 sm:py-24">
