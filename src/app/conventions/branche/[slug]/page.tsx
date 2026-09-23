@@ -7,7 +7,6 @@ import Chat from "@/components/Chat";
 import { Empty, FaqIndex, SectionHead, block, btnPrimary, btnSecondary, container, display, label } from "@/components/ui";
 import { getDb, type Article, type Faq } from "@/lib/db";
 import { faqUrl } from "@/lib/themes";
-import { articlePath } from "@/lib/articles";
 import { formatDate } from "@/lib/plans";
 import { conventionHeading, conventionLegifranceUrl, conventionUrl, getConvention, getConventions } from "@/lib/conventions";
 import { JsonLd, abs, breadcrumbJsonLd, clip, faqJsonLd, pageMetadata } from "@/lib/seo";

@@ -1,3 +1,4 @@
+import { articleSectionHref } from "@/lib/codes";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
@@ -6,55 +7,14 @@ import { CODES, THEMES, faqUrl } from "@/lib/themes";
 import { Empty, FaqIndex, block, btnPrimary, container, display, label } from "@/components/ui";
 import { LettreCards } from "@/components/Lettres";
 import JorfHistory from "@/components/JorfHistory";
-import { articleByPath, articlePath, articleSummary, articleTopic, coCitedArticles, linkRefs } from "@/lib/articles";
+import { articlePath, articleSummary, articleTopic, coCitedArticles, linkRefs } from "@/lib/articles";
 import { articleIndexable } from "@/lib/eligibility";
-import { normalizeNum } from "@/lib/legal-refs";
 import { lettresForArticle } from "@/lib/lettres";
-import { getArticleByNum } from "@/lib/search";
+import { type Choice } from "@/lib/article-url";
+export { resolveId, resolvePath } from "@/lib/article-url";
 import { getTopic } from "@/lib/topics";
 import { articleNeighbors, articleStats, citation, coCitedByCaseLaw, decisionUrl, decisionsForArticle, teaser } from "@/lib/decisions";
 import { JsonLd, abs, breadcrumbJsonLd, clip, faqJsonLd, pageMetadata } from "@/lib/seo";
-
-type Resolved = { a: Article; redirect?: undefined } | { redirect: string; a?: undefined };
-type Choice = Pick<Article, "id" | "code" | "num">;
-
-const byId = (id: string) => getDb().prepare("SELECT * FROM articles WHERE id = ?").get(id) as Article | undefined;
-const decode = (s: string) => {
-  try {
-    return decodeURIComponent(s);
-  } catch {
-    return s;
-  }
-};
-const NON_CCN = Object.keys(CODES).filter((c) => !c.startsWith("ccn-"));
-
-/**
- * /article/<id>: a Légifrance id renders when it is its own canonical path, else redirects to /article/<code>/<num>.
- * Anything else is read as a bare number ("l3123-6", "art-2296"): one match across the codes redirects, several list.
- */
-export function resolveId(id: string): Resolved | { choices: Choice[]; num: string } | undefined {
-  const a = byId(id);
-  if (a) {
-    const p = articlePath(a);
-    return p === `/article/${id}` ? { a } : { redirect: p };
-  }
-  const num = normalizeNum(decode(id).replace(/^art(?:icle)?[\s.-]*/i, ""));
-  if (!num) return;
-  const choices = getDb()
-    .prepare(`SELECT id, code, num FROM articles WHERE code IN (${NON_CCN.map(() => "?").join(",")}) AND num_norm = ? LIMIT 20`)
-    .all(...NON_CCN, num) as Choice[];
-  if (choices.length === 1) return { redirect: articlePath(choices[0]) };
-  if (choices.length > 1) return { choices, num };
-}
-
-/** /article/<code>/<num>: renders on the canonical spelling, redirects any other one (and ambiguous numbers to the id). */
-export function resolvePath(code: string, rawNum: string): Resolved | undefined {
-  const num = decode(rawNum);
-  const a = articleByPath(code, num) ?? getArticleByNum(code, num);
-  if (!a) return;
-  const p = articlePath(a);
-  return p === `/article/${code}/${encodeURIComponent(num)}` ? { a } : { redirect: p };
-}
 
 /** "Article L1237-19", or the section title for convention articles without a number. */
 const artLabel = (a: Article) => (a.num ? `Article ${a.num}` : (a.section?.split(" > ").pop() ?? "Article"));
@@ -111,6 +71,7 @@ export function ArticleView({ a }: { a: Article }) {
   const askHref = ownTheme ? `/${ownTheme.slug}#question` : "/#question";
   const code = CODES[a.code as keyof typeof CODES];
   const codeHref = a.code.startsWith("ccn-") ? undefined : `/codes/${a.code}`;
+  const sectionHref = codeHref && articleSectionHref(a);
   // Summary block colour: the theme owning this code (Code civil etc. fall back to the logement yellow).
   const themeSlug = ownTheme?.slug ?? "logement";
   const jsonLd = [
@@ -144,6 +105,7 @@ export function ArticleView({ a }: { a: Article }) {
             <Link href="/" className={linkClass}>Accueil</Link>
             <span aria-hidden>/</span>
             {codeHref ? <Link href={codeHref} className={linkClass}>{codeName(a.code)}</Link> : <span>{codeName(a.code)}</span>}
+            {sectionHref && <><span aria-hidden>/</span><Link href={sectionHref} className={linkClass}>{a.section?.split(" > ").pop()}</Link></>}
           </nav>
           <p className={`${label} mt-12 flex items-center gap-3`}>
             <span aria-hidden className="h-0.5 w-8 bg-signal" />
