@@ -864,6 +864,18 @@
             "seize semaines",
             "code-du-travail:L1225-37"
           ]
+        },
+        {
+          "slug": "adopter-enfant-plus-de-15-ans",
+          "question": "Peut-on adopter un enfant de plus de 15 ans ?",
+          "hints": [
+            "adoption plénière",
+            "moins de quinze ans",
+            "adoption simple quel que soit l'âge",
+            "code-civil:345",
+            "code-civil:345-1",
+            "code-civil:360"
+          ]
         }
       ]
     },
@@ -1642,6 +1654,28 @@
             "maintien de salaire",
             "code-du-travail:L3141-24"
           ]
+        },
+        {
+          "slug": "conges-mariage-pacs-naissance",
+          "question": "Combien de jours de congé pour un mariage, un PACS ou une naissance ?",
+          "hints": [
+            "congés pour événements familiaux",
+            "quatre jours",
+            "trois jours pour chaque naissance",
+            "code-du-travail:L3142-1",
+            "code-du-travail:L3142-4"
+          ]
+        },
+        {
+          "slug": "employeur-modifie-dates-conges",
+          "question": "L'employeur peut-il modifier mes dates de congés déjà validées ?",
+          "hints": [
+            "ordre et les dates de départ",
+            "moins d'un mois",
+            "circonstances exceptionnelles",
+            "code-du-travail:L3141-16",
+            "code-du-travail:D3141-6"
+          ]
         }
       ],
       "relatedFaqs": [
@@ -2083,6 +2117,20 @@
             "saisie des rémunérations",
             "proportion",
             "code-du-travail:L3252-2"
+          ]
+        },
+        {
+          "slug": "temps-partiel-modification-horaires",
+          "question": "Temps partiel : l'employeur peut-il changer mes jours ou mes horaires de travail ?",
+          "hints": [
+            "répartition de la durée du travail",
+            "délai de prévenance sept jours ouvrés",
+            "refus ne constitue pas une faute",
+            "code-du-travail:L3123-6",
+            "code-du-travail:L3123-11",
+            "code-du-travail:L3123-12",
+            "code-du-travail:L3123-24",
+            "code-du-travail:L3123-31"
           ]
         }
       ],
@@ -4071,6 +4119,19 @@
             "autorisation",
             "loi-65-557:25"
           ]
+        },
+        {
+          "slug": "droits-coproprietaire-parties-privatives",
+          "question": "Que peut-on faire librement dans son appartement en copropriété ?",
+          "hints": [
+            "parties privatives",
+            "use et jouit librement",
+            "destination de l'immeuble",
+            "règlement de copropriété restrictions",
+            "loi-65-557:9",
+            "loi-65-557:8",
+            "loi-65-557:25"
+          ]
         }
       ]
     },
@@ -4195,6 +4256,29 @@
             "condition suspensive d'obtention du prêt",
             "restitution",
             "code-consommation:L313-41"
+          ]
+        },
+        {
+          "slug": "vendeur-retractation-compromis",
+          "question": "Le vendeur peut-il se rétracter après avoir signé le compromis de vente ?",
+          "hints": [
+            "promesse de vente vaut vente",
+            "consentement réciproque",
+            "révocation de la promesse",
+            "code-civil:1589",
+            "code-civil:1124",
+            "code-construction-habitation:L271-1"
+          ]
+        },
+        {
+          "slug": "retractation-compromis-restitution-depot",
+          "question": "Rétractation après un compromis de vente : quand récupère-t-on son dépôt de garantie ?",
+          "hints": [
+            "versement",
+            "restituées dans un délai de vingt et un jours",
+            "délai de rétractation",
+            "code-construction-habitation:L271-2",
+            "code-construction-habitation:L271-1"
           ]
         }
       ]
@@ -4333,6 +4417,19 @@
             "un trois-millième",
             "code-construction-habitation:L231-2",
             "code-construction-habitation:R231-14"
+          ]
+        },
+        {
+          "slug": "construire-zone-agricole-stecal",
+          "question": "Peut-on construire une maison en zone agricole ou naturelle ?",
+          "hints": [
+            "zones agricoles naturelles ou forestières",
+            "secteurs de taille et de capacité d'accueil limitées",
+            "extensions ou annexes",
+            "changement de destination",
+            "code-urbanisme:L151-13",
+            "code-urbanisme:L151-11",
+            "code-urbanisme:L151-12"
           ]
         }
       ],
@@ -4491,6 +4588,18 @@
             "abords des monuments historiques",
             "site patrimonial remarquable",
             "code-urbanisme:R421-11"
+          ]
+        },
+        {
+          "slug": "travaux-dispenses-autorisation-urbanisme",
+          "question": "Quels travaux peut-on faire sans permis ni déclaration préalable ?",
+          "hints": [
+            "dispensées de toute formalité",
+            "cinq mètres carrés",
+            "murs de moins de deux mètres",
+            "piscines dix mètres carrés",
+            "code-urbanisme:R421-2",
+            "code-urbanisme:R421-9"
           ]
         }
       ],
@@ -4821,6 +4930,30 @@
             "terrains de camping",
             "code-urbanisme:R111-34",
             "code-urbanisme:R111-33"
+          ]
+        },
+        {
+          "slug": "stocker-mobil-home-jardin",
+          "question": "Peut-on stocker un mobil-home dans son jardin en dehors de la saison ?",
+          "hints": [
+            "résidences mobiles de loisirs",
+            "entreposées en vue de leur prochaine utilisation",
+            "garage collectif",
+            "code-urbanisme:R111-45",
+            "code-urbanisme:R111-50",
+            "code-urbanisme:R111-41"
+          ]
+        },
+        {
+          "slug": "mobil-home-sans-autorisation-sanctions",
+          "question": "Mobil-home installé sur un terrain privé sans autorisation : quels risques ?",
+          "hints": [
+            "résidences mobiles de loisirs ne peuvent être installées que",
+            "amende",
+            "utilisation du sol",
+            "code-urbanisme:R111-42",
+            "code-urbanisme:L480-4",
+            "code-urbanisme:L610-1"
           ]
         }
       ],
@@ -7319,6 +7452,38 @@
             "code-civil:1359",
             "code-civil:1892"
           ]
+        },
+        {
+          "slug": "delais-prescription-agir-en-justice",
+          "question": "Quel délai pour agir en justice avant la prescription ?",
+          "hints": [
+            "prescription",
+            "cinq ans",
+            "dommage corporel dix ans",
+            "actions réelles immobilières trente ans",
+            "délai butoir vingt ans",
+            "code-civil:2224",
+            "code-civil:2225",
+            "code-civil:2226",
+            "code-civil:2227",
+            "code-civil:2232"
+          ]
+        },
+        {
+          "slug": "se-porter-caution-engagement",
+          "question": "Se porter caution : jusqu'où est-on engagé ?",
+          "hints": [
+            "cautionnement",
+            "mention manuscrite",
+            "montant en toutes lettres",
+            "disproportionné",
+            "mise en garde",
+            "code-civil:2288",
+            "code-civil:2296",
+            "code-civil:2297",
+            "code-civil:2299",
+            "code-civil:2300"
+          ]
         }
       ]
     },
@@ -8726,6 +8891,19 @@
             "decret-67-223:33-1",
             "loi-65-557:18"
           ]
+        },
+        {
+          "slug": "qui-peut-etre-syndic-benevole",
+          "question": "Qui peut devenir syndic bénévole et comment est-il désigné ?",
+          "hints": [
+            "syndic non professionnel",
+            "copropriétaire d'un ou plusieurs lots",
+            "désignation du syndic",
+            "majorité de l'article 25",
+            "loi-65-557:17-2",
+            "loi-65-557:25",
+            "loi-65-557:17"
+          ]
         }
       ],
       "relatedFaqs": [
@@ -9225,6 +9403,18 @@
             "résilier le marché à forfait",
             "dédommageant l'entrepreneur",
             "code-civil:1794"
+          ]
+        },
+        {
+          "slug": "retenue-de-garantie-consignation",
+          "question": "Retenue de garantie : le client doit-il consigner les sommes retenues ?",
+          "hints": [
+            "consigner entre les mains d'un consignataire",
+            "5 p. 100",
+            "clauses nulles",
+            "loi-71-584:1",
+            "loi-71-584:2",
+            "loi-71-584:3"
           ]
         }
       ]
