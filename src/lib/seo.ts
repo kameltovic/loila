@@ -6,6 +6,20 @@ import type { Metadata } from "next";
 export const SITE_URL = (process.env.SITE_URL ?? "https://loila.fr").replace(/\/$/, "");
 export const SITE_NAME = "Loilà";
 
+/**
+ * Per-process memo for request-time SEO files (sitemaps, llms.txt). Those routes are force-dynamic because a build-time
+ * prerender reads the build container's DB (bundles only, not the prod volume) and served truncated sitemaps after each
+ * deploy; the memo keeps the multi-second queries to once an hour per key.
+ */
+const memo = new Map<string, { at: number; value: unknown }>();
+export function hourly<T>(key: string, compute: () => T): T {
+  const hit = memo.get(key);
+  if (hit && Date.now() - hit.at < 3_600_000) return hit.value as T;
+  const value = compute();
+  memo.set(key, { at: Date.now(), value });
+  return value;
+}
+
 export const abs = (path: string) => (path.startsWith("http") ? path : `${SITE_URL}${path.startsWith("/") ? "" : "/"}${path}`);
 
 const GENERIC_OG = ["/", "/tarifs", "/cgv", "/a-propos", "/mentions-legales", "/connexion", "/compte", "/merci"];

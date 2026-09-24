@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getDb } from "@/lib/db";
 import { articlePath } from "@/lib/articles";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL, hourly } from "@/lib/seo";
 import { THEMES, faqUrl } from "@/lib/themes";
 import { getTopics } from "@/lib/topics";
 import { getMetiers } from "@/lib/metiers";
@@ -11,7 +11,8 @@ import { conventionUrl, getConventions } from "@/lib/conventions";
 import { codeTree, hubCodes, sectionHref } from "@/lib/codes";
 import { indexableAddresses, indexableArticles, indexableCompanies, indexableDecisions, indexableJorfTexts, indexableJurisprudenceLists } from "@/lib/eligibility";
 
-export const revalidate = 3600;
+// Request-time, never prerendered: `next build` only sees a DB rebuilt from the bundles (see `hourly` in lib/seo).
+export const dynamic = "force-dynamic";
 
 // Split by entity family so Google can diagnose coverage per section (docs/research/2026-09-seo-search.md §4).
 // Production URLs: /sitemap/0.xml … /sitemap/6.xml (Next 16 `generateSitemaps`). Each section lists ONLY
@@ -24,6 +25,10 @@ export function generateSitemaps() {
 
 export default async function sitemap({ id }: { id: Promise<string> }): Promise<MetadataRoute.Sitemap> {
   const section = SECTIONS[Number(await id)] ?? "core";
+  return hourly(`sitemap:${section}`, () => build(section));
+}
+
+function build(section: (typeof SECTIONS)[number]): MetadataRoute.Sitemap {
   const url = (path: string, priority: number, changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"] = "weekly", lastModified?: Date) =>
     ({ url: `${SITE_URL}${path}`, ...(lastModified && { lastModified }), changeFrequency, priority });
   const date = (d: string | number | null | undefined) => (d ? new Date(typeof d === "number" ? d * 1000 : `${d.slice(0, 10)}T12:00:00`) : undefined);

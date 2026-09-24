@@ -23,7 +23,8 @@
     "open-data:company": "tsx scripts/open-data-company.ts",
     "open-data:address": "tsx scripts/open-data-address.ts",
     "stripe:setup": "tsx --env-file=.env scripts/stripe-setup.ts",
-    "gsc:export": "tsx scripts/gsc-export.ts"
+    "gsc:export": "tsx scripts/gsc-export.ts",
+    "indexnow": "tsx scripts/indexnow.ts"
   },
   "dependencies": {
     "better-sqlite3": "^13.0.3",
