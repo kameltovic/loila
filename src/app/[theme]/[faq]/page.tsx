@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getDb, type Faq } from "@/lib/db";
 import { CODES, THEMES } from "@/lib/themes";
+import AvocatCta from "@/components/AvocatCta";
 import Chat from "@/components/Chat";
 import RelatedFaqs from "@/components/RelatedFaqs";
 import { FaqLettres } from "@/components/Lettres";
@@ -80,6 +81,8 @@ export default async function FaqPage({ params }: PageProps<"/[theme]/[faq]">) {
 
         <FaqAnswer faq={faq} articles={articles} updated={updated} />
       </ArticleDrawerProvider>
+
+      <AvocatCta page={path} />
 
       <FaqLettres slug={faq.slug} from={path} />
 

@@ -18,14 +18,14 @@ export async function POST(request: Request) {
   const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
   if (!isEmail(email)) return Response.json({ error: "Adresse e-mail invalide." }, { status: 400 });
   const city = typeof body.city === "string" ? body.city.trim().slice(0, 80) || null : null;
-  const page = typeof body.page === "string" && /^\/sujets\/[a-z0-9-]+\/[a-z0-9-]+$/.test(body.page) ? body.page : null;
+  const page = typeof body.page === "string" && /^\/(sujets\/)?[a-z0-9-]+\/[a-z0-9-]+$/.test(body.page) ? body.page : null;
   if (!page) return Response.json({ error: "Requête invalide." }, { status: 400 });
 
   const inserted = getDb().prepare("INSERT INTO lawyer_requests (email, city, page) VALUES (?, ?, ?) ON CONFLICT(email, page) DO NOTHING").run(email, city, page).changes > 0;
   if (inserted) {
     notifyAdmins({
       subject: `Demande d'avocat : ${email}${city ? ` (${city})` : ""}`, label: "Demande d'avocat", title: "Quelqu'un cherche un <em>avocat</em>.",
-      intro: "Une personne a laissé son e-mail depuis une page Sujets pour être mise en relation avec un avocat.",
+      intro: "Une personne a laissé son e-mail depuis une page questions-réponses pour être mise en relation avec un avocat.",
       rows: [["E-mail", email], ["Ville", city ?? "—"], ["Page", page]], path: page,
       cta: { label: `Répondre à ${email}`, url: `mailto:${email}?subject=${encodeURIComponent("Votre demande d'avocat sur Loilà")}` },
     });

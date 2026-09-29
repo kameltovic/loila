@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS pro_waitlist (
   metier     TEXT,
   created_at INTEGER NOT NULL DEFAULT (unixepoch())
 );
--- Demand test for a lawyer-matching service: CTA on /sujets question pages.
+-- Demand test for a lawyer-matching service: CTA on /sujets and /<theme> question pages.
 CREATE TABLE IF NOT EXISTS lawyer_requests (
   id         INTEGER PRIMARY KEY,
   email      TEXT NOT NULL,
