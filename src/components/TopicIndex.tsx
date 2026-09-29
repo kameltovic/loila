@@ -1,5 +1,7 @@
 "use client";
 
+import ThemeIcon, { hasThemeIcon } from "@/components/ThemeIcon";
+
 import { useState } from "react";
 import { Search } from "lucide-react";
 import { SectionHead, TopicList, container, label } from "@/components/ui";
@@ -55,7 +57,7 @@ export default function TopicIndex({ categories }: { categories: Category[] }) {
               num={String(categories.findIndex((x) => x.slug === c.slug) + 1).padStart(2, "0")}
               kicker={`${c.topics.length} sujet${c.topics.length > 1 ? "s" : ""}`}
               id={`${c.slug}-title`}
-              title={c.title}
+              title={<span className="flex items-center gap-4">{hasThemeIcon(c.slug) && <ThemeIcon slug={c.slug} className="size-10 shrink-0 sm:size-14" />}<span>{c.title}</span></span>}
             />
             <TopicList topics={c.topics} />
           </div>

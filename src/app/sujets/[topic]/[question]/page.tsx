@@ -1,3 +1,4 @@
+import ThemeIcon from "@/components/ThemeIcon";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -69,7 +70,7 @@ export default async function TopicQuestionPage({ params }: PageProps<"/sujets/[
           <span aria-hidden>/</span>
           <Link href="/sujets" className={crumb}>Sujets</Link>
           <span aria-hidden>/</span>
-          <Link href={`/sujets/${topic.slug}`} className={crumb}>{topic.title}</Link>
+          <Link href={`/sujets/${topic.slug}`} className={`${crumb} inline-flex items-center gap-2`}>{topicThemeSlug(topic) && <ThemeIcon slug={topicThemeSlug(topic)!} size={18} />}{topic.title}</Link>
         </nav>
         <h1 className={`${display} mt-8 text-[clamp(2.5rem,7vw,5rem)] leading-[0.95] text-balance`}>{faq.question}</h1>
         <FaqAnswer faq={faq} articles={articles} updated={updated} />

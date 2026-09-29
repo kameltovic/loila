@@ -1,3 +1,4 @@
+import ThemeIcon from "@/components/ThemeIcon";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { articlePath } from "@/lib/articles";
@@ -78,6 +79,7 @@ export default async function LettrePage({ params }: PageProps<"/modeles-lettres
             )}
             <span aria-current="page">{l.title}</span>
           </nav>
+          <ThemeIcon slug={l.theme} className="mt-8 size-10 sm:size-12" />
           <h1 className={`${display} mt-12 max-w-5xl text-[clamp(2.5rem,7vw,5.5rem)] leading-[0.92] text-balance sm:mt-16`}>
             {l.h1} <span className="font-serif font-normal tracking-[-0.02em] italic">{l.h1Accent}</span>
           </h1>

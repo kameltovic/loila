@@ -1,3 +1,4 @@
+import ThemeIcon from "@/components/ThemeIcon";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { articlePath } from "@/lib/articles";
@@ -172,7 +173,7 @@ export default async function ConventionPage({ params }: PageProps<"/conventions
             <Link href="/conventions" className="underline-offset-4 hover:underline">Conventions collectives</Link>
           </nav>
           <p className={`${label} mt-12 flex items-center gap-3 sm:mt-16`}>
-            <span aria-hidden className="h-0.5 w-8 bg-signal" />
+            <ThemeIcon slug="conventions" className="size-8 shrink-0" />
             IDCC {c.idcc}
           </p>
           <h1 className={`${display} mt-5 max-w-5xl text-[clamp(2.5rem,7vw,5rem)] leading-[0.94] text-balance`}>

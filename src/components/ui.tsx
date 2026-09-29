@@ -1,3 +1,4 @@
+import ThemeIcon, { hasThemeIcon } from "@/components/ThemeIcon";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { Faq } from "@/lib/db";
@@ -59,7 +60,7 @@ export function FaqIndex({ faqs, showTheme = false }: { faqs: (Pick<Faq, "theme"
             <span className="min-w-0">
               {showTheme && (
                 <span className={`${label} mb-2 flex items-center gap-2 text-fg-2`}>
-                  <span aria-hidden className={`size-2.5 border border-ink ${block(f.theme)}`} />
+                  {hasThemeIcon(f.theme) && <span className={`grid size-6 shrink-0 place-items-center ${block(f.theme)}`}><ThemeIcon slug={f.theme} size={18} /></span>}
                   {THEMES.find((t) => t.slug === f.theme)?.title ?? f.theme}
                 </span>
               )}

@@ -1,3 +1,4 @@
+import ThemeIcon, { hasThemeIcon } from "@/components/ThemeIcon";
 import type { Metadata } from "next";
 import { LettreCards } from "@/components/Lettres";
 import { Empty, SectionHead, container, display, label } from "@/components/ui";
@@ -47,7 +48,7 @@ export default function Lettres() {
       {groups.length ? (
         groups.map((g, i) => (
           <div key={g.key} className="mt-16 sm:mt-24">
-            <SectionHead num={String(i + 1).padStart(2, "0")} kicker={g.title} title={g.subtitle ?? g.title} />
+            <SectionHead num={String(i + 1).padStart(2, "0")} kicker={g.title} title={<span className="flex items-start gap-4">{hasThemeIcon(g.key) && <ThemeIcon slug={g.key} className="size-10 shrink-0 sm:size-14" />}<span>{g.subtitle ?? g.title}</span></span>} />
             <div className="mt-10"><LettreCards lettres={g.lettres} from="/modeles-lettres" /></div>
             {g.href && (
               <p className="mt-6">

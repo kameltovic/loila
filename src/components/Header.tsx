@@ -1,5 +1,7 @@
 "use client";
 
+import ThemeIcon, { hasThemeIcon } from "@/components/ThemeIcon";
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -67,6 +69,7 @@ export default function Header() {
                 aria-current={active(n.slug) ? "page" : undefined}
                 className={navItem}
               >
+                {hasThemeIcon(n.slug) && <ThemeIcon slug={n.slug} className="size-4 shrink-0" />}
                 {n.label}
               </Link>
             </li>
@@ -134,7 +137,8 @@ export default function Header() {
                   onClick={close}
                   className="flex items-center gap-3 py-4 font-display text-2xl font-bold tracking-tight decoration-signal decoration-[3px] underline-offset-[6px] aria-[current=page]:underline"
                 >
-                  {n.label}
+                  {hasThemeIcon(n.slug) && <ThemeIcon slug={n.slug} className="size-4 shrink-0" />}
+                {n.label}
                 </Link>
               </li>
             ))}

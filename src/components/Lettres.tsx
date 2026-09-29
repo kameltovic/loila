@@ -1,5 +1,6 @@
+import ThemeIcon from "@/components/ThemeIcon";
 import Link from "next/link";
-import { ArrowRight, FileText } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { block, label } from "@/components/ui";
 import { lettresForFaq, lettreUrl, type Lettre } from "@/lib/lettres";
 
@@ -16,7 +17,7 @@ export function LettreCards({ lettres, from }: { lettres: Lettre[]; from: string
             className="group flex h-full flex-col border-2 border-fg bg-surface shadow-hard transition-[transform,box-shadow] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-hard-sm motion-reduce:transition-none"
           >
             <span className={`${block(l.theme)} flex items-center gap-2 border-b-2 border-fg px-4 py-3`}>
-              <FileText aria-hidden className="size-4" />
+              <ThemeIcon slug={l.theme} className="size-4" />
               <span className={label}>Modèle de lettre</span>
             </span>
             <span className="flex flex-1 flex-col p-4 sm:p-5">
@@ -49,7 +50,7 @@ export function FaqLettres({ slug, from }: { slug: string; from: string }) {
           className={`${block(l.theme)} group flex items-center justify-between gap-4 border-2 border-ink p-4 shadow-hard transition-[transform,box-shadow] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-hard-sm sm:p-5 motion-reduce:transition-none`}
         >
           <span className="flex items-center gap-3">
-            <FileText aria-hidden className="size-6 shrink-0" />
+            <ThemeIcon slug={l.theme} className="size-6 shrink-0" />
             <span>
               <span className={`${label} block`}>Modèle gratuit</span>
               <span className="font-display text-lg leading-tight font-bold sm:text-xl">{l.title}</span>

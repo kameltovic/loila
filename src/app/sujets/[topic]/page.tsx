@@ -1,3 +1,4 @@
+import ThemeIcon from "@/components/ThemeIcon";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -5,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 import Chat from "@/components/Chat";
 import { Empty, FaqIndex, SectionHead, TopicList, container, display, label } from "@/components/ui";
 import { JsonLd, breadcrumbJsonLd, clip, faqJsonLd, pageMetadata } from "@/lib/seo";
-import { faqUrl } from "@/lib/themes";
+import { faqUrl, topicThemeSlug } from "@/lib/themes";
 import { getCategories, getTopic, getTopicFaqs } from "@/lib/topics";
 import { LettreCards } from "@/components/Lettres";
 import { getLettres } from "@/lib/lettres";
@@ -58,7 +59,7 @@ export default async function TopicPage({ params }: PageProps<"/sujets/[topic]">
             )}
           </nav>
           <p className={`${label} mt-12 flex items-center gap-3 sm:mt-16`}>
-            <span aria-hidden className="h-0.5 w-8 bg-signal" />
+            {topicThemeSlug(topic) ? <ThemeIcon slug={topicThemeSlug(topic)!} className="size-8 shrink-0" /> : <span aria-hidden className="h-0.5 w-8 bg-signal" />}
             {topic.title}
           </p>
           <h1 className={`${display} mt-5 max-w-5xl text-[clamp(2.75rem,8vw,6rem)] leading-[0.93] text-balance`}>{topic.h1}</h1>
