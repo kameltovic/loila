@@ -1,8 +1,10 @@
+import ThemeIcon, { hasThemeIcon } from "@/components/ThemeIcon";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { THEMES } from "@/lib/themes";
 import { Logo } from "@/components/Header";
 import { label } from "@/components/ui";
+import Mascot from "@/components/Mascot";
 
 const link = "text-paper/70 transition hover:text-paper hover:underline hover:decoration-signal hover:decoration-2 hover:underline-offset-4";
 
@@ -46,6 +48,7 @@ export default function Footer() {
       <div className="mx-auto max-w-6xl px-4 pt-16 sm:px-6">
         <div className="grid gap-12 md:grid-cols-[1.4fr_repeat(3,1fr)]">
           <div>
+            <Mascot className="mb-5 h-32 w-32" />
             <p className="max-w-xs font-serif text-2xl leading-snug italic text-paper/85">
               Le droit français expliqué clairement, à partir des textes officiels.
             </p>
@@ -63,7 +66,8 @@ export default function Footer() {
                         <span className="sr-only">(nouvel onglet)</span>
                       </a>
                     ) : (
-                      <Link href={l.href} className={link}>
+                      <Link href={l.href} className={`${link} inline-flex items-center gap-2`}>
+                        {hasThemeIcon(l.href.slice(1)) && <ThemeIcon slug={l.href.slice(1)} className="size-5 shrink-0" />}
                         {l.label}
                       </Link>
                     )}

@@ -167,7 +167,7 @@ export function WaitlistCard({
       </ul>
       {href && (
         <Link href={href} className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold underline decoration-signal decoration-2 underline-offset-4">
-          Tout savoir sur cette offre <ArrowRight aria-hidden className="size-4" />
+          {href === "/avocats" ? "Découvrir Alinéa pour les avocats" : "Tout savoir sur cette offre"} <ArrowRight aria-hidden className="size-4" />
         </Link>
       )}
       <div className="mt-auto pt-7">
@@ -223,9 +223,9 @@ const ProCard = () => (
 export const AvocatsCard = () => (
   <WaitlistCard
     id="avocats"
-    name="Avocats"
+    name="Avocats · Alinéa"
     price={<p className="font-display text-4xl font-extrabold tracking-[-0.04em]">Tarif de lancement</p>}
-    tagline="La jurisprudence, avec une IA qui cite ses sources."
+    tagline="Alinéa, votre assistant IA de recherche juridique."
     audience={`${AVOCATS_AUDIENCE} Prix réservé aux inscrits de la liste d’attente.`}
     included={[]}
     soon={AVOCATS_FEATURES}

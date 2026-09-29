@@ -11,6 +11,10 @@ const HEADER = `# Loilà
 
 > Loilà (${SITE_URL}) explique le droit français en langage clair : droit du travail, urbanisme (permis de construire, déclaration préalable), location de logement et conventions collectives. Chaque réponse cite les articles de loi officiels.
 
+## Alinéa, l’assistant IA de Loilà
+
+- [Alinéa pour avocats et juristes](${SITE_URL}/avocats) : assistant de recherche juridique en droit français, fondé sur les articles et décisions présents dans la base. Synthèses avec références à vérifier. Offre Avocats en préparation, sur liste d’attente ; prix non annoncé. Les pages publiques de jurisprudence sont gratuites.
+
 ## Comment les réponses sont sourcées
 
 - Base : articles en vigueur du Code du travail, du Code de l'urbanisme, du Code de la construction et de l'habitation, de la loi n° 89-462 du 6 juillet 1989 et de ${Object.keys(CODES).filter((c) => c.startsWith("ccn-")).length} conventions collectives (KALI), importés depuis les données ouvertes de Légifrance. La base locale peut présenter un décalage avec les textes actuellement applicables ; vérifiez la version officielle avant toute démarche.

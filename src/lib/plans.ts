@@ -31,7 +31,7 @@ export type OfferId = keyof typeof OFFERS;
 // Lawyers offer (waitlist, price not set yet): shared by the pricing cards (client) and /avocats (server).
 export const AVOCATS_AUDIENCE = "Avocats, juristes d’entreprise, élèves-avocats.";
 export const AVOCATS_FEATURES = [
-  "Assistant IA sur la jurisprudence : chaque arrêt et chaque article cités, vérifiables en un clic",
+  "Alinéa, assistant IA sur la jurisprudence : chaque arrêt et chaque article cités, vérifiables en un clic",
   "Recherche filtrée : article, juridiction, chambre, date, solution",
   "Cour de cassation, Conseil constitutionnel et juridictions administratives",
 ];

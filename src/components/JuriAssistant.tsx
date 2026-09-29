@@ -46,7 +46,7 @@ export default function JuriAssistant() {
   return (
     <div className="grid gap-8">
       <form onSubmit={(e) => { e.preventDefault(); submit(); }} className="grid gap-3">
-        <label htmlFor="juri-q" className={label}>Votre question de droit</label>
+        <label htmlFor="juri-q" className={label}>Votre question à Alinéa</label>
         <textarea
           id="juri-q"
           rows={3}
@@ -58,7 +58,7 @@ export default function JuriAssistant() {
         <div className="flex flex-wrap items-center gap-3">
           <button type="submit" disabled={loading} className="inline-flex items-center gap-2 border-2 border-fg bg-fg px-5 py-2.5 font-mono text-sm font-bold uppercase text-bg disabled:opacity-60">
             {loading ? <Loader2 aria-hidden className="size-4 animate-spin" /> : <ArrowRight aria-hidden className="size-4" />}
-            {loading ? "Recherche dans la jurisprudence…" : "Interroger"}
+            {loading ? "Recherche dans la jurisprudence…" : "Interroger Alinéa"}
           </button>
         </div>
         {!result && !loading && (

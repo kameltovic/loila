@@ -8,7 +8,7 @@ import { SESSION_COOKIE, isAdmin, userBySessionToken } from "@/lib/auth";
 import { getMe } from "@/lib/billing";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Assistant jurisprudence · Loilà Pro", robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: "Alinéa · Assistant jurisprudence · Loilà Pro", robots: { index: false, follow: false } };
 
 // Loilà Pro: case-law assistant. Pro subscribers and admins get the tool; everyone else the pitch and the waitlist.
 export default async function ProJurisprudence() {
@@ -22,10 +22,10 @@ export default async function ProJurisprudence() {
         Loilà Pro · avocats et juristes
       </p>
       <h1 className={`${display} mt-6 max-w-5xl text-[clamp(2.5rem,7vw,5rem)] leading-[0.92] text-balance`}>
-        Interrogez la jurisprudence <span className="font-serif font-normal tracking-[-0.02em] italic">avec l’IA.</span>
+        Interrogez la jurisprudence <span className="font-serif font-normal tracking-[-0.02em] italic">avec Alinéa.</span>
       </h1>
       <p className="mt-5 max-w-2xl text-lg text-fg-2">
-        Une question de droit : l’assistant cherche dans les codes et les décisions de la Cour de cassation et du Conseil
+        Une question de droit : Alinéa cherche dans les codes et les décisions de la Cour de cassation et du Conseil
         constitutionnel, puis répond en citant chaque arrêt [D1] et chaque article, vérifiables en un clic.
       </p>
       <div className="mt-10">
@@ -33,7 +33,7 @@ export default async function ProJurisprudence() {
           <JuriAssistant />
         ) : (
           <div className="grid gap-4 border-2 border-fg bg-surface p-6 sm:p-8">
-            <p className="text-lg">L’assistant est réservé à l’offre Pro, en cours d’ouverture.</p>
+            <p className="text-lg">Alinéa est réservé à l’offre Pro, en cours d’ouverture.</p>
             <Link href="/avocats#offre" className={`${btnPrimary} justify-self-start`}>
               Rejoindre la liste d’attente <ArrowRight aria-hidden className="size-4" />
             </Link>

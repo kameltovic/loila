@@ -49,7 +49,7 @@ function image(parts: string[]) {
     const m = getMetier(b);
     return m ? renderOg({ kind: "topic", title: `${m.h1} ${m.h1Accent}`, label: `Pour les pros · ${m.title}`, theme: m.theme }) : null;
   }
-  if (a === "avocats" && parts.length === 1) return renderOg({ kind: "topic", title: "La jurisprudence, reliée à la loi", label: "Loilà pour les avocats et juristes" });
+  if (a === "avocats" && parts.length === 1) return renderOg({ kind: "topic", title: "Alinéa, votre assistant IA juridique", label: "Loilà · Avocats et juristes" });
   if (a === "jurisprudence" && parts.length === 1) return renderOg({ kind: "topic", title: "La loi, et ce qu’en disent les juges", label: "Jurisprudence · Cassation, Conseil d’État, Conseil constitutionnel" });
   if (a === "jurisprudence" && parts.length === 2) {
     const d = getDecision(b);

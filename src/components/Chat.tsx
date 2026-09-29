@@ -280,7 +280,7 @@ export function Answer({ result }: { result: AskResult }) {
           }`}
         >
           {instant ? <Zap aria-hidden strokeWidth={1.75} className="size-3.5" /> : <Bot aria-hidden strokeWidth={1.75} className="size-3.5" />}
-          {instant ? "Réponse instantanée" : "Réponse générée par IA"}
+          {instant ? "Réponse instantanée" : "Alinéa · réponse générée par IA"}
         </span>
       )}
       <div className="prose-loila">
