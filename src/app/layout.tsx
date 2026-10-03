@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import { Bricolage_Grotesque, Inter, Instrument_Serif } from "next/font/google";
 import Script from "next/script";
+import { headers } from "next/headers";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import "./globals.css";
@@ -34,19 +35,20 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const nonce = (await headers()).get("x-nonce") ?? undefined; // set by src/proxy.ts (CSP)
   return (
     <html lang="fr" suppressHydrationWarning className={`${inter.variable} ${bricolage.variable} ${instrument.variable} h-full antialiased`}>
       <body suppressHydrationWarning className="flex min-h-full flex-col font-sans">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
-        <Script defer src="https://stats.coffee-beans.fr/script.js?v=20260917" data-website-id="5b4eedbb-3ed8-47f8-9905-194f768bd92a" strategy="afterInteractive" />
+        <Script defer src="https://stats.coffee-beans.fr/script.js?v=20260917" data-website-id="5b4eedbb-3ed8-47f8-9905-194f768bd92a" strategy="afterInteractive" nonce={nonce} />
         {/* Session replays (settings in Umami: sample rate, mask level, block selector ".umami-block" = private pages).
             recorder.js needs umami.getSession() from a recent script.js: bump ?v= when the Umami server is upgraded (browsers cache scripts 24 h). */}
-        <Script defer src="https://stats.coffee-beans.fr/recorder.js?v=20260917" data-website-id="5b4eedbb-3ed8-47f8-9905-194f768bd92a" strategy="afterInteractive" />
+        <Script defer src="https://stats.coffee-beans.fr/recorder.js?v=20260917" data-website-id="5b4eedbb-3ed8-47f8-9905-194f768bd92a" strategy="afterInteractive" nonce={nonce} />
         {process.env.NEXT_PUBLIC_UMAMI_DEV_URL && (
-          <Script defer src={`${process.env.NEXT_PUBLIC_UMAMI_DEV_URL}/script.js`} data-website-id={process.env.NEXT_PUBLIC_UMAMI_DEV_ID} strategy="afterInteractive" />
+          <Script defer src={`${process.env.NEXT_PUBLIC_UMAMI_DEV_URL}/script.js`} data-website-id={process.env.NEXT_PUBLIC_UMAMI_DEV_ID} strategy="afterInteractive" nonce={nonce} />
         )}
       </body>
     </html>
