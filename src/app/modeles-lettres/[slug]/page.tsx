@@ -10,7 +10,7 @@ import { FaqIndex, SectionHead, block, btnPrimary, container, display, label } f
 import { LETTRE_GROUPS, getLettre, getLettres, lettreFaqs, lettreUrl } from "@/lib/lettres";
 import { refArticles } from "@/lib/metiers";
 import { JsonLd, SITE_NAME, SITE_URL, abs, breadcrumbJsonLd, contentUpdatedAt, pageMetadata } from "@/lib/seo";
-import { CODES, THEMES } from "@/lib/themes";
+import { CODES, THEMES, codeShortName } from "@/lib/themes";
 
 export const dynamic = "force-dynamic";
 
@@ -121,7 +121,7 @@ export default async function LettrePage({ params }: PageProps<"/modeles-lettres
                   <p className="mt-auto flex flex-wrap gap-2 pt-5">
                     {t.articles.map((a) => (
                       <Link key={a.id} href={articlePath(a)} className="inline-flex items-center gap-1 rounded-full border-[1.5px] border-fg px-2.5 py-0.5 font-mono text-xs font-semibold hover:bg-fg hover:text-bg">
-                        Art. {a.num} · {codeName(a.code).replace(/ \(.*\)$/, "")}
+                        Art. {a.num} · {codeShortName(a.code)}
                         <ArrowUpRight aria-hidden className="size-3.5" />
                       </Link>
                     ))}

@@ -1,5 +1,5 @@
 // "En clair" summaries of decisions: what the dispute was, what the Court decided, what to remember.
-// npx tsx scripts/batch-decisions.ts [--limit N] [--all] [--model x/y] [--dry-run]
+// npx tsx scripts/batch-decisions.ts [--limit N] [--all] [--source cnil] [--codes rgpd,loi-78-17] [--model x/y] [--dry-run]
 // Default scope: decisions applying an article that has its page indexed (cited by a FAQ), most recent first;
 // --all: every decision. Already-summarized decisions are skipped. Then ship: export-content.ts <bundle> --decisions
 import type { Decision } from "../src/lib/decisions";
@@ -16,6 +16,19 @@ Règles :
 - Explique les mots juridiques difficiles entre parenthèses la première fois (ex. : cassation, pourvoi).
 - Commence directement par l'affaire : pas de "Cette décision…", "Dans cet arrêt…".
 Réponds en JSON strict : {"summary": "3 à 4 phrases : la situation, la question posée, la réponse de la Cour", "points": ["2 à 4 points à retenir, courts et pratiques"]}`;
+
+// CNIL deliberations are not court rulings: who "won" makes no sense, what was found and decided does.
+const SYSTEM_CNIL = SYSTEM.replace("UNE décision de la Cour de cassation (sommaire officiel et extraits)", "UNE délibération de la CNIL (sanction, mise en demeure ou recommandation)")
+  .replace("- Pas de noms de personnes (les parties sont anonymisées : dites \"le salarié\", \"l'employeur\", \"le bailleur\"…).", "- Nomme l'organisme visé seulement s'il est nommé dans le texte ; jamais de nom de personne physique.")
+  .replace("- Dites clairement qui a gagné devant la Cour de cassation et ce que cela change en pratique.", "- Dites clairement quels manquements la CNIL a retenus, quelle mesure elle a prise (montant de l'amende, injonction, mise en demeure) et ce que cela change pour les personnes dont les données sont traitées.")
+  .replace("(ex. : cassation, pourvoi)", "(ex. : formation restreinte, mise en demeure)")
+  .replace("la réponse de la Cour", "la décision de la CNIL");
+
+// Administrative courts (JADE): same rules, their vocabulary.
+const SYSTEM_ADMIN = SYSTEM.replace("UNE décision de la Cour de cassation (sommaire officiel et extraits)", "UNE décision du Conseil d'État ou d'une cour administrative d'appel (analyse officielle et extraits)")
+  .replace("qui a gagné devant la Cour de cassation", "qui a gagné devant la juridiction")
+  .replace("(ex. : cassation, pourvoi)", "(ex. : requête, annulation, excès de pouvoir)")
+  .replace("la réponse de la Cour", "la réponse de la juridiction");
 
 /** Facts + the Court's answer and ruling, capped: enough to summarize, a third of the tokens of the full text. */
 export function excerpt(texte: string, max = 9000) {
@@ -35,12 +48,14 @@ async function main() {
   const limit = opt("limit") ? Number(opt("limit")) : Infinity;
   const model = opt("model") ?? process.env.OPENROUTER_BATCH_MODEL;
   const db = getDb();
+  const source = opt("source");
+  const codes = opt("codes")?.split(",").filter(Boolean) ?? []; // only decisions applying an article of these texts
 
   const scope = argv.includes("--all")
     ? "SELECT d.* FROM decisions d"
     : `SELECT d.* FROM decisions d WHERE d.id IN (SELECT da.decision_id FROM decision_articles da
          WHERE da.article_id IN (SELECT DISTINCT j.value FROM faq, json_each(faq.article_ids) j))`;
-  const todo = (db.prepare(`${scope} AND d.id NOT IN (SELECT decision_id FROM decision_summaries) ORDER BY d.date DESC`.replace(/^(SELECT d\.\* FROM decisions d) AND/, "$1 WHERE")).all() as Decision[]).slice(0, limit);
+  const todo = (db.prepare(`${scope}${source ? " AND d.source = @source" : ""}${codes.length ? ` AND d.id IN (SELECT da.decision_id FROM decision_articles da JOIN articles a ON a.id = da.article_id WHERE a.code IN (${codes.map((_, i) => `@c${i}`).join(", ")}))` : ""} AND d.id NOT IN (SELECT decision_id FROM decision_summaries) ORDER BY d.date DESC`.replace(/^(SELECT d\.\* FROM decisions d) AND/, "$1 WHERE")).all({ ...(source && { source }), ...Object.fromEntries(codes.map((c, i) => [`c${i}`, c])) }) as Decision[]).slice(0, limit);
   console.log(`${todo.length} decisions to summarize (${model})`);
   if (argv.includes("--dry-run")) return;
 
@@ -61,7 +76,7 @@ Articles appliqués : ${arts}
 ${d.sommaire ? `Sommaire officiel :\n${d.sommaire}\n` : ""}
 Extraits de la décision :
 ${excerpt(d.texte)}`;
-    const res = await chat([{ role: "system", content: SYSTEM }, { role: "user", content: user }], { model, maxTokens: 1500, json: true, timeoutMs: 180_000, budget: false, extra: { usage: { include: true } } });
+    const res = await chat([{ role: "system", content: d.source === "cnil" ? SYSTEM_CNIL : d.source === "jade" ? SYSTEM_ADMIN : SYSTEM }, { role: "user", content: user }], { model, maxTokens: 1500, json: true, timeoutMs: 180_000, budget: false, extra: { usage: { include: true } } });
     const u = res.usage as { cost?: number; cost_details?: { upstream_inference_cost?: number } } | undefined;
     cost += u?.cost || u?.cost_details?.upstream_inference_cost || 0;
     const json = JSON.parse(res.content.replace(/^```(?:json)?\s*|\s*```$/g, ""));

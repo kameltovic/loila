@@ -9,7 +9,7 @@ import { JsonLd, breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = pageMetadata({
   title: "Jurisprudence expliquée : Cour de cassation, Conseil d’État, Conseil constitutionnel",
-  description: "Les décisions de la Cour de cassation, du Conseil d’État, des cours administratives d’appel et du Conseil constitutionnel depuis 2017, reliées aux articles de loi qu’elles appliquent.",
+  description: "Les décisions de la Cour de cassation, du Conseil d’État, des cours administratives d’appel, du Conseil constitutionnel et les sanctions de la CNIL, reliées aux articles de loi qu’elles appliquent.",
   path: "/jurisprudence",
 });
 
@@ -33,6 +33,7 @@ export default function Jurisprudence() {
     { key: "ce", title: "Conseil d’État", kicker: "Urbanisme, environnement, fonction publique", where: "juridiction LIKE 'Conseil d%tat'" },
     { key: "caa", title: "Cours administratives d’appel", kicker: "Permis de construire, PLU, marchés publics", where: "juridiction LIKE 'CAA%'" },
     { key: "cc", title: "Conseil constitutionnel", kicker: "Contrôle de la loi (DC) et QPC", where: "source = 'constit'" },
+    { key: "cnil", title: "CNIL", kicker: "Sanctions, mises en demeure et recommandations (RGPD)", where: "source = 'cnil'" },
   ].map((g) => ({ ...g, rows: db.prepare(`SELECT id, juridiction, formation, date, numero, solution, sommaire FROM decisions WHERE ${g.where} ORDER BY publie DESC, date DESC LIMIT 8`).all() as Pick<Decision, "id" | "juridiction" | "formation" | "date" | "numero" | "solution" | "sommaire">[] }));
 
   return (
@@ -48,8 +49,8 @@ export default function Jurisprudence() {
             La loi, <span className="font-serif font-normal tracking-[-0.02em] italic">et ce qu’en disent les juges.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-fg-2 sm:text-xl">
-            Les décisions de la Cour de cassation, du Conseil d’État, des cours administratives d’appel et du Conseil constitutionnel,
-            reliées aux articles de loi qu’elles appliquent. Gratuit, sans inscription.
+            Les décisions de la Cour de cassation, du Conseil d’État, des cours administratives d’appel, du Conseil constitutionnel
+            et les sanctions de la CNIL, reliées aux articles de loi qu’elles appliquent. Gratuit, sans inscription.
           </p>
           <dl className="mt-10 grid max-w-xl grid-cols-2 border-t-2 border-fg">
             <div className="py-4 pr-4 sm:pr-8">

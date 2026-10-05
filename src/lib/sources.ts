@@ -60,6 +60,22 @@ export const SOURCES = {
     licence: "LOV2",
     ttl: 365 * 86400, // yearly vintage ("2026 juillet"): re-run scripts/open-data-jurisdictions.ts
   },
+  "CNIL:dpo": {
+    provider: "CNIL",
+    dataset: "dpo",
+    name: "Organismes ayant désigné un délégué à la protection des données (CNIL)",
+    url: "https://www.data.gouv.fr/datasets/organismes-ayant-designe-un-e-delegue-e-a-la-protection-des-donnees-dpd-dpo",
+    licence: "LOV2",
+    ttl: 180 * 86400, // republished a few times a year: re-run scripts/open-data-cnil.ts
+  },
+  "CNIL:violations": {
+    provider: "CNIL",
+    dataset: "violations",
+    name: "Notifications à la CNIL de violations de données personnelles",
+    url: "https://www.data.gouv.fr/datasets/notifications-a-la-cnil-de-violations-de-donnees-a-caractere-personnel",
+    licence: "LOV2",
+    ttl: 365 * 86400, // yearly extraction
+  },
   "MTE:zonage-tlv": {
     provider: "MTE",
     dataset: "zonage-tlv",

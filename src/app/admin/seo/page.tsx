@@ -4,7 +4,7 @@ import { requireAdmin } from "@/lib/auth";
 import { getDb } from "@/lib/db";
 import { articleByPath } from "@/lib/articles";
 import { gscConfigured, gscDay, gscPath, gscQuery, gscSections, gscTotals, type GscRow } from "@/lib/gsc";
-import { CODES } from "@/lib/themes";
+import { codeShortName } from "@/lib/themes";
 import { container, display, label } from "@/components/ui";
 import { Section, Table } from "../ui";
 
@@ -23,7 +23,7 @@ function articleLabels(paths: string[]) {
     const m = p.match(/^\/article\/([^/]+)(?:\/([^/]+))?/);
     if (!m) continue;
     const r = (m[2] && m[2] !== "jurisprudence" ? articleByPath(m[1], decodeURIComponent(m[2])) : byId.get(m[1])) as { num: string; code: string } | undefined;
-    if (r) out.set(p, `Art. ${r.num} · ${(CODES[r.code as keyof typeof CODES]?.name ?? r.code).replace(/ \(.*\)$/, "")}`);
+    if (r) out.set(p, `Art. ${r.num} · ${codeShortName(r.code)}`);
   }
   return out;
 }

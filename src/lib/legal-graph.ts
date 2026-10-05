@@ -3,14 +3,15 @@
 // official data with a documented method, and keeps its provenance.
 import { createHash } from "node:crypto";
 import type Database from "better-sqlite3";
-import { CODES } from "./themes";
+import { CODES, codeSource } from "./themes";
 import { EXTRACTOR_VERSION, LINK_CONFIDENCE, appliesOldCivilLaw, inCivilReformRange, normalizeNum, parseRefs, type ParsedRef } from "./legal-refs";
 
 export const sha256 = (s: string | Buffer) => createHash("sha256").update(s).digest("hex");
 
 // ---------- Codes & articles ----------
 
-const codeKind = (slug: string) => (slug.startsWith("ccn-") ? "convention" : slug.startsWith("loi-") ? "loi" : slug.startsWith("decret-") ? "decret" : "code");
+const codeKind = (slug: string) =>
+  slug.startsWith("ccn-") ? "convention" : slug.startsWith("loi-") ? "loi" : slug.startsWith("decret-") ? "decret" : codeSource(slug) === "EURLEX" ? "reglement" : "code";
 
 /** legal_codes mirrors themes.ts CODES (the single source of truth for which texts Loilà carries). */
 export function syncCodes(db: Database.Database) {
@@ -19,13 +20,14 @@ export function syncCodes(db: Database.Database) {
      ON CONFLICT(id) DO UPDATE SET name = excluded.name, kind = excluded.kind, official_id = excluded.official_id, source = excluded.source`,
   );
   db.transaction(() => {
-    for (const [slug, c] of Object.entries(CODES)) up.run(slug, c.name, codeKind(slug), c.legitext, slug.startsWith("ccn-") ? "KALI" : "LEGI");
+    for (const [slug, c] of Object.entries(CODES)) up.run(slug, c.name, codeKind(slug), c.legitext, codeSource(slug));
   })();
 }
 
 const LEGACY_MIRRORS = {
   LEGI: "https://git.tricoteuses.fr/dila/legi",
   KALI: "https://git.tricoteuses.fr/dila/kali",
+  EURLEX: "http://publications.europa.eu/resource/celex",
 };
 
 /**
@@ -37,19 +39,19 @@ export function backfillArticles(db: Database.Database) {
   const upd = db.prepare("UPDATE articles SET num_norm = ?, checksum = ?, etat = COALESCE(etat, 'VIGUEUR'), source = COALESCE(source, ?) WHERE id = ?");
   const prov = db.prepare(
     `INSERT OR IGNORE INTO provenance (entity_type, entity_id, dataset, source, origin_url, origin_ref, mirror, raw_checksum, extractor, extractor_version)
-     VALUES ('article', ?, ?, 'DILA', ?, ?, 1, NULL, 'scripts/ingest.ts', 'legacy')`,
+     VALUES ('article', ?, ?, ?, ?, ?, 1, NULL, 'scripts/ingest.ts', 'legacy')`,
   );
   let changed = 0;
   db.transaction(() => {
     for (const a of rows) {
-      const dataset = a.code.startsWith("ccn-") ? "KALI" : "LEGI";
+      const dataset = codeSource(a.code);
       const norm = normalizeNum(a.num);
       const sum = sha256(a.texte);
       if (a.num_norm !== norm || a.checksum !== sum) {
         upd.run(norm, sum, dataset, a.id);
         changed++;
       }
-      prov.run(a.id, dataset, LEGACY_MIRRORS[dataset], a.id);
+      prov.run(a.id, dataset, dataset === "EURLEX" ? "Office des publications de l'UE" : "DILA", LEGACY_MIRRORS[dataset], a.id);
     }
   })();
   return { articles: rows.length, changed };

@@ -19,6 +19,11 @@ const EXPAND: Record<string, string> = {
   extension: "surface plancher emprise", agrandissement: "surface plancher emprise", agrandir: "surface plancher emprise",
   caution: "dépôt garantie", proprio: "bailleur", propriétaire: "bailleur",
   virer: "licenciement", viré: "licenciement", chômage: "privation emploi",
+  // The law says "violation de données à caractère personnel", people say "fuite".
+  fuite: "violation caractère personnel", fuites: "violation caractère personnel", fuité: "violation caractère personnel",
+  fuitées: "violation caractère personnel", piratage: "violation caractère personnel",
+  dédommagement: "réparation", dédommager: "réparation", indemnisation: "réparation",
+  cnil: "commission nationale informatique libertés", rgpd: "règlement protection données caractère personnel",
 };
 
 /** Turn arbitrary user text into a safe FTS5 query: quoted terms, OR-joined, prefix * for words >= 4 chars. */

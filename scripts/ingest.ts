@@ -8,6 +8,8 @@
  * per-file fetch). We walk texte/struct -> section_ta (in force) -> article, so
  * only the files we need are downloaded. Raw XML is cached under data/raw/{legi,kali}/.
  * KALI: conteneur (IDCC) -> in-force base text, attached texts and recent salary texts.
+ * EU law (legitext "CELEX:…"): the French XHTML of the Official Journal from the Publications Office (Cellar),
+ * cached under data/raw/eurlex/. The RGPD has never been amended (only corrected), so the OJ text is the one in force.
  * --refresh re-fetches struct/section files (articles are immutable per id).
  */
 import fs from "node:fs";
@@ -124,8 +126,61 @@ async function kaliRoots(contId: string): Promise<Root[]> {
   return roots.filter((r) => !r.salaire || r.debut >= cutoff);
 }
 
+/** Articles of an EU regulation, from the OJ XHTML: chapter/section headings become the breadcrumb, the article title its last segment. */
+export function parseEurlex(html: string, slug: string, celex: string): Row[] {
+  const text = (h: string) =>
+    htmlToText(
+      h
+        .replace(/<span class="oj-super[^"]*">[\s\S]*?<\/span>/g, "") // footnote markers
+        .replace(/<\/p>\s*<\/td>\s*<td[^>]*>\s*<p[^>]*>/g, " "), // "a)" | text cells → one line
+    ).replace(/[ \u00a0]{2,}/g, " ");
+  const end = html.search(/<[^<>]*class="oj-final"/); // signatures and footnotes follow
+  const body = end > 0 ? html.slice(0, end) : html;
+  const marks = [...body.matchAll(/<p[^>]*class="oj-ti-section-1"[^>]*>([\s\S]*?)<\/p>\s*<div class="eli-title"[^>]*>\s*<p[^>]*>([\s\S]*?)<\/p>|<div class="eli-subdivision" id="art_(\d+)">/g)];
+  let chapter = "", section = "";
+  const rows: Row[] = [];
+  marks.forEach((m, i) => {
+    if (!m[3]) {
+      const head = `${text(m[1])} : ${text(m[2])}`;
+      if (/^chapitre/i.test(head)) [chapter, section] = [head.replace(/^CHAPITRE/i, "Chapitre"), ""];
+      else section = head;
+      return;
+    }
+    const chunk = body.slice(m.index, marks[i + 1]?.index ?? body.length);
+    const num = m[3];
+    const title = text(chunk.match(/class="oj-sti-art">([\s\S]*?)<\/p>/)?.[1] ?? "");
+    const texte = text(chunk.replace(/<p[^>]*class="oj-(?:ti|sti)-art"[^>]*>[\s\S]*?<\/p>/g, ""));
+    rows.push({
+      id: `${celex.replace(":", "")}-ART${num}`,
+      code: slug,
+      num,
+      section: [chapter, section, `Article ${num}${title ? ` : ${title}` : ""}`].filter(Boolean).join(" > "),
+      texte,
+      date_debut: "2018-05-25", // application date of the RGPD (ponytail: the only EU text carried so far)
+      url: `https://eur-lex.europa.eu/legal-content/FR/TXT/HTML/?uri=${celex}#art_${num}`,
+    });
+  });
+  return rows;
+}
+
+async function ingestEurlex(slug: CodeSlug): Promise<Row[]> {
+  const celex = CODES[slug].legitext;
+  const file = path.join(process.cwd(), "data", "raw", "eurlex", `${celex.replace(":", "_")}.fr.xhtml`);
+  if (refresh || !fs.existsSync(file)) {
+    // eur-lex.europa.eu answers bots with a JS challenge; the Cellar content negotiation does not.
+    const res = await fetch(`http://publications.europa.eu/resource/celex/${celex.slice(6)}`, { headers: { accept: "application/xhtml+xml", "accept-language": "fra" } });
+    if (!res.ok) throw new Error(`Cellar ${res.status} for ${celex}`);
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, await res.text());
+  }
+  const rows = parseEurlex(fs.readFileSync(file, "utf8"), slug, celex);
+  if (!rows.length) throw new Error(`no article parsed in ${file}`);
+  return rows;
+}
+
 async function ingestCode(slug: CodeSlug): Promise<Row[]> {
   const id = CODES[slug].legitext;
+  if (id.startsWith("CELEX:")) return ingestEurlex(slug);
   const kali = id.startsWith("KALICONT");
   const roots = kali ? await kaliRoots(id) : [await legiRoot(id)];
   if (kali) console.log(`  ${slug}: ${roots.length} texts in force`);
@@ -211,4 +266,4 @@ async function main() {
   console.log("DB totals:", total);
 }
 
-main().catch((e) => { console.error(e); process.exit(1); });
+if (process.argv[1]?.endsWith("ingest.ts")) main().catch((e) => { console.error(e); process.exit(1); });

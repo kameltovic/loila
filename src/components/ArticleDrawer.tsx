@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { AlertTriangle, ArrowUpRight, BookOpen, X } from "lucide-react";
+import { officialSiteName } from "@/lib/themes";
 
 type ArticleData = {
   id: string;
@@ -52,17 +53,33 @@ export function ArticleLink({ id, path, className, children, ...rest }: { id: st
 
 const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
+// Words after a citation that name its text, when one number exists in several texts ("art. 83, loi 78-17" vs "art. 83 du RGPD").
+const TEXT_HINTS: [RegExp, string][] = [
+  [/^[^.;()]{0,30}?(?:loi\s+(?:n°\s*)?78-17|informatique\s+et\s+libert)/i, "loi-78-17"],
+  [/^[^.;()]{0,30}?(?:rgpd|règlement)/i, "rgpd"],
+  [/^[^.;()]{0,30}?loi\s+(?:n°\s*)?2025-391/i, "loi-2025-391"],
+  [/^[^.;()]{0,30}?code\s+pénal/i, "code-penal"],
+  [/^[^.;()]{0,30}?code\s+civil/i, "code-civil"],
+  [/^[^.;()]{0,30}?code\s+du\s+travail/i, "code-du-travail"],
+];
+
 /** Turns "art. 22" / "article L1237-19" into drawer links, only for numbers in `articles`. */
-export function linkCitations(md: string, articles: { id: string; num: string }[]) {
-  const byNum = new Map(articles.filter((a) => a.num).map((a) => [a.num, a.id]));
+export function linkCitations(md: string, articles: { id: string; num: string; code?: string }[]) {
+  const byNum = new Map<string, { id: string; code?: string }[]>();
+  for (const a of articles) if (a.num) byNum.set(a.num, [...(byNum.get(a.num) ?? []), a]);
   if (!byNum.size) return md;
   const nums = [...byNum.keys()].sort((a, b) => b.length - a.length).map(escapeRe).join("|");
   // Not followed by a word char, hyphen, or ".digit" so "art. 9" never matches inside "art. 9.3".
   const re = new RegExp(`\\b(art\\.|articles?)(\\s+)(${nums})(?![\\w-]|\\.\\d)`, "gi");
-  return md.replace(re, (_m, word: string, sp: string, num: string) => `[${word}${sp}${num}](#article:${byNum.get(num)})`);
+  return md.replace(re, (m: string, word: string, sp: string, num: string, at: number) => {
+    const same = byNum.get(num)!;
+    const after = md.slice(at + m.length, at + m.length + 60);
+    const code = same.length > 1 ? TEXT_HINTS.find(([h, c]) => h.test(after) && same.some((a) => a.code === c))?.[1] : undefined;
+    return `[${word}${sp}${num}](#article:${(same.find((a) => a.code === code) ?? same[0]).id})`;
+  });
 }
 
-export function ArticleMarkdown({ md, articles }: { md: string; articles: { id: string; num: string; path?: string }[] }) {
+export function ArticleMarkdown({ md, articles }: { md: string; articles: { id: string; num: string; code?: string; path?: string }[] }) {
   return (
     <ReactMarkdown
       components={{
@@ -183,7 +200,7 @@ function Drawer({ id, onClose }: { id: string; onClose: () => void }) {
           {error ? (
             <p role="alert" className="flex items-start gap-3 border-2 border-signal bg-danger-bg p-4">
               <AlertTriangle className="mt-0.5 size-5 shrink-0" strokeWidth={1.75} aria-hidden />
-              Impossible de charger cet article. Réessayez ou ouvrez-le sur Légifrance.
+              Impossible de charger cet article. Réessayez ou ouvrez le texte officiel.
             </p>
           ) : !data ? (
             <div className="space-y-3" aria-label="Chargement">
@@ -223,7 +240,7 @@ function Drawer({ id, onClose }: { id: string; onClose: () => void }) {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 rounded-full border-2 border-fg bg-fg px-4 py-2 text-sm font-semibold text-bg transition hover:bg-signal hover:text-ink"
           >
-            Voir sur Légifrance <ArrowUpRight className="size-4" strokeWidth={1.75} aria-hidden />
+            Voir sur {officialSiteName(data.url)} <ArrowUpRight className="size-4" strokeWidth={1.75} aria-hidden />
             <span className="sr-only">(nouvel onglet)</span>
           </a>
           )}

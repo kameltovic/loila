@@ -61,7 +61,7 @@ export default function Avocats() {
   const articles = n("SELECT COUNT(DISTINCT article_id) n FROM decision_articles");
   const relations = n("SELECT COUNT(*) n FROM article_relations") / 2;
   const bySource = db.prepare("SELECT source, COUNT(*) n FROM decisions GROUP BY source ORDER BY n DESC").all() as { source: string; n: number }[];
-  const SOURCE: Record<string, string> = { cass: "Cour de cassation", inca: "Cour de cassation (inédits)", constit: "Conseil constitutionnel", jade: "Juridictions administratives", capp: "Cours d’appel" };
+  const SOURCE: Record<string, string> = { cass: "Cour de cassation", inca: "Cour de cassation (inédits)", constit: "Conseil constitutionnel", jade: "Juridictions administratives", capp: "Cours d’appel", cnil: "CNIL (sanctions et mises en demeure)" };
   const example = db.prepare("SELECT d.id FROM decisions d JOIN decision_summaries s ON s.decision_id = d.id ORDER BY d.date DESC LIMIT 1").get() as { id: string } | undefined;
 
   return (

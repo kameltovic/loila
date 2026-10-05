@@ -1,7 +1,7 @@
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { getDb, type Article, type Faq } from "@/lib/db";
 import { articlePath } from "@/lib/articles";
-import { CODES } from "@/lib/themes";
+import { CODES, officialSiteName } from "@/lib/themes";
 import { ArticleLink, ArticleMarkdown } from "@/components/ArticleDrawer";
 import { block, display, label } from "@/components/ui";
 
@@ -28,11 +28,11 @@ export default function FaqAnswer({ faq, articles, updated }: { faq: Faq; articl
       </div>
       <p className="mt-4 text-sm text-fg-2">
         Dernière mise à jour : <time dateTime={updated.toISOString().slice(0, 10)}>{updated.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}</time>
-        {" · "}Sources : Légifrance{articles.length > 0 && ` (${articles.map((a) => (a.num ? `art. ${a.num}` : "article")).join(", ")})`}
+        {" · "}Sources : {[...new Set(articles.length ? articles.map((a) => officialSiteName(a.url)) : ["Légifrance"])].join(", ")}{articles.length > 0 && ` (${articles.map((a) => (a.num ? `art. ${a.num}` : "article")).join(", ")})`}
       </p>
 
       <div className="prose-loila mt-12">
-        <ArticleMarkdown md={faq.answer_md} articles={articles.map((a) => ({ id: a.id, num: a.num, path: articlePath(a) }))} />
+        <ArticleMarkdown md={faq.answer_md} articles={articles.map((a) => ({ id: a.id, num: a.num, code: a.code, path: articlePath(a) }))} />
       </div>
 
       {articles.length > 0 && (
@@ -67,7 +67,7 @@ export default function FaqAnswer({ faq, articles, updated }: { faq: Faq; articl
                     rel="noopener noreferrer"
                     className="relative inline-flex items-center gap-1 text-fg-2 hover:text-fg hover:underline hover:decoration-signal hover:decoration-2 hover:underline-offset-4"
                   >
-                    Légifrance <ArrowUpRight aria-hidden strokeWidth={1.75} className="size-4" />
+                    {officialSiteName(a.url)} <ArrowUpRight aria-hidden strokeWidth={1.75} className="size-4" />
                     <span className="sr-only">(nouvel onglet)</span>
                   </a>
                 </div>

@@ -26,6 +26,10 @@ export const CODES = {
   "decret-2002-120": { name: "Décret n° 2002-120 du 30 janvier 2002 (logement décent)", legitext: "JORFTEXT000000217471" },
   "loi-2021-1104": { name: "Loi n° 2021-1104 du 22 août 2021 (Climat et résilience)", legitext: "JORFTEXT000043956924" },
   "code-commerce": { name: "Code de commerce", legitext: "LEGITEXT000005634379" },
+  "loi-78-17": { name: "Loi n° 78-17 du 6 janvier 1978 (Informatique et libertés)", legitext: "JORFTEXT000000886460" },
+  "loi-2025-391": { name: "Loi n° 2025-391 du 30 avril 2025 (DDADUE, dont le régime unifié de l'action de groupe)", legitext: "JORFTEXT000051538879" },
+  // EU regulation: not in LEGI. legitext holds the CELEX number; scripts/ingest.ts reads it from the Publications Office.
+  "rgpd": { name: "Règlement (UE) 2016/679 (RGPD)", legitext: "CELEX:32016R0679" },
   // Conventions collectives (KALI): legitext holds the KALICONT (IDCC container) id.
   "ccn-1486": { name: "Convention collective Syntec, bureaux d'études techniques (IDCC 1486)", legitext: "KALICONT000005635173", idcc: "1486" },
   "ccn-1979": { name: "Convention collective HCR, hôtels cafés restaurants (IDCC 1979)", legitext: "KALICONT000005635534", idcc: "1979" },
@@ -47,6 +51,13 @@ export const CODES = {
   "ccn-1702": { name: "Convention collective Travaux publics ouvriers (IDCC 1702)", legitext: "KALICONT000005635467", idcc: "1702" },
 } as const;
 export type CodeSlug = keyof typeof CODES;
+/** Dataset a text comes from: DILA LEGI or KALI, or EUR-Lex for EU law. */
+export const codeSource = (slug: string) => (slug.startsWith("ccn-") ? "KALI" : CODES[slug as CodeSlug]?.legitext.startsWith("CELEX:") ? "EURLEX" : "LEGI");
+/** Name without its trailing gloss: "Code civil", "Loi n° 89-462 du 6 juillet 1989", "RGPD". */
+export const codeShortName = (slug: string) =>
+  slug === "rgpd" ? "RGPD" : (CODES[slug as CodeSlug]?.name ?? slug).replace(/ \([^()]*\)$/, "");
+/** Where the official text lives, for "see the official text" links. */
+export const officialSiteName = (url: string) => (url.includes("europa.eu") ? "EUR-Lex" : "Légifrance");
 
 export const THEMES = [
   { slug: "travail", emoji: "💼", title: "Travail", tagline: "Contrat, congés, licenciement, rupture conventionnelle.", codes: ["code-du-travail"] },
@@ -55,6 +66,7 @@ export const THEMES = [
   { slug: "copropriete", emoji: "🏢", title: "Copropriété", tagline: "Assemblée générale, syndic, charges, travaux.", codes: ["loi-65-557", "decret-67-223", "decret-2015-342", "decret-2005-240"] },
   { slug: "construction", emoji: "🦺", title: "Construction et BTP", tagline: "Garanties, assurances, paiement, sous-traitance.", codes: ["code-civil", "code-construction-habitation", "code-assurances", "loi-75-1334", "loi-71-584", "code-commerce"] },
   { slug: "diagnostics", emoji: "🌡️", title: "Diagnostics et DPE", tagline: "DPE, amiante, plomb, audit énergétique, passoires thermiques.", codes: ["code-construction-habitation", "code-sante-publique", "loi-89-462", "decret-2002-120", "loi-2021-1104"] },
+  { slug: "donnees-personnelles", emoji: "🔐", title: "Données personnelles", tagline: "Fuite de données, RGPD, droit d'accès, plainte à la CNIL.", codes: ["rgpd", "loi-78-17", "loi-2025-391"] },
   { slug: "conventions", emoji: "📑", title: "Conventions collectives", tagline: "Salaires minimums, primes, préavis, congés propres à votre branche.", codes: ["ccn-1486", "ccn-1979", "ccn-2216", "ccn-3248", "ccn-1597", "ccn-1596", "ccn-3127", "ccn-3239", "ccn-3043", "ccn-1090", "ccn-2120", "ccn-1527", "ccn-2596", "ccn-0016", "ccn-1996", "ccn-2609", "ccn-2420", "ccn-1702"] },
 ] as const;
 export type ThemeSlug = (typeof THEMES)[number]["slug"];

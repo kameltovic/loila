@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { getDb, type Article, type Faq } from "@/lib/db";
-import { CODES, THEMES, faqUrl } from "@/lib/themes";
+import { CODES, THEMES, faqUrl, officialSiteName, codeShortName } from "@/lib/themes";
 import { Empty, FaqIndex, block, btnPrimary, container, display, label } from "@/components/ui";
 import { LettreCards } from "@/components/Lettres";
 import JorfHistory from "@/components/JorfHistory";
@@ -19,7 +19,7 @@ import { JsonLd, abs, breadcrumbJsonLd, clip, faqJsonLd, pageMetadata } from "@/
 /** "Article L1237-19", or the section title for convention articles without a number. */
 const artLabel = (a: Article) => (a.num ? `Article ${a.num}` : (a.section?.split(" > ").pop() ?? "Article"));
 const codeName = (code: string) => CODES[code as keyof typeof CODES]?.name ?? code;
-const codeShort = (code: string) => codeName(code).replace(/ \(.*\)$/, "");
+const codeShort = codeShortName;
 
 /** "du Code du travail" / "de la convention collective Syntec (IDCC 1486)" for titles. */
 function ofCode(a: Pick<Article, "code">) {
@@ -81,7 +81,7 @@ export function ArticleView({ a }: { a: Article }) {
       "@type": "Legislation",
       name: `${artLabel(a)} ${ofCode(a)}`,
       legislationIdentifier: a.id,
-      legislationJurisdiction: "FR",
+      legislationJurisdiction: code.legitext.startsWith("CELEX:") ? "EU" : "FR",
       legislationLegalForce: "InForce",
       inLanguage: "fr-FR",
       ...(a.date_debut && { legislationDate: a.date_debut.slice(0, 10) }),
@@ -158,7 +158,7 @@ export function ArticleView({ a }: { a: Article }) {
           )}
           <div className="rounded-2xl border-2 border-fg bg-surface p-6 sm:p-10">
             {summary && (
-              <h2 className={`${label} mb-6 inline-flex items-center gap-2 border-2 border-fg px-3 py-1.5`}>Texte officiel · Légifrance</h2>
+              <h2 className={`${label} mb-6 inline-flex items-center gap-2 border-2 border-fg px-3 py-1.5`}>Texte officiel · {officialSiteName(a.url)}</h2>
             )}
             <div className="max-w-[68ch] space-y-5 text-[1.0625rem] leading-[1.8] sm:text-lg">
               {a.texte
@@ -190,7 +190,7 @@ export function ArticleView({ a }: { a: Article }) {
           )}
           <JorfHistory articleId={a.id} />
           <a href={a.url} target="_blank" rel="noopener noreferrer" className={btnPrimary}>
-            Voir sur Légifrance <ArrowUpRight aria-hidden strokeWidth={1.75} size={16} />
+            Voir sur {officialSiteName(a.url)} <ArrowUpRight aria-hidden strokeWidth={1.75} size={16} />
             <span className="sr-only">(nouvel onglet)</span>
           </a>
           <Link href={askHref} className="flex items-center gap-1.5 font-semibold underline decoration-signal decoration-2 underline-offset-4">

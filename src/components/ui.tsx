@@ -13,6 +13,7 @@ const BLOCK: Record<string, string> = {
   copropriete: "bg-copropriete",
   construction: "bg-construction",
   diagnostics: "bg-diagnostics",
+  "donnees-personnelles": "bg-donnees-personnelles",
 };
 export const block = (slug: string) => `${BLOCK[slug] ?? BLOCK.travail} text-ink`;
 

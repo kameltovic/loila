@@ -7,7 +7,7 @@ import { FaqIndex, SectionHead, btnPrimary, container, display, label } from "@/
 import { LETTRE_GROUPS, getLettres, lettreUrl } from "@/lib/lettres";
 import { faqsBySlugs, refArticles } from "@/lib/metiers";
 import { JsonLd, breadcrumbJsonLd, faqJsonLd, pageMetadata } from "@/lib/seo";
-import { CODES, faqUrl } from "@/lib/themes";
+import { faqUrl, codeShortName } from "@/lib/themes";
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   title: { absolute: "Relance amiable d’un impayé : modèles et étapes | Loilà" },
 };
 
-const codeName = (c: string) => (CODES[c as keyof typeof CODES]?.name ?? c).replace(/ \(.*\)$/, "");
+const codeName = codeShortName;
 
 // The escalation, in order. Delays are common practice, not legal deadlines (stated on the page).
 const STEPS = [

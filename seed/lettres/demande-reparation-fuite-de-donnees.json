@@ -1,0 +1,75 @@
+{
+  "slug": "demande-reparation-fuite-de-donnees",
+  "title": "Demande de réparation après une fuite de données",
+  "theme": "donnees-personnelles",
+  "seo": {
+    "title": "Fuite de données : lettre de demande d’indemnisation (RGPD)",
+    "description": "Vos données ont fuité ? Modèle gratuit de lettre au DPO : informations sur la fuite et réparation de votre préjudice (article 82 du RGPD)."
+  },
+  "h1": "Vos données ont fuité :",
+  "h1Accent": "demander réparation",
+  "intro": "Le RGPD permet d’obtenir réparation d’un dommage matériel ou moral causé par une violation de vos données. Cette lettre, adressée au délégué à la protection des données, demande ce qui a fui et chiffre votre préjudice. Aucune inscription, rien n’est envoyé à nos serveurs.",
+  "when": [
+    "Un organisme vous a prévenu d’une fuite de vos données, ou vous l’avez appris par la presse",
+    "Vous avez subi des conséquences : tentatives d’hameçonnage, débits frauduleux, usurpation d’identité, frais, anxiété",
+    "Vous voulez un écrit avant de saisir la CNIL, le juge ou de rejoindre une action de groupe"
+  ],
+  "fields": [
+    { "name": "nom", "label": "Vos prénom et nom", "type": "text", "placeholder": "Camille Martin" },
+    { "name": "adresse", "label": "Votre adresse", "type": "textarea", "placeholder": "12 rue des Lilas\n69003 Lyon" },
+    { "name": "organisme", "label": "Organisme responsable (entreprise, service)", "type": "text", "placeholder": "Opérateur Exemple SA" },
+    { "name": "adresse_organisme", "label": "Adresse du délégué à la protection des données (DPO)", "type": "textarea", "placeholder": "À l’attention du délégué à la protection des données\n10 rue du Commerce\n75015 Paris" },
+    { "name": "reference", "label": "Votre n° de client ou d’adhérent (si vous en avez un)", "type": "text", "placeholder": "Client n° 784512" },
+    { "name": "date_info", "label": "Date à laquelle vous avez appris la fuite", "type": "date" },
+    {
+      "name": "source_info",
+      "label": "Comment l’avez-vous apprise ?",
+      "type": "select",
+      "options": [
+        { "label": "L’organisme m’a prévenu", "text": "Par un message reçu le {{date_info}}, vous m’avez informé d’une violation de données à caractère personnel me concernant." },
+        { "label": "Par la presse ou un tiers", "text": "J’ai appris le {{date_info}}, par voie de presse, qu’une violation de données à caractère personnel avait touché vos fichiers clients. Je n’ai reçu de votre part aucune information individuelle." }
+      ]
+    },
+    { "name": "prejudice", "label": "Ce que vous avez subi depuis (faits datés, montants)", "type": "textarea", "placeholder": "Depuis le 3 mars, réception de 14 SMS et appels frauduleux citant mon nom et mon numéro client ; débit frauduleux de 249 € le 12 mars, contesté auprès de ma banque ; opposition sur ma carte (frais : 15 €) ; démarches et inquiétude." },
+    { "name": "montant", "label": "Montant demandé (€)", "type": "text", "placeholder": "800" },
+    {
+      "name": "niveau",
+      "label": "Ton de la lettre",
+      "type": "select",
+      "options": [
+        { "label": "Demande amiable", "text": "Je vous propose de régler ce préjudice à l’amiable par le versement de la somme de {{montant}} euros, et vous remercie de me faire connaître votre position sous {{delai}}." },
+        { "label": "Mise en demeure", "text": "Je vous mets en demeure de me verser la somme de {{montant}} euros en réparation de ce préjudice sous {{delai}}. À défaut, je saisirai la juridiction compétente, sans préjudice d’une réclamation auprès de la CNIL." }
+      ]
+    },
+    { "name": "delai", "label": "Délai accordé", "type": "text", "placeholder": "un mois" },
+    { "name": "ville", "label": "Ville", "type": "text", "placeholder": "Lyon" },
+    { "name": "date", "label": "Date de la lettre", "type": "date" }
+  ],
+  "body": "{{nom}}\n{{adresse}}\n\n{{organisme}}\n{{adresse_organisme}}\n\nÀ {{ville}}, le {{date}}\n\nLettre recommandée avec accusé de réception\nObjet : violation de mes données personnelles, demande d’information et de réparation ({{reference}})\n\nMadame, Monsieur,\n\n{{source_info}}\n\nEn application de l’article 15 du règlement (UE) 2016/679 (RGPD), je vous demande de me préciser, dans le délai d’un mois prévu par son article 12, les données me concernant qui ont été touchées, la date et la nature de l’incident, ses conséquences probables et les mesures que vous avez prises pour y remédier et en atténuer les effets.\n\nEn tant que responsable du traitement, vous deviez assurer la sécurité de mes données par des mesures appropriées au risque (articles 5 et 32 du RGPD). Cette violation m’a causé le préjudice suivant :\n\n{{prejudice}}\n\nL’article 82 du RGPD me donne le droit d’obtenir de votre part réparation du dommage matériel et moral subi du fait de cette violation. {{niveau}}\n\nJe vous prie d’agréer, Madame, Monsieur, l’expression de mes salutations distinguées.\n\n{{nom}}",
+  "tips": [
+    {
+      "title": "Pas d’indemnité sans préjudice prouvé",
+      "detail": "La fuite seule ne suffit pas : décrivez précisément ce que vous avez subi, avec dates et justificatifs (captures des messages frauduleux, relevés, frais). Un préjudice moral, même modeste, peut être réparé s’il est établi.",
+      "refs": ["rgpd:82"],
+      "link": { "href": "/sujets/fuite-de-donnees/fuite-de-donnees-demander-dedommagement", "label": "Fuite de données : puis-je demander un dédommagement ?" }
+    },
+    {
+      "title": "Un mois pour vous répondre",
+      "detail": "L’organisme doit répondre à votre demande d’information dans un délai d’un mois, prolongeable de deux mois s’il vous en explique la raison.",
+      "refs": ["rgpd:12", "rgpd:15"]
+    },
+    {
+      "title": "Écrivez au DPO",
+      "detail": "La fiche de l’entreprise sur Loilà indique si elle a déclaré un délégué à la protection des données à la CNIL, et comment le joindre.",
+      "refs": ["rgpd:38"],
+      "link": { "href": "/donnees-personnelles#dpo-finder-title", "label": "Trouver le DPO d’une entreprise" }
+    },
+    {
+      "title": "Seul, ou à plusieurs",
+      "detail": "Sans réponse satisfaisante : réclamation à la CNIL (qui peut sanctionner mais n’indemnise pas), action devant le juge, ou adhésion à une action de groupe menée par une association agréée.",
+      "refs": ["rgpd:77", "rgpd:79", "loi-2025-391:16"],
+      "link": { "href": "/sujets/fuite-de-donnees/fuite-de-donnees-action-de-groupe", "label": "Action de groupe après une fuite de données" }
+    }
+  ],
+  "faqSlugs": ["fuite-de-donnees-demander-dedommagement", "fuite-de-donnees-que-faire", "fuite-de-donnees-entreprise-doit-prevenir", "fuite-de-donnees-action-de-groupe", "fuite-de-donnees-plainte-cnil"]
+}

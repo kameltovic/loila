@@ -1,0 +1,63 @@
+{
+  "slug": "demande-acces-donnees-rgpd",
+  "title": "Demande d’accès ou d’effacement de vos données (RGPD)",
+  "theme": "donnees-personnelles",
+  "seo": {
+    "title": "Demande RGPD : lettre d’accès ou d’effacement de vos données",
+    "description": "Modèle gratuit de demande RGPD : obtenir la copie de vos données, les faire effacer ou stopper la prospection. Réponse obligatoire sous un mois (art. 12 RGPD)."
+  },
+  "h1": "Vos données :",
+  "h1Accent": "les connaître, les faire effacer",
+  "intro": "Toute entreprise doit vous dire quelles données elle détient sur vous, vous en remettre une copie, et dans de nombreux cas les effacer. Gratuitement, sous un mois. Cette lettre formule la demande. Aucune inscription, rien n’est envoyé à nos serveurs.",
+  "when": [
+    "Vous voulez savoir ce qu’une entreprise sait de vous (après une fuite, un démarchage, un litige)",
+    "Vous voulez que vos données soient supprimées ou que la prospection cesse",
+    "Une première demande par e-mail est restée sans réponse"
+  ],
+  "fields": [
+    { "name": "nom", "label": "Vos prénom et nom", "type": "text", "placeholder": "Camille Martin" },
+    { "name": "adresse", "label": "Votre adresse", "type": "textarea", "placeholder": "12 rue des Lilas\n69003 Lyon" },
+    { "name": "organisme", "label": "Organisme", "type": "text", "placeholder": "Boutique Exemple SAS" },
+    { "name": "adresse_organisme", "label": "Adresse du DPO ou du service concerné", "type": "textarea", "placeholder": "À l’attention du délégué à la protection des données\n10 rue du Commerce\n75015 Paris" },
+    { "name": "identifiant", "label": "Ce qui permet de vous retrouver (e-mail du compte, n° client, téléphone)", "type": "text", "placeholder": "camille.martin@example.fr, client n° 784512" },
+    {
+      "name": "demande",
+      "label": "Votre demande",
+      "type": "select",
+      "options": [
+        { "label": "Accès : copie de mes données", "text": "En application de l’article 15 du RGPD, je vous demande de me confirmer si vous traitez des données me concernant et, dans l’affirmative, de m’en communiquer une copie, accompagnée des informations suivantes : finalités du traitement, catégories de données, destinataires, durée de conservation, source des données si elles n’ont pas été collectées auprès de moi, et existence éventuelle d’une décision automatisée." },
+        { "label": "Effacement de mes données", "text": "En application de l’article 17 du RGPD, je vous demande d’effacer l’ensemble des données me concernant, et d’informer de cet effacement les destinataires auxquels vous les avez communiquées, conformément à l’article 19. Je vous remercie de me confirmer par écrit l’effacement effectué." },
+        { "label": "Opposition à la prospection", "text": "En application de l’article 21 du RGPD, je m’oppose au traitement de mes données à des fins de prospection commerciale, y compris au profilage lié à cette prospection. Je vous demande de cesser immédiatement tout envoi et tout appel à ce titre, et de ne plus transmettre mes données à des partenaires." }
+      ]
+    },
+    { "name": "ville", "label": "Ville", "type": "text", "placeholder": "Lyon" },
+    { "name": "date", "label": "Date de la lettre", "type": "date" }
+  ],
+  "body": "{{nom}}\n{{adresse}}\n\n{{organisme}}\n{{adresse_organisme}}\n\nÀ {{ville}}, le {{date}}\n\nObjet : exercice de mes droits sur mes données personnelles\nRéférences permettant de m’identifier : {{identifiant}}\n\nMadame, Monsieur,\n\n{{demande}}\n\nConformément à l’article 12 du RGPD, vous disposez d’un délai d’un mois à compter de la réception de cette demande pour y répondre, ce délai ne pouvant être prolongé que dans les conditions prévues par cet article. Cette démarche est gratuite.\n\nÀ défaut de réponse dans ce délai, je me réserve la possibilité d’introduire une réclamation auprès de la Commission nationale de l’informatique et des libertés (CNIL).\n\nJe vous prie d’agréer, Madame, Monsieur, l’expression de mes salutations distinguées.\n\n{{nom}}",
+  "tips": [
+    {
+      "title": "Un mois, gratuitement",
+      "detail": "L’organisme répond dans le mois, sans frais. Il peut prolonger de deux mois une demande complexe, à condition de vous en informer dans le premier mois avec les raisons.",
+      "refs": ["rgpd:12"],
+      "link": { "href": "/sujets/droits-rgpd/delai-reponse-demande-rgpd", "label": "Dans quel délai l’entreprise doit-elle répondre ?" }
+    },
+    {
+      "title": "L’effacement a des exceptions",
+      "detail": "L’organisme peut conserver ce qu’une obligation légale lui impose de garder (factures, par exemple) ou ce qui sert à la défense de ses droits en justice.",
+      "refs": ["rgpd:17"],
+      "link": { "href": "/sujets/droits-rgpd/droit-effacement-donnees", "label": "Puis-je exiger la suppression de mes données ?" }
+    },
+    {
+      "title": "Prospection : votre refus suffit",
+      "detail": "Pas besoin de justifier votre opposition à la prospection : l’entreprise doit cesser. Le démarchage téléphonique est en outre interdit sans votre consentement préalable.",
+      "refs": ["rgpd:21", "code-consommation:L223-1"]
+    },
+    {
+      "title": "Pas de réponse ? La CNIL",
+      "detail": "Gardez une copie de la lettre et la preuve d’envoi : elles seront demandées pour une réclamation auprès de la CNIL.",
+      "refs": ["rgpd:77"],
+      "link": { "href": "/sujets/droits-rgpd/entreprise-ne-repond-pas-demande-rgpd", "label": "L’entreprise ne répond pas : que faire ?" }
+    }
+  ],
+  "faqSlugs": ["droit-acces-donnees-personnelles", "delai-reponse-demande-rgpd", "droit-effacement-donnees", "opposition-prospection-commerciale", "entreprise-ne-repond-pas-demande-rgpd"]
+}

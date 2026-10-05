@@ -12,7 +12,7 @@
 //   no_code         a number without any code: ambiguous, never linked
 //   code_not_carried a code Loilà does not import yet (procédure civile, CGI…): counted to prioritize ingestion
 
-export const EXTRACTOR_VERSION = "legal-refs/1.2.0";
+export const EXTRACTOR_VERSION = "legal-refs/1.3.0";
 
 export type RefStatus = "resolved" | "unknown_article" | "historical" | "versioned" | "no_code" | "code_not_carried";
 export type ParsedRef = {
@@ -67,6 +67,17 @@ const NAMES: [string, string][] = [
   ["loi n° 71-584 du 16 juillet 1971", "loi-71-584"],
   ["décret n° 67-223 du 17 mars 1967", "decret-67-223"],
   ["décret du 17 mars 1967", "decret-67-223"],
+  ["loi n° 78-17 du 6 janvier 1978", "loi-78-17"],
+  ["loi du 6 janvier 1978", "loi-78-17"],
+  ["loi informatique et libertés", "loi-78-17"],
+  ["loi n° 2025-391 du 30 avril 2025", "loi-2025-391"],
+  ["loi du 30 avril 2025", "loi-2025-391"],
+  ["règlement (UE) 2016/679 du Parlement européen et du Conseil du 27 avril 2016", "rgpd"],
+  ["règlement (UE) n° 2016/679", "rgpd"],
+  ["règlement (UE) 2016/679", "rgpd"],
+  ["règlement général sur la protection des données", "rgpd"],
+  ["règlement européen sur la protection des données", "rgpd"],
+  ["rgpd", "rgpd"],
   // Codes Loilà does not carry yet: recognized (so they are not "no_code"), never linked.
   ["code de procédure civile", "~code-procedure-civile"],
   ["code de procédure pénale", "~code-procedure-penale"],
@@ -108,6 +119,7 @@ const ABBREVS: [string, string][] = [
   ["cpce", "code-procedures-civiles-execution"],
   ["casf", "code-action-sociale"],
   ["c. civ.", "code-civil"],
+  ["rgpd", "rgpd"],
   ["cc", "code-civil"],
   ["cpc", "~code-procedure-civile"],
   ["c. pr. civ.", "~code-procedure-civile"],
@@ -120,7 +132,14 @@ export const isCarried = (code: string) => !code.startsWith("~");
 
 const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const flexible = (s: string) => esc(s).replace(/'/g, "['’]").replace(/n°\\? /g, "n°\\s*").replace(/ /g, "\\s+").replace(/\\\./g, "\\.?");
-const NAME_RE = NAMES.map(([n, slug]) => [new RegExp(`^\\s*(?:du|de\\s+la|de\\s+l['’]|des)\\s*${flexible(n)}`, "i"), slug] as const);
+const OF = String.raw`^\s*(?:du|de\s+la|de\s+l['’]|des)\s*`;
+const NAME_RE = [
+  ...NAMES.map(([n, slug]) => [new RegExp(`${OF}${flexible(n)}`, "i"), slug] as const),
+  // Spellings the table can't express: "loi no 78-17", "loi 78-17", "loi « Informatique et Libertés »".
+  [new RegExp(String.raw`${OF}loi\s+(?:n\s*[°oº]\.?\s*)?78-17\b|${OF}loi\s*[«"“]\s*informatique\s+et\s+libert[ée]s\s*[»"”]`, "i"), "loi-78-17"] as const,
+];
+// A decision about the RGPD often calls it "le Règlement" once named: then "du règlement" means the RGPD.
+const EU_DEFAULT = /^\s*,?\s*(?:du|de\s+ce|dudit|du\s+même)\s+règlement\b(?!\s*(?:intérieur|délégué|d['’]exécution|\(|n°|no\b|européen\s+n))/i;
 const ABBREV_RE = ABBREVS.map(([a, slug]) => [new RegExp(`^\\s*${flexible(a)}(?![\\p{L}\\d])`, "iu"), slug] as const);
 const SAME_CODE = /^\s*(?:du\s+même\s+code|dudit\s+code|de\s+ce\s+code|du\s+code\s+précité)/i;
 
@@ -131,7 +150,7 @@ const NUM = String.raw`(?:[LRDA]\s?\.?\s?\*?\s?\d{1,4}(?:(?:-|\s(?=\d{1,3}\b))\d
 const LIST = String.raw`${NUM}(?:\s*(?:,|et|ou|à)\s*${NUM})*`;
 const WITH_WORD = new RegExp(String.raw`\b(?:articles?|art\.)\s+(${LIST})`, "gi");
 // Without "article": a number (prefixed, or a plain one) directly followed by an abbreviation ("1643 C. civ.").
-const BARE = new RegExp(String.raw`(?<![\p{L}\d/.,-])(${NUM})(?=\s*,?\s*(?:c\.|cc\b|cch\b|css\b|csp\b|cpce\b|casf\b))`, "giu");
+const BARE = new RegExp(String.raw`(?<![\p{L}\d/.,-])(${NUM})(?=\s*,?\s*(?:c\.|cc\b|cch\b|css\b|csp\b|cpce\b|casf\b|rgpd\b))`, "giu");
 
 const HISTORICAL_BEFORE = /(?:\banciens?\s+|\bex-\s*)$/i;
 const HISTORICAL_AFTER =
@@ -142,6 +161,8 @@ const VERSIONED_AFTER = /^[^.;]{0,120}?dans\s+(?:sa|leur)\s+(?:rédaction|versio
 const RENUMBERED: { code: string; before: string; applies?: (num: string) => boolean }[] = [
   { code: "code-du-travail", before: "2008-05-01" },
   { code: "code-consommation", before: "2016-07-01" },
+  // Loi Informatique et libertés rewritten and renumbered by ordonnance n° 2018-1125, in force 1 June 2019.
+  { code: "loi-78-17", before: "2019-06-01" },
   { code: "code-civil", before: "2016-10-01", applies: (n) => /^\d+/.test(n) && +n.match(/^\d+/)![0] >= 1100 && +n.match(/^\d+/)![0] <= 1386 },
 ];
 // Civil code, contract law reform (ordonnance n° 2016-131, in force 1 Oct 2016): articles 1100 to 1386-1 were
@@ -167,7 +188,8 @@ export const renumberedAt = (code: string, num: string, date: string) =>
   RENUMBERED.some((r) => r.code === code && date < r.before && (!r.applies || r.applies(num)));
 
 // Subdivisions written between the number and the code: ", alinéa 2,", ", 2°,", ", I,", ", a)", ", al. 3".
-const SUBDIV = /^\s*,?\s*(?:(?:alinéas?|al\.)\s*\d+(?:er)?|\d+°|[IVX]{1,5}\b|[a-z]\)|(?:premier|deuxième|second|troisième|dernier)\s+alinéa)\s*(?=,|du|de|des)/i;
+// EU law: ", paragraphe 1,", ", § 2,", ", sous f)", ", point a)".
+const SUBDIV = /^\s*,?\s*(?:(?:alinéas?|al\.)\s*\d+(?:er)?|(?:paragraphes?|§)\s*(?:\d+|[IVX]{1,5}\b)|(?:sous|point)\s+[a-z]\)|\d+°|[IVX]{1,5}\b|[a-z]\)|(?:premier|deuxième|second|troisième|dernier)\s+alinéa)\s*(?=,|du|de|des)/i;
 const skipSubdivisions = (after: string) => {
   let s = after;
   for (let i = 0; i < 4 && SUBDIV.test(s); i++) s = s.replace(SUBDIV, "").replace(/^\s*,/, "");
@@ -190,6 +212,7 @@ function codeAfter(rawAfter: string): { code: string; method: string; confidence
  */
 export function parseRefs(text: string, date?: string): ParsedRef[] {
   const out: ParsedRef[] = [];
+  const euDefault = /2016\s*\/\s*679/.test(text);
   const found: { index: number; end: number; list: string; code: ReturnType<typeof codeAfter>; raw: string; bare: boolean }[] = [];
   for (const m of text.matchAll(WITH_WORD)) {
     const end = m.index + m[0].length;
@@ -214,6 +237,10 @@ export function parseRefs(text: string, date?: string): ParsedRef[] {
     if (!code && SAME_CODE.test(skipSubdivisions(after)) && lastCode) {
       code = lastCode;
       method = "same_code_backref";
+      confidence = 0.9;
+    } else if (!code && euDefault && EU_DEFAULT.test(skipSubdivisions(after))) {
+      code = "rgpd";
+      method = "eu_regulation_default";
       confidence = 0.9;
     }
     if (f.code) lastCode = f.code.code;

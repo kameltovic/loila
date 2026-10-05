@@ -10,6 +10,7 @@ import { getCategories } from "@/lib/topics";
 import { getMetiers } from "@/lib/metiers";
 import { getLettres } from "@/lib/lettres";
 import { LettreCards } from "@/components/Lettres";
+import DataProtection, { FeaturedQuestion } from "@/components/DataProtection";
 import diagnosticsHub from "../../../seed/generated/diagnostics-hub.json";
 
 // Existing questions filed under other topics that also belong on a theme page.
@@ -42,6 +43,7 @@ const SEO: Record<string, { title: string; lead: string }> = {
   conventions: { title: "Conventions collectives 2026 : salaires, primes, préavis", lead: "Syntec, HCR, métallurgie, BTP, services à la personne :" },
   copropriete: { title: "Copropriété : AG, syndic, charges, travaux expliqués", lead: "Assemblée générale, syndic bénévole, charges impayées, travaux :" },
   diagnostics: { title: "DPE, amiante, plomb : diagnostics immobiliers expliqués", lead: "DPE et passoires thermiques, amiante, plomb, audit énergétique, vente et location :" },
+  "donnees-personnelles": { title: "Fuite de données : vos droits, indemnisation, CNIL", lead: "Fuite de données, dédommagement, droit d’accès et d’effacement, plainte à la CNIL :" },
   construction: { title: "BTP : garantie décennale, retenue de garantie, paiement", lead: "Assurance décennale, réception des travaux, sous-traitance, délais de paiement :" },
 };
 
@@ -105,6 +107,8 @@ export default async function ThemePage({ params }: PageProps<"/[theme]">) {
         </div>
       </section>
 
+      {theme.slug === "donnees-personnelles" && <FeaturedQuestion />}
+
       {conventions.length > 0 && (
         <section aria-labelledby="branches-title" className="pt-16 sm:pt-24">
           <div className={container}>
@@ -151,6 +155,8 @@ export default async function ThemePage({ params }: PageProps<"/[theme]">) {
           </div>
         </section>
       )}
+
+      {theme.slug === "donnees-personnelles" && <DataProtection nums={[num(), num(), num()]} />}
 
       {lettres.length > 0 && (
         <section aria-labelledby="lettres-title" className="pt-16 sm:pt-24">

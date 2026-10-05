@@ -6,11 +6,11 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { SectionHead, block, btnPrimary, container, display, label } from "@/components/ui";
 import { citation, decisionArticles, decisionLinks, decisionSummary, decisionUrl, formationLabel, getDecision, pourvoi, relatedDecisions } from "@/lib/decisions";
 import { JsonLd, abs, breadcrumbJsonLd, clip, pageMetadata } from "@/lib/seo";
-import { CODES, THEMES } from "@/lib/themes";
+import { THEMES, codeShortName } from "@/lib/themes";
 
 export const dynamic = "force-dynamic";
 
-const codeName = (c: string) => (CODES[c as keyof typeof CODES]?.name ?? c).replace(/ \(.*\)$/, "");
+const codeName = codeShortName;
 const frDate = (d: string) => new Date(`${d}T12:00:00`).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
 
 export async function generateMetadata({ params }: PageProps<"/jurisprudence/[id]">): Promise<Metadata> {
@@ -74,12 +74,12 @@ export default async function DecisionPage({ params }: PageProps<"/jurisprudence
             <span className="border-2 border-fg px-2 py-1">{d.juridiction}</span>
             <span className="border-2 border-fg px-2 py-1">{formationLabel(d.formation)}</span>
             {d.solution && <span className="border-2 border-fg bg-fg px-2 py-1 text-bg">{d.solution}</span>}
-            {d.publie === 1 && <span className="border-2 border-fg px-2 py-1">{d.source === "jade" ? "Publié au Recueil" : d.source === "constit" ? "Publié au JO" : "Publié au Bulletin"}</span>}
+            {d.publie === 1 && <span className="border-2 border-fg px-2 py-1">{d.source === "jade" ? "Publié au Recueil" : d.source === "constit" ? "Publié au JO" : d.source === "cnil" ? "Publiée par la CNIL" : "Publié au Bulletin"}</span>}
           </p>
           <h1 className={`${display} mt-6 max-w-5xl text-[clamp(2.25rem,6vw,4.5rem)] leading-[0.95] text-balance`}>
             {formationLabel(d.formation)}, {frDate(d.date)}
           </h1>
-          {d.numero && <p className="mt-4 font-mono text-lg text-fg-2">Pourvoi n° {pourvoi(d.numero)}{d.ecli && <> · {d.ecli}</>}</p>}
+          {d.numero && <p className="mt-4 font-mono text-lg text-fg-2">{d.source === "cnil" ? "Délibération" : "Pourvoi"} n° {pourvoi(d.numero)}{d.ecli && <> · {d.ecli}</>}</p>}
         </div>
       </section>
 
@@ -91,7 +91,7 @@ export default async function DecisionPage({ params }: PageProps<"/jurisprudence
                 <span aria-hidden className="size-2 rounded-full bg-signal" />
                 En clair
               </p>
-              <h2 id="en-clair-title" className="sr-only">Ce que décide cet arrêt, en clair</h2>
+              <h2 id="en-clair-title" className="sr-only">Ce que décide {d.source === "cnil" ? "cette délibération" : "cet arrêt"}, en clair</h2>
               <p className="mt-6 max-w-[62ch] font-display text-xl leading-snug font-semibold tracking-[-0.015em] text-pretty sm:text-2xl">{summary.summary}</p>
               {summary.points.length > 0 && (
                 <>

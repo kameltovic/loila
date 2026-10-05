@@ -8,10 +8,10 @@ import { articlePath } from "@/lib/articles";
 import { articleStats, citation, decisionUrl, decisionsPage, formationLabel, teaser } from "@/lib/decisions";
 import { jurisprudenceListIndexable } from "@/lib/eligibility";
 import { JsonLd, breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
-import { CODES } from "@/lib/themes";
+import { codeShortName } from "@/lib/themes";
 
-const codeName = (c: string) => (CODES[c as keyof typeof CODES]?.name ?? c).replace(/ \(.*\)$/, "");
-const CURSOR = /^\d{4}-\d{2}-\d{2}_(?:JURI|CETA|CONS)TEXT\d+$/; // Cassation, administrative, constitutional ids
+const codeName = codeShortName;
+const CURSOR = /^\d{4}-\d{2}-\d{2}_(?:JURI|CETA|CONS|CNIL)TEXT\d+$/; // Cassation, administrative, constitutional ids
 const cursorOf = (raw: string | string[] | undefined) => (typeof raw === "string" && CURSOR.test(raw) ? raw : undefined);
 
 /** Redirect target (article path + /jurisprudence), keeping the pagination cursor. */

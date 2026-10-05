@@ -9,6 +9,7 @@ const drawings: Record<string, React.ReactNode> = {
   copropriete: <><path d="m4 27 1-19 10-3 1 21m0-13 10-3 2 17M3 28l26-1M9 11v2m1 5v2m10-3v2m3 4v3" /><path d="M19 5q1-4 3-1 3-2 3 1t-4 4Z" /></>,
   construction: <><path d="M5 22q-1-12 10-13m4 0q9 2 8 12M3 23l26-2v5L3 28ZM13 19l1-13 6-1-1 14M8 15l1 4m15-5-1 4" /><path d="m4 5 2 3m-5 3 3 1M26 3l-2 3" /></>,
   diagnostics: <><path d="M3 14 13 4l8 7M6 12v15h10" /><circle cx="22" cy="20" r="6" /><path d="m26 25 3 4m-7-9 2-3M10 14h4m-4 4h3m-3 4h2" /></>,
+  "donnees-personnelles": <><path d="m6 15 19-1 1 14-19 1Z" /><path d="M10 15q-1-9 6-10 7 0 7 9" /><path d="M16 20v4" /><circle cx="16" cy="20" r="1" /><path d="m27 3-2 3m4 1-3 1M3 6l3 2" /></>,
   conventions: <><path d="m7 8 18-4 3 20-19 4ZM4 6 3 25l3 1M12 12l9-2m-8 6 7-1m-7 5 2 2 7-6" /><path d="m3 1 1 2m23-2 1 2" /></>,
 };
 

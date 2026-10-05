@@ -20,12 +20,14 @@ import { getConventions, conventionUrl } from "@/lib/conventions";
 import { normalizeIdcc } from "@/lib/entities";
 import { JsonLd, abs, breadcrumbJsonLd, clip, pageMetadata } from "@/lib/seo";
 import { SOURCES } from "@/lib/sources";
+import { companyDpo } from "@/lib/cnil";
 
 export const dynamic = "force-dynamic";
 
 const RE = SOURCES["DINUM:recherche-entreprises"];
 const BODACC = SOURCES["DILA:bodacc"];
 const RGE = SOURCES["ADEME:rge"];
+const DPO = SOURCES["CNIL:dpo"];
 
 const frDate = (d: string | null) => (d ? new Date(`${d.slice(0, 10)}T12:00:00`).toLocaleDateString("fr-FR") : "—");
 const CONVENTION_BY_IDCC = new Map(getConventions().map((c) => [normalizeIdcc(c.idcc), c]));
@@ -60,6 +62,7 @@ export default async function CompanyPage({ params }: PageProps<"/entreprise/[si
   const announcements = companyAnnouncements(siren, 40);
   const rge = companyRge(siren);
   const agreements = companyAgreements(siren);
+  const dpo = companyDpo(siren);
   const procedures = announcements.filter((a) => a.familleavis === "collective" || PROC.test(a.familleavis_lib ?? ""));
   const fresh = companyFresh(c);
   const indexable = companyIndexable(siren);
@@ -287,6 +290,53 @@ export default async function CompanyPage({ params }: PageProps<"/entreprise/[si
               <SourceBadge name={RGE.name} url={RGE.url} licence={RGE.licence} retrievedAt={c.fetched_at} matchQuality="CERTAIN" />
             </section>
           )}
+
+          <section aria-labelledby="dpo-title">
+            <SectionHead num="06" kicker="Données personnelles" id="dpo-title" title="Délégué à la protection des données (DPO)" />
+            {dpo ? (
+              <>
+                <dl className="mt-8 grid border-t-2 border-fg sm:grid-cols-2">
+                  {[
+                    ["Désigné le", frDate(dpo.date_designation)],
+                    ["DPO", dpo.dpo_nom ? `${dpo.dpo_nom} (prestataire externe)` : /morale/i.test(dpo.type_dpo ?? "") ? "Personne morale" : "Interne à l’organisme"],
+                    ["E-mail du DPO", dpo.email],
+                    ["Téléphone", dpo.telephone],
+                    ["Adresse postale", dpo.adresse],
+                  ]
+                    .filter(([, v]) => v)
+                    .map(([k, v]) => (
+                      <div key={k as string} className="border-b border-rule py-4 sm:px-2">
+                        <dt className={label}>{k}</dt>
+                        <dd className="mt-1 font-semibold break-words">{v}</dd>
+                      </div>
+                    ))}
+                  {dpo.url && (
+                    <div className="border-b border-rule py-4 sm:px-2">
+                      <dt className={label}>Formulaire ou page de contact</dt>
+                      <dd className="mt-1 font-semibold break-all">
+                        <a href={dpo.url} target="_blank" rel="noopener noreferrer nofollow" className="underline underline-offset-4">{dpo.url.replace(/^https?:\/\//, "")}</a>
+                      </dd>
+                    </div>
+                  )}
+                </dl>
+                <p className="mt-4 text-sm text-fg-2">
+                  C’est à cette adresse qu’on exerce ses droits (accès, effacement, opposition) ou qu’on demande des précisions après une fuite de données.
+                  {!dpo.email && " L’adresse e-mail déclarée à la CNIL est nominative : Loilà ne la reprend pas. Écrivez par courrier ou via le formulaire."}
+                </p>
+              </>
+            ) : (
+              <p className="mt-6 text-fg-2">
+                Aucune désignation de DPO n’est publiée par la CNIL pour ce SIREN. Toutes les entreprises n’y sont pas tenues : vos droits s’exercent alors
+                directement auprès de l’entreprise (service client, mentions légales, politique de confidentialité).
+              </p>
+            )}
+            <p className="mt-4">
+              <Link href="/donnees-personnelles" className="inline-flex items-center gap-1.5 font-semibold underline decoration-signal decoration-2 underline-offset-4">
+                Fuite de données, droit d’accès, plainte à la CNIL : vos droits <ArrowRight aria-hidden className="size-4" />
+              </Link>
+            </p>
+            <SourceBadge name={DPO.name} url={DPO.url} licence={DPO.licence} matchQuality="CERTAIN" />
+          </section>
         </div>
 
         <aside className="space-y-8 lg:pt-2">

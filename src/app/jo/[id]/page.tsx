@@ -9,7 +9,7 @@ import { citation, decisionUrl, teaser } from "@/lib/decisions";
 import { jorfIndexable } from "@/lib/eligibility";
 import { NATURE_LABEL, type JorfArticleRow, type JorfRelation, articlesForJorf, byArticleNum, titleObject, decisionCountForJorf, decisionsForJorf, getJorfText, legifranceJorfUrl } from "@/lib/jorf";
 import { JsonLd, abs, breadcrumbJsonLd, clip, pageMetadata } from "@/lib/seo";
-import { CODES } from "@/lib/themes";
+import { CODES, codeShortName } from "@/lib/themes";
 
 export const dynamic = "force-dynamic";
 
@@ -50,7 +50,7 @@ export default async function JorfPage({ params }: PageProps<"/jo/[id]">) {
   const decisions = decisionsForJorf(id, 20);
   const decisionTotal = decisionCountForJorf(id);
   const codeNames = new Map((getDb().prepare("SELECT id, name FROM legal_codes").all() as { id: string; name: string }[]).map((c) => [c.id, c.name]));
-  const codeName = (c: string) => (CODES[c as keyof typeof CODES]?.name ?? codeNames.get(c) ?? c).replace(/ \(.*\)$/, "");
+  const codeName = (c: string) => (c in CODES ? codeShortName(c) : (codeNames.get(c) ?? c).replace(/ \([^()]*\)$/, ""));
   const byCode = (list: JorfArticleRow[]) => {
     const m = new Map<string, JorfArticleRow[]>();
     const seen = new Set<string>();

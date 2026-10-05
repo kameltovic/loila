@@ -32,7 +32,8 @@ async function withDb() {
   for (const l of lettres) {
     for (const t of l.tips) {
       assert.equal(refArticles(t.refs).length, t.refs.length, `${l.slug}: unknown article in ${t.refs.join(", ")}`);
-      if (t.link) assert.ok(paths.has(t.link.href) || pages.has(t.link.href), `${l.slug}: dead link ${t.link.href}`);
+      const href = t.link?.href.split("#")[0]; // an anchor on a known page is fine
+      if (href) assert.ok(paths.has(href) || pages.has(href), `${l.slug}: dead link ${t.link!.href}`);
     }
     assert.equal(faqsBySlugs(l.faqSlugs).length, l.faqSlugs.length, `${l.slug}: unknown FAQ slug`);
     // The reverse link (question page → letter) must exist for every linked FAQ.

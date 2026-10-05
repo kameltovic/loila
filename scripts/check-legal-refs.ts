@@ -1,6 +1,7 @@
 // Legal reference normalization self-check, no DB: npx tsx scripts/check-legal-refs.ts
 import assert from "node:assert/strict";
 import { appliesOldCivilLaw, displayNum, normalizeNum, parseRefs } from "../src/lib/legal-refs";
+import { linkCitations } from "../src/components/ArticleDrawer";
 
 // Numbers
 for (const [raw, want] of [
@@ -90,8 +91,27 @@ assert.equal(parseRefs("les articles 1134 et 1147 du code civil, dans leur réda
   assert.equal(appliesOldCivilLaw(t3, parseRefs(t3, "2019-01-01")), true, "old regime stated in the text");
 }
 
+// Data protection: RGPD (EU regulation) and loi Informatique et libertés, as the CNIL and the courts write them.
+assert.deepEqual(one("l'article 82, paragraphe 1, du règlement (UE) 2016/679 du Parlement européen et du Conseil du 27 avril 2016", "2024-01-01"), ["rgpd:82:resolved"]);
+assert.deepEqual(one("les articles 32 et 33 du RGPD", "2024-01-01"), ["rgpd:32:resolved", "rgpd:33:resolved"]);
+assert.deepEqual(one("l'article 6, paragraphe 1, sous f), du règlement général sur la protection des données", "2024-01-01"), ["rgpd:6:resolved"]);
+assert.deepEqual(one(`l'article 5 de la loi " Informatique et Libertés " modifiée`, "2024-01-01"), ["loi-78-17:5:resolved"]);
+assert.deepEqual(one("l'article 82 de la loi no 78-17 du 6 janvier 1978", "2024-01-01"), ["loi-78-17:82:resolved"]);
+assert.deepEqual(one("l'article 45 de la loi du 6 janvier 1978", "2018-01-01"), ["loi-78-17:45:historical"], "renumbered on 1 June 2019");
+// "du Règlement" means the RGPD only in a text that names it; "règlement intérieur" never.
+assert.deepEqual(one("le règlement (UE) 2016/679 (ci-après le Règlement). L'article 32 du Règlement ; l'article 2 du règlement intérieur", "2024-01-01"),
+  ["rgpd:32:resolved", "null:2:no_code"]);
+assert.deepEqual(one("l'article 2 du règlement intérieur ; l'article 32 du règlement", "2024-01-01"), ["null:2:no_code", "null:32:no_code"]);
+
 // Provenance data is present.
 const r = parseRefs("Vu l'article 1231-6 du code civil ;")[0];
 assert.ok(r.raw.includes("1231-6") && r.context.includes("Vu l'article") && r.method === "code_name" && r.confidence >= 0.9);
+
+// Answer links: one number in two texts goes to the text named after it.
+{
+  const arts = [{ id: "R83", num: "83", code: "rgpd" }, { id: "L83", num: "83", code: "loi-78-17" }];
+  assert.equal(linkCitations("(art. 83 RGPD) et (art. 83, loi 78-17)", arts), "([art. 83](#article:R83) RGPD) et ([art. 83](#article:L83), loi 78-17)");
+  assert.equal(linkCitations("(art. 83)", arts), "([art. 83](#article:R83))", "unqualified: first cited");
+}
 
 console.log("check-legal-refs: OK");

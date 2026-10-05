@@ -94,6 +94,24 @@ export function parseConstit(xml: string): DecisionRecord {
   };
 }
 
+/** CNIL deliberations TEXTE_CNIL: the nature (Sanction, Mise en demeure…) goes in formation, the number is SAN-2024-009 style. */
+export function parseCnil(xml: string): DecisionRecord {
+  return {
+    id: tag(xml, "ID"),
+    juridiction: "CNIL",
+    formation: decode(tag(xml, "NATURE_DELIB")),
+    date: tag(xml, "DATE_TEXTE"),
+    numeros: [decode(tag(xml, "NUMERO"))].filter(Boolean),
+    solution: "",
+    titre: decode(tag(xml, "TITREFULL")) || decode(tag(xml, "TITRE")),
+    ecli: "",
+    publie: 1, // published by the CNIL itself
+    sommaire: "",
+    texte: decode(tag(xml, "CONTENU")),
+    liens: "",
+  };
+}
+
 const DILA = "https://echanges.dila.gouv.fr/OPENDATA";
 const legifrance = (kind: string) => (id: string) => `https://www.legifrance.gouv.fr/${kind}/id/${id}`;
 const always = () => true;
@@ -106,6 +124,9 @@ const CORPORA = {
   jade: { dataset: "JADE", url: `${DILA}/JADE/Freemium_jade_global_20250713-140000.tar.gz`, parse: parseAdmin, url_of: legifrance("ceta"), keep: always },
   // Only constitutional review (DC, QPC): election litigation is 57 % of the corpus and useless for Loilà.
   constit: { dataset: "CONSTIT", url: `${DILA}/CONSTIT/Freemium_constit_global_20250713-140000.tar.gz`, parse: parseConstit, url_of: legifrance("cons"), keep: (r: DecisionRecord) => /^(DC|QPC)$/i.test(r.formation) },
+  // CNIL: what tells a citizen how the rules are applied (sanctions, public formal notices, recommendations). The 20 000
+  // research/transfer authorisations and opinions on draft texts are left out. Daily increments: --archive CNIL_<date>.tar.gz.
+  cnil: { dataset: "CNIL", url: `${DILA}/CNIL/Freemium_cnil_global_20250713-140000.tar.gz`, parse: parseCnil, url_of: legifrance("cnil"), keep: (r: DecisionRecord) => /^(Sanction|Mise en demeure|Recommandation)/i.test(r.formation) },
 } as const;
 type Corpus = keyof typeof CORPORA;
 
@@ -168,7 +189,7 @@ async function main() {
   const delNums = db.prepare("DELETE FROM decision_numbers WHERE decision_id = ?");
   const insNum = db.prepare("INSERT OR IGNORE INTO decision_numbers (decision_id, numero) VALUES (?, ?)");
 
-  const files = (fs.readdirSync(out, { recursive: true }) as string[]).filter((f) => /(?:JURI|CETA|CONS)TEXT\d+\.xml$/.test(f)).sort();
+  const files = (fs.readdirSync(out, { recursive: true }) as string[]).filter((f) => /(?:JURI|CETA|CONS|CNIL)TEXT\d+\.xml$/.test(f)).sort();
   const stats = { files: files.length, recent: 0, unchanged: 0, updated: 0, created: 0, skippedNoRef: 0, duplicates: 0, duplicateFiles: 0, filtered: 0, citations: 0, byStatus: {} as Record<string, number> };
   const seen = new Set<string>();
   type Work = { rec: DecisionRecord; rel: string; raw: string; sum: string; isNew: boolean };
@@ -190,7 +211,7 @@ async function main() {
 
   for (const rel of files) {
     const raw = fs.readFileSync(path.join(out, rel), "utf8");
-    const date = tag(raw, "DATE_DEC");
+    const date = tag(raw, "DATE_DEC") || tag(raw, "DATE_TEXTE"); // CNIL: DATE_TEXTE
     if (date < since) continue;
     stats.recent++;
     const rec = corpus.parse(raw);

@@ -10,6 +10,7 @@ const TEXT: Record<string, string> = {
   copropriete: "text-copropriete",
   construction: "text-construction",
   diagnostics: "text-diagnostics",
+  "donnees-personnelles": "text-donnees-personnelles",
 };
 
 const WORDS: Record<string, string[]> = {
@@ -20,6 +21,7 @@ const WORDS: Record<string, string[]> = {
   copropriete: ["Syndic", "AG", "Charges"],
   construction: ["Chantier", "Décennale", "Devis"],
   diagnostics: ["DPE", "Amiante", "Plomb"],
+  "donnees-personnelles": ["RGPD", "CNIL", "Fuite"],
 };
 
 /**

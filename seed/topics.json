@@ -59,6 +59,10 @@
     {
       "slug": "retraite-sante",
       "title": "Retraite, santé & handicap"
+    },
+    {
+      "slug": "donnees-personnelles",
+      "title": "Données personnelles & RGPD"
     }
   ],
   "topics": [
@@ -10383,6 +10387,273 @@
             "code-du-travail:R4412-97-1",
             "code-du-travail:R4412-97",
             "code-du-travail:L4412-2"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "fuite-de-donnees",
+      "title": "Fuite de données et vos droits",
+      "h1": "Fuite de données : dédommagement, information, plainte et action de groupe",
+      "category": "donnees-personnelles",
+      "intro": "Opérateur, mutuelle, enseigne, service public : les fuites de données se multiplient. L’organisme doit sécuriser vos données, prévenir la CNIL et parfois vous prévenir. Vous pouvez demander réparation d’un préjudice, saisir la CNIL ou rejoindre une action de groupe. Les règles, article par article.",
+      "keywords": [
+        "fuite de données dédommagement",
+        "fuite de données que faire",
+        "indemnisation fuite de données RGPD",
+        "plainte CNIL fuite de données",
+        "action de groupe fuite de données",
+        "article 82 RGPD"
+      ],
+      "codes": [
+        "rgpd",
+        "loi-78-17",
+        "loi-2025-391",
+        "code-penal",
+        "code-civil"
+      ],
+      "questions": [
+        {
+          "slug": "fuite-de-donnees-demander-dedommagement",
+          "question": "Fuite de données : puis-je demander un dédommagement à l’entreprise ?",
+          "hints": [
+            "dommage matériel ou moral",
+            "réparation du préjudice",
+            "responsable du traitement",
+            "sécurité du traitement",
+            "exonéré de responsabilité",
+            "rgpd:82",
+            "rgpd:32",
+            "rgpd:5",
+            "rgpd:34",
+            "code-civil:2224"
+          ]
+        },
+        {
+          "slug": "fuite-de-donnees-entreprise-doit-prevenir",
+          "question": "Une entreprise victime d’une fuite de données doit-elle me prévenir ?",
+          "hints": [
+            "violation de données",
+            "risque élevé",
+            "communication à la personne concernée",
+            "72 heures",
+            "rgpd:34",
+            "rgpd:33",
+            "rgpd:4"
+          ]
+        },
+        {
+          "slug": "fuite-de-donnees-que-faire",
+          "question": "Mes données personnelles ont fuité : que faire concrètement ?",
+          "hints": [
+            "droit d’accès",
+            "violation de données",
+            "réclamation",
+            "autorité de contrôle",
+            "rgpd:15",
+            "rgpd:34",
+            "rgpd:77",
+            "rgpd:12"
+          ]
+        },
+        {
+          "slug": "fuite-de-donnees-plainte-cnil",
+          "question": "Fuite de données : porter plainte à la CNIL ou au pénal ?",
+          "hints": [
+            "réclamation auprès d’une autorité de contrôle",
+            "sécurité des données",
+            "système de traitement automatisé",
+            "rgpd:77",
+            "rgpd:78",
+            "loi-78-17:8",
+            "code-penal:226-17",
+            "code-penal:323-1"
+          ]
+        },
+        {
+          "slug": "fuite-de-donnees-action-de-groupe",
+          "question": "Action de groupe après une fuite de données : qui peut l’engager et comment s’y joindre ?",
+          "hints": [
+            "action de groupe",
+            "association",
+            "mandater",
+            "réparation des préjudices",
+            "rgpd:80",
+            "loi-2025-391:16"
+          ]
+        },
+        {
+          "slug": "fuite-de-donnees-usurpation-identite",
+          "question": "Après une fuite, quelqu’un utilise mon identité : quels recours ?",
+          "hints": [
+            "usurpation d’identité",
+            "escroquerie",
+            "réparation",
+            "code-penal:226-4-1",
+            "code-penal:313-1",
+            "rgpd:82"
+          ]
+        },
+        {
+          "slug": "fuite-de-donnees-sanctions-entreprise",
+          "question": "Quelles sanctions risque une entreprise qui a laissé fuiter des données ?",
+          "hints": [
+            "amende administrative",
+            "formation restreinte",
+            "4 %",
+            "chiffre d’affaires annuel mondial",
+            "rgpd:83",
+            "rgpd:32",
+            "loi-78-17:20",
+            "code-penal:226-17"
+          ]
+        },
+        {
+          "slug": "fuite-de-donnees-service-public",
+          "question": "Fuite de données dans un service public ou un hôpital : mêmes droits ?",
+          "hints": [
+            "autorité publique",
+            "responsable du traitement",
+            "réparation",
+            "rgpd:82",
+            "rgpd:83",
+            "rgpd:34",
+            "loi-78-17:20"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "droits-rgpd",
+      "title": "Vos droits RGPD sur vos données",
+      "h1": "Accès, effacement, opposition : faire valoir ses droits RGPD",
+      "category": "donnees-personnelles",
+      "intro": "Savoir ce qu’une entreprise sait de vous, faire supprimer vos données, refuser la prospection ou les cookies : le RGPD vous donne des droits, gratuits et encadrés par des délais. Comment les exercer, et que faire quand l’organisme ne répond pas.",
+      "keywords": [
+        "droit d’accès RGPD",
+        "demande RGPD délai",
+        "droit à l’effacement",
+        "supprimer mes données",
+        "opposition prospection",
+        "refuser les cookies"
+      ],
+      "codes": [
+        "rgpd",
+        "loi-78-17"
+      ],
+      "questions": [
+        {
+          "slug": "droit-acces-donnees-personnelles",
+          "question": "Comment savoir quelles données une entreprise détient sur moi ?",
+          "hints": [
+            "droit d’accès",
+            "copie des données",
+            "gratuit",
+            "rgpd:15",
+            "rgpd:12"
+          ]
+        },
+        {
+          "slug": "delai-reponse-demande-rgpd",
+          "question": "Dans quel délai une entreprise doit-elle répondre à une demande RGPD ?",
+          "hints": [
+            "un mois",
+            "prolongé de deux mois",
+            "demandes manifestement infondées ou excessives",
+            "rgpd:12"
+          ]
+        },
+        {
+          "slug": "droit-effacement-donnees",
+          "question": "Puis-je exiger qu’une entreprise supprime mes données ?",
+          "hints": [
+            "droit à l’effacement",
+            "droit à l’oubli",
+            "motifs",
+            "exceptions",
+            "rgpd:17",
+            "rgpd:12"
+          ]
+        },
+        {
+          "slug": "opposition-prospection-commerciale",
+          "question": "Comment arrêter de recevoir de la prospection commerciale ?",
+          "hints": [
+            "droit d’opposition",
+            "prospection",
+            "à tout moment",
+            "rgpd:21",
+            "loi-78-17:82"
+          ]
+        },
+        {
+          "slug": "cookies-consentement-refuser",
+          "question": "Un site peut-il m’imposer des cookies ?",
+          "hints": [
+            "consentement",
+            "traceurs",
+            "terminal",
+            "refuser",
+            "loi-78-17:82",
+            "rgpd:7"
+          ]
+        },
+        {
+          "slug": "entreprise-ne-repond-pas-demande-rgpd",
+          "question": "L’entreprise ne répond pas à ma demande RGPD : que faire ?",
+          "hints": [
+            "réclamation",
+            "autorité de contrôle",
+            "recours juridictionnel",
+            "rgpd:77",
+            "rgpd:79",
+            "rgpd:12"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "donnees-personnelles-travail",
+      "title": "Données personnelles au travail",
+      "h1": "Vidéosurveillance, dossier du salarié : vos données face à l’employeur",
+      "category": "donnees-personnelles",
+      "intro": "L’employeur traite beaucoup de données sur ses salariés. Il peut contrôler l’activité, mais pas n’importe comment : information préalable, proportionnalité, consultation du CSE. Et le salarié a, lui aussi, un droit d’accès à ses données.",
+      "keywords": [
+        "vidéosurveillance travail",
+        "employeur filmer salarié",
+        "droit d’accès salarié données",
+        "RGPD salarié"
+      ],
+      "codes": [
+        "rgpd",
+        "code-du-travail",
+        "loi-78-17"
+      ],
+      "questions": [
+        {
+          "slug": "videosurveillance-travail-employeur",
+          "question": "Mon employeur peut-il me filmer au travail ?",
+          "hints": [
+            "dispositif de contrôle",
+            "information préalable",
+            "proportionnée au but recherché",
+            "comité social et économique",
+            "code-du-travail:L1121-1",
+            "code-du-travail:L1222-4",
+            "code-du-travail:L2312-38",
+            "rgpd:13"
+          ]
+        },
+        {
+          "slug": "salarie-acces-donnees-employeur",
+          "question": "Un salarié peut-il demander à son employeur toutes les données qu’il détient sur lui ?",
+          "hints": [
+            "droit d’accès",
+            "copie",
+            "courriels",
+            "droits et libertés d’autrui",
+            "rgpd:15",
+            "rgpd:12"
           ]
         }
       ]

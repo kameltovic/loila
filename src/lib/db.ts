@@ -733,6 +733,30 @@ CREATE TABLE IF NOT EXISTS jorf_decision_links (
 );
 CREATE INDEX IF NOT EXISTS jorf_decision_links_text ON jorf_decision_links(jorf_text_id);
 -- Housing market zoning per commune (décret 2013-392 as amended): 1 = zone tendue, 2 = touristique et tendue, 3 = non tendue.
+-- DPO designations declared to the CNIL (open data), one row per designating organisation (latest designation).
+-- email is kept only when it reads as a function mailbox (dpo@, rgpd@…), telephone never: see scripts/open-data-cnil.ts.
+CREATE TABLE IF NOT EXISTS cnil_dpo (
+  siren        TEXT PRIMARY KEY,
+  nom          TEXT,
+  type_dpo     TEXT,                          -- Personne physique | Personne morale
+  date_designation TEXT,                      -- YYYY-MM-DD
+  dpo_siren    TEXT,                          -- external DPO (legal entity)
+  dpo_nom      TEXT,
+  email        TEXT,
+  url          TEXT,
+  telephone    TEXT,
+  adresse      TEXT,                          -- postal contact, one line
+  source_record_id TEXT
+);
+-- Aggregates of the personal data breaches notified to the CNIL (the raw rows are anonymous but useless one by one).
+CREATE TABLE IF NOT EXISTS cnil_breach_stats (
+  year         TEXT NOT NULL,
+  dimension    TEXT NOT NULL,                 -- total | cause | origine | nature | personnes | information
+  label        TEXT NOT NULL,
+  n            INTEGER NOT NULL,
+  source_record_id TEXT,
+  PRIMARY KEY (year, dimension, label)
+);
 CREATE TABLE IF NOT EXISTS housing_zones (
   citycode     TEXT PRIMARY KEY,
   zone         INTEGER NOT NULL,
@@ -881,7 +905,7 @@ export function importContent(d: Database.Database, dir = path.join(process.cwd(
         }
         // Open data reference tables (scripts/export-content.ts --refs): snapshot tables replaced whole, shared ones upserted.
         if (refTables) {
-          const SNAPSHOT = ["collective_agreements", "jurisdictions", "housing_zones", "legal_indices", "price_years", "places", "section_prices"];
+          const SNAPSHOT = ["collective_agreements", "jurisdictions", "housing_zones", "legal_indices", "price_years", "places", "section_prices", "cnil_dpo", "cnil_breach_stats"];
           const UPSERT = ["entities", "entity_ids", "source_records"];
           for (const table of [...UPSERT, ...SNAPSHOT]) { // referenced rows first (foreign keys)
             const rows = refTables[table] ?? [];
