@@ -30,7 +30,7 @@
   "dependencies": {
     "better-sqlite3": "^13.2.0",
     "fast-xml-parser": "^5.12.1",
-    "lucide-react": "^1.73.0",
+    "lucide-react": "^1.74.0",
     "mapbox-gl": "^3.35.0",
     "next": "16.4.6",
     "react": "19.3.1",
